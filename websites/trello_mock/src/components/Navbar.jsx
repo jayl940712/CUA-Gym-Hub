@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Xrello, Search, Bell, HelpCircle, X, Star, Users, Clock, ChevronDown, Layout, Settings, User } from 'lucide-react';
+import { Trello as Xrello, Search, Bell, HelpCircle, X, Star, Users, Clock, ChevronDown, Layout, Settings, User } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 const Navbar = () => {

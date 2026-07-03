@@ -1,7 +1,7 @@
 
     import React, { useState, useRef, useEffect } from 'react';
     import { Outlet, Link, useNavigate } from 'react-router-dom';
-    import { XitHub, Bell, Plus, Search, X, MessageSquare, GitPullRequest, AtSign, AlertCircle, CheckCircle } from 'lucide-react';
+    import { Github as XitHub, Bell, Plus, Search, X, MessageSquare, GitPullRequest, AtSign, AlertCircle, CheckCircle } from 'lucide-react';
     import { useStore } from '../lib/store';
     import KeyboardNav from './KeyboardNav';
     import CommandPalette from './CommandPalette';
