@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { getDefaultData } from './src/utils/mockData'
@@ -172,7 +173,7 @@ function parseMultipart(buf, boundary) {
 }
 
 export default defineConfig({
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'xira-mock-api',

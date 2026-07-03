@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { DEFAULT_STATE } from './src/utils/mockData.js'
@@ -124,7 +125,7 @@ function calculateStateDiff(initial, current) {
 }
 
 export default defineConfig({
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'mock-api',

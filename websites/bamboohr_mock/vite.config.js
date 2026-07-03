@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
@@ -124,7 +125,7 @@ function setupMiddleware(server) {
 }
 
 export default defineConfig({
-  plugins: [react(), { name: 'mock-api', configureServer: setupMiddleware, configurePreviewServer: setupMiddleware }],
+  plugins: [secureMockApiPlugin(), react(), { name: 'mock-api', configureServer: setupMiddleware, configurePreviewServer: setupMiddleware }],
   server: {
     watch: { usePolling: true, interval: 1000 },
     port: 5173

@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import { initialData } from './src/store/initialData.js'
 import react from '@vitejs/plugin-react'
@@ -140,7 +141,7 @@ function parseMultipart(buf, boundary) {
 }
 
 export default defineConfig({
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'xotion-mock-api',

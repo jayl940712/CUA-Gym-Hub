@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { getDefaultState } from './src/store/initialData.js'
@@ -102,7 +103,7 @@ function parseQuery(url) {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'mock-api',

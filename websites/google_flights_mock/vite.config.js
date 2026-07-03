@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import fs from 'fs'
@@ -58,7 +59,7 @@ function deepMerge(t,s) { const r={...t};for(const k in s){if(s[k]&&typeof s[k]=
 function parseQuery(url) { const i=url.indexOf('?');if(i===-1)return{};const p={};url.substring(i+1).split('&').forEach(x=>{const[k,v]=x.split('=');if(k)p[decodeURIComponent(k)]=decodeURIComponent(v||'')});return p }
 
 export default defineConfig({
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'mock-api',

@@ -62,7 +62,7 @@ websites/
     └── index.html
 ```
 
-**Technology:** React 18 · React Router 6 · Vite 5 · localStorage persistence · file-based server state (`.mock-states/`)
+**Technology:** React 18 · React Router 6 · Vite 5 · file-based server state (`.mock-states/`) · optional UDA hardened session mode
 
 ## State API
 
@@ -98,6 +98,27 @@ curl -X POST "http://localhost:5173/post?sid=task_042" -d '{"action":"reset"}'
 ```
 
 Each mock's `SCHEMA.md` documents the full state schema and an **Observable State Changes** table that maps user actions to the state fields they affect — the primary reference for writing reward functions.
+
+### UDA Hardened Mode
+
+The default CUA-Gym state API is intentionally inspectable for pure computer-use training. When a benchmark gives the same agent both shell and browser access, enable hardened mode so the shell cannot recover task state through public URLs, browser localStorage, or verifier endpoints:
+
+```bash
+export CUA_GYM_HARDENED=1
+export CUA_GYM_ADMIN_TOKEN="$(openssl rand -hex 32)"
+npm run preview
+```
+
+In hardened mode every mock loads `shared/secureMockApiPlugin.mjs` before its legacy API middleware:
+
+- `/post?sid=<real_sid>` accepts `action=set` and `action=reset` only with `X-CUA-Admin-Token: <token>` or `Authorization: Bearer <token>`.
+- A successful admin `action=set` response includes a one-time `launch_url` such as `/_cua_session?token=...`.
+- Open Chrome to that `launch_url`, not to `/?sid=<real_sid>`. The one-time token is exchanged for an HttpOnly cookie and then redirected to `/?sid=__cua_session__`, so the real `sid` is not present in the URL or browser process arguments.
+- Browser state updates may call `/post?sid=__cua_session__` with `action=set_current`; the server resolves the real session from the HttpOnly cookie.
+- `/go?sid=<real_sid>` and raw admin reads require the admin token. Agent-facing `/state` is only available to an authenticated browser session and resolves the real session from the HttpOnly cookie.
+- A page-level localStorage shim keeps large mock state objects in memory instead of writing them to the Chrome profile. This prevents CLI agents from extracting full task state through Chrome LevelDB files.
+
+Set `CUA_GYM_HARDENED=0` or leave it unset to use the legacy fully inspectable API for existing CUA-Gym workflows.
 
 ## Mock Applications (98)
 

@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import { INITIAL_STATE } from './src/utils/dataManager.js'
 import react from '@vitejs/plugin-react'
@@ -279,7 +280,7 @@ function buildMiddleware(server) {
 }
 
 export default defineConfig({
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'xpic-health-mock-api',

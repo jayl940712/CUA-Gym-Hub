@@ -48,3 +48,24 @@ Do not rely on release-hosted `xlang.ai` endpoints for large-scale training or e
 ## Runtime State
 
 Mocks write per-session state under `.mock-states/` and uploaded files under `.mock-files/` inside each app directory. These directories are ignored by git and can be deleted to reset local runtime state.
+
+## UDA Hardened Deployments
+
+For environments where the same agent has shell and browser access, run mocks with the hardened state API:
+
+```bash
+export CUA_GYM_HARDENED=1
+export CUA_GYM_ADMIN_TOKEN="$(openssl rand -hex 32)"
+./deploy-all.sh --skip-install --no-attach
+```
+
+The harness must keep `CUA_GYM_ADMIN_TOKEN` out of the agent workspace. Use it only from setup/eval code:
+
+```bash
+curl -X POST "$MOCK_URL/post?sid=$REAL_SID" \
+  -H "Content-Type: application/json" \
+  -H "X-CUA-Admin-Token: $CUA_GYM_ADMIN_TOKEN" \
+  -d '{"action":"set","state":{...}}'
+```
+
+The response contains a one-time `launch_url`. Open the browser to `$MOCK_URL$launch_url`; do not place the real `sid` in the browser URL. Evaluation reads `/go?sid=$REAL_SID` with the same admin token.

@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import { getDefaultData } from './src/data/initialState.js'
 import react from '@vitejs/plugin-react'
@@ -194,7 +195,7 @@ function ensureDefaultFiles() {
 ensureDefaultFiles()
 
 export default defineConfig({
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'mock-api',

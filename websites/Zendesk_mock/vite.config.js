@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
@@ -274,6 +275,6 @@ export default defineConfig({
     },
     hmr: { port: 0 }
   },
-  plugins: [react(), zendeskMockApi()],
+  plugins: [secureMockApiPlugin(), react(), zendeskMockApi()],
   preview: { port: 0, host: '0.0.0.0', allowedHosts: true }
 });

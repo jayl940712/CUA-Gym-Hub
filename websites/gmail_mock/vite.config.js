@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import { INITIAL_STATE } from './src/data/mockData.js'
 import react from '@vitejs/plugin-react'
@@ -207,7 +208,7 @@ startxref
 ensureDefaultFiles()
 
 export default defineConfig({
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'xmail-mock-api',

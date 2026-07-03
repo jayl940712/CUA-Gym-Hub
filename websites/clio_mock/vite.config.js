@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import fs from 'fs'
@@ -181,5 +182,5 @@ export default defineConfig({
       ignored: ["**/assets/screenshots/**", "**/node_modules/**", "**/.mock-states/**"]
     }
   },
-  plugins: [react(), mockApiPlugin()],
+  plugins: [secureMockApiPlugin(), react(), mockApiPlugin()],
 })

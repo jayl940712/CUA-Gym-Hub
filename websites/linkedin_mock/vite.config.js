@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import { INITIAL_STATE } from './src/data/mockData.js'
 import react from '@vitejs/plugin-react'
@@ -147,7 +148,7 @@ export default defineConfig({
       ignored: ["**/assets/screenshots/**", "**/node_modules/**", "**/.mock-states/**"]
     }
   },
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'xinkedin-mock-api',

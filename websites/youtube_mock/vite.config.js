@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import { getDefaultData } from './src/data/initialData.js'
 import react from '@vitejs/plugin-react'
@@ -262,7 +263,7 @@ function registerMiddlewares(server) {
 
 export default defineConfig({
   base: '/',
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'xoutube-mock-api',

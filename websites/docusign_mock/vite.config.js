@@ -1,3 +1,4 @@
+import { secureMockApiPlugin } from '../../shared/secureMockApiPlugin.mjs';
 import { defineConfig } from 'vite'
 import { getDefaultState } from './src/lib/dataManager.js'
 import react from '@vitejs/plugin-react'
@@ -287,7 +288,7 @@ function registerMockMiddleware(server) {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
+  plugins: [secureMockApiPlugin(), 
     react(),
     {
       name: 'mock-api',
