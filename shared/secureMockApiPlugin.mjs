@@ -118,6 +118,13 @@ function computeDiff(initial, current, prefix = '') {
 function localStorageShim() {
   return String.raw`
 (() => {
+  try {
+    const sid = new URLSearchParams(window.location.search).get('sid');
+    if (sid !== '${PLACEHOLDER_SID}') return;
+  } catch {
+    return;
+  }
+
   const PLACEHOLDER_SID = '${PLACEHOLDER_SID}';
   const sidKeys = [
     'mock_sid',
@@ -196,7 +203,7 @@ function localStorageShim() {
 }
 
 export function secureMockApiPlugin(options = {}) {
-  const stateDir = options.stateDir || path.join(process.cwd(), '.mock-states');
+  const stateDir = options.stateDir || path.join(process.cwd(), '.mock-secure-states');
   const sessions = new Map();
   const setupTokens = new Map();
 
@@ -216,6 +223,10 @@ export function secureMockApiPlugin(options = {}) {
     const cookies = parseCookies(req.headers.cookie || '');
     const sessionId = cookies[SESSION_COOKIE];
     return sessionId ? sessions.get(sessionId) || null : null;
+  }
+
+  function hasSecureSession(req) {
+    return Boolean(sidFromCookie(req));
   }
 
   function resolveClientSid(req, url) {
@@ -333,10 +344,24 @@ export function secureMockApiPlugin(options = {}) {
       if (!isHardenedEnabled()) return next();
       const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
       const pathname = url.pathname;
+      const requestedSid = sanitizeSid(url.searchParams.get('sid') || '');
+      const admin = isAdmin(req);
+      const secureSession = hasSecureSession(req);
+      const placeholderSession = requestedSid === PLACEHOLDER_SID;
+
       if (pathname === '/_cua_session') return handleSession(req, res, url);
-      if (pathname === '/post' && req.method === 'POST') return void handlePost(req, res, url);
-      if (pathname === '/state' && req.method === 'GET') return handleState(req, res, url);
-      if (isDebugInspectorPath(pathname) && req.method === 'GET') return handleGo(req, res, url);
+      if (pathname === '/post' && req.method === 'POST') {
+        if (admin || secureSession || placeholderSession) return void handlePost(req, res, url);
+        return next();
+      }
+      if (pathname === '/state' && req.method === 'GET') {
+        if (admin || secureSession || placeholderSession) return handleState(req, res, url);
+        return next();
+      }
+      if (isDebugInspectorPath(pathname) && req.method === 'GET') {
+        if (admin) return handleGo(req, res, url);
+        return next();
+      }
       return next();
     });
   }

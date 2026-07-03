@@ -101,7 +101,7 @@ Each mock's `SCHEMA.md` documents the full state schema and an **Observable Stat
 
 ### UDA Hardened Mode
 
-The default CUA-Gym state API is intentionally inspectable for pure computer-use training. When a benchmark gives the same agent both shell and browser access, enable hardened mode so the shell cannot recover task state through public URLs, browser localStorage, or verifier endpoints:
+The default CUA-Gym state API is intentionally inspectable for pure computer-use training. When a benchmark gives the same agent both shell and browser access, enable hybrid hardened mode so new harness traffic can use server-side private state while existing legacy traffic stays backward compatible:
 
 ```bash
 export CUA_GYM_HARDENED=1
@@ -109,14 +109,14 @@ export CUA_GYM_ADMIN_TOKEN="$(openssl rand -hex 32)"
 npm run preview
 ```
 
-In hardened mode every mock loads `shared/secureMockApiPlugin.mjs` before its legacy API middleware:
+In hybrid hardened mode every mock loads `shared/secureMockApiPlugin.mjs` before its legacy API middleware. Requests with an admin token, a valid HttpOnly mock session, or the `sid=__cua_session__` placeholder use the hardened path; ordinary legacy requests without those credentials fall through to the existing `/post`, `/state`, and `/go` handlers.
 
 - `/post?sid=<real_sid>` accepts `action=set` and `action=reset` only with `X-CUA-Admin-Token: <token>` or `Authorization: Bearer <token>`.
 - A successful admin `action=set` response includes a one-time `launch_url` such as `/_cua_session?token=...`.
 - Open Chrome to that `launch_url`, not to `/?sid=<real_sid>`. The one-time token is exchanged for an HttpOnly cookie and then redirected to `/?sid=__cua_session__`, so the real `sid` is not present in the URL or browser process arguments.
 - Browser state updates may call `/post?sid=__cua_session__` with `action=set_current`; the server resolves the real session from the HttpOnly cookie.
-- `/go?sid=<real_sid>` and raw admin reads require the admin token. Agent-facing `/state` is only available to an authenticated browser session and resolves the real session from the HttpOnly cookie.
-- A page-level localStorage shim keeps large mock state objects in memory instead of writing them to the Chrome profile. This prevents CLI agents from extracting full task state through Chrome LevelDB files.
+- Hardened `/go?sid=<real_sid>` and raw admin reads require the admin token. Legacy `/go` remains available for old sessions, but hardened state is stored separately so legacy reads cannot recover it.
+- A page-level localStorage shim activates only for `sid=__cua_session__` hardened browser sessions and keeps large mock state objects in memory instead of writing them to the Chrome profile. This prevents CLI agents from extracting full task state through Chrome LevelDB files without changing old legacy sessions.
 
 Set `CUA_GYM_HARDENED=0` or leave it unset to use the legacy fully inspectable API for existing CUA-Gym workflows.
 

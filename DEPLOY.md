@@ -51,7 +51,7 @@ Mocks write per-session state under `.mock-states/` and uploaded files under `.m
 
 ## UDA Hardened Deployments
 
-For environments where the same agent has shell and browser access, run mocks with the hardened state API:
+For environments where the same agent has shell and browser access, run mocks with the hybrid hardened state API. This keeps legacy no-token `/post`, `/state`, and `/go` behavior available for existing rollouts while allowing new harnesses to opt into server-side private state with an admin token:
 
 ```bash
 export CUA_GYM_HARDENED=1
