@@ -10,6 +10,10 @@ function isHardenedEnabled() {
   return process.env.CUA_GYM_HARDENED === '1' || process.env.CUA_GYM_HARDENED === 'true';
 }
 
+function isLegacyCompatEnabled() {
+  return process.env.CUA_GYM_LEGACY_COMPAT !== '0' && process.env.CUA_GYM_LEGACY_COMPAT !== 'false';
+}
+
 function sanitizeSid(sid) {
   return sid ? String(sid).replace(/[^a-zA-Z0-9_-]/g, '') : '';
 }
@@ -351,16 +355,30 @@ export function secureMockApiPlugin(options = {}) {
 
       if (pathname === '/_cua_session') return handleSession(req, res, url);
       if (pathname === '/post' && req.method === 'POST') {
-        if (admin || secureSession || placeholderSession) return void handlePost(req, res, url);
-        return next();
+        if (admin || secureSession) return void handlePost(req, res, url);
+        if (placeholderSession) {
+          sendJson(res, 403, { error: 'Missing authenticated session or admin token' });
+          return;
+        }
+        if (isLegacyCompatEnabled()) return next();
+        sendJson(res, 403, { error: 'Missing authenticated session or admin token' });
+        return;
       }
       if (pathname === '/state' && req.method === 'GET') {
-        if (admin || secureSession || placeholderSession) return handleState(req, res, url);
-        return next();
+        if (admin || secureSession) return handleState(req, res, url);
+        if (placeholderSession) {
+          sendJson(res, 403, { error: 'Missing authenticated session or admin token' });
+          return;
+        }
+        if (isLegacyCompatEnabled()) return next();
+        sendJson(res, 403, { error: 'Missing authenticated session or admin token' });
+        return;
       }
       if (isDebugInspectorPath(pathname) && req.method === 'GET') {
         if (admin) return handleGo(req, res, url);
-        return next();
+        if (isLegacyCompatEnabled()) return next();
+        sendJson(res, 403, { error: 'Verifier endpoint requires admin token' });
+        return;
       }
       return next();
     });
