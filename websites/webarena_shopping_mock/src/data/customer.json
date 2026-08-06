@@ -1,0 +1,33 @@
+{
+ "id": 27,
+ "email": "emma.lopez@gmail.com",
+ "firstname": "Emma",
+ "lastname": "Lopez",
+ "dob": null,
+ "gender": null,
+ "createdAt": "2023-04-23 16:42:28",
+ "groupId": 1,
+ "defaultBilling": 26,
+ "defaultShipping": 26,
+ "newsletterSubscribed": false,
+ "addresses": [
+  {
+   "id": 26,
+   "firstname": "Emma",
+   "lastname": "Lopez",
+   "company": null,
+   "street": [
+    "101 S San Mateo Dr"
+   ],
+   "city": "San Mateo",
+   "region": "California",
+   "regionId": 12,
+   "postcode": "94010",
+   "countryId": "US",
+   "country": "United States",
+   "telephone": "6505551212",
+   "isDefaultBilling": true,
+   "isDefaultShipping": true
+  }
+ ]
+}

@@ -1,0 +1,1057 @@
+/*
+ * One Stop Market — Magento/blank theme.
+ * Every value here comes from DESIGN.md, which was measured with
+ * getComputedStyle() on the live container at 1440x900.
+ */
+
+/*
+ * Open Sans, copied verbatim out of the container
+ * (/var/www/magento2/lib/web/fonts/opensans/) and served from public/fonts/,
+ * so it is a same-origin asset like the product JPEGs — no CDN, no external
+ * request. The four weights and the `font-display: swap` mirror the source's
+ * own @font-face block in frontend/Magento/blank/en_US/css/styles-m.css.
+ * Without these the mock silently fell back to Helvetica/Arial and every
+ * text metric drifted.
+ */
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/opensans/opensans-300.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/opensans/opensans-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/opensans/opensans-600.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/opensans/opensans-700.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  --text: #333333;
+  --bg: #ffffff;
+  --link: #1979c3;
+  --link-hover: #006bb4;
+  --accent-orange: #ff5501;
+  --nav-band: #f5f5f5;
+  --panel-bg: #f5f5f5;
+  --secondary-btn-bg: #f2f2f2;
+  --secondary-btn-border: #cdcdcd;
+  --muted: #7d7d7d;
+  --nav-link: #575757;
+  --rule: #d1d1d1;
+  --input-border: #c2c2c2;
+  --error: #e02b27;
+  --price-strike: #ff5216;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 62.5%; }
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover { color: var(--link-hover); text-decoration: underline; }
+a:focus-visible { outline: 1px dotted var(--link); outline-offset: 1px; }
+
+h1, h2, h3, h4 { margin: 0; font-weight: 300; }
+
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+button { font-family: inherit; }
+
+.visually-hidden {
+  border: 0; clip: rect(0, 0, 0, 0); height: 1px; margin: -1px;
+  overflow: hidden; padding: 0; position: absolute; width: 1px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Page skeleton                                                       */
+/* ------------------------------------------------------------------ */
+
+.page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+
+.page-main {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+  flex: 1 0 auto;
+}
+
+.columns { display: flex; flex-wrap: wrap; }
+.columns .column.main { flex: 1 1 0; min-width: 0; padding: 0 0 40px 0; order: 2; }
+.columns.has-sidebar .column.main { padding-left: 24.8px; }
+
+.sidebar { order: 1; width: 207px; flex: 0 0 207px; padding-right: 24.8px; }
+.sidebar-account { width: 252px; flex: 0 0 252px; }
+
+/*
+ * The source splits the rail into `sidebar sidebar-main` (Shop By / account
+ * nav) and `sidebar sidebar-additional` (Compare Products, My Wish List) and
+ * chooses a page layout per route. On 2columns-left both stack in one left
+ * rail; the CMS 404 uses 2columns-right and has no sidebar-main, so its
+ * Compare/Wish List blocks sit on the right (27-404.png).
+ *
+ * Grid rather than flex so two sibling sidebar divs stack in one rail instead
+ * of becoming two columns, with a filler row keeping them pinned to the top.
+ */
+.page-layout-2columns-left .columns {
+  display: grid;
+  grid-template-columns: 207px minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas: "side-main content" "side-add content" "side-fill content";
+}
+.page-layout-2columns-left .columns.has-account-nav { grid-template-columns: 252px minmax(0, 1fr); }
+.page-layout-2columns-left .sidebar-main { grid-area: side-main; }
+.page-layout-2columns-left .sidebar-additional { grid-area: side-add; padding-top: 30px; }
+.page-layout-2columns-left .column.main { grid-area: content; }
+
+.page-layout-2columns-right .columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 207px;
+  grid-template-areas: "content side-add";
+}
+.page-layout-2columns-right .sidebar-additional {
+  grid-area: side-add; padding-right: 0; padding-left: 24.8px;
+}
+.page-layout-2columns-right .column.main { grid-area: content; padding-left: 0; }
+
+.page-title-wrapper { margin: 0 0 20px; }
+.page-title { margin: 0; }
+.page-title .base {
+  font-size: 40px;
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--text);
+  display: inline-block;
+  margin: 20px 0 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Panel bar                                                           */
+/* ------------------------------------------------------------------ */
+
+.panel.wrapper { border-bottom: 1px solid #e8e8e8; background: #fff; }
+.panel.header {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 41px;
+}
+.panel.header .header.links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 12px;
+}
+.panel.header .header.links a { font-size: 12px; }
+.panel.header .greet.welcome { color: var(--text); font-size: 12px; margin-left: 15px; }
+.panel.header .counter.qty { color: var(--text); }
+
+/* ------------------------------------------------------------------ */
+/* Header                                                              */
+/* ------------------------------------------------------------------ */
+
+.header.content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 30px 20px 0;
+  min-height: 87px;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+
+.logo {
+  display: inline-block;
+  width: 200px;
+  font-family: 'Arial Black', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  font-size: 21px;
+  line-height: 27px;
+  letter-spacing: -0.5px;
+  color: #000;
+  white-space: nowrap;
+}
+.logo:hover { color: #000; text-decoration: none; }
+
+.header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.block-search { position: relative; width: 250px; }
+.block-search input#search {
+  width: 250px;
+  height: 32px;
+  border: 1px solid var(--input-border);
+  border-radius: 1px;
+  padding: 0 35px 0 9px;
+  font-size: 16px;
+  color: #000;
+  background: #fff;
+}
+.block-search input#search::placeholder { color: #575757; font-size: 15px; }
+.block-search .action.search {
+  position: absolute; right: 0; top: 0; width: 35px; height: 32px;
+  background: none; border: 0; cursor: pointer; color: #757575;
+  display: flex; align-items: center; justify-content: center;
+}
+.block-search .nested { margin-top: 4px; }
+.block-search .action.advanced { font-size: 12px; }
+
+.search-autocomplete {
+  position: absolute; top: 33px; left: 0; width: 250px; z-index: 60;
+  background: #fff; border: 1px solid #c2c2c2; border-top: 0;
+  max-height: 320px; overflow-y: auto;
+}
+.search-autocomplete ul li {
+  display: flex; justify-content: space-between; gap: 8px;
+  padding: 5px 9px; cursor: pointer; font-size: 14px; border-top: 1px solid #e8e8e8;
+}
+.search-autocomplete ul li:first-child { border-top: 0; }
+.search-autocomplete ul li:hover, .search-autocomplete ul li.selected { background: #e8e8e8; }
+.search-autocomplete .amount { color: #999; }
+
+.minicart-wrapper { position: relative; margin-top: 2px; }
+.action.showcart {
+  display: inline-flex; align-items: center; position: relative;
+  color: #757575; background: none; border: 0; cursor: pointer; padding: 0;
+}
+.action.showcart:hover { color: #333; }
+.action.showcart .counter.qty {
+  position: absolute; top: -8px; right: -10px;
+  background: var(--accent-orange); color: #fff;
+  border-radius: 12px; min-width: 18px; height: 18px; line-height: 18px;
+  font-size: 11px; font-weight: 700; text-align: center; padding: 0 4px;
+}
+
+.block-minicart {
+  position: absolute; right: 0; top: 34px; z-index: 100;
+  width: 320px; background: #fff; border: 1px solid var(--rule); padding: 15px;
+}
+.block-minicart:before {
+  content: ''; position: absolute; top: -12px; right: 8px;
+  border: 6px solid transparent; border-bottom-color: var(--rule);
+}
+.block-minicart .subtitle { font-size: 18px; font-weight: 300; display: block; margin-bottom: 10px; }
+.block-minicart .minicart-items { max-height: 300px; overflow-y: auto; }
+.block-minicart .minicart-item {
+  display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #e8e8e8;
+}
+.block-minicart .minicart-item .product-image-container img { width: 60px; height: auto; }
+.block-minicart .subtotal {
+  display: flex; justify-content: space-between; font-weight: 700; padding: 10px 0;
+}
+.block-minicart .actions { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+
+/* ------------------------------------------------------------------ */
+/* Nav band + mega menu                                                */
+/* ------------------------------------------------------------------ */
+
+.nav-sections { background: var(--nav-band); width: 100%; }
+.navigation {
+  max-width: 1280px; margin: 0 auto; padding: 0 20px;
+  display: flex; flex-wrap: wrap;
+}
+.navigation > ul { display: flex; flex-wrap: wrap; width: 100%; }
+.navigation .level0 { position: relative; }
+.navigation .level0 > .level-top {
+  display: inline-block;
+  padding: 0 20px 0 12px;
+  line-height: 53px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--nav-link);
+  position: relative;
+  border-bottom: 3px solid transparent;
+}
+.navigation .level0 > .level-top:hover { color: var(--link-hover); text-decoration: none; }
+.navigation .level0.active > .level-top,
+.navigation .level0.has-active > .level-top { border-bottom-color: var(--accent-orange); color: var(--text); }
+.navigation .level0 > .level-top:after {
+  content: ''; position: absolute; right: 8px; top: 50%; margin-top: -2px;
+  border: 4px solid transparent; border-top-color: #8f8f8f;
+}
+.navigation .submenu {
+  display: none; position: absolute; left: 0; top: 53px; z-index: 200;
+  min-width: 230px; background: #fff; border: 1px solid var(--rule); padding: 8px 0;
+}
+.navigation .level0:hover > .submenu { display: block; }
+.navigation .submenu li { position: relative; }
+.navigation .submenu a {
+  display: block; padding: 8px 20px; color: var(--nav-link); font-size: 14px;
+}
+.navigation .submenu a:hover { background: #e8e8e8; text-decoration: none; }
+.navigation .submenu li.parent > a:after {
+  content: '\203A'; position: absolute; right: 12px; color: #8f8f8f;
+}
+.navigation .submenu .submenu { left: 100%; top: -9px; }
+.navigation .submenu li:hover > .submenu { display: block; }
+
+/* ------------------------------------------------------------------ */
+/* Breadcrumbs                                                         */
+/* ------------------------------------------------------------------ */
+
+/* A direct flex child of .page-wrapper, so it needs an explicit width —
+   without it the box shrink-to-fits and `margin: 0 auto` centres the trail.
+   The 20px inline padding lines the first crumb up with .page-title. */
+.breadcrumbs {
+  width: 100%; box-sizing: border-box;
+  max-width: 1280px; margin: 0 auto; padding: 12px 20px 0;
+  font-size: 12px; line-height: 17px;
+}
+.breadcrumbs .items { display: flex; flex-wrap: wrap; }
+.breadcrumbs .item { color: var(--text); }
+.breadcrumbs .item:not(:last-child):after {
+  content: '\203A'; margin: 0 10px; color: #8f8f8f;
+}
+.breadcrumbs .item strong { font-weight: 400; color: #8f8f8f; }
+
+/* ------------------------------------------------------------------ */
+/* Messages                                                            */
+/* ------------------------------------------------------------------ */
+
+.messages { margin: 12px 0 0; }
+.message {
+  margin: 0 0 10px; padding: 12px 20px 12px 45px; position: relative;
+  font-size: 14px; line-height: 20px; border-radius: 0;
+}
+.message.success { background: #e5efe5; color: #006400; }
+.message.error { background: #fae5e5; color: #e02b27; }
+/* Luma gives `.message.info` and `.message.notice` the same palette. Measured
+ * on the source's zero-result category page (`.message.info.empty` on
+ * /clothing-shoes-jewelry/men/shoes.html?price=1000-):
+ * background rgb(253,240,213) = #fdf0d5, color rgb(111,68,0) = #6f4400. */
+.message.notice,
+.message.info { background: #fdf0d5; color: #6f4400; }
+.message > :first-child:before {
+  position: absolute; left: 15px; top: 12px; font-size: 16px; line-height: 20px;
+}
+.message.success > div:before { content: '\2713'; }
+.message.error > div:before { content: '\2716'; }
+.message a { text-decoration: underline; }
+
+/* ------------------------------------------------------------------ */
+/* Buttons + form controls                                             */
+/* ------------------------------------------------------------------ */
+
+.action.primary {
+  background: var(--link);
+  border: 1px solid var(--link);
+  border-radius: 3px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+  padding: 7px 15px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+.action.primary:hover { background: var(--link-hover); border-color: var(--link-hover); color: #fff; text-decoration: none; }
+.action.primary:active { background: #005999; }
+.action.primary:disabled { opacity: .5; cursor: default; }
+.action.primary.large { font-size: 18px; line-height: 22px; padding: 14px 17px; }
+
+.action.secondary, .action.tocart-secondary {
+  background: var(--secondary-btn-bg);
+  border: 1px solid var(--secondary-btn-border);
+  border-radius: 3px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+  padding: 7px 15px;
+  cursor: pointer;
+  display: inline-block;
+}
+.action.secondary:hover { background: #e2e2e2; color: var(--text); text-decoration: none; }
+.action.small { font-size: 11px; font-weight: 700; line-height: 12px; padding: 5px 8px; }
+
+input[type=text], input[type=email], input[type=tel], input[type=number],
+input[type=password], input[type=search], select, textarea {
+  background: #fff;
+  border: 1px solid var(--input-border);
+  border-radius: 1px;
+  height: 32px;
+  padding: 0 9px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  width: 100%;
+  max-width: 100%;
+}
+textarea { height: auto; padding: 8px 9px; line-height: 20px; }
+select { padding: 5px 10px 4px; height: 32px; }
+input:focus, select:focus, textarea:focus { border-color: #006bb4; outline: 0; }
+
+.field { margin-bottom: 20px; }
+.field > .label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+.field.required > .label:after,
+.field .label.required:after { content: '*'; color: var(--error); margin-left: 4px; }
+.field .note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.field-error { color: var(--error); font-size: 12px; margin-top: 4px; display: block; }
+.fieldset { border: 0; margin: 0 0 40px; padding: 0; max-width: 500px; }
+.fieldset > .legend {
+  font-size: 18px; font-weight: 300; margin: 0 0 20px; padding: 0 0 10px;
+  border-bottom: 1px solid var(--rule); width: 100%; display: block;
+}
+.actions-toolbar { margin-top: 20px; display: flex; align-items: center; gap: 20px; }
+.actions-toolbar .secondary a { font-size: 14px; }
+
+/* ------------------------------------------------------------------
+ * Magento's two-column form skeleton — label left, control right.
+ *
+ * Verbatim from the container's own styles-m.css / styles-l.css:
+ *   .fieldset > .legend                        {margin:0 0 25px;padding:0;float:left;line-height:1.2;font-size:2rem}
+ *   .fieldset .legend                          {margin-left:25.8%}            (styles-l)
+ *   .fieldset > .legend + br                   {clear:both;display:block;height:0;overflow:hidden;visibility:hidden}
+ *   .fieldset > .field                         {margin:0 0 29px}              (styles-l)
+ *   .fieldset > .field:not(.choice) > .label   {padding:6px 15px 0 0;text-align:right;width:25.8%;box-sizing:border-box;float:left}
+ *   .fieldset > .field:not(.choice) > .control {width:74.2%;float:left}
+ *   .fieldset > .field.no-label:before         {padding:6px 15px 0 0;width:25.8%;box-sizing:border-box;content:' ';float:left;height:1px}
+ *   .column:not(.sidebar-additional) form .actions-toolbar {margin-left:25.8%}
+ *   .form.contact / .form.search.advanced      {width:50%;min-width:600px}
+ *
+ * Measured live at 1440x900 on /contact/: label[for=name] x=100 w=159.95
+ * right-aligned, #name x=259.95 w=460.03, both on y=441; Submit at x=259.95.
+ * Same numbers on /catalogsearch/advanced/.
+ *
+ * Deliberately scoped to these two forms. The checkout, account-edit,
+ * address-edit, review and newsletter forms in this mock are stacked and are
+ * NOT part of this change.
+ * ------------------------------------------------------------------ */
+
+.form.contact,
+.form.search.advanced { width: 50%; min-width: 600px; }
+
+.form.contact .fieldset,
+.form.search.advanced .fieldset { max-width: none; margin: 0 0 40px; }
+
+.form.contact .fieldset > .legend,
+.form.search.advanced .fieldset > .legend {
+  float: left; width: auto; display: block; box-sizing: border-box;
+  margin: 0 0 25px 25.8%; padding: 0; border: 0;
+  font-size: 20px; font-weight: 400; line-height: 1.2;
+}
+.form.contact .fieldset > .legend + br,
+.form.search.advanced .fieldset > .legend + br {
+  clear: both; display: block; height: 0; overflow: hidden; visibility: hidden;
+}
+
+.form.contact .fieldset > .field,
+.form.search.advanced .fieldset > .field { margin: 0 0 29px; }
+.form.contact .fieldset > .field:after,
+.form.search.advanced .fieldset > .field:after { content: ''; display: table; clear: both; }
+.form.contact .fieldset > .field:last-child,
+.form.search.advanced .fieldset > .field:last-child { margin-bottom: 0; }
+
+.form.contact .fieldset > .field:not(.choice) > .label,
+.form.search.advanced .fieldset > .field:not(.choice) > .label {
+  float: left; width: 25.8%; box-sizing: border-box;
+  text-align: right; padding: 6px 15px 0 0; margin: 0;
+  font-weight: 700; font-size: 14px;
+}
+.form.contact .fieldset > .field:not(.choice) > .control,
+.form.search.advanced .fieldset > .field:not(.choice) > .control {
+  float: left; width: 74.2%;
+}
+
+/* `<div class="field note no-label">Jot us a note…</div>` — the invisible
+   float reproduces the label gutter so the note lines up with the inputs. */
+.form.contact .fieldset > .field.no-label:before,
+.form.search.advanced .fieldset > .field.no-label:before {
+  padding: 6px 15px 0 0; width: 25.8%; box-sizing: border-box;
+  content: ' '; float: left; height: 1px;
+}
+.form.contact .fieldset > .field.note { font-size: 14px; color: var(--text); margin: 0 0 29px; }
+
+.form.contact .actions-toolbar,
+.form.search.advanced .actions-toolbar {
+  display: block; margin: 0 0 0 25.8%;
+}
+.form.contact .actions-toolbar:after,
+.form.search.advanced .actions-toolbar:after { content: ''; display: table; clear: both; }
+.form.contact .actions-toolbar .primary,
+.form.search.advanced .actions-toolbar .primary { float: left; }
+
+/* Advanced search price range: two 50% columns, an en-dash between them and
+   the `USD` addafter label pinned to the right of the second input.
+     .form.search.advanced .fields.range .field:first-child .control:after
+       {content:' \2013 ';position:absolute;right:0;text-align:center;top:6px;width:25px}
+     .form.search.advanced .group.price .addon .addafter
+       {background:none;border:0;padding-top:6px;position:absolute;right:0;top:0} */
+.form.search.advanced .fieldset > .field .fields.group:after { content: ''; display: table; clear: both; }
+.form.search.advanced .fieldset > .field .fields.group .field { box-sizing: border-box; float: left; margin: 0; }
+.form.search.advanced .fieldset > .field .fields.group.group-2 .field { width: 50%; }
+.form.search.advanced .fields.range .field:first-child { position: relative; }
+.form.search.advanced .fields.range .field:first-child .control { padding-right: 25px; width: 100%; float: none; }
+.form.search.advanced .fields.range .field:first-child .control:after {
+  content: ' \2013 '; display: inline-block; position: absolute; right: 0;
+  text-align: center; top: 6px; width: 25px;
+}
+.form.search.advanced .fields.range .field.with-addon { position: relative; }
+.form.search.advanced .fields.range .field.with-addon .control { padding-right: 45px; width: 100%; float: none; }
+.form.search.advanced .field.price .addon { display: flex; flex-wrap: nowrap; padding: 0; width: 100%; }
+.form.search.advanced .field.price .with-addon .input-text { flex-basis: auto; width: 100%; }
+.form.search.advanced .group.price .addon .addafter {
+  background: none; border: 0; padding-top: 6px; position: absolute; right: 0; top: 0;
+  font-weight: 400; font-size: 14px; width: auto; margin: 0;
+}
+/* Verbatim from the source's styles-m.css: every "Back" / "Go back" link sits
+   in the DOM but is hidden at every breakpoint. Reference captures
+   17-address-book.png and 20-order-view-180.png show no Back link. */
+.actions-toolbar > .secondary .action.back { display: none; }
+
+/* ------------------------------------------------------------------ */
+/* Tables                                                              */
+/* ------------------------------------------------------------------ */
+
+table.data { width: 100%; border-collapse: collapse; }
+table.data caption { text-align: left; }
+table.data th {
+  font-weight: 700; text-align: left; padding: 8px 10px;
+  border-bottom: 1px solid var(--rule); font-size: 14px;
+}
+table.data td { padding: 8px 10px; font-size: 14px; vertical-align: top; }
+table.data .col.qty, table.data .col.price, table.data .col.subtotal { text-align: right; }
+table.data .col.actions a { margin-right: 15px; }
+table.data .col.actions a:last-child { margin-right: 0; }
+
+/* ------------------------------------------------------------------ */
+/* Product grid + tiles                                                */
+/* ------------------------------------------------------------------ */
+
+.products-grid .product-items {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 30px 20px;
+}
+.products-grid.columns5 .product-items { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+.product-item { position: relative; }
+.product-item-photo { display: block; }
+.product-image-container { display: block; width: 100%; max-width: 240px; }
+.product-image-wrapper {
+  display: block; position: relative; width: 100%; padding-bottom: 125%;
+  overflow: hidden; background: #fff;
+}
+.product-image-wrapper img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain; display: block;
+}
+.product-item-details { padding-top: 10px; }
+.product-item-name { margin: 0 0 8px; font-weight: 400; display: block; }
+.product-item-name a { font-size: 14px; line-height: 20px; color: var(--text); font-weight: 400; }
+.product-item-name a:hover { color: var(--link); text-decoration: underline; }
+.product-item .price-box { margin: 8px 0; }
+.product-item .price { font-size: 14px; font-weight: 700; color: var(--text); }
+.product-item .old-price .price { color: var(--muted); font-weight: 400; text-decoration: line-through; }
+.product-item .special-price .price { color: var(--price-strike); }
+.product-item-inner { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.product-item .actions-secondary { display: flex; gap: 10px; align-items: center; }
+.icon-button {
+  background: none; border: 0; cursor: pointer; color: #757575; padding: 0;
+  display: inline-flex; align-items: center;
+}
+.icon-button:hover { color: var(--link); }
+
+.product-reviews-summary { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+.product-reviews-summary .reviews-actions a { font-size: 12px; }
+
+/* list view */
+.products-list .product-items { display: block; }
+.products-list .product-item {
+  display: flex; gap: 30px; padding: 20px 0; border-bottom: 1px solid #e8e8e8;
+}
+.products-list .product-item-photo { flex: 0 0 200px; }
+.products-list .product-item-details { flex: 1 1 auto; padding-top: 0; }
+.products-list .product-item-description { font-size: 14px; line-height: 20px; margin: 10px 0; color: #555; }
+
+/* ------------------------------------------------------------------ */
+/* Rating widget — percentage-width clip, not a rounded star count     */
+/* ------------------------------------------------------------------ */
+
+.rating-summary { display: inline-flex; align-items: center; }
+.rating-result {
+  position: relative; width: 100px; height: 20px; display: inline-block;
+  vertical-align: middle; overflow: hidden;
+}
+.rating-result:before, .rating-result > span:before {
+  content: '\2605\2605\2605\2605\2605';
+  font-size: 20px; line-height: 20px; letter-spacing: 0;
+  position: absolute; left: 0; top: 0; white-space: nowrap;
+  font-family: 'Times New Roman', serif;
+}
+.rating-result:before { color: #c7c7c7; }
+.rating-result > span { position: absolute; left: 0; top: 0; height: 20px; overflow: hidden; display: block; }
+.rating-result > span:before { color: var(--accent-orange); }
+
+.control.rating { display: flex; flex-direction: row-reverse; justify-content: flex-end; }
+.control.rating input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.control.rating label {
+  color: #c7c7c7; font-size: 20px; cursor: pointer; line-height: 20px;
+  font-family: 'Times New Roman', serif;
+}
+.control.rating label:before { content: '\2605'; }
+.control.rating input:checked ~ label,
+.control.rating label:hover, .control.rating label:hover ~ label { color: var(--accent-orange); }
+
+/* ------------------------------------------------------------------ */
+/* Toolbar / sorter / limiter / pager                                  */
+/* ------------------------------------------------------------------ */
+
+.toolbar.toolbar-products {
+  display: flex; align-items: center; gap: 20px; min-height: 40px; padding: 0 10px;
+  flex-wrap: wrap;
+}
+.toolbar .modes { display: flex; gap: 4px; }
+.toolbar .modes-mode {
+  width: 30px; height: 30px; border: 1px solid #d1d1d1; background: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #757575; cursor: pointer;
+}
+.toolbar .modes-mode.active { background: #e8e8e8; color: #333; }
+.toolbar-amount { font-size: 14px; line-height: 26px; margin: 0; }
+.toolbar .toolbar-sorter { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.toolbar .sorter-label { font-size: 14px; }
+.toolbar select.sorter-options, .toolbar select.limiter-options { width: auto; min-width: 110px; }
+.sorter-action {
+  background: none; border: 0; cursor: pointer; color: #757575; font-size: 16px;
+  padding: 0 4px;
+}
+.sorter-action:hover { color: #333; }
+
+.toolbar-bottom { display: flex; align-items: center; margin-top: 20px; padding: 0 10px; }
+.toolbar-bottom .field.limiter { margin-left: auto; margin-bottom: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; }
+
+.pages .items { display: flex; align-items: center; gap: 2px; }
+.pages .item { display: inline-block; }
+.pages a.page, .pages .item.current strong.page, .pages a.action {
+  display: inline-block; min-width: 32px; padding: 0 6px; line-height: 32px;
+  text-align: center; font-size: 12px; font-weight: 700;
+}
+.pages a.page { color: var(--link); }
+.pages .item.current strong.page { color: var(--text); }
+.pages a.action {
+  border: 1px solid var(--rule); color: #757575; background: #fff;
+}
+.pages a.action:hover { background: #e8e8e8; text-decoration: none; }
+/*
+ * Pager label text must stay in the accessibility tree — WebArena builds its
+ * observation from the AX tree, and the source exposes `link "Page 2"` /
+ * `link "Page Next"`, not `link "2"` / `link "›"`. `display:none` removes the
+ * node from the AX tree entirely, so use Magento's own clip-based
+ * visually-hidden (`.pages > .label`, `.pages .item .label`,
+ * `.pages .action.next > span` in styles-m.css) instead. Rendered pixels are
+ * unchanged: the spans are taken out of flow and clipped to 1x1.
+ */
+.pages .label,
+/* The next/previous controls render as a bordered chevron, not as text. */
+.pages a.action > span {
+  border: 0; clip: rect(0, 0, 0, 0); height: 1px; margin: -1px;
+  overflow: hidden; padding: 0; position: absolute; width: 1px;
+}
+.pages a.action.next:after { content: '\203A'; font-size: 18px; }
+.pages a.action.previous:after { content: '\2039'; font-size: 18px; }
+
+/* ------------------------------------------------------------------ */
+/* Sidebar: Shop By / filters / blocks                                 */
+/* ------------------------------------------------------------------ */
+
+.sidebar .block { margin-bottom: 30px; }
+.sidebar .block-title { margin-bottom: 10px; }
+.sidebar .block-title strong { font-size: 18px; font-weight: 700; color: var(--text); }
+.block-compare .block-title strong,
+.block-wishlist .block-title strong,
+.block-reorder .block-title strong { font-weight: 300; color: #555; font-size: 18px; }
+.filter-subtitle { display: block; font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+.filter-options-title { font-size: 14px; font-weight: 700; margin: 10px 0 6px; }
+.filter-options-content { margin: 0 0 15px; }
+.filter-options-content .item { margin-bottom: 6px; line-height: 18px; }
+.filter-options-content a { font-size: 14px; }
+.filter-options-content .count { color: var(--text); }
+.filter-options-content .count:before { content: '('; }
+.filter-options-content .count:after { content: ')'; }
+.filter-count-label { border: 0; clip: rect(0,0,0,0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+
+.filter-current { margin-bottom: 20px; }
+.filter-current .block-subtitle { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.filter-current .item { position: relative; padding-right: 20px; margin-bottom: 6px; font-size: 14px; }
+.filter-current .filter-label { font-weight: 700; }
+.filter-current .filter-label:after { content: ' '; }
+.filter-current .action.remove {
+  position: absolute; right: 0; top: 0; color: #757575; background: none;
+  border: 0; cursor: pointer; font-size: 14px; line-height: 18px;
+}
+.filter-actions { margin-bottom: 20px; }
+
+.sidebar .empty { font-size: 14px; margin: 0; }
+
+/* ------------------------------------------------------------------ */
+/* Account nav                                                         */
+/* ------------------------------------------------------------------ */
+
+.block-collapsible-nav { background: var(--panel-bg); padding: 15px 0; margin-bottom: 30px; }
+.block-collapsible-nav .item { margin: 0; }
+.block-collapsible-nav .item a,
+.block-collapsible-nav .item strong {
+  display: block; padding: 5px 18px 5px 15px; line-height: 20px; font-size: 14px;
+  border-left: 3px solid transparent; color: var(--nav-link);
+}
+.block-collapsible-nav .item a:hover { background: #e8e8e8; text-decoration: none; }
+.block-collapsible-nav .item.current strong {
+  border-color: var(--accent-orange); color: #000; font-weight: 600;
+}
+.block-collapsible-nav .delimiter {
+  border-top: 1px solid var(--rule); margin: 10px 15px; display: block;
+}
+
+/* ------------------------------------------------------------------ */
+/* Product detail                                                      */
+/* ------------------------------------------------------------------ */
+
+.product-info-wrapper { display: flex; gap: 40px; align-items: flex-start; }
+.product.media { flex: 1 1 55%; min-width: 0; }
+.product-info-main { flex: 1 1 45%; min-width: 0; }
+
+.gallery-main { position: relative; background: #fff; text-align: center; }
+.gallery-main img { max-width: 100%; max-height: 560px; display: block; margin: 0 auto; }
+.gallery-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,.85); border: 1px solid var(--rule);
+  width: 32px; height: 44px; cursor: pointer; font-size: 18px; color: #555;
+}
+.gallery-nav.prev { left: 0; }
+.gallery-nav.next { right: 0; }
+.gallery-thumbs { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+.gallery-thumbs button { background: none; border: 2px solid transparent; padding: 0; cursor: pointer; }
+.gallery-thumbs button.active { border-color: var(--accent-orange); }
+.gallery-thumbs img { width: 78px; height: 98px; object-fit: contain; display: block; }
+
+.product-info-stock-sku { display: flex; gap: 30px; align-items: baseline; margin-bottom: 12px; }
+/* The uppercase is CSS, not markup — the source DOM reads "In stock". */
+.stock.available { font-weight: 700; text-transform: uppercase; font-size: 14px; white-space: nowrap; }
+.stock.unavailable { font-weight: 400; font-size: 14px; white-space: nowrap; }
+.product.attribute.sku { font-size: 14px; display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.product.attribute.sku .value { word-break: break-all; }
+.product.attribute.sku .type { font-weight: 700; text-transform: uppercase; margin-right: 8px; }
+.product.attribute.sku .value { color: var(--muted); }
+
+.product-info-main .product-reviews-summary { margin: 0 0 12px; gap: 12px; }
+.product-info-price .price { font-size: 18px; font-weight: 700; line-height: 1; }
+.product-info-price .old-price .price { font-size: 14px; font-weight: 400; color: var(--muted); text-decoration: line-through; }
+.product-info-price { margin-bottom: 15px; }
+
+.product-options-wrapper .field { margin-bottom: 15px; }
+.product-options-wrapper .field > .label { font-weight: 700; margin-bottom: 6px; }
+.product-options-wrapper .options-list li { margin-bottom: 5px; }
+.product-options-wrapper .options-list label { font-size: 14px; margin-left: 6px; cursor: pointer; }
+
+.box-tocart { display: flex; align-items: flex-end; gap: 15px; margin: 20px 0; }
+.box-tocart .field.qty { margin: 0; }
+.box-tocart .field.qty .label { font-weight: 700; }
+.box-tocart input#qty { width: 52px; height: 52px; text-align: center; font-size: 14px; }
+.box-tocart .action.tocart { min-width: 137px; height: 52px; font-size: 18px; white-space: nowrap; }
+
+.product-social-links { display: flex; gap: 10px; }
+
+.product.data.items { margin-top: 40px; border-bottom: 1px solid var(--rule); }
+.product.data.items .items-title { display: flex; gap: 0; }
+.product.data.items .item.title { margin: 0; }
+.product.data.items .item.title > .switch {
+  display: block; padding: 8px 20px; font-size: 14px; font-weight: 600;
+  color: #7d7d7d; background: #f6f6f6; border: 1px solid var(--rule);
+  border-bottom: 0; cursor: pointer; margin-right: -1px;
+}
+.product.data.items .item.title.active > .switch { background: #fff; color: var(--text); position: relative; top: 1px; }
+/* Source markup is `Reviews <span class="counter">12</span>`; the parentheses
+   are supplied by CSS. Scoped to the tab so the header/minicart counters,
+   which the source styles differently, are untouched. */
+.product.data.items .item.title .counter:before { content: '('; }
+.product.data.items .item.title .counter:after { content: ')'; }
+.product.data.items .item.content { padding: 30px 0; border-top: 1px solid var(--rule); }
+.product.data.items .item.content img { max-width: 100%; height: auto; }
+.product.data.items .item.content table { border-collapse: collapse; }
+.product.data.items .item.content table { width: 100%; max-width: 700px; }
+.product.data.items .item.content table td { padding: 6px 30px 6px 0; vertical-align: top; }
+.product.data.items .item.content table td:first-child { width: 40%; }
+
+.description-body h2 { font-size: 26px; font-weight: 300; margin: 0 0 15px; }
+.description-body ul { list-style: disc; padding-left: 20px; margin: 0 0 15px; }
+.description-body li { margin-bottom: 10px; line-height: 20px; }
+.description-body p { margin: 0 0 12px; line-height: 20px; }
+
+.review-list { margin-bottom: 40px; }
+.review-title { font-size: 18px; font-weight: 300; margin: 0 0 20px; }
+.review-item { padding: 20px 0; border-bottom: 1px solid #e8e8e8; }
+.review-item .review-title-line { font-size: 14px; font-weight: 700; margin: 0 0 10px; }
+.review-ratings { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.review-ratings .rating-label { font-weight: 700; font-size: 12px; }
+.review-content { margin: 0 0 10px; line-height: 20px; }
+.review-details .review-author { font-size: 14px; }
+.review-details .review-date { color: var(--muted); font-size: 14px; }
+
+/* ------------------------------------------------------------------ */
+/* Cart                                                                */
+/* ------------------------------------------------------------------ */
+
+.cart-container { display: flex; gap: 40px; align-items: flex-start; }
+.cart-form { flex: 1 1 auto; min-width: 0; }
+.cart-summary { flex: 0 0 285px; background: var(--panel-bg); padding: 1px 15px 25px; }
+.cart-summary .summary.title { display: block; font-size: 18px; font-weight: 300; margin: 12px 0; color: #555; }
+.cart-summary .block { border-top: 1px solid var(--rule); padding: 10px 0; }
+.cart-summary .block > .title {
+  display: flex; justify-content: space-between; cursor: pointer; font-size: 16px; color: #555;
+}
+/* Estimate Shipping and Tax — mirrors Magento's own metrics:
+   .cart-summary .block .fieldset{margin:15px 0 25px 5px}
+   .cart-summary .block .fieldset .field{margin:0 0 10px}
+   .cart-summary .block .fieldset .field.note{font-size:12px}
+   .cart-summary .block .fieldset .methods .field>.label{display:inline} */
+.cart-summary .block .fieldset { margin: 15px 0 25px 5px; border: 0; padding: 0; }
+.cart-summary .block .fieldset .field { margin: 0 0 10px; }
+.cart-summary .block .fieldset .field.note { font-size: 12px; margin: 0 0 10px; }
+.cart-summary .block .fieldset select,
+.cart-summary .block .fieldset input[type="text"] { width: 100%; }
+.cart-summary .block .fieldset.rate { margin: 15px 0 0 5px; }
+.cart-summary .items.methods { margin: 0; }
+.cart-summary .items.methods .item-title { font-weight: 700; font-size: 14px; margin: 0 0 6px; }
+.cart-summary .items.methods .item-options { margin: 0; }
+.cart-summary .items.methods .field.choice.item { font-size: 14px; }
+.cart-summary .items.methods .field.choice.item > .label { display: inline; font-weight: 400; margin: 0 0 0 4px; }
+
+.cart-summary table.totals { width: 100%; border-top: 1px solid var(--rule); margin-top: 10px; }
+.cart-summary table.totals th { text-align: left; padding: 10px 0; font-weight: 400; }
+.cart-summary table.totals td { text-align: right; padding: 10px 0; }
+.cart-summary table.totals .grand th, .cart-summary table.totals .grand td { font-weight: 700; border-top: 1px solid var(--rule); }
+.cart-summary .checkout-methods-items { margin-top: 15px; text-align: center; }
+.cart-summary .action.checkout { width: 255px; max-width: 100%; height: 52px; font-size: 18px; }
+.cart-summary .multicheckout { display: inline-block; margin-top: 12px; font-size: 14px; }
+
+table#shopping-cart-table { width: 100%; border-collapse: collapse; }
+table#shopping-cart-table th { padding: 20px 10px 8px; border-bottom: 1px solid var(--rule); text-align: left; font-weight: 700; }
+table#shopping-cart-table th.col.price, table#shopping-cart-table th.col.qty, table#shopping-cart-table th.col.subtotal { text-align: right; }
+table#shopping-cart-table td { padding: 27px 8px 10px; vertical-align: top; }
+table#shopping-cart-table td.col.price, table#shopping-cart-table td.col.subtotal { text-align: right; font-weight: 700; }
+table#shopping-cart-table td.col.qty { text-align: right; }
+table#shopping-cart-table td.col.qty input { width: 45px; text-align: center; }
+table#shopping-cart-table .item-info { border-bottom: 0; }
+table#shopping-cart-table .item-actions td { padding: 0 8px 20px; border-bottom: 1px solid #e8e8e8; }
+.cart .item .product-item-details { display: flex; gap: 20px; padding-top: 0; }
+.cart .item .product-image-container { width: 100px; flex: 0 0 100px; }
+.cart .item .product-item-name a { color: var(--link); }
+.cart .item .product-item-name a:hover { color: var(--link-hover); }
+.cart .item .item-options { margin-top: 10px; font-size: 12px; }
+.cart .item .item-options .item-option { margin-bottom: 4px; }
+.cart .item .item-options dt { font-weight: 700; display: inline-block; margin-right: 6px; }
+.cart .item .item-options dd { display: inline-block; margin: 0; }
+.cart .actions-toolbar { display: flex; gap: 10px; }
+.cart-main-actions { display: flex; justify-content: space-between; margin-top: 20px; }
+
+/* ------------------------------------------------------------------ */
+/* Checkout                                                            */
+/* ------------------------------------------------------------------ */
+
+.checkout-header { max-width: 1280px; margin: 0 auto; padding: 20px; }
+.opc-progress-bar { display: flex; gap: 0; margin: 0 0 30px; counter-reset: i; }
+.opc-progress-bar-item {
+  position: relative; flex: 0 0 185px; text-align: center; padding-top: 40px;
+  color: #999; font-size: 18px; font-weight: 300;
+}
+.opc-progress-bar-item:before {
+  content: ''; position: absolute; top: 19px; left: 0; width: 100%; height: 7px;
+  background: #e4e4e4;
+}
+.opc-progress-bar-item._active:before { background: var(--accent-orange); }
+.opc-progress-bar-item > span:before {
+  content: counter(i); counter-increment: i;
+  position: absolute; top: 0; left: 50%; margin-left: -19px;
+  width: 38px; height: 38px; border-radius: 50%; background: #e4e4e4;
+  color: #333; line-height: 38px; font-size: 18px;
+}
+.opc-progress-bar-item._active { color: var(--text); }
+.opc-progress-bar-item._active > span:before {
+  background: #fff; border: 2px solid var(--accent-orange); color: var(--accent-orange);
+  content: '\2713'; line-height: 34px;
+}
+.opc-wrapper { display: flex; gap: 40px; align-items: flex-start; }
+.opc-main { flex: 1 1 auto; min-width: 0; }
+.opc-sidebar { flex: 0 0 385px; background: var(--panel-bg); padding: 20px; }
+.opc-sidebar .title { font-size: 26px; font-weight: 300; margin: 0 0 20px; }
+.step-title { font-size: 26px; font-weight: 300; padding-bottom: 10px; border-bottom: 1px solid var(--rule); margin: 0 0 20px; }
+.shipping-address-item {
+  position: relative; border: 2px solid transparent; padding: 15px 30px 15px 15px;
+  width: 270px; line-height: 22px;
+}
+.shipping-address-item.selected-item { border-color: var(--accent-orange); }
+.shipping-address-item.selected-item:after {
+  content: '\2713'; position: absolute; top: 0; right: 0; background: var(--accent-orange);
+  color: #fff; width: 27px; height: 27px; text-align: center; line-height: 27px;
+}
+.table-checkout-shipping-method { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+.table-checkout-shipping-method td { padding: 10px 10px 10px 0; }
+.checkout-payment-method .payment-method-title { padding: 15px 0; border-bottom: 1px solid var(--rule); }
+.opc-block-summary .items-in-cart .title { font-size: 16px; cursor: pointer; display: flex; justify-content: space-between; border-bottom: 1px solid var(--rule); padding: 10px 0; }
+.opc-block-summary .minicart-items .product-item { display: flex; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+
+/* ------------------------------------------------------------------ */
+/* Account pages                                                       */
+/* ------------------------------------------------------------------ */
+
+.block-dashboard-info, .block-dashboard-addresses, .block-dashboard-orders { margin-bottom: 40px; }
+.column.main .block .block-title { display: flex; align-items: baseline; gap: 15px; margin-bottom: 15px; }
+.column.main .block .block-title > strong { font-size: 22px; font-weight: 300; color: #555; }
+.block-content .box { margin-bottom: 20px; }
+.box-title { display: block; font-weight: 700; margin-bottom: 8px; }
+.box-content { line-height: 22px; }
+.box-actions { margin-top: 8px; display: flex; gap: 15px; }
+.columns2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+
+/* Order Information: a flat list of four boxes in the source DOM, dropped into
+   two columns by CSS (shipping address | shipping method / billing address |
+   payment method). */
+.block-order-details-view .block-content {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 25px 30px;
+}
+.block-order-details-view .payment-method { margin: 0; }
+.block-order-details-view .payment-method .title { font-weight: 400; }
+
+address { font-style: normal; line-height: 22px; }
+
+.order-status { font-size: 14px; }
+.order-date { margin: 0 0 15px; }
+.order-actions-toolbar { display: flex; justify-content: space-between; margin-bottom: 20px; }
+.order-title { font-size: 22px; font-weight: 300; color: #555; margin: 20px 0 15px; }
+.order-details-items { margin-bottom: 30px; }
+#my-orders-table { width: 100%; border-collapse: collapse; }
+#my-orders-table th { padding: 8px 10px; border-bottom: 1px solid var(--rule); text-align: left; font-weight: 700; }
+#my-orders-table td { padding: 8px 10px; vertical-align: top; }
+#my-orders-table .col.price, #my-orders-table .col.subtotal { text-align: right; }
+#my-orders-table tfoot th { text-align: right; border: 0; font-weight: 400; }
+#my-orders-table tfoot td { text-align: right; }
+#my-orders-table tfoot .grand_total th, #my-orders-table tfoot .grand_total td { font-weight: 700; }
+#my-orders-table .item-options dt { font-weight: 700; }
+#my-orders-table .item-options dd { margin: 0 0 8px; }
+.order-links { border-bottom: 1px solid var(--rule); margin-bottom: 20px; }
+.order-links .item strong { display: inline-block; padding: 8px 0; font-weight: 700; }
+
+.wishlist-grid .product-items { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 30px 20px; }
+.wishlist-grid textarea { height: 60px; margin-top: 8px; }
+.wishlist-grid .box-tocart { margin: 10px 0; gap: 8px; align-items: center; }
+.wishlist-grid .box-tocart input { width: 50px; height: 32px; text-align: center; }
+
+/* ------------------------------------------------------------------ */
+/* Advanced-search result header (found count + criteria summary)      */
+/* ------------------------------------------------------------------ */
+
+/* Source computed styles on
+   /catalogsearch/advanced/result/?name=lamp&price[from]=10&price[to]=100&sku= :
+     .search.found          margin 0, padding 0, font-size 14px, block
+     .search.summary        margin 0 0 10px, padding 0   (styles-m: `.search.summary{margin-bottom:10px}`)
+     .search.summary .items list-style none, margin 0, padding 0
+     .search.summary .item  display list-item, font-size 14px, h 20px */
+.search.found { font-size: 14px; margin: 0; }
+.search.summary { font-size: 14px; margin: 0 0 10px; }
+.search.summary .items { margin: 0; padding: 0; list-style: none; }
+.search.summary .item { display: list-item; }
+
+/* ------------------------------------------------------------------ */
+/* Popular search terms (/search/term/popular/)                        */
+/* ------------------------------------------------------------------ */
+
+/*
+ * This deployment's Magento blank theme ships NO rule for `.search-terms` at
+ * all — grepping styles-m.css and styles-l.css on the container returns zero
+ * matches — so the block renders with the UA's default list styling and the
+ * per-term font-size that Magento writes inline.
+ *
+ * Computed on the source at 1440x900 (/search/term/popular/):
+ *   ul.search-terms  display:block  list-style-type:disc  list-style-position:outside
+ *                    padding-left:40px  margin-left:0  margin-bottom:25px
+ *                    box x=100 w=1240 h=2650
+ *   li.item          display:list-item  margin-bottom:10px  line-height:1.42857
+ *                    first item box x=140 y=343 w=1200
+ *   a                display:inline  color:#1979c3
+ *   document height 3369px for 100 terms — one term per line, not a cloud.
+ */
+.search-terms {
+  display: block; list-style: disc outside; padding-left: 40px;
+  margin: 0 0 25px; line-height: 1.42857143;
+}
+.search-terms > li { display: list-item; margin-bottom: 10px; }
+.search-terms > li:last-child { margin-bottom: 0; }
+.search-terms li a { display: inline; }
+
+/* ------------------------------------------------------------------ */
+/* CMS / 404                                                           */
+/* ------------------------------------------------------------------ */
+
+.cms-content { line-height: 22px; max-width: 900px; }
+.cms-content h2 { font-size: 26px; font-weight: 300; margin: 25px 0 12px; }
+.cms-content h3 { font-size: 18px; font-weight: 600; margin: 20px 0 10px; }
+.cms-content p { margin: 0 0 12px; }
+.cms-content ul { list-style: disc; padding-left: 20px; margin: 0 0 12px; }
+.cms-content dl dt { font-weight: 700; margin-top: 12px; }
+.cms-content dl dd { margin: 0 0 8px; }
+
+/* ------------------------------------------------------------------ */
+/* Footer                                                              */
+/* ------------------------------------------------------------------ */
+
+.page-footer { margin-top: 40px; flex-shrink: 0; }
+.footer.content {
+  max-width: 1280px; margin: 0 auto; padding: 25px 20px 0;
+  border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 40px;
+}
+.footer.content .links li { margin-bottom: 8px; }
+.footer.content .links a { font-size: 14px; }
+.footer.content .links .current strong { font-weight: 400; color: var(--text); }
+.block.newsletter { display: flex; align-items: center; gap: 0; }
+.block.newsletter .form.subscribe { display: flex; align-items: center; }
+.block.newsletter .field.newsletter { position: relative; margin: 0; }
+.block.newsletter input {
+  width: 220px; height: 32px; padding-left: 32px; border-radius: 0;
+}
+.block.newsletter .field.newsletter:before {
+  content: '\2709'; position: absolute; left: 9px; top: 6px; color: #757575;
+}
+.block.newsletter .action.subscribe { margin-left: 8px; width: 99px; height: 32px; }
+.copyright-wrapper { max-width: 1280px; margin: 0 auto; padding: 25px 20px 30px; }
+.copyright { font-size: 12px; line-height: 17px; display: block; }
+.footer-note { font-size: 12px; line-height: 17px; margin-top: 8px; }
+
+/* ------------------------------------------------------------------ */
+/* Layout tweaks 1280–1920                                             */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 1279px) {
+  .products-grid.columns5 .product-items { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}

@@ -1,0 +1,67 @@
+{
+ "storeName": "One Stop Market",
+ "welcomeMessage": "Welcome to One Stop Market",
+ "copyright": "Copyright \u00a9 2013-present Magento, Inc. All rights reserved.",
+ "footerNote": "Help Us Keep Magento Healthy",
+ "footerNoteLink": {
+  "label": "Report All Bugs",
+  "href": "http://www.magentocommerce.com/bug-tracking"
+ },
+ "currency": "USD",
+ "currencySymbol": "$",
+ "gridPerPage": 12,
+ "gridPerPageValues": [
+  12,
+  24,
+  36
+ ],
+ "defaultSortBy": "position",
+ "storePhone": null,
+ "sortOptions": [
+  {
+   "value": "position",
+   "label": "Position"
+  },
+  {
+   "value": "name",
+   "label": "Product Name"
+  },
+  {
+   "value": "price",
+   "label": "Price"
+  }
+ ],
+ "searchSortOptions": [
+  {
+   "value": "name",
+   "label": "Product Name"
+  },
+  {
+   "value": "price",
+   "label": "Price"
+  },
+  {
+   "value": "relevance",
+   "label": "Relevance"
+  }
+ ],
+ "defaultSearchSortBy": "relevance",
+ "footerLinks": [
+  {
+   "label": "Privacy and Cookie Policy",
+   "href": "/privacy-policy-cookie-restriction-mode"
+  },
+  {
+   "label": "Search Terms",
+   "href": "/search/term/popular/"
+  },
+  {
+   "label": "Advanced Search",
+   "href": "/catalogsearch/advanced/"
+  },
+  {
+   "label": "Contact Us",
+   "href": "/contact/"
+  }
+ ]
+}

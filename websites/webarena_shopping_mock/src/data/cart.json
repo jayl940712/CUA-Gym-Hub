@@ -1,0 +1,53 @@
+{
+ "quoteId": 255,
+ "itemsCount": 3,
+ "itemsQty": 3,
+ "subtotal": 350.42,
+ "grandTotal": 350.42,
+ "updatedAt": "2023-05-05 19:28:17",
+ "items": [
+  {
+   "itemId": 554,
+   "productId": 15033,
+   "sku": "B087QSCXGT",
+   "name": "Uttermost Volterra Crackled Taupe-Gray Ceramic Table Lamp",
+   "qty": 1,
+   "price": 250.8,
+   "rowTotal": 250.8,
+   "options": []
+  },
+  {
+   "itemId": 555,
+   "productId": 15787,
+   "sku": "B08JLHHCM6",
+   "name": "NOZE Rustic Coat Rack Wall Mounted Shelf with 4 Hooks, Hanging Entryway Organizer for Mug Coffee Cup, Holding Solid Wooden Shelf with 2 Baskets for Kitchen Living Room, Bathroom and Bedroom",
+   "qty": 1,
+   "price": 40.99,
+   "rowTotal": 40.99,
+   "options": []
+  },
+  {
+   "itemId": 556,
+   "productId": 10617,
+   "sku": "B09LQTV3RX",
+   "name": "Plus Size Lingerie for Women Sexy for Sex Naughty Eyelash Lace Bodysuit Naughty Mesh One Piece Teddy Bodysuit Outfits",
+   "qty": 1,
+   "price": 58.63,
+   "rowTotal": 58.63,
+   "options": [
+    {
+     "optionId": 4348,
+     "label": "Size",
+     "optionTypeId": 23919,
+     "value": "Large"
+    },
+    {
+     "optionId": 4349,
+     "label": "Color",
+     "optionTypeId": 23922,
+     "value": "Blue"
+    }
+   ]
+  }
+ ]
+}
