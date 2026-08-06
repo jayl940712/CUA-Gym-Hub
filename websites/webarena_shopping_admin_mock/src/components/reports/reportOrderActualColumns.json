@@ -1,0 +1,22 @@
+{
+  "_source": "sales_order_aggregated_created — the three *_actual columns dropped when src/data/reportAggregates.json was curated. Extracted read-only from the container: SELECT period, store_id, order_status, total_tax_amount_actual, total_shipping_amount_actual, total_discount_amount_actual FROM sales_order_aggregated_created WHERE total_tax_amount_actual<>0 OR total_shipping_amount_actual<>0 OR total_discount_amount_actual<>0",
+  "_completeness": "2 of the table's 516 rows are non-zero in these three columns; the other 514 are exactly 0.0000 in all three (verified by COUNT). `rows` is therefore a lossless representation — anything not listed is 0.",
+  "rows": [
+    {
+      "period": "2022-03-29",
+      "store_id": 1,
+      "order_status": "canceled",
+      "total_tax_amount_actual": 2.39,
+      "total_shipping_amount_actual": 5.0,
+      "total_discount_amount_actual": 0.0
+    },
+    {
+      "period": "2022-03-29",
+      "store_id": 0,
+      "order_status": "canceled",
+      "total_tax_amount_actual": 2.39,
+      "total_shipping_amount_actual": 5.0,
+      "total_discount_amount_actual": 0.0
+    }
+  ]
+}

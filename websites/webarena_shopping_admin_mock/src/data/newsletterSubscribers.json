@@ -1,0 +1,9 @@
+[
+ {
+  "subscriber_id": 1,
+  "store_id": 1,
+  "customer_id": 2,
+  "subscriber_email": "john.smith.xyz@gmail.com",
+  "subscriber_status": 1
+ }
+]

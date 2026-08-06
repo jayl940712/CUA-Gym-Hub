@@ -1,0 +1,15 @@
+[
+ {
+  "user_id": 1,
+  "firstname": "Admin",
+  "lastname": "User",
+  "email": "admin@your-domain.com",
+  "username": "admin",
+  "created": "2023-04-19 15:45:39",
+  "modified": "2026-08-05 20:03:06",
+  "logdate": "2026-08-05 20:03:06",
+  "lognum": 123,
+  "is_active": 1,
+  "interface_locale": "en_US"
+ }
+]

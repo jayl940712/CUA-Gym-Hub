@@ -1,0 +1,229 @@
+# shopping_admin — seed data extraction record
+
+> Source: `http://localhost:7780/admin` (admin / admin1234)
+> Container: `shopping_admin` (image `shopping_admin_final_0719:latest`), MariaDB
+> `magentodb` reached via `docker exec ... mysql -u magentouser`.
+> Extracted: 2026-08-05. **Read-only — SELECTs only. Nothing was written to the
+> source DB and no admin form was submitted.**
+
+Helper: `assets/dumps/mysql.py` (base64-wraps JSON payloads so `mysql -B` tab
+escaping can't corrupt them). Extraction scripts:
+
+| Script | Produces |
+|--------|----------|
+| `extract_products.py`, `curate_products.py`, `extract_customers.py`, `extract_sales.py` | products, descriptions, customers, orders (pre-existing) |
+| `extract_reviews.py` | reviews, ratings, review summaries, search terms |
+| `extract_misc.py` | CMS, marketing rules, system/tax config, sales documents, report aggregates, wishlists |
+| `extract_catalog_meta.py` | categories, product attributes, attribute sets, super-attributes, stock items |
+| `shoot.py` | reference screenshots |
+
+## Sampling policy
+
+**Nothing in this migration is sampled.** Every source table below was small
+enough to dump whole, so all row counts are exact source counts:
+2040/2040 products, 308/308 orders, 70/70 customers, 351/351 reviews,
+40/40 categories, 2040/2040 stock items. Report aggregates are complete for
+every period the source has.
+
+## Files in `src/data/`
+
+| File | Rows | Source table(s) |
+|------|------|-----------------|
+| `products.json` | 2040 | `catalog_product_entity` + EAV pivot + `cataloginventory_stock_item` |
+| `productDescriptions.json` | 192 | `catalog_product_entity_text` (deduped, keyed by `description_ref`) |
+| `productAttributes.json` | 81 | `eav_attribute` + `catalog_eav_attribute` + `eav_attribute_option[_value]` |
+| `attributeSets.json` / `attributeSetsFull.json` | 8 / 8 | `eav_attribute_set`, `eav_attribute_group`, `eav_entity_attribute` |
+| `attributeOptions.json` | 16 attrs | `eav_attribute_option_value` (code → {option_id: label}) |
+| `superAttributes.json` | 294 | `catalog_product_super_attribute` (+ label) |
+| `stockItems.json` | 2040 | `cataloginventory_stock_item` |
+| `categories.json` | 40 | `catalog_category_entity` + EAV + `catalog_category_product` |
+| `orders.json` | 308 | `sales_order` + address/item/payment/invoice/shipment children |
+| `orderGrid.json` | 308 | `sales_order_grid` (the exact columns the Orders grid renders) |
+| `orderStatuses.json` | 13 | `sales_order_status` ⋈ `sales_order_status_state` |
+| `orderStatusHistory.json` | 1 | `sales_order_status_history` |
+| `invoices.json` / `invoiceItems.json` | 2 / 2 | `sales_invoice_grid`, `sales_invoice_item` |
+| `shipments.json` / `shipmentItems.json` / `shipmentTracks.json` | 3 / 4 / **0** | `sales_shipment_grid`, `sales_shipment_item`, `sales_shipment_track` |
+| `creditMemos.json` | 1 | `sales_creditmemo_grid` |
+| `customers.json` | 70 | `customer_entity` + EAV + `customer_address_entity` |
+| `customerGrid.json` | 70 | `customer_grid_flat` |
+| `customerGroups.json` | 4 | `customer_group` |
+| `reviews.json` | 351 | `review` ⋈ `review_detail` ⋈ `review_status` ⋈ `rating_option_vote` |
+| `ratings.json` | 4 | `rating` + `rating_option` |
+| `reviewStatuses.json` | 3 | `review_status` |
+| `reviewSummaries.json` | 252 | `review_entity_summary` |
+| `searchTerms.json` | 7 | `search_query` |
+| `cmsPages.json` / `cmsBlocks.json` | 6 / 17 | `cms_page[_store]`, `cms_block[_store]` |
+| `cartPriceRules.json` / `coupons.json` | 4 / 1 | `salesrule` (+ customer_group/website/label), `salesrule_coupon` |
+| `catalogPriceRules.json` | 2 | `catalogrule` (+ customer_group/website) |
+| `taxConfig.json` | 6 sections | `tax_class`, `tax_calculation*`, `shipping_tablerate` |
+| `systemConfig.json` | 7 sections | `store_website`, `store_group`, `store`, `theme`, `directory_currency_rate`, `variable`, `checkout_agreement` |
+| `coreConfig.json` | 34 | `core_config_data` |
+| `adminUsers.json` / `adminRoles.json` | 1 / 3 | `admin_user`, `authorization_role` |
+| `reportAggregates.json` | 12 sections | see below |
+| `wishlists.json` | 2 | `wishlist` + `wishlist_item` |
+| `newsletterSubscribers.json` | 1 | `newsletter_subscriber` |
+| `urlRewrites.json` | 225 | `url_rewrite` |
+
+Total ≈ 4.6 MB.
+
+### `urlRewrites.json` — added round 4 (DIFF-R25)
+
+`url_rewrite` was missed by the original extraction, so `/admin/admin/url_rewrite/`
+rendered `0 records found` against the source's **`225 records found`** (12 pages
+at the source's page size of 20). Extracted read-only by
+`assets/dumps/extract_url_rewrites.py` (SELECT only, via `assets/dumps/mysql.py`):
+
+```
+docker exec shopping_admin mysql -u magentouser -pMyPassword magentodb \
+  -e "SELECT ... FROM url_rewrite ORDER BY url_rewrite_id ASC"
+```
+
+**Complete table — all 225 rows, no sampling.** Every column is carried verbatim:
+`url_rewrite_id`, `entity_type`, `entity_id`, `request_path`, `target_path`,
+`redirect_type`, `store_id`, `description`, `is_autogenerated`, `metadata`.
+
+| Property | Value |
+|---|---|
+| Rows | 225 (`url_rewrite_id` 1–237, with gaps) |
+| `entity_type` | `product` 181 · `category` 38 · `cms-page` 6 |
+| `store_id` | `1` on every row |
+| `redirect_type` | `0` on every row (so the grid's Redirect Type reads `No` throughout) |
+| `description` | `NULL` on every row |
+| Size | 63 KB |
+
+Spot checks against the live grid: `237 · customer-service → cms/page/view/page_id/6`,
+`236 · about-us → cms/page/view/page_id/5`,
+`235 · collections/eco-new.html → catalog/category/view/id/40`,
+`219 · erika-running-short.html → catalog/product/view/id/2040`,
+and the last page `5 gear.html · 4 privacy-policy-cookie-restriction-mode ·
+3 enable-cookies · 2 home · 1 no-route`.
+
+**This is read-only reference data and is deliberately NOT in
+`createInitialData()`** — `src/pages/marketing/Marketing.jsx` imports it as a
+static module and layers the page's mutations on top as a thin overlay in
+`state.systemConfig` (`url_rewrites` = added rows, `url_rewrite_edits` = patches
+to seeded rows, `url_rewrite_deleted` = tombstones). The state baseline is
+unchanged and every edit/delete still shows up in `/go`'s `state_diff`.
+
+### `reportAggregates.json` sections
+
+| Key | Rows | Source table |
+|-----|------|--------------|
+| `bestsellers_daily` | 1010 | `sales_bestsellers_aggregated_daily` |
+| `bestsellers_monthly` | 986 | `sales_bestsellers_aggregated_monthly` |
+| `bestsellers_yearly` | 848 | `sales_bestsellers_aggregated_yearly` |
+| `orders_aggregated_created` | 516 | `sales_order_aggregated_created` |
+| `invoiced_aggregated` | 2 | `sales_invoiced_aggregated` |
+| `refunded_aggregated` | 2 | `sales_refunded_aggregated` |
+| `shipping_aggregated` | 2 | `sales_shipping_aggregated` |
+| `tax_aggregated` | 4 | `tax_order_aggregated_created` |
+| `coupons_aggregated` | **0** | `salesrule_coupon_aggregated` |
+| `viewed_daily` / `viewed_monthly` / `viewed_yearly` | **0 / 0 / 0** | `report_viewed_product_aggregated_*` |
+
+## Things the dev agent must not get wrong
+
+1. **Every aggregate row is duplicated across `store_id` 0 and 1.**
+   `store_id = 0` is the "All Store Views" roll-up. Filter to `store_id == 0` or
+   every report count doubles. Verified: filtering to 0 reproduces the WebArena
+   expected answers for tasks 0–6 and 107–111 exactly (e.g. complete orders
+   Jan 2022 = 11, Feb = 16, … Dec = 10); not filtering gives 22, 32, … 20.
+
+2. **Store timezone is `America/New_York`** (`coreConfig.json`,
+   `general/locale/timezone`); locale `en_US`. All `created_at` values in the
+   seeds are UTC and must be rendered in Eastern. This is load-bearing:
+   the most recent cancelled order is `2023-05-24 01:20:01` UTC, and task
+   webarena-202 expects the admin to show **May 23 2023**.
+
+3. **Review "Rating" grid column** is the mean of the per-rating star values
+   (Quality / Value / Price, `rating_option_vote.value`), precomputed as
+   `rating_summary` on each review. Reviews with no votes have `null` — the
+   source renders those as "Rating isn't Available" (tasks 772–776 assert this
+   string on deleted/absent reviews).
+
+4. **Review grid "Type" column** is Guest when `customer_id` is null, Customer
+   otherwise.
+
+5. `sales_shipment_track` is empty, so the Shipments tab starts with no tracking
+   numbers — tasks 496–500 add the first ones.
+
+## Verified against `assets/TASKS.md`
+
+Spot-checked seed values reproduce the expected answers for:
+
+- bestsellers 2022 top-1 = `Quest Lumaflex™ Band` (#0); 2023 top-1 =
+  `Sprite Yoga Strap 6 foot` (#6); Jan 2023 top-3 = Impulse Duffle / Overnight
+  Duffle / Hawkeye Yoga Short-32-Blue (#4)
+- monthly completed-order counts for 2022 and 2023 (#107–111)
+- review totals: 351 total, 346 Approved, 5 Pending (ids 347, 349, 351, 352,
+  353), 0 Not Approved; all created Apr 2023 → 351 in Apr 2023, 0 in 2022, 0 in
+  May 2023 (#77–79, #344–348)
+- search terms by popularity: hollister 19, Joust Bag 4, nike 3, Antonia Racer
+  Tank 2 (#41–43, #127)
+- invoice 000000001 grand total 36.39, 000000002 = 39.64 (#94, #95)
+- order sums: last-2 complete 182.40, last-5 complete 555.20, last-5 pending
+  885.40, last-5 non-cancelled 778.20, last-4 cancelled 624.45 − last-4 complete
+  430.20 = 194.25 (#193–197)
+- items in most recent 2 / 5 orders = 9 / 18 (#128, #130)
+- newest pending order = 299 (`000000299`, 2023-05-31); oldest complete billing
+  name = John Lee; most recent cancelled order email =
+  `harrypotterfan1@gmail.com` (#198–203)
+- most cancellations = `coolcat321@hotmail.com` (Samantha Jones), 9 (#288–292);
+  most completed orders = `janesmith456@yahoo.com` (Jane Smith), 9 (#62)
+- stock: only `WH11-S-Blue` and `WS08-XS-Blue` have 1–3 units, both qty 3
+  (Eos V-Neck Hoodie-S-Blue, Minerva LumaTech™ V-Tee-XS-Blue) (#185–187)
+- phone lookups: `(555) 229-3326` → Veronica Costello, `2058812302` → John Smith,
+  `2137418080` → Jennifer White, `2065555555` → Adam Garcia,
+  `8015551212` → Sean Miller (#208–212)
+- customer cities: Sophia Young → Boston MA, Amanda Kim → Hoboken NJ (#759, #760)
+- CMS page ids 1 `404 Not Found`, 2 `Home Page`, 3 `Enable Cookies`,
+  4 `Privacy Policy`, 5 `About us` (#486–490)
+- themes: id 1 `Magento Blank`, id 3 `Magento Luma` (#374, #375)
+- every product id, order id and CMS page id named in a task exists in the seeds
+  (only review id 999 from #772 is absent — that task asserts the "Rating isn't
+  Available" empty state, so its absence is correct)
+
+## Gaps and caveats — read before implementing
+
+- **Product view report is empty at source.** `report_viewed_product_aggregated_*`
+  and `report_event` have zero rows, so `/reports/report_product/viewed/`
+  legitimately renders an empty grid. Task #711 only asserts the date inputs, so
+  this is fine — but do not fabricate view counts.
+- **Coupon report is empty at source** (`salesrule_coupon_aggregated` = 0 rows).
+  Task #712 likewise only asserts the date inputs.
+- **`disappointed` review count is 6 in the data, not the 4 the task expects.**
+  All six are real rows (ids 37, 146, 168, 172, 351, 353); two of the six (351,
+  353) are Pending. The expected answer of 4 is consistent with counting only
+  Approved reviews. This is a property of the source data, not a seeding gap —
+  I did not verify which the live grid returns, because running the grid's
+  keyword filter writes a `ui_bookmark` row and the source must stay pristine.
+  `satisfied` (2), `decent` (2), `not useful` (0) and `best` (2) all match exactly.
+- **Task #184 expects "0 units left" → `Sinbad Fitness Tank`**, but 148 products
+  have `qty = 0` in `cataloginventory_stock_item` (150 rows) — every configurable parent
+  does, since parents carry no stock of their own. Sinbad Fitness Tank (id 706)
+  is one of them. Seeds carry the true quantities; whichever grid/report view the
+  task targets must filter the way the source does. Flagged for the dev agent:
+  do not reshape stock data to force this answer.
+- **`core_config_data` has only 34 rows.** Magento's effective config is mostly
+  `config.xml` defaults that never reach the DB, so the System > Configuration
+  screens show many values that are not in `coreConfig.json`. Anything the mock
+  needs beyond these 34 paths must be read off the reference screenshots
+  (`system-config.png`), not invented from the DB.
+- Payment/shipping method availability is likewise config-default driven; the
+  only DB evidence is `carriers/tablerate/*` in `coreConfig.json` and
+  `taxConfig.shipping_tablerate` (empty). Orders show
+  `shipping_description = "Flat Rate - Fixed"` and `payment_method = "checkmo"`.
+- `catalog_product_option` is empty — no products have custom options.
+- `wishlist_item` is empty — the two wishlists have no items.
+
+## Reference screenshots
+
+44 PNGs at 1440×900 in `assets/screenshots/reference/`, captured logged-in as
+`admin`: dashboard; sales order grid + order views 1 and 299; invoice, shipment
+and credit-memo grids; product grid, product edit (configurable id 126, simple
+id 1841), new-product form, category tree; customer grid and customer edit;
+review grid, pending reviews, review edit; reports for sales, bestsellers,
+ordered products, low stock, viewed products, search terms, customer orders,
+refunded, tax, coupons, shipping, product reviews; marketing cart price rules
+(grid + edit), catalog price rules, search terms; CMS page grid + edit, CMS block
+grid; system configuration, design themes (grid + edit id 1), product attributes,
+all stores, customer groups, tax rules, admin users.

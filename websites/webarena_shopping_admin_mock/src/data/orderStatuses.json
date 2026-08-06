@@ -1,0 +1,93 @@
+[
+ {
+  "status": "canceled",
+  "label": "Canceled",
+  "state": "canceled",
+  "is_default": 1,
+  "visible_on_front": 1
+ },
+ {
+  "status": "closed",
+  "label": "Closed",
+  "state": "closed",
+  "is_default": 1,
+  "visible_on_front": 1
+ },
+ {
+  "status": "complete",
+  "label": "Complete",
+  "state": "complete",
+  "is_default": 1,
+  "visible_on_front": 1
+ },
+ {
+  "status": "fraud",
+  "label": "Suspected Fraud",
+  "state": "payment_review",
+  "is_default": 0,
+  "visible_on_front": 1
+ },
+ {
+  "status": "fraud",
+  "label": "Suspected Fraud",
+  "state": "processing",
+  "is_default": 0,
+  "visible_on_front": 1
+ },
+ {
+  "status": "holded",
+  "label": "On Hold",
+  "state": "holded",
+  "is_default": 1,
+  "visible_on_front": 1
+ },
+ {
+  "status": "payment_review",
+  "label": "Payment Review",
+  "state": "payment_review",
+  "is_default": 1,
+  "visible_on_front": 1
+ },
+ {
+  "status": "paypal_canceled_reversal",
+  "label": "PayPal Canceled Reversal",
+  "state": null,
+  "is_default": null,
+  "visible_on_front": null
+ },
+ {
+  "status": "paypal_reversed",
+  "label": "PayPal Reversed",
+  "state": null,
+  "is_default": null,
+  "visible_on_front": null
+ },
+ {
+  "status": "pending",
+  "label": "Pending",
+  "state": "new",
+  "is_default": 1,
+  "visible_on_front": 1
+ },
+ {
+  "status": "pending_payment",
+  "label": "Pending Payment",
+  "state": "pending_payment",
+  "is_default": 1,
+  "visible_on_front": 0
+ },
+ {
+  "status": "pending_paypal",
+  "label": "Pending PayPal",
+  "state": null,
+  "is_default": null,
+  "visible_on_front": null
+ },
+ {
+  "status": "processing",
+  "label": "Processing",
+  "state": "processing",
+  "is_default": 1,
+  "visible_on_front": 1
+ }
+]

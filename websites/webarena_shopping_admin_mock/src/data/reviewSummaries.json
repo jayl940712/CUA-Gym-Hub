@@ -1,0 +1,2018 @@
+[
+ {
+  "primary_id": 1,
+  "entity_pk_value": 1,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 50,
+  "store_id": 0
+ },
+ {
+  "primary_id": 2,
+  "entity_pk_value": 1,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 50,
+  "store_id": 1
+ },
+ {
+  "primary_id": 7,
+  "entity_pk_value": 2,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 0
+ },
+ {
+  "primary_id": 8,
+  "entity_pk_value": 2,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 1
+ },
+ {
+  "primary_id": 5,
+  "entity_pk_value": 3,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 6,
+  "entity_pk_value": 3,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 9,
+  "entity_pk_value": 4,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 10,
+  "entity_pk_value": 4,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 11,
+  "entity_pk_value": 5,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 12,
+  "entity_pk_value": 5,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 3,
+  "entity_pk_value": 6,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 4,
+  "entity_pk_value": 6,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 99,
+  "entity_pk_value": 7,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 100,
+  "entity_pk_value": 7,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 115,
+  "entity_pk_value": 8,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 116,
+  "entity_pk_value": 8,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 117,
+  "entity_pk_value": 9,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 118,
+  "entity_pk_value": 9,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 123,
+  "entity_pk_value": 10,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 124,
+  "entity_pk_value": 10,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 125,
+  "entity_pk_value": 11,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 126,
+  "entity_pk_value": 11,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 119,
+  "entity_pk_value": 12,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 0
+ },
+ {
+  "primary_id": 120,
+  "entity_pk_value": 12,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 1
+ },
+ {
+  "primary_id": 127,
+  "entity_pk_value": 13,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 128,
+  "entity_pk_value": 13,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 121,
+  "entity_pk_value": 14,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 122,
+  "entity_pk_value": 14,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 111,
+  "entity_pk_value": 15,
+  "entity_type": 1,
+  "reviews_count": 1,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 112,
+  "entity_pk_value": 15,
+  "entity_type": 1,
+  "reviews_count": 1,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 113,
+  "entity_pk_value": 16,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 100,
+  "store_id": 0
+ },
+ {
+  "primary_id": 114,
+  "entity_pk_value": 16,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 100,
+  "store_id": 1
+ },
+ {
+  "primary_id": 107,
+  "entity_pk_value": 17,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 93,
+  "store_id": 0
+ },
+ {
+  "primary_id": 108,
+  "entity_pk_value": 17,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 93,
+  "store_id": 1
+ },
+ {
+  "primary_id": 103,
+  "entity_pk_value": 18,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 104,
+  "entity_pk_value": 18,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 109,
+  "entity_pk_value": 19,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 110,
+  "entity_pk_value": 19,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 101,
+  "entity_pk_value": 20,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 102,
+  "entity_pk_value": 20,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 105,
+  "entity_pk_value": 23,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 106,
+  "entity_pk_value": 23,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 19,
+  "entity_pk_value": 36,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 20,
+  "entity_pk_value": 36,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 13,
+  "entity_pk_value": 37,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 14,
+  "entity_pk_value": 37,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 17,
+  "entity_pk_value": 38,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 47,
+  "store_id": 0
+ },
+ {
+  "primary_id": 18,
+  "entity_pk_value": 38,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 47,
+  "store_id": 1
+ },
+ {
+  "primary_id": 21,
+  "entity_pk_value": 39,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 65,
+  "store_id": 0
+ },
+ {
+  "primary_id": 22,
+  "entity_pk_value": 39,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 65,
+  "store_id": 1
+ },
+ {
+  "primary_id": 15,
+  "entity_pk_value": 40,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 16,
+  "entity_pk_value": 40,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 135,
+  "entity_pk_value": 41,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 136,
+  "entity_pk_value": 41,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 129,
+  "entity_pk_value": 42,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 130,
+  "entity_pk_value": 42,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 133,
+  "entity_pk_value": 43,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 53,
+  "store_id": 0
+ },
+ {
+  "primary_id": 134,
+  "entity_pk_value": 43,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 53,
+  "store_id": 1
+ },
+ {
+  "primary_id": 131,
+  "entity_pk_value": 44,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 132,
+  "entity_pk_value": 44,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 23,
+  "entity_pk_value": 270,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 0
+ },
+ {
+  "primary_id": 24,
+  "entity_pk_value": 270,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 1
+ },
+ {
+  "primary_id": 25,
+  "entity_pk_value": 286,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 0
+ },
+ {
+  "primary_id": 26,
+  "entity_pk_value": 286,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 1
+ },
+ {
+  "primary_id": 29,
+  "entity_pk_value": 302,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 93,
+  "store_id": 0
+ },
+ {
+  "primary_id": 30,
+  "entity_pk_value": 302,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 93,
+  "store_id": 1
+ },
+ {
+  "primary_id": 33,
+  "entity_pk_value": 318,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 50,
+  "store_id": 0
+ },
+ {
+  "primary_id": 34,
+  "entity_pk_value": 318,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 50,
+  "store_id": 1
+ },
+ {
+  "primary_id": 35,
+  "entity_pk_value": 334,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 36,
+  "entity_pk_value": 334,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 37,
+  "entity_pk_value": 350,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 38,
+  "entity_pk_value": 350,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 39,
+  "entity_pk_value": 366,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 40,
+  "entity_pk_value": 366,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 31,
+  "entity_pk_value": 398,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 32,
+  "entity_pk_value": 398,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 27,
+  "entity_pk_value": 414,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 53,
+  "store_id": 0
+ },
+ {
+  "primary_id": 28,
+  "entity_pk_value": 414,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 53,
+  "store_id": 1
+ },
+ {
+  "primary_id": 57,
+  "entity_pk_value": 446,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 58,
+  "entity_pk_value": 446,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 59,
+  "entity_pk_value": 462,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 60,
+  "entity_pk_value": 462,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 67,
+  "entity_pk_value": 478,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 68,
+  "entity_pk_value": 478,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 71,
+  "entity_pk_value": 494,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 72,
+  "entity_pk_value": 494,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 73,
+  "entity_pk_value": 510,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 53,
+  "store_id": 0
+ },
+ {
+  "primary_id": 74,
+  "entity_pk_value": 510,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 53,
+  "store_id": 1
+ },
+ {
+  "primary_id": 55,
+  "entity_pk_value": 526,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 56,
+  "entity_pk_value": 526,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 61,
+  "entity_pk_value": 542,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 62,
+  "entity_pk_value": 542,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 51,
+  "entity_pk_value": 558,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 52,
+  "entity_pk_value": 558,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 53,
+  "entity_pk_value": 574,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 0
+ },
+ {
+  "primary_id": 54,
+  "entity_pk_value": 574,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 1
+ },
+ {
+  "primary_id": 69,
+  "entity_pk_value": 590,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 70,
+  "entity_pk_value": 590,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 63,
+  "entity_pk_value": 606,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 64,
+  "entity_pk_value": 606,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 65,
+  "entity_pk_value": 622,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 65,
+  "store_id": 0
+ },
+ {
+  "primary_id": 66,
+  "entity_pk_value": 622,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 65,
+  "store_id": 1
+ },
+ {
+  "primary_id": 91,
+  "entity_pk_value": 638,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 55,
+  "store_id": 0
+ },
+ {
+  "primary_id": 92,
+  "entity_pk_value": 638,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 55,
+  "store_id": 1
+ },
+ {
+  "primary_id": 93,
+  "entity_pk_value": 654,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 94,
+  "entity_pk_value": 654,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 95,
+  "entity_pk_value": 670,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 53,
+  "store_id": 0
+ },
+ {
+  "primary_id": 96,
+  "entity_pk_value": 670,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 53,
+  "store_id": 1
+ },
+ {
+  "primary_id": 97,
+  "entity_pk_value": 676,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 98,
+  "entity_pk_value": 676,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 41,
+  "entity_pk_value": 737,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 47,
+  "store_id": 0
+ },
+ {
+  "primary_id": 42,
+  "entity_pk_value": 737,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 47,
+  "store_id": 1
+ },
+ {
+  "primary_id": 43,
+  "entity_pk_value": 750,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 47,
+  "store_id": 0
+ },
+ {
+  "primary_id": 44,
+  "entity_pk_value": 750,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 47,
+  "store_id": 1
+ },
+ {
+  "primary_id": 45,
+  "entity_pk_value": 763,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 46,
+  "entity_pk_value": 763,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 47,
+  "entity_pk_value": 776,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 48,
+  "entity_pk_value": 776,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 49,
+  "entity_pk_value": 789,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 50,
+  "entity_pk_value": 789,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 75,
+  "entity_pk_value": 893,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 76,
+  "entity_pk_value": 893,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 77,
+  "entity_pk_value": 911,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 78,
+  "entity_pk_value": 911,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 79,
+  "entity_pk_value": 924,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 80,
+  "entity_pk_value": 924,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 81,
+  "entity_pk_value": 937,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 82,
+  "entity_pk_value": 937,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 83,
+  "entity_pk_value": 950,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 84,
+  "entity_pk_value": 950,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 85,
+  "entity_pk_value": 963,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 86,
+  "entity_pk_value": 963,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 87,
+  "entity_pk_value": 976,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 88,
+  "entity_pk_value": 976,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 89,
+  "entity_pk_value": 989,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 90,
+  "entity_pk_value": 989,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 137,
+  "entity_pk_value": 1044,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 138,
+  "entity_pk_value": 1044,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 139,
+  "entity_pk_value": 1060,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 140,
+  "entity_pk_value": 1060,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 141,
+  "entity_pk_value": 1076,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 142,
+  "entity_pk_value": 1076,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 143,
+  "entity_pk_value": 1092,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 144,
+  "entity_pk_value": 1092,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 145,
+  "entity_pk_value": 1108,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 146,
+  "entity_pk_value": 1108,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 147,
+  "entity_pk_value": 1114,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 148,
+  "entity_pk_value": 1114,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 252,
+  "entity_pk_value": 1210,
+  "entity_type": 1,
+  "reviews_count": 0,
+  "rating_summary": 0,
+  "store_id": 1
+ },
+ {
+  "primary_id": 149,
+  "entity_pk_value": 1220,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 150,
+  "entity_pk_value": 1220,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 151,
+  "entity_pk_value": 1236,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 152,
+  "entity_pk_value": 1236,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 153,
+  "entity_pk_value": 1252,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 154,
+  "entity_pk_value": 1252,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 155,
+  "entity_pk_value": 1268,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 0
+ },
+ {
+  "primary_id": 156,
+  "entity_pk_value": 1268,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 1
+ },
+ {
+  "primary_id": 157,
+  "entity_pk_value": 1284,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 158,
+  "entity_pk_value": 1284,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 161,
+  "entity_pk_value": 1300,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 162,
+  "entity_pk_value": 1300,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 163,
+  "entity_pk_value": 1316,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 164,
+  "entity_pk_value": 1316,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 165,
+  "entity_pk_value": 1332,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 166,
+  "entity_pk_value": 1332,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 167,
+  "entity_pk_value": 1348,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 168,
+  "entity_pk_value": 1348,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 169,
+  "entity_pk_value": 1364,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 170,
+  "entity_pk_value": 1364,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 159,
+  "entity_pk_value": 1380,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 160,
+  "entity_pk_value": 1380,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 251,
+  "entity_pk_value": 1396,
+  "entity_type": 1,
+  "reviews_count": 0,
+  "rating_summary": 0,
+  "store_id": 1
+ },
+ {
+  "primary_id": 185,
+  "entity_pk_value": 1412,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 186,
+  "entity_pk_value": 1412,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 187,
+  "entity_pk_value": 1428,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 188,
+  "entity_pk_value": 1428,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 189,
+  "entity_pk_value": 1444,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 190,
+  "entity_pk_value": 1444,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 193,
+  "entity_pk_value": 1476,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 194,
+  "entity_pk_value": 1476,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 195,
+  "entity_pk_value": 1492,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 47,
+  "store_id": 0
+ },
+ {
+  "primary_id": 196,
+  "entity_pk_value": 1492,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 47,
+  "store_id": 1
+ },
+ {
+  "primary_id": 197,
+  "entity_pk_value": 1508,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 198,
+  "entity_pk_value": 1508,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 199,
+  "entity_pk_value": 1524,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 200,
+  "entity_pk_value": 1524,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 201,
+  "entity_pk_value": 1540,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 202,
+  "entity_pk_value": 1540,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 203,
+  "entity_pk_value": 1556,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 204,
+  "entity_pk_value": 1556,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 183,
+  "entity_pk_value": 1572,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 0
+ },
+ {
+  "primary_id": 184,
+  "entity_pk_value": 1572,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 87,
+  "store_id": 1
+ },
+ {
+  "primary_id": 191,
+  "entity_pk_value": 1588,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 192,
+  "entity_pk_value": 1588,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 229,
+  "entity_pk_value": 1604,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 75,
+  "store_id": 0
+ },
+ {
+  "primary_id": 230,
+  "entity_pk_value": 1604,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 75,
+  "store_id": 1
+ },
+ {
+  "primary_id": 231,
+  "entity_pk_value": 1620,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 232,
+  "entity_pk_value": 1620,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 233,
+  "entity_pk_value": 1636,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 234,
+  "entity_pk_value": 1636,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 235,
+  "entity_pk_value": 1652,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 236,
+  "entity_pk_value": 1652,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 237,
+  "entity_pk_value": 1668,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 40,
+  "store_id": 0
+ },
+ {
+  "primary_id": 238,
+  "entity_pk_value": 1668,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 40,
+  "store_id": 1
+ },
+ {
+  "primary_id": 247,
+  "entity_pk_value": 1684,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 248,
+  "entity_pk_value": 1684,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 249,
+  "entity_pk_value": 1700,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 53,
+  "store_id": 0
+ },
+ {
+  "primary_id": 250,
+  "entity_pk_value": 1700,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 53,
+  "store_id": 1
+ },
+ {
+  "primary_id": 239,
+  "entity_pk_value": 1764,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 240,
+  "entity_pk_value": 1764,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 241,
+  "entity_pk_value": 1780,
+  "entity_type": 1,
+  "reviews_count": 1,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 242,
+  "entity_pk_value": 1780,
+  "entity_type": 1,
+  "reviews_count": 1,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 243,
+  "entity_pk_value": 1796,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 244,
+  "entity_pk_value": 1796,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 245,
+  "entity_pk_value": 1812,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 246,
+  "entity_pk_value": 1812,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 171,
+  "entity_pk_value": 1819,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 172,
+  "entity_pk_value": 1819,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 173,
+  "entity_pk_value": 1826,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 93,
+  "store_id": 0
+ },
+ {
+  "primary_id": 174,
+  "entity_pk_value": 1826,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 93,
+  "store_id": 1
+ },
+ {
+  "primary_id": 175,
+  "entity_pk_value": 1833,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 176,
+  "entity_pk_value": 1833,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 177,
+  "entity_pk_value": 1840,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 178,
+  "entity_pk_value": 1840,
+  "entity_type": 1,
+  "reviews_count": 4,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 179,
+  "entity_pk_value": 1847,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 180,
+  "entity_pk_value": 1847,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 181,
+  "entity_pk_value": 1854,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 182,
+  "entity_pk_value": 1854,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 205,
+  "entity_pk_value": 1919,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 206,
+  "entity_pk_value": 1919,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ },
+ {
+  "primary_id": 207,
+  "entity_pk_value": 1935,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 208,
+  "entity_pk_value": 1935,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 209,
+  "entity_pk_value": 1951,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 0
+ },
+ {
+  "primary_id": 210,
+  "entity_pk_value": 1951,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 90,
+  "store_id": 1
+ },
+ {
+  "primary_id": 211,
+  "entity_pk_value": 1967,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 212,
+  "entity_pk_value": 1967,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 213,
+  "entity_pk_value": 1983,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 214,
+  "entity_pk_value": 1983,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 215,
+  "entity_pk_value": 1990,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 0
+ },
+ {
+  "primary_id": 216,
+  "entity_pk_value": 1990,
+  "entity_type": 1,
+  "reviews_count": 2,
+  "rating_summary": 70,
+  "store_id": 1
+ },
+ {
+  "primary_id": 217,
+  "entity_pk_value": 1997,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 218,
+  "entity_pk_value": 1997,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 219,
+  "entity_pk_value": 2003,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 93,
+  "store_id": 0
+ },
+ {
+  "primary_id": 220,
+  "entity_pk_value": 2003,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 93,
+  "store_id": 1
+ },
+ {
+  "primary_id": 221,
+  "entity_pk_value": 2010,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 0
+ },
+ {
+  "primary_id": 222,
+  "entity_pk_value": 2010,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 67,
+  "store_id": 1
+ },
+ {
+  "primary_id": 223,
+  "entity_pk_value": 2017,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 0
+ },
+ {
+  "primary_id": 224,
+  "entity_pk_value": 2017,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 80,
+  "store_id": 1
+ },
+ {
+  "primary_id": 225,
+  "entity_pk_value": 2024,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 0
+ },
+ {
+  "primary_id": 226,
+  "entity_pk_value": 2024,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 73,
+  "store_id": 1
+ },
+ {
+  "primary_id": 227,
+  "entity_pk_value": 2040,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 0
+ },
+ {
+  "primary_id": 228,
+  "entity_pk_value": 2040,
+  "entity_type": 1,
+  "reviews_count": 3,
+  "rating_summary": 60,
+  "store_id": 1
+ }
+]

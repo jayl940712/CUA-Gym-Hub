@@ -1,0 +1,8 @@
+node_modules
+dist
+.mock-states
+.mock-files
+.mock-state.json
+.mock-state.initial.json
+assets/dumps
+*.log

@@ -1,0 +1,1311 @@
+[
+ {
+  "attribute_set_id": 4,
+  "entity_type_id": 4,
+  "attribute_set_name": "Default",
+  "sort_order": 1,
+  "groups": [
+   {
+    "attribute_group_id": 7,
+    "attribute_set_id": 4,
+    "attribute_group_name": "Product Details",
+    "sort_order": 10,
+    "attribute_group_code": "product-details",
+    "attribute_ids": [
+     97,
+     91,
+     73,
+     122,
+     107,
+     108,
+     109,
+     110,
+     111,
+     112,
+     74,
+     113,
+     130,
+     77,
+     129,
+     136,
+     115,
+     82,
+     131,
+     99,
+     105,
+     94,
+     95,
+     114,
+     125,
+     126,
+     127,
+     128
+    ]
+   },
+   {
+    "attribute_group_id": 13,
+    "attribute_set_id": 4,
+    "attribute_group_name": "Content",
+    "sort_order": 15,
+    "attribute_group_code": "content",
+    "attribute_ids": [
+     76,
+     75
+    ]
+   },
+   {
+    "attribute_group_id": 19,
+    "attribute_set_id": 4,
+    "attribute_group_name": "Bundle Items",
+    "sort_order": 16,
+    "attribute_group_code": "bundle-items",
+    "attribute_ids": [
+     133
+    ]
+   },
+   {
+    "attribute_group_id": 10,
+    "attribute_set_id": 4,
+    "attribute_group_name": "Images",
+    "sort_order": 20,
+    "attribute_group_code": "image-management",
+    "attribute_ids": [
+     87,
+     88,
+     89,
+     135,
+     90,
+     96
+    ]
+   },
+   {
+    "attribute_group_id": 9,
+    "attribute_set_id": 4,
+    "attribute_group_name": "Search Engine Optimization",
+    "sort_order": 30,
+    "attribute_group_code": "search-engine-optimization",
+    "attribute_ids": [
+     121,
+     84,
+     85,
+     86
+    ]
+   },
+   {
+    "attribute_group_id": 8,
+    "attribute_set_id": 4,
+    "attribute_group_name": "Advanced Pricing",
+    "sort_order": 40,
+    "attribute_group_code": "advanced-pricing",
+    "attribute_ids": [
+     78,
+     79,
+     80,
+     81,
+     92,
+     98,
+     123,
+     124,
+     132
+    ]
+   },
+   {
+    "attribute_group_id": 11,
+    "attribute_set_id": 4,
+    "attribute_group_name": "Design",
+    "sort_order": 50,
+    "attribute_group_code": "design",
+    "attribute_ids": [
+     104,
+     106,
+     103,
+     117
+    ]
+   },
+   {
+    "attribute_group_id": 14,
+    "attribute_set_id": 4,
+    "attribute_group_name": "Schedule Design Update",
+    "sort_order": 55,
+    "attribute_group_code": "schedule-design-update",
+    "attribute_ids": [
+     101,
+     102,
+     100,
+     116
+    ]
+   },
+   {
+    "attribute_group_id": 12,
+    "attribute_set_id": 4,
+    "attribute_group_name": "Autosettings",
+    "sort_order": 60,
+    "attribute_group_code": "autosettings",
+    "attribute_ids": []
+   },
+   {
+    "attribute_group_id": 20,
+    "attribute_set_id": 4,
+    "attribute_group_name": "Gift Options",
+    "sort_order": 61,
+    "attribute_group_code": "gift-options",
+    "attribute_ids": [
+     134
+    ]
+   }
+  ]
+ },
+ {
+  "attribute_set_id": 9,
+  "entity_type_id": 4,
+  "attribute_set_name": "Top",
+  "sort_order": 0,
+  "groups": [
+   {
+    "attribute_group_id": 30,
+    "attribute_set_id": 9,
+    "attribute_group_name": "Product Details",
+    "sort_order": 10,
+    "attribute_group_code": "product-details",
+    "attribute_ids": [
+     97,
+     91,
+     73,
+     122,
+     107,
+     108,
+     109,
+     110,
+     111,
+     112,
+     113,
+     74,
+     130,
+     77,
+     129,
+     136,
+     115,
+     82,
+     131,
+     105,
+     99,
+     94,
+     95,
+     114,
+     125,
+     126,
+     127,
+     128,
+     137,
+     152,
+     139,
+     153,
+     144,
+     154,
+     155,
+     156,
+     93,
+     145,
+     146,
+     147,
+     148,
+     149
+    ]
+   },
+   {
+    "attribute_group_id": 29,
+    "attribute_set_id": 9,
+    "attribute_group_name": "Content",
+    "sort_order": 15,
+    "attribute_group_code": "content",
+    "attribute_ids": [
+     76,
+     75
+    ]
+   },
+   {
+    "attribute_group_id": 28,
+    "attribute_set_id": 9,
+    "attribute_group_name": "Bundle Items",
+    "sort_order": 16,
+    "attribute_group_code": "bundle-items",
+    "attribute_ids": [
+     133
+    ]
+   },
+   {
+    "attribute_group_id": 27,
+    "attribute_set_id": 9,
+    "attribute_group_name": "Images",
+    "sort_order": 20,
+    "attribute_group_code": "image-management",
+    "attribute_ids": [
+     87,
+     88,
+     135,
+     89,
+     90,
+     96
+    ]
+   },
+   {
+    "attribute_group_id": 26,
+    "attribute_set_id": 9,
+    "attribute_group_name": "Search Engine Optimization",
+    "sort_order": 30,
+    "attribute_group_code": "search-engine-optimization",
+    "attribute_ids": [
+     121,
+     84,
+     85,
+     86
+    ]
+   },
+   {
+    "attribute_group_id": 25,
+    "attribute_set_id": 9,
+    "attribute_group_name": "Advanced Pricing",
+    "sort_order": 40,
+    "attribute_group_code": "advanced-pricing",
+    "attribute_ids": [
+     78,
+     79,
+     80,
+     81,
+     92,
+     98,
+     123,
+     124,
+     132
+    ]
+   },
+   {
+    "attribute_group_id": 24,
+    "attribute_set_id": 9,
+    "attribute_group_name": "Design",
+    "sort_order": 50,
+    "attribute_group_code": "design",
+    "attribute_ids": [
+     104,
+     106,
+     103,
+     117
+    ]
+   },
+   {
+    "attribute_group_id": 23,
+    "attribute_set_id": 9,
+    "attribute_group_name": "Schedule Design Update",
+    "sort_order": 55,
+    "attribute_group_code": "schedule-design-update",
+    "attribute_ids": [
+     101,
+     102,
+     100,
+     116
+    ]
+   },
+   {
+    "attribute_group_id": 22,
+    "attribute_set_id": 9,
+    "attribute_group_name": "Autosettings",
+    "sort_order": 60,
+    "attribute_group_code": "autosettings",
+    "attribute_ids": []
+   },
+   {
+    "attribute_group_id": 21,
+    "attribute_set_id": 9,
+    "attribute_group_name": "Gift Options",
+    "sort_order": 61,
+    "attribute_group_code": "gift-options",
+    "attribute_ids": [
+     134
+    ]
+   }
+  ]
+ },
+ {
+  "attribute_set_id": 10,
+  "entity_type_id": 4,
+  "attribute_set_name": "Bottom",
+  "sort_order": 0,
+  "groups": [
+   {
+    "attribute_group_id": 40,
+    "attribute_set_id": 10,
+    "attribute_group_name": "Product Details",
+    "sort_order": 10,
+    "attribute_group_code": "product-details",
+    "attribute_ids": [
+     97,
+     91,
+     73,
+     122,
+     107,
+     108,
+     109,
+     110,
+     111,
+     112,
+     74,
+     113,
+     130,
+     77,
+     129,
+     136,
+     115,
+     82,
+     131,
+     105,
+     99,
+     94,
+     95,
+     114,
+     125,
+     126,
+     127,
+     128,
+     151,
+     137,
+     139,
+     144,
+     155,
+     156,
+     93,
+     145,
+     146,
+     147,
+     148,
+     149
+    ]
+   },
+   {
+    "attribute_group_id": 39,
+    "attribute_set_id": 10,
+    "attribute_group_name": "Content",
+    "sort_order": 15,
+    "attribute_group_code": "content",
+    "attribute_ids": [
+     76,
+     75
+    ]
+   },
+   {
+    "attribute_group_id": 38,
+    "attribute_set_id": 10,
+    "attribute_group_name": "Bundle Items",
+    "sort_order": 16,
+    "attribute_group_code": "bundle-items",
+    "attribute_ids": [
+     133
+    ]
+   },
+   {
+    "attribute_group_id": 37,
+    "attribute_set_id": 10,
+    "attribute_group_name": "Images",
+    "sort_order": 20,
+    "attribute_group_code": "image-management",
+    "attribute_ids": [
+     87,
+     88,
+     89,
+     135,
+     90,
+     96
+    ]
+   },
+   {
+    "attribute_group_id": 36,
+    "attribute_set_id": 10,
+    "attribute_group_name": "Search Engine Optimization",
+    "sort_order": 30,
+    "attribute_group_code": "search-engine-optimization",
+    "attribute_ids": [
+     121,
+     84,
+     85,
+     86
+    ]
+   },
+   {
+    "attribute_group_id": 35,
+    "attribute_set_id": 10,
+    "attribute_group_name": "Advanced Pricing",
+    "sort_order": 40,
+    "attribute_group_code": "advanced-pricing",
+    "attribute_ids": [
+     78,
+     79,
+     80,
+     81,
+     92,
+     98,
+     123,
+     124,
+     132
+    ]
+   },
+   {
+    "attribute_group_id": 34,
+    "attribute_set_id": 10,
+    "attribute_group_name": "Design",
+    "sort_order": 50,
+    "attribute_group_code": "design",
+    "attribute_ids": [
+     104,
+     106,
+     103,
+     117
+    ]
+   },
+   {
+    "attribute_group_id": 33,
+    "attribute_set_id": 10,
+    "attribute_group_name": "Schedule Design Update",
+    "sort_order": 55,
+    "attribute_group_code": "schedule-design-update",
+    "attribute_ids": [
+     101,
+     102,
+     100,
+     116
+    ]
+   },
+   {
+    "attribute_group_id": 32,
+    "attribute_set_id": 10,
+    "attribute_group_name": "Autosettings",
+    "sort_order": 60,
+    "attribute_group_code": "autosettings",
+    "attribute_ids": []
+   },
+   {
+    "attribute_group_id": 31,
+    "attribute_set_id": 10,
+    "attribute_group_name": "Gift Options",
+    "sort_order": 61,
+    "attribute_group_code": "gift-options",
+    "attribute_ids": [
+     134
+    ]
+   }
+  ]
+ },
+ {
+  "attribute_set_id": 11,
+  "entity_type_id": 4,
+  "attribute_set_name": "Gear",
+  "sort_order": 0,
+  "groups": [
+   {
+    "attribute_group_id": 50,
+    "attribute_set_id": 11,
+    "attribute_group_name": "Product Details",
+    "sort_order": 10,
+    "attribute_group_code": "product-details",
+    "attribute_ids": [
+     97,
+     91,
+     73,
+     122,
+     107,
+     108,
+     109,
+     110,
+     111,
+     112,
+     74,
+     113,
+     130,
+     77,
+     129,
+     136,
+     115,
+     82,
+     131,
+     105,
+     99,
+     94,
+     95,
+     114,
+     125,
+     126,
+     127,
+     128,
+     137,
+     139,
+     93,
+     142,
+     143,
+     145,
+     146,
+     147,
+     148,
+     149
+    ]
+   },
+   {
+    "attribute_group_id": 49,
+    "attribute_set_id": 11,
+    "attribute_group_name": "Content",
+    "sort_order": 15,
+    "attribute_group_code": "content",
+    "attribute_ids": [
+     76,
+     75
+    ]
+   },
+   {
+    "attribute_group_id": 48,
+    "attribute_set_id": 11,
+    "attribute_group_name": "Bundle Items",
+    "sort_order": 16,
+    "attribute_group_code": "bundle-items",
+    "attribute_ids": [
+     133
+    ]
+   },
+   {
+    "attribute_group_id": 47,
+    "attribute_set_id": 11,
+    "attribute_group_name": "Images",
+    "sort_order": 20,
+    "attribute_group_code": "image-management",
+    "attribute_ids": [
+     87,
+     88,
+     135,
+     89,
+     90,
+     96
+    ]
+   },
+   {
+    "attribute_group_id": 46,
+    "attribute_set_id": 11,
+    "attribute_group_name": "Search Engine Optimization",
+    "sort_order": 30,
+    "attribute_group_code": "search-engine-optimization",
+    "attribute_ids": [
+     121,
+     84,
+     85,
+     86
+    ]
+   },
+   {
+    "attribute_group_id": 45,
+    "attribute_set_id": 11,
+    "attribute_group_name": "Advanced Pricing",
+    "sort_order": 40,
+    "attribute_group_code": "advanced-pricing",
+    "attribute_ids": [
+     78,
+     79,
+     80,
+     81,
+     92,
+     98,
+     123,
+     124,
+     132
+    ]
+   },
+   {
+    "attribute_group_id": 44,
+    "attribute_set_id": 11,
+    "attribute_group_name": "Design",
+    "sort_order": 50,
+    "attribute_group_code": "design",
+    "attribute_ids": [
+     104,
+     106,
+     103,
+     117
+    ]
+   },
+   {
+    "attribute_group_id": 43,
+    "attribute_set_id": 11,
+    "attribute_group_name": "Schedule Design Update",
+    "sort_order": 55,
+    "attribute_group_code": "schedule-design-update",
+    "attribute_ids": [
+     101,
+     102,
+     100,
+     116
+    ]
+   },
+   {
+    "attribute_group_id": 42,
+    "attribute_set_id": 11,
+    "attribute_group_name": "Autosettings",
+    "sort_order": 60,
+    "attribute_group_code": "autosettings",
+    "attribute_ids": []
+   },
+   {
+    "attribute_group_id": 41,
+    "attribute_set_id": 11,
+    "attribute_group_name": "Gift Options",
+    "sort_order": 61,
+    "attribute_group_code": "gift-options",
+    "attribute_ids": [
+     134
+    ]
+   }
+  ]
+ },
+ {
+  "attribute_set_id": 12,
+  "entity_type_id": 4,
+  "attribute_set_name": "Sprite Stasis Ball",
+  "sort_order": 0,
+  "groups": [
+   {
+    "attribute_group_id": 60,
+    "attribute_set_id": 12,
+    "attribute_group_name": "Product Details",
+    "sort_order": 10,
+    "attribute_group_code": "product-details",
+    "attribute_ids": [
+     97,
+     91,
+     73,
+     122,
+     107,
+     108,
+     109,
+     110,
+     111,
+     112,
+     113,
+     74,
+     130,
+     77,
+     129,
+     136,
+     115,
+     82,
+     131,
+     105,
+     99,
+     94,
+     95,
+     114,
+     125,
+     126,
+     127,
+     128,
+     137,
+     139,
+     93,
+     142,
+     143,
+     144
+    ]
+   },
+   {
+    "attribute_group_id": 59,
+    "attribute_set_id": 12,
+    "attribute_group_name": "Content",
+    "sort_order": 15,
+    "attribute_group_code": "content",
+    "attribute_ids": [
+     76,
+     75
+    ]
+   },
+   {
+    "attribute_group_id": 58,
+    "attribute_set_id": 12,
+    "attribute_group_name": "Bundle Items",
+    "sort_order": 16,
+    "attribute_group_code": "bundle-items",
+    "attribute_ids": [
+     133
+    ]
+   },
+   {
+    "attribute_group_id": 57,
+    "attribute_set_id": 12,
+    "attribute_group_name": "Images",
+    "sort_order": 20,
+    "attribute_group_code": "image-management",
+    "attribute_ids": [
+     87,
+     88,
+     89,
+     135,
+     90,
+     96
+    ]
+   },
+   {
+    "attribute_group_id": 56,
+    "attribute_set_id": 12,
+    "attribute_group_name": "Search Engine Optimization",
+    "sort_order": 30,
+    "attribute_group_code": "search-engine-optimization",
+    "attribute_ids": [
+     121,
+     84,
+     85,
+     86
+    ]
+   },
+   {
+    "attribute_group_id": 55,
+    "attribute_set_id": 12,
+    "attribute_group_name": "Advanced Pricing",
+    "sort_order": 40,
+    "attribute_group_code": "advanced-pricing",
+    "attribute_ids": [
+     78,
+     79,
+     80,
+     81,
+     92,
+     98,
+     123,
+     124,
+     132
+    ]
+   },
+   {
+    "attribute_group_id": 54,
+    "attribute_set_id": 12,
+    "attribute_group_name": "Design",
+    "sort_order": 50,
+    "attribute_group_code": "design",
+    "attribute_ids": [
+     104,
+     106,
+     103,
+     117
+    ]
+   },
+   {
+    "attribute_group_id": 53,
+    "attribute_set_id": 12,
+    "attribute_group_name": "Schedule Design Update",
+    "sort_order": 55,
+    "attribute_group_code": "schedule-design-update",
+    "attribute_ids": [
+     101,
+     102,
+     100,
+     116
+    ]
+   },
+   {
+    "attribute_group_id": 52,
+    "attribute_set_id": 12,
+    "attribute_group_name": "Autosettings",
+    "sort_order": 60,
+    "attribute_group_code": "autosettings",
+    "attribute_ids": []
+   },
+   {
+    "attribute_group_id": 51,
+    "attribute_set_id": 12,
+    "attribute_group_name": "Gift Options",
+    "sort_order": 61,
+    "attribute_group_code": "gift-options",
+    "attribute_ids": [
+     134
+    ]
+   }
+  ]
+ },
+ {
+  "attribute_set_id": 13,
+  "entity_type_id": 4,
+  "attribute_set_name": "Sprite Yoga Strap",
+  "sort_order": 0,
+  "groups": [
+   {
+    "attribute_group_id": 70,
+    "attribute_set_id": 13,
+    "attribute_group_name": "Product Details",
+    "sort_order": 10,
+    "attribute_group_code": "product-details",
+    "attribute_ids": [
+     97,
+     91,
+     73,
+     122,
+     107,
+     108,
+     109,
+     110,
+     111,
+     112,
+     74,
+     113,
+     130,
+     77,
+     129,
+     136,
+     115,
+     82,
+     131,
+     99,
+     105,
+     94,
+     95,
+     114,
+     125,
+     126,
+     127,
+     128,
+     137,
+     139,
+     93,
+     142,
+     143,
+     144
+    ]
+   },
+   {
+    "attribute_group_id": 69,
+    "attribute_set_id": 13,
+    "attribute_group_name": "Content",
+    "sort_order": 15,
+    "attribute_group_code": "content",
+    "attribute_ids": [
+     76,
+     75
+    ]
+   },
+   {
+    "attribute_group_id": 68,
+    "attribute_set_id": 13,
+    "attribute_group_name": "Bundle Items",
+    "sort_order": 16,
+    "attribute_group_code": "bundle-items",
+    "attribute_ids": [
+     133
+    ]
+   },
+   {
+    "attribute_group_id": 67,
+    "attribute_set_id": 13,
+    "attribute_group_name": "Images",
+    "sort_order": 20,
+    "attribute_group_code": "image-management",
+    "attribute_ids": [
+     87,
+     88,
+     89,
+     135,
+     90,
+     96
+    ]
+   },
+   {
+    "attribute_group_id": 66,
+    "attribute_set_id": 13,
+    "attribute_group_name": "Search Engine Optimization",
+    "sort_order": 30,
+    "attribute_group_code": "search-engine-optimization",
+    "attribute_ids": [
+     121,
+     84,
+     85,
+     86
+    ]
+   },
+   {
+    "attribute_group_id": 65,
+    "attribute_set_id": 13,
+    "attribute_group_name": "Advanced Pricing",
+    "sort_order": 40,
+    "attribute_group_code": "advanced-pricing",
+    "attribute_ids": [
+     78,
+     79,
+     80,
+     81,
+     92,
+     98,
+     123,
+     124,
+     132
+    ]
+   },
+   {
+    "attribute_group_id": 64,
+    "attribute_set_id": 13,
+    "attribute_group_name": "Design",
+    "sort_order": 50,
+    "attribute_group_code": "design",
+    "attribute_ids": [
+     104,
+     106,
+     103,
+     117
+    ]
+   },
+   {
+    "attribute_group_id": 63,
+    "attribute_set_id": 13,
+    "attribute_group_name": "Schedule Design Update",
+    "sort_order": 55,
+    "attribute_group_code": "schedule-design-update",
+    "attribute_ids": [
+     101,
+     102,
+     100,
+     116
+    ]
+   },
+   {
+    "attribute_group_id": 62,
+    "attribute_set_id": 13,
+    "attribute_group_name": "Autosettings",
+    "sort_order": 60,
+    "attribute_group_code": "autosettings",
+    "attribute_ids": []
+   },
+   {
+    "attribute_group_id": 61,
+    "attribute_set_id": 13,
+    "attribute_group_name": "Gift Options",
+    "sort_order": 61,
+    "attribute_group_code": "gift-options",
+    "attribute_ids": [
+     134
+    ]
+   }
+  ]
+ },
+ {
+  "attribute_set_id": 14,
+  "entity_type_id": 4,
+  "attribute_set_name": "Downloadable",
+  "sort_order": 0,
+  "groups": [
+   {
+    "attribute_group_id": 80,
+    "attribute_set_id": 14,
+    "attribute_group_name": "Product Details",
+    "sort_order": 10,
+    "attribute_group_code": "product-details",
+    "attribute_ids": [
+     97,
+     91,
+     73,
+     122,
+     107,
+     108,
+     109,
+     110,
+     111,
+     112,
+     113,
+     74,
+     130,
+     77,
+     129,
+     136,
+     115,
+     82,
+     131,
+     99,
+     105,
+     94,
+     95,
+     114,
+     125,
+     126,
+     127,
+     128,
+     150,
+     137
+    ]
+   },
+   {
+    "attribute_group_id": 79,
+    "attribute_set_id": 14,
+    "attribute_group_name": "Content",
+    "sort_order": 15,
+    "attribute_group_code": "content",
+    "attribute_ids": [
+     76,
+     75
+    ]
+   },
+   {
+    "attribute_group_id": 78,
+    "attribute_set_id": 14,
+    "attribute_group_name": "Bundle Items",
+    "sort_order": 16,
+    "attribute_group_code": "bundle-items",
+    "attribute_ids": [
+     133
+    ]
+   },
+   {
+    "attribute_group_id": 77,
+    "attribute_set_id": 14,
+    "attribute_group_name": "Images",
+    "sort_order": 20,
+    "attribute_group_code": "image-management",
+    "attribute_ids": [
+     87,
+     88,
+     135,
+     89,
+     90,
+     96
+    ]
+   },
+   {
+    "attribute_group_id": 76,
+    "attribute_set_id": 14,
+    "attribute_group_name": "Search Engine Optimization",
+    "sort_order": 30,
+    "attribute_group_code": "search-engine-optimization",
+    "attribute_ids": [
+     121,
+     84,
+     85,
+     86
+    ]
+   },
+   {
+    "attribute_group_id": 75,
+    "attribute_set_id": 14,
+    "attribute_group_name": "Advanced Pricing",
+    "sort_order": 40,
+    "attribute_group_code": "advanced-pricing",
+    "attribute_ids": [
+     78,
+     79,
+     80,
+     81,
+     92,
+     98,
+     123,
+     124,
+     132
+    ]
+   },
+   {
+    "attribute_group_id": 74,
+    "attribute_set_id": 14,
+    "attribute_group_name": "Design",
+    "sort_order": 50,
+    "attribute_group_code": "design",
+    "attribute_ids": [
+     104,
+     106,
+     103,
+     117
+    ]
+   },
+   {
+    "attribute_group_id": 73,
+    "attribute_set_id": 14,
+    "attribute_group_name": "Schedule Design Update",
+    "sort_order": 55,
+    "attribute_group_code": "schedule-design-update",
+    "attribute_ids": [
+     101,
+     102,
+     100,
+     116
+    ]
+   },
+   {
+    "attribute_group_id": 72,
+    "attribute_set_id": 14,
+    "attribute_group_name": "Autosettings",
+    "sort_order": 60,
+    "attribute_group_code": "autosettings",
+    "attribute_ids": []
+   },
+   {
+    "attribute_group_id": 71,
+    "attribute_set_id": 14,
+    "attribute_group_name": "Gift Options",
+    "sort_order": 61,
+    "attribute_group_code": "gift-options",
+    "attribute_ids": [
+     134
+    ]
+   }
+  ]
+ },
+ {
+  "attribute_set_id": 15,
+  "entity_type_id": 4,
+  "attribute_set_name": "Bag",
+  "sort_order": 0,
+  "groups": [
+   {
+    "attribute_group_id": 90,
+    "attribute_set_id": 15,
+    "attribute_group_name": "Product Details",
+    "sort_order": 10,
+    "attribute_group_code": "product-details",
+    "attribute_ids": [
+     97,
+     91,
+     73,
+     122,
+     107,
+     108,
+     109,
+     110,
+     111,
+     112,
+     113,
+     74,
+     130,
+     77,
+     129,
+     136,
+     115,
+     82,
+     131,
+     105,
+     99,
+     94,
+     95,
+     114,
+     125,
+     126,
+     127,
+     128,
+     137,
+     138,
+     139,
+     93,
+     140,
+     141,
+     145,
+     146,
+     147,
+     148,
+     149
+    ]
+   },
+   {
+    "attribute_group_id": 89,
+    "attribute_set_id": 15,
+    "attribute_group_name": "Content",
+    "sort_order": 15,
+    "attribute_group_code": "content",
+    "attribute_ids": [
+     76,
+     75
+    ]
+   },
+   {
+    "attribute_group_id": 88,
+    "attribute_set_id": 15,
+    "attribute_group_name": "Bundle Items",
+    "sort_order": 16,
+    "attribute_group_code": "bundle-items",
+    "attribute_ids": [
+     133
+    ]
+   },
+   {
+    "attribute_group_id": 87,
+    "attribute_set_id": 15,
+    "attribute_group_name": "Images",
+    "sort_order": 20,
+    "attribute_group_code": "image-management",
+    "attribute_ids": [
+     87,
+     88,
+     89,
+     135,
+     90,
+     96
+    ]
+   },
+   {
+    "attribute_group_id": 86,
+    "attribute_set_id": 15,
+    "attribute_group_name": "Search Engine Optimization",
+    "sort_order": 30,
+    "attribute_group_code": "search-engine-optimization",
+    "attribute_ids": [
+     121,
+     84,
+     85,
+     86
+    ]
+   },
+   {
+    "attribute_group_id": 85,
+    "attribute_set_id": 15,
+    "attribute_group_name": "Advanced Pricing",
+    "sort_order": 40,
+    "attribute_group_code": "advanced-pricing",
+    "attribute_ids": [
+     78,
+     79,
+     80,
+     81,
+     92,
+     98,
+     123,
+     124,
+     132
+    ]
+   },
+   {
+    "attribute_group_id": 84,
+    "attribute_set_id": 15,
+    "attribute_group_name": "Design",
+    "sort_order": 50,
+    "attribute_group_code": "design",
+    "attribute_ids": [
+     104,
+     106,
+     103,
+     117
+    ]
+   },
+   {
+    "attribute_group_id": 83,
+    "attribute_set_id": 15,
+    "attribute_group_name": "Schedule Design Update",
+    "sort_order": 55,
+    "attribute_group_code": "schedule-design-update",
+    "attribute_ids": [
+     101,
+     102,
+     100,
+     116
+    ]
+   },
+   {
+    "attribute_group_id": 82,
+    "attribute_set_id": 15,
+    "attribute_group_name": "Autosettings",
+    "sort_order": 60,
+    "attribute_group_code": "autosettings",
+    "attribute_ids": []
+   },
+   {
+    "attribute_group_id": 81,
+    "attribute_set_id": 15,
+    "attribute_group_name": "Gift Options",
+    "sort_order": 61,
+    "attribute_group_code": "gift-options",
+    "attribute_ids": [
+     134
+    ]
+   }
+  ]
+ }
+]

@@ -1,0 +1,45 @@
+[
+ {
+  "rule_id": 1,
+  "name": "20% off all Women’s and Men’s Pants",
+  "description": "20% off all Women’s and Men’s Pants",
+  "from_date": null,
+  "to_date": null,
+  "is_active": 1,
+  "conditions_serialized": "{\"type\":\"Magento\\\\CatalogRule\\\\Model\\\\Rule\\\\Condition\\\\Combine\",\"attribute\":null,\"operator\":null,\"value\":\"1\",\"is_value_processed\":null,\"aggregator\":\"all\",\"conditions\":[{\"type\":\"Magento\\\\CatalogRule\\\\Model\\\\Rule\\\\Condition\\\\Product\",\"attribute\":\"category_ids\",\"operator\":\"()\",\"value\":\"27,18\",\"is_value_processed\":false}]}",
+  "actions_serialized": "{\"type\":\"Magento\\\\CatalogRule\\\\Model\\\\Rule\\\\Action\\\\Collection\",\"attribute\":null,\"operator\":\"=\",\"value\":null}",
+  "stop_rules_processing": 1,
+  "sort_order": 0,
+  "simple_action": "by_percent",
+  "discount_amount": 20.0,
+  "customer_group_ids": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "website_ids": [
+   1
+  ]
+ },
+ {
+  "rule_id": 2,
+  "name": "Spring sale",
+  "description": "",
+  "from_date": "2023-05-01",
+  "to_date": null,
+  "is_active": 1,
+  "conditions_serialized": "{\"type\":\"Magento\\\\CatalogRule\\\\Model\\\\Rule\\\\Condition\\\\Combine\",\"attribute\":null,\"operator\":null,\"value\":true,\"is_value_processed\":null,\"aggregator\":\"all\"}",
+  "actions_serialized": "{\"type\":\"Magento\\\\CatalogRule\\\\Model\\\\Rule\\\\Action\\\\Collection\",\"attribute\":null,\"operator\":\"=\",\"value\":null}",
+  "stop_rules_processing": 0,
+  "sort_order": 0,
+  "simple_action": "by_percent",
+  "discount_amount": 20.0,
+  "customer_group_ids": [
+   1
+  ],
+  "website_ids": [
+   1
+  ]
+ }
+]

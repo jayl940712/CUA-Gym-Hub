@@ -1,0 +1,203 @@
+/**
+ * Chrome specific to the Stores / System and Content areas. Everything else
+ * (fieldsets, collapsibles, the data grid, the page-nav rail) comes from
+ * index.css and components/catalog/adminForm.css.
+ *
+ * Colours are DESIGN.md tokens: #eb5202 accent, #303030 text, #e3e3e3 borders,
+ * #f5f5f5 panel fill.
+ */
+
+/* ------------------------------------------------ Configuration (113 / 114) */
+
+.config-layout {
+  display: grid;
+  grid-template-columns: 24rem minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.config-layout .admin__page-nav {
+  background: #f5f5f5;
+  border: .1rem solid #e3e3e3;
+  border-radius: .2rem;
+  padding: 0;
+}
+
+.admin__page-nav-item-tab + .admin__page-nav-item-tab { border-top: .1rem solid #e3e3e3; }
+
+.admin__page-nav-item-tab .admin__page-nav-title {
+  cursor: pointer;
+  padding: 1.3rem 1.5rem;
+  user-select: none;
+}
+
+.admin__page-nav-item-tab .admin__page-nav-title strong { font-size: 1.4rem; font-weight: 600; }
+.admin__page-nav-item-tab .admin__page-nav-title:hover { color: #eb5202; }
+.admin__page-nav-item-tab._active > .admin__page-nav-title { background: #fff; }
+
+.config-layout .admin__page-nav-items { padding: 0 0 .8rem; }
+.config-layout .admin__page-nav-item { border: 0; }
+.config-layout .admin__page-nav-item._active { border-left: .3rem solid #eb5202; }
+.config-layout .admin__page-nav-link { padding: .7rem 1.5rem; font-size: 1.3rem; }
+
+.config-content { min-width: 0; }
+
+.config-section-title {
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0 0 1.5rem;
+}
+
+.config-group { margin-bottom: 2.5rem; }
+
+.admin__field-service {
+  align-items: center;
+  display: flex;
+  gap: .6rem;
+  font-size: 1.2rem;
+  margin-top: .6rem;
+  color: #666;
+}
+
+.admin__field-value { color: #303030; }
+
+.admin__page-note {
+  background: #fffbbb;
+  border: .1rem solid #d6ca8e;
+  border-radius: .2rem;
+  margin-bottom: 1.5rem;
+  padding: 1.2rem 1.5rem;
+}
+
+/* ------------------------------------------------------- Currency (115/116) */
+
+.currency-rate-service { align-items: center; display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+
+.currency-rate-grid { max-width: 60rem; }
+.currency-rate-grid th { text-align: left; }
+.currency-rate-grid input { max-width: 14rem; }
+.currency-rate-na { color: #a6a6a6; }
+
+/* ------------------------------------------------------------ Integrations */
+
+.integration-note { color: #e22626; display: block; font-size: 1.2rem; }
+
+/* ---------------------------------------------------------- Notifications */
+
+.severity-critical { color: #e22626; font-weight: 600; }
+.severity-major { color: #eb5202; font-weight: 600; }
+.severity-minor,
+.severity-notice { color: #666; }
+
+.notificationGrid p { margin: .4rem 0 0; }
+
+/* ------------------------------------------------------ Magento Marketplace */
+
+.marketplace-page { max-width: 90rem; }
+.marketplace-page h2 { font-size: 2.2rem; font-weight: 400; margin: 0 0 1rem; }
+.marketplace-page h3 { font-size: 1.8rem; font-weight: 600; margin: 2.5rem 0 1rem; }
+.marketplace-page p { line-height: 1.6; margin: 0 0 1.2rem; }
+
+.marketplace-partners { list-style: none; margin: 0; padding: 0; }
+.marketplace-partners > li {
+  border: .1rem solid #e3e3e3;
+  border-radius: .2rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+}
+.marketplace-partners h4 { font-size: 1.6rem; margin: 0 0 .8rem; }
+.marketplace-partners button + button { margin-left: 1.5rem; }
+
+/* ------------------------------------------------------------ Media Gallery */
+
+.media-gallery {
+  display: grid;
+  grid-template-columns: 20rem minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.media-gallery__tree {
+  background: #f5f5f5;
+  border: .1rem solid #e3e3e3;
+  border-radius: .2rem;
+  padding: 1rem 0;
+}
+
+.media-gallery__folders { list-style: none; margin: 0; padding: 0; }
+.media-gallery__folders button {
+  background: none;
+  border: 0;
+  color: #303030;
+  cursor: pointer;
+  display: block;
+  font-size: 1.3rem;
+  padding: .6rem 1.5rem;
+  text-align: left;
+  width: 100%;
+}
+.media-gallery__folders button:hover { color: #eb5202; }
+.media-gallery__folders button._active { background: #fff; font-weight: 600; }
+
+.media-gallery__toolbar { align-items: center; display: flex; gap: 1rem; padding: 1rem 0; }
+
+/* ------------------------------------------------------- Dashboard partials */
+
+.dashboard-partial { max-width: 70rem; }
+
+/* The config form is a label/control two-column grid, like the source's
+   `.admin__field` inside `.admin__scope-old` forms. */
+.config-content .admin__field {
+  align-items: start;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 22rem minmax(0, 1fr);
+  margin-bottom: 1.5rem;
+}
+
+.config-content .admin__field-label {
+  padding-top: .6rem;
+  text-align: right;
+}
+
+.config-content .admin__field-control { max-width: 45rem; }
+.config-content .admin__control-text,
+.config-content .admin__control-select { width: 100%; }
+
+/* Roles > Role Resources — the ACL tree revealed by Resource Access: Custom. */
+.acl-tree {
+  max-height: 520px;
+  overflow-y: auto;
+  border: 1px solid #adadad;
+  background: #fff;
+  padding: 10px 12px;
+  margin-top: 10px;
+}
+.acl-tree__node { line-height: 22px; }
+.acl-tree__label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.acl-tree__label span { font-size: 13px; color: #303030; }
+.acl-tree__label:hover span { color: #1979c3; }
+
+/* F-01 — Stores > Configuration multiselects (`Allow Countries`, `Weekend Days`,
+   `State is Required for`, …). Magento's `.admin__control-multiselect`. */
+.admin__control-multiselect {
+  background-color: #fff;
+  border: .1rem solid #adadad;
+  border-radius: .1rem;
+  color: #303030;
+  font-size: 1.4rem;
+  height: auto;
+  max-width: 36rem;
+  padding: .4rem .5rem;
+  width: 100%;
+}
+.admin__control-multiselect:disabled { background-color: #e9e9e9; color: #a6a6a6; opacity: 1; }
+.admin__control-multiselect option { padding: .3rem .5rem; }
+
+/* Keep the "Use system value" checkbox on its own line under a size=10
+   multiselect instead of wrapping around its right edge. */
+.config-content .admin__control-multiselect {
+  display: block;
+  margin-bottom: .8rem;
+  max-width: 45rem;
+}

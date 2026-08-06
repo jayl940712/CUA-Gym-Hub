@@ -1,0 +1,28 @@
+[
+ {
+  "entity_id": 1,
+  "parent_id": 1,
+  "order_item_id": 1,
+  "sku": "WS03-XS-Red",
+  "name": "Iris Workout Top",
+  "qty": 1.0,
+  "price": 29.0,
+  "row_total": 29.0,
+  "tax_amount": 2.39,
+  "price_incl_tax": 31.39,
+  "row_total_incl_tax": 31.39
+ },
+ {
+  "entity_id": 2,
+  "parent_id": 2,
+  "order_item_id": 2,
+  "sku": "WS08-XS-Blue",
+  "name": "Minerva LumaTech&trade; V-Tee",
+  "qty": 1.0,
+  "price": 32.0,
+  "row_total": 32.0,
+  "tax_amount": 2.64,
+  "price_incl_tax": 34.64,
+  "row_total_incl_tax": 34.64
+ }
+]

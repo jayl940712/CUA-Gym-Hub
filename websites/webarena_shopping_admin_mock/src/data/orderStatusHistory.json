@@ -1,0 +1,12 @@
+[
+ {
+  "entity_id": 1,
+  "parent_id": 2,
+  "is_customer_notified": 1,
+  "is_visible_on_front": 0,
+  "comment": "We refunded $39.64 offline.",
+  "status": "closed",
+  "created_at": "2023-04-19 16:15:47",
+  "entity_name": "creditmemo"
+ }
+]

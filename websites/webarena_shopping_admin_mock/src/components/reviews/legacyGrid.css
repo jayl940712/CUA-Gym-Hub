@@ -1,0 +1,147 @@
+/*
+ * Layout for the legacy Reviews grid. Everything is scoped under `#reviewGrid`
+ * so it cannot reach the UI-component grids that share the `admin__data-grid-*`
+ * class names. Measurements taken from the live source at 1440x900.
+ */
+
+#reviewGrid .admin__data-grid-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 0 12px;
+}
+
+#reviewGrid .admin__filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+#reviewGrid .admin__filter-actions .action-reset {
+  background: none;
+  border: none;
+  color: #007bdb;
+  padding: 0;
+  cursor: pointer;
+}
+
+#reviewGrid .admin__filter-actions .action-reset:hover { text-decoration: underline; }
+
+#reviewGrid .admin__grid-massaction .admin__grid-massaction-form {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+#reviewGrid #reviewGrid_massaction-select { min-width: 140px; }
+
+#reviewGrid .admin__grid-massaction .field-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 8px;
+}
+
+#reviewGrid .admin__control-support-text { white-space: nowrap; }
+
+/* DIFF-R64, same defect as the reports legacy grid: `src/index.css` makes every
+ * `.admin__control-support-text` a flex container, so the pager label read
+ * "of\n1" where the source reads "of 1" (verified live on
+ * `/admin/review/product/pending/` and `/index/`). The records-found line is
+ * already handled by `_records-found` in components/grid/grid.css. */
+#reviewGrid .admin__control-support-text {
+  display: inline-block;
+  gap: 0;
+  vertical-align: middle;
+}
+#reviewGrid .admin__control-support-text > span { display: inline; }
+#reviewGrid .admin__control-support-text > .mass-select-info._empty { display: none; }
+
+#reviewGrid .mass-select-info { margin-left: 8px; }
+#reviewGrid .mass-select-info._empty { display: none; }
+
+#reviewGrid .admin__data-grid-pager-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+#reviewGrid .admin__data-grid-pager {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#reviewGrid .admin__data-grid-pager #reviewGrid_page-current { width: 44px; text-align: center; }
+
+/* The source's pager arrows are icon buttons, not labelled ones. */
+#reviewGrid .admin__data-grid-pager .action-previous,
+#reviewGrid .admin__data-grid-pager .action-next {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #adadad;
+  background: #fff;
+  color: #514943;
+  cursor: pointer;
+  font-size: 0;
+  position: relative;
+}
+
+#reviewGrid .admin__data-grid-pager .action-previous::after,
+#reviewGrid .admin__data-grid-pager .action-next::after {
+  font-size: 16px;
+  line-height: 30px;
+}
+
+#reviewGrid .admin__data-grid-pager .action-previous::after { content: '\2039'; }
+#reviewGrid .admin__data-grid-pager .action-next::after { content: '\203A'; }
+
+#reviewGrid .admin__data-grid-pager .disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+#reviewGrid .admin__data-grid-pager .action-next:not(.disabled) {
+  background: #514943;
+  border-color: #514943;
+  color: #fff;
+}
+
+/* --- the in-table filter row ------------------------------------------- */
+
+#reviewGrid tr.data-grid-filters td {
+  padding: 8px 10px;
+  background: #fff;
+  border-bottom: 1px solid #d6d6d6;
+  vertical-align: top;
+}
+
+#reviewGrid tr.data-grid-filters input.admin__control-text,
+#reviewGrid tr.data-grid-filters select.admin__control-select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+#reviewGrid tr.data-grid-filters .range-line + .range-line { margin-top: 6px; }
+
+/* The massaction column is narrow; its Any/Yes/No select needs room for "Any". */
+#reviewGrid tr.data-grid-filters td.col-massaction { min-width: 72px; }
+#reviewGrid #reviewGrid_filter_massaction { min-width: 60px; }
+
+#reviewGrid .data-grid-th._sortable { cursor: pointer; }
+
+#reviewGrid tbody td { vertical-align: top; }
+#reviewGrid tbody td.col-select { vertical-align: middle; }
+
+#reviewGrid .store-view-cell { display: block; }
+
+/* F-07 — the source's second massaction select (row-selection helper). */
+#reviewGrid .mass-select-wrap {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+#reviewGrid .mass-select-wrap .action-select-multiselect { min-width: 130px; }

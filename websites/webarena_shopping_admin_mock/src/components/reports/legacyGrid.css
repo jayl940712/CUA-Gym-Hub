@@ -1,0 +1,164 @@
+/*
+ * Layout for the generalised legacy grid (`LegacyGrid.jsx`). Scoped under
+ * `.legacy-grid` so it cannot reach the UI-component grids that share the
+ * `admin__data-grid-*` class names, and so it composes with the Reviews grid's
+ * own `#reviewGrid`-scoped sheet without either clobbering the other.
+ * Measurements taken from the live source at 1440x900.
+ */
+
+.legacy-grid .admin__data-grid-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 0 12px;
+}
+
+.legacy-grid .admin__data-grid-export {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.legacy-grid .admin__filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.legacy-grid .admin__filter-actions .action-reset {
+  background: none;
+  border: none;
+  color: #007bdb;
+  padding: 0;
+  cursor: pointer;
+}
+
+.legacy-grid .admin__filter-actions .action-reset:hover { text-decoration: underline; }
+
+.legacy-grid .admin__control-support-text { white-space: nowrap; }
+
+/* DIFF-R64 — the "N records found" line. `src/index.css` styles every
+ * `.admin__control-support-text` as `display:flex`, which promotes the count
+ * `<span>` to a flex item and makes `innerText` read "0\nrecords found" where
+ * the source reads "0 records found" as one line. The source's element carries
+ * no extra class (verified live: `className === "admin__control-support-text"`
+ * on `/admin/reports/report_product/lowstock/`), so the fix is CSS-only rather
+ * than adding a `_records-found` class the source does not emit. The pager's
+ * `of <n>` label breaks the same way ("of\n1" vs the source's "of 1"), so the
+ * rule covers every support-text inside a legacy grid. */
+.legacy-grid .admin__control-support-text {
+  display: inline-block;
+  gap: 0;
+  vertical-align: middle;
+}
+.legacy-grid .admin__control-support-text > span {
+  display: inline;
+}
+/* …but the selected-row counter stays hidden while nothing is selected: the
+ * source's records line is exactly `0 records found`, with no `0 selected`. */
+.legacy-grid .admin__control-support-text > .mass-select-info._empty {
+  display: none;
+}
+
+/* F-07 — the source's second massaction select (row-selection helper), which
+ * sits beside the Actions select rather than under it. */
+.legacy-grid .admin__grid-massaction { display: inline-flex; align-items: center; }
+.legacy-grid .mass-select-wrap {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+}
+.legacy-grid .mass-select-wrap .action-select-multiselect { min-width: 130px; }
+
+.legacy-grid .mass-select-info { margin-left: 8px; }
+.legacy-grid .mass-select-info._empty { display: none; }
+
+.legacy-grid .admin__grid-massaction .admin__grid-massaction-form {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.legacy-grid .admin__grid-massaction .field-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 8px;
+}
+
+.legacy-grid .admin__data-grid-pager-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.legacy-grid .admin__data-grid-pager {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legacy-grid .admin__data-grid-pager .admin__control-text {
+  width: 44px;
+  text-align: center;
+}
+
+/* The source's pager arrows are icon buttons, not labelled ones. */
+.legacy-grid .admin__data-grid-pager .action-previous,
+.legacy-grid .admin__data-grid-pager .action-next {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #adadad;
+  background: #fff;
+  color: #514943;
+  cursor: pointer;
+  font-size: 0;
+  position: relative;
+}
+
+.legacy-grid .admin__data-grid-pager .action-previous::after,
+.legacy-grid .admin__data-grid-pager .action-next::after {
+  font-size: 16px;
+  line-height: 30px;
+}
+
+.legacy-grid .admin__data-grid-pager .action-previous::after { content: '\2039'; }
+.legacy-grid .admin__data-grid-pager .action-next::after { content: '\203A'; }
+
+.legacy-grid .admin__data-grid-pager .disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+.legacy-grid .admin__data-grid-pager .action-next:not(.disabled) {
+  background: #514943;
+  border-color: #514943;
+  color: #fff;
+}
+
+/* --- the in-table filter row ------------------------------------------- */
+
+.legacy-grid tr.data-grid-filters td {
+  padding: 8px 10px;
+  background: #fff;
+  border-bottom: 1px solid #d6d6d6;
+  vertical-align: top;
+}
+
+.legacy-grid tr.data-grid-filters input.admin__control-text,
+.legacy-grid tr.data-grid-filters select.admin__control-select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.legacy-grid tr.data-grid-filters .range-line + .range-line { margin-top: 6px; }
+
+.legacy-grid .data-grid-th._sortable { cursor: pointer; }
+
+.legacy-grid tbody td { vertical-align: top; }
+.legacy-grid tbody tr[data-role="row"] { cursor: pointer; }
+
+.legacy-grid .store-view-cell { display: block; }

@@ -1,0 +1,14 @@
+<!--
+  Locally-drawn admin favicon (PARITY-011). index.html has always referenced
+  /favicon.svg; the file was missing, so a real browser emitted a 404 on every
+  page load and the "network panel is empty" Definition-of-Done check failed.
+
+  Per TRADEMARKS.md this is NOT the source's wordmark: it is a plain "X" glyph
+  in the admin's primary orange (#eb5202, DESIGN.md) matching the mock's own
+  "Xagento" branding.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="4" fill="#eb5202"/>
+  <path d="M9 8h4.6l2.4 4.3L18.4 8H23l-4.7 7.9L23.3 24h-4.7l-2.6-4.7L13.4 24H8.7l5-8.1z"
+        fill="#ffffff"/>
+</svg>

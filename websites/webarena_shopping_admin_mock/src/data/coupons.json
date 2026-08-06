@@ -1,0 +1,14 @@
+[
+ {
+  "coupon_id": 1,
+  "rule_id": 4,
+  "code": "H20",
+  "usage_limit": null,
+  "usage_per_customer": 1,
+  "times_used": 0,
+  "expiration_date": null,
+  "is_primary": 1,
+  "created_at": null,
+  "type": 0
+ }
+]

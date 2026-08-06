@@ -1,0 +1,240 @@
+[
+ {
+  "config_id": 23,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "admin/captcha/enable",
+  "value": "0"
+ },
+ {
+  "config_id": 24,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "admin/captcha/forms",
+  "value": null
+ },
+ {
+  "config_id": 22,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "admin/security/admin_account_sharing",
+  "value": "1"
+ },
+ {
+  "config_id": 41,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "admin/security/lockout_failures",
+  "value": null
+ },
+ {
+  "config_id": 42,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "admin/security/lockout_threshold",
+  "value": "0"
+ },
+ {
+  "config_id": 40,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "admin/security/password_is_forced",
+  "value": "0"
+ },
+ {
+  "config_id": 39,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "admin/security/password_lifetime",
+  "value": "0"
+ },
+ {
+  "config_id": 38,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "admin/security/session_lifetime",
+  "value": "360000"
+ },
+ {
+  "config_id": 34,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "admin/security/use_form_key",
+  "value": "0"
+ },
+ {
+  "config_id": 16,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "admin/usage/enabled",
+  "value": "0"
+ },
+ {
+  "config_id": 11,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "analytics/subscription/enabled",
+  "value": "1"
+ },
+ {
+  "config_id": 19,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "carriers/tablerate/active",
+  "value": "1"
+ },
+ {
+  "config_id": 20,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "carriers/tablerate/condition_name",
+  "value": "package_value_with_discount"
+ },
+ {
+  "config_id": 10,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "catalog/category/root_id",
+  "value": "2"
+ },
+ {
+  "config_id": 13,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "crontab/default/jobs/analytics_collect_data/schedule/cron_expr",
+  "value": "00 02 * * *"
+ },
+ {
+  "config_id": 37,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "crontab/default/jobs/analytics_subscribe/schedule/cron_expr",
+  "value": "0 * * * *"
+ },
+ {
+  "config_id": 7,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "currency/options/allow",
+  "value": "USD"
+ },
+ {
+  "config_id": 5,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "currency/options/base",
+  "value": "USD"
+ },
+ {
+  "config_id": 6,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "currency/options/default",
+  "value": "USD"
+ },
+ {
+  "config_id": 18,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "design/head/includes",
+  "value": "<link  rel=\"stylesheet\" type=\"text/css\"  media=\"all\" href=\"{{MEDIA_URL}}styles.css\" />"
+ },
+ {
+  "config_id": 17,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "design/theme/theme_id",
+  "value": "3"
+ },
+ {
+  "config_id": 3,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "general/locale/code",
+  "value": "en_US"
+ },
+ {
+  "config_id": 4,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "general/locale/timezone",
+  "value": "America/New_York"
+ },
+ {
+  "config_id": 8,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "general/region/display_all",
+  "value": "1"
+ },
+ {
+  "config_id": 9,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "general/region/state_required",
+  "value": "AL,AR,AU,BG,BO,BR,BY,CA,CH,CL,CN,CO,CZ,DK,EC,EE,ES,GR,GY,HR,IN,IS,IT,LT,LV,MX,PE,PL,PT,PY,RO,SE,SR,US,UY,VE"
+ },
+ {
+  "config_id": 15,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "msp_securitysuite_recaptcha/backend/enabled",
+  "value": "0"
+ },
+ {
+  "config_id": 14,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "msp_securitysuite_recaptcha/frontend/enabled",
+  "value": "0"
+ },
+ {
+  "config_id": 21,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "sales/msrp/enabled",
+  "value": "1"
+ },
+ {
+  "config_id": 25,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "system/full_page_cache/varnish/access_list",
+  "value": "localhost"
+ },
+ {
+  "config_id": 26,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "system/full_page_cache/varnish/backend_host",
+  "value": "localhost"
+ },
+ {
+  "config_id": 27,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "system/full_page_cache/varnish/backend_port",
+  "value": "8080"
+ },
+ {
+  "config_id": 28,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "system/full_page_cache/varnish/grace_period",
+  "value": "300"
+ },
+ {
+  "config_id": 1,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "web/seo/use_rewrites",
+  "value": "1"
+ },
+ {
+  "config_id": 2,
+  "scope": "default",
+  "scope_id": 0,
+  "path": "web/unsecure/base_url",
+  "value": "http://10.186.197.203:7780/"
+ }
+]

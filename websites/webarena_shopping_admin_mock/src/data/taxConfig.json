@@ -1,0 +1,169 @@
+{
+ "classes": [
+  {
+   "class_id": 2,
+   "class_name": "Taxable Goods",
+   "class_type": "PRODUCT"
+  },
+  {
+   "class_id": 3,
+   "class_name": "Retail Customer",
+   "class_type": "CUSTOMER"
+  }
+ ],
+ "rates": [
+  {
+   "tax_calculation_rate_id": 1,
+   "tax_country_id": "US",
+   "tax_region_id": 12,
+   "tax_postcode": "*",
+   "code": "US-CA-*-Rate 1",
+   "rate": 8.25,
+   "zip_is_range": null,
+   "zip_from": null,
+   "zip_to": null
+  },
+  {
+   "tax_calculation_rate_id": 2,
+   "tax_country_id": "US",
+   "tax_region_id": 43,
+   "tax_postcode": "*",
+   "code": "US-NY-*-Rate 1",
+   "rate": 8.375,
+   "zip_is_range": null,
+   "zip_from": null,
+   "zip_to": null
+  },
+  {
+   "tax_calculation_rate_id": 3,
+   "tax_country_id": "US",
+   "tax_region_id": 33,
+   "tax_postcode": "*",
+   "code": "US-MI-*-Rate 1",
+   "rate": 8.25,
+   "zip_is_range": null,
+   "zip_from": null,
+   "zip_to": null
+  }
+ ],
+ "rules": [
+  {
+   "tax_calculation_rule_id": 1,
+   "code": "Rule1",
+   "priority": 0,
+   "position": 0,
+   "calculate_subtotal": 0
+  }
+ ],
+ "calculations": [
+  {
+   "tax_calculation_id": 1,
+   "tax_calculation_rate_id": 3,
+   "tax_calculation_rule_id": 1,
+   "customer_tax_class_id": 3,
+   "product_tax_class_id": 2
+  }
+ ],
+ "rate_titles": [],
+ "shipping_tablerate": [
+  {
+   "pk": 1,
+   "website_id": 1,
+   "dest_country_id": "US",
+   "dest_region_id": 0,
+   "dest_zip": "*",
+   "condition_name": "package_value_with_discount",
+   "condition_value": 0.0,
+   "price": 15.0,
+   "cost": 0.0
+  },
+  {
+   "pk": 2,
+   "website_id": 1,
+   "dest_country_id": "US",
+   "dest_region_id": 0,
+   "dest_zip": "*",
+   "condition_name": "package_value_with_discount",
+   "condition_value": 50.0,
+   "price": 10.0,
+   "cost": 0.0
+  },
+  {
+   "pk": 3,
+   "website_id": 1,
+   "dest_country_id": "US",
+   "dest_region_id": 0,
+   "dest_zip": "*",
+   "condition_name": "package_value_with_discount",
+   "condition_value": 100.0,
+   "price": 5.0,
+   "cost": 0.0
+  },
+  {
+   "pk": 4,
+   "website_id": 1,
+   "dest_country_id": "US",
+   "dest_region_id": 2,
+   "dest_zip": "*",
+   "condition_name": "package_value_with_discount",
+   "condition_value": 0.0,
+   "price": 20.0,
+   "cost": 0.0
+  },
+  {
+   "pk": 5,
+   "website_id": 1,
+   "dest_country_id": "US",
+   "dest_region_id": 2,
+   "dest_zip": "*",
+   "condition_name": "package_value_with_discount",
+   "condition_value": 50.0,
+   "price": 15.0,
+   "cost": 0.0
+  },
+  {
+   "pk": 6,
+   "website_id": 1,
+   "dest_country_id": "US",
+   "dest_region_id": 2,
+   "dest_zip": "*",
+   "condition_name": "package_value_with_discount",
+   "condition_value": 100.0,
+   "price": 10.0,
+   "cost": 0.0
+  },
+  {
+   "pk": 7,
+   "website_id": 1,
+   "dest_country_id": "US",
+   "dest_region_id": 21,
+   "dest_zip": "*",
+   "condition_name": "package_value_with_discount",
+   "condition_value": 0.0,
+   "price": 20.0,
+   "cost": 0.0
+  },
+  {
+   "pk": 8,
+   "website_id": 1,
+   "dest_country_id": "US",
+   "dest_region_id": 21,
+   "dest_zip": "*",
+   "condition_name": "package_value_with_discount",
+   "condition_value": 50.0,
+   "price": 15.0,
+   "cost": 0.0
+  },
+  {
+   "pk": 9,
+   "website_id": 1,
+   "dest_country_id": "US",
+   "dest_region_id": 21,
+   "dest_zip": "*",
+   "condition_name": "package_value_with_discount",
+   "condition_value": 100.0,
+   "price": 10.0,
+   "cost": 0.0
+  }
+ ]
+}

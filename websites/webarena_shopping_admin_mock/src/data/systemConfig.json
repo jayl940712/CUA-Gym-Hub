@@ -1,0 +1,117 @@
+{
+ "websites": [
+  {
+   "website_id": 0,
+   "code": "admin",
+   "name": "Admin",
+   "sort_order": 0,
+   "default_group_id": 0,
+   "is_default": 0
+  },
+  {
+   "website_id": 1,
+   "code": "base",
+   "name": "Main Website",
+   "sort_order": 0,
+   "default_group_id": 1,
+   "is_default": 1
+  }
+ ],
+ "store_groups": [
+  {
+   "group_id": 0,
+   "website_id": 0,
+   "name": "Default",
+   "root_category_id": 0,
+   "default_store_id": 0,
+   "code": "default"
+  },
+  {
+   "group_id": 1,
+   "website_id": 1,
+   "name": "Main Website Store",
+   "root_category_id": 2,
+   "default_store_id": 1,
+   "code": "main_website_store"
+  }
+ ],
+ "stores": [
+  {
+   "store_id": 0,
+   "code": "admin",
+   "website_id": 0,
+   "group_id": 0,
+   "name": "Admin",
+   "sort_order": 0,
+   "is_active": 1
+  },
+  {
+   "store_id": 1,
+   "code": "default",
+   "website_id": 1,
+   "group_id": 1,
+   "name": "Default Store View",
+   "sort_order": 0,
+   "is_active": 1
+  }
+ ],
+ "themes": [
+  {
+   "theme_id": 1,
+   "parent_id": null,
+   "theme_path": "Magento/blank",
+   "theme_title": "Magento Blank",
+   "preview_image": "preview_image_64400babb6c6d.jpeg",
+   "is_featured": 0,
+   "area": "frontend",
+   "type": 0,
+   "code": "Magento/blank"
+  },
+  {
+   "theme_id": 2,
+   "parent_id": null,
+   "theme_path": "Magento/backend",
+   "theme_title": "Magento 2 backend",
+   "preview_image": null,
+   "is_featured": 0,
+   "area": "adminhtml",
+   "type": 0,
+   "code": "Magento/backend"
+  },
+  {
+   "theme_id": 3,
+   "parent_id": 1,
+   "theme_path": "Magento/luma",
+   "theme_title": "Magento Luma",
+   "preview_image": "preview_image_64400babd68d2.jpeg",
+   "is_featured": 0,
+   "area": "frontend",
+   "type": 0,
+   "code": "Magento/luma"
+  }
+ ],
+ "currency_rates": [
+  {
+   "currency_from": "EUR",
+   "currency_to": "EUR",
+   "rate": 1.0
+  },
+  {
+   "currency_from": "EUR",
+   "currency_to": "USD",
+   "rate": 1.415
+  },
+  {
+   "currency_from": "USD",
+   "currency_to": "EUR",
+   "rate": 0.7067
+  },
+  {
+   "currency_from": "USD",
+   "currency_to": "USD",
+   "rate": 1.0
+  }
+ ],
+ "variables": [],
+ "checkout_agreements": []
+}

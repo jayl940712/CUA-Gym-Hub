@@ -1,0 +1,46 @@
+[
+ {
+  "entity_id": 1,
+  "parent_id": 1,
+  "order_item_id": 1,
+  "sku": "WS03-XS-Red",
+  "name": "Iris Workout Top",
+  "qty": 1.0,
+  "price": 29.0,
+  "row_total": null,
+  "weight": 1.0
+ },
+ {
+  "entity_id": 2,
+  "parent_id": 2,
+  "order_item_id": 2,
+  "sku": "WS08-XS-Blue",
+  "name": "Minerva LumaTech&trade; V-Tee",
+  "qty": 1.0,
+  "price": 32.0,
+  "row_total": null,
+  "weight": 1.0
+ },
+ {
+  "entity_id": 3,
+  "parent_id": 3,
+  "order_item_id": 1575,
+  "sku": "MSH09-36-Black",
+  "name": "Troy Yoga Short",
+  "qty": 1.0,
+  "price": 24.0,
+  "row_total": null,
+  "weight": 1.0
+ },
+ {
+  "entity_id": 4,
+  "parent_id": 3,
+  "order_item_id": 1577,
+  "sku": "WH11-S-Blue",
+  "name": "Eos V-Neck Hoodie",
+  "qty": 1.0,
+  "price": 54.0,
+  "row_total": null,
+  "weight": 1.0
+ }
+]

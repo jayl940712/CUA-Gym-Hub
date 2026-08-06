@@ -1,0 +1,72 @@
+[
+ {
+  "query_id": 1,
+  "query_text": "Joust Bag",
+  "num_results": 10,
+  "popularity": 4,
+  "redirect": null,
+  "store_id": 1,
+  "display_in_terms": 1,
+  "updated_at": "2023-04-24 19:24:09"
+ },
+ {
+  "query_id": 5,
+  "query_text": "MT02-M-Gray",
+  "num_results": 115,
+  "popularity": 1,
+  "redirect": null,
+  "store_id": 1,
+  "display_in_terms": 1,
+  "updated_at": "2023-04-19 21:53:43"
+ },
+ {
+  "query_id": 9,
+  "query_text": "WP10",
+  "num_results": 1,
+  "popularity": 1,
+  "redirect": null,
+  "store_id": 1,
+  "display_in_terms": 1,
+  "updated_at": "2023-04-23 22:16:22"
+ },
+ {
+  "query_id": 11,
+  "query_text": "hollister",
+  "num_results": 1,
+  "popularity": 19,
+  "redirect": null,
+  "store_id": 1,
+  "display_in_terms": 1,
+  "updated_at": "2023-04-24 19:23:28"
+ },
+ {
+  "query_id": 13,
+  "query_text": "Antonia Racer Tank",
+  "num_results": 23,
+  "popularity": 2,
+  "redirect": null,
+  "store_id": 1,
+  "display_in_terms": 1,
+  "updated_at": "2023-04-24 19:09:46"
+ },
+ {
+  "query_id": 19,
+  "query_text": "nike",
+  "num_results": 0,
+  "popularity": 3,
+  "redirect": null,
+  "store_id": 1,
+  "display_in_terms": 1,
+  "updated_at": "2023-04-24 19:24:34"
+ },
+ {
+  "query_id": 25,
+  "query_text": "tanks",
+  "num_results": 23,
+  "popularity": 1,
+  "redirect": null,
+  "store_id": 1,
+  "display_in_terms": 1,
+  "updated_at": "2023-05-31 20:41:43"
+ }
+]

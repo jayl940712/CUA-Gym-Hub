@@ -1,0 +1,448 @@
+# WebArena shopping_admin tasks (184)
+
+Extracted from /webarena/webarena.jsonl. The mock must support every workflow below.
+
+- **webarena-0**: Get the top-1 best-selling product name(s) in 2022
+  - answer: `{"exact_match": "Quest Lumaflex™ Band"}`
+- **webarena-1**: Get the top-1 best-selling brand name(s) in Quarter 1 2022
+  - answer: `{"exact_match": "Sprite"}`
+- **webarena-2**: Get the top-1 best-selling product type name(s) in Quarter 1 2022
+  - answer: `{"exact_match": ["Digital Watch", "Band", "Stasis Ball", "Yoga Strap"]}`
+- **webarena-3**: Get the top-2 best-selling product name(s) in 2022
+  - answer: `{"must_include": ["Quest Lumaflex™ Band", ["Sprite Stasis Ball 65 cm", "Cruise Stasis Ball 65 cm", "Sprite Stasis Ball 55 cm"]]}`
+- **webarena-4**: Get the top-3 best-selling product name(s) in Jan 2023
+  - answer: `{"must_include": ["Impulse Duffle", "Overnight Duffle", "Hawkeye Yoga Short-32-Blue"]}`
+- **webarena-5**: Get the top-1 best-selling product type name(s) in Jan 2023
+  - answer: `{"must_include": ["Duffle"]}`
+- **webarena-6**: Get the top-2 best-selling product name(s) in 2023
+  - answer: `{"must_include": ["Sprite Yoga Strap 6 foot", ["Overnight Duffle", "Ida Workout Parachute Pant-29-Purple"]]}`
+- **webarena-11**: Tell me the the number of reviews that our store received by far that mention term "disappointed"
+  - answer: `{"must_include": ["4"]}`
+- **webarena-12**: Tell me the the number of reviews that our store received by far that mention term "satisfied"
+  - answer: `{"must_include": ["2"]}`
+- **webarena-13**: Tell me the the number of reviews that our store received by far that mention term "decent"
+  - answer: `{"must_include": ["2"]}`
+- **webarena-14**: Tell me the the number of reviews that our store received by far that mention term "not useful"
+  - answer: `{"must_include": ["0"]}`
+- **webarena-15**: Tell me the the number of reviews that our store received by far that mention term "best"
+  - answer: `{"must_include": ["2"]}`
+- **webarena-41**: Get the top 1 search term(s) in my store
+  - answer: `{"exact_match": "hollister"}`
+- **webarena-42**: Get the top 2 search term(s) in my store
+  - answer: `{"must_include": ["hollister", "Joust Bag"]}`
+- **webarena-43**: Get the top 3 search term(s) in my store
+  - answer: `{"must_include": ["hollister", "Joust Bag", "Antonia Racer Tank"]}`
+- **webarena-62**: Get customer email(s) who completed the most number of orders in the entire history
+  - answer: `{"must_include": ["Jane Smith"]}`
+- **webarena-63**: Get customer email(s) who completed the second most number of orders in the entire history
+  - answer: `{"must_include": ["Adam Garcia", "Michael Nguyen", "Sarah Miller"]}`
+- **webarena-64**: Get customer email(s) who have 2 orders in any state in the entire history
+  - answer: `{"must_include": ["Lisa Kim", "Lisa Green", "Julia Williams", "Brian Smith", "Alexander Thomas"]}`
+- **webarena-65**: Get customer email(s) who completed the fifth most number of orders in the entire history
+  - answer: `{"must_include": ["Jane Doe"]}`
+- **webarena-77**: What is the total count of Pending reviews amongst all the reviews?
+  - answer: `{"must_include": ["5"]}`
+- **webarena-78**: What is the total count of Approved reviews amongst all the reviews?
+  - answer: `{"must_include": ["346"]}`
+- **webarena-79**: What is the total count of Not Approved reviews amongst all the reviews?
+  - answer: `{"must_include": ["0"]}`
+- **webarena-94**: Telll me the grand total of invoice 000000001.
+  - answer: `{"must_include": ["36.39"]}`
+- **webarena-95**: Telll me the grand total of invoice 000000002.
+  - answer: `{"must_include": ["39.64"]}`
+- **webarena-107**: Presents the monthly count of successful completed orders from May to December 2022 in MM:COUNT format
+  - answer: `{"fuzzy_match": ["May: 8 orders", "June: 13 orders", "July: 9 orders", "August: 8 orders", "Sepetember: 10 orders", "October: 4 orders", "November: 5 orders", "December: 10 orders"]}`
+- **webarena-108**: Presents the monthly count of successful completed orders 01/2023-05/2023 in MM:COUNT format
+  - answer: `{"fuzzy_match": ["January: 12 orders", "Feburary: 7 orders", "March: 5 orders", "April: 9 orders", "May: 5 orders"]}`
+- **webarena-109**: Presents the monthly count of successful completed orders from Jan to December 2022 in MM:COUNT format
+  - answer: `{"fuzzy_match": ["January: 11 orders", "Feburary: 16 orders", "March: 14 orders", "April: 7 orders", "May: 8 orders", "June: 13 orders", "July: 9 orders", "August: 8 orders", "Sepetember: 10 orders", "Octorbor: 4 orders", "November: 5 orders", "December: 10 orders"]}`
+- **webarena-110**: Presents the monthly count of successful completed orders from Jan to Nov 2022 in MM:COUNT format
+  - answer: `{"fuzzy_match": ["January: 11 orders", "Feburary: 16 orders", "March: 14 orders", "April: 8 orders", "May: 8 orders", "June: 13 orders", "July: 9 orders", "August: 8 orders", "Sepetember: 10 orders", "Octorbor: 4 orders", "November: 5 orders"]}`
+- **webarena-111**: Presents the monthly count of successful completed orders from Feb to Nov 2022 in MM:COUNT format
+  - answer: `{"fuzzy_match": ["Feburary: 16 orders", "March: 14 orders", "April: 8 orders", "May: 8 orders", "June: 13 orders", "July: 9 orders", "August: 8 orders", "Sepetember: 10 orders", "Octorbor: 4 orders", "November: 5 orders"]}`
+- **webarena-112**: Return the customer nickname(s) who gave a rating of 3 stars or below for Circe Hooded Ice Fleece
+  - answer: `{"exact_match": "Hannah Lim"}`
+- **webarena-113**: Return the customer nickname(s) who gave a rating of 3 stars or below for Olivia zip jacket
+  - answer: `{"must_include": ["Emma Lopez", "Seam Miller"]}`
+- **webarena-114**: Return the customer nickname(s) who gave a rating of 3 stars or below for Antonia racer tank
+  - answer: `{"must_include": ["Shaunte", "Merrie"]}`
+- **webarena-115**: Return the customer nickname(s) who gave a rating of 3 stars or below for Chloe tank
+  - answer: `{"fuzzy_match": "N/A"}`
+- **webarena-116**: Return the customer nickname(s) who gave a rating of 3 stars or below for tanks products
+  - answer: `{"must_include": ["Alexander", "Carma", "Dominic", "Merrie", "Monroe", "Scotty", "Shaunte", "Teofila", "Valorie"]}`
+- **webarena-119**: Tell me the reasons why customers like Antonia Racer Tank
+  - answer: `{"fuzzy_match": ["Its color and style is good"]}`
+- **webarena-120**: Tell me the reasons why customers like Ana Running Short
+  - answer: `{"fuzzy_match": ["It is comfortable"]}`
+- **webarena-121**: Tell me the reasons why customers like Circe Hooded Ice Fleece
+  - answer: `{"fuzzy_match": ["Warm and comfortable. True to size."]}`
+- **webarena-122**: Tell me the reasons why customers like Olivia zip jacket
+  - answer: `{"fuzzy_match": ["Lightweight, comfortable and stylish. Good design and details."]}`
+- **webarena-123**: Tell me the reasons why customers like Circe's products
+  - answer: `{"fuzzy_match": ["Warm and comfortable. True to size."]}`
+- **webarena-127**: Get the top 3 search terms that match available products in the store.
+  - answer: `{"must_include": ["Hollister", "Joust", "Antonia"]}`
+- **webarena-128**: What's the total number of items sold in the most recent 2 orders?
+  - answer: `{"must_include": ["9"]}`
+- **webarena-129**: What's the total number of items sold in the most recent 4 orders?
+  - answer: `{"must_include": ["16"]}`
+- **webarena-130**: What's the total number of items sold in the most recent 5 orders?
+  - answer: `{"must_include": ["18"]}`
+- **webarena-131**: What's the total number of items sold in the most recent 7 orders?
+  - answer: `{"must_include": ["25"]}`
+- **webarena-157**: View the details of all customers
+  - url: `__SHOPPING_ADMIN__/customer/index/`
+- **webarena-183**: Give me the SKU of the products that have 10 units left
+  - answer: `{"fuzzy_match": "N/A"}`
+- **webarena-184**: Give me the name of the products that have 0 units left
+  - answer: `{"exact_match": "Sinbad Fitness Tank"}`
+- **webarena-185**: Give me the material of the products that have 3 units left
+  - answer: `{"must_include": ["Eos", "Minerva"]}`
+- **webarena-186**: Give me the product names and the sizes of the products that have 2-3 units left
+  - answer: `{"fuzzy_match": ["Eos V-Neck Hoodie-S-Blue, Minerva LumaTech™ V-Tee-XS-Blue"]}`
+- **webarena-187**: Give me the SKU of the products that have 1-3 units left
+  - answer: `{"must_include": ["WH11-S-Blue", "WS08-XS-Blue"]}`
+- **webarena-193**: Get the total payment amount of the last 2 completed orders
+  - answer: `{"must_include": ["182.4"]}`
+- **webarena-194**: Get the total payment amount of the last 5 completed orders
+  - answer: `{"must_include": ["555.2"]}`
+- **webarena-195**: Get the total payment amount of the last 5 pending orders
+  - answer: `{"must_include": ["885.4"]}`
+- **webarena-196**: Compare the payment difference of the last 4 cancelled orders and completed orders
+  - answer: `{"must_include": ["194.25"]}`
+- **webarena-197**: Get the total payment amount of the last 5 non-cancelled orders
+  - answer: `{"must_include": ["778.2"]}`
+- **webarena-198**: Get the customer email of the most recent cancelled order.
+  - answer: `{"exact_match": "harrypotterfan1@gmail.com*"}`
+- **webarena-199**: Get the order ID of the newest pending order
+  - answer: `{"must_include": ["299"]}`
+- **webarena-200**: Get the billing name of the oldest complete order.
+  - answer: `{"exact_match": "John Lee"}`
+- **webarena-201**: Get the customer email of the earliest fraud suspect order.
+  - answer: `{"fuzzy_match": "N/A"}`
+- **webarena-202**: Get the date of the most recent canlled order
+  - answer: `{"fuzzy_match": ["May 23 2023"]}`
+- **webarena-203**: Get the purchase date and order id of the most recent pending order
+  - answer: `{"fuzzy_match": ["order id: 000000299", "purchase date: May 31, 2023"]}`
+- **webarena-204**: Get the product name and discounted price (low to high) of the most recent completed order
+  - answer: `{"fuzzy_match": ["Ida Workout Parachute Pant: $38.40", "Proteus Fitness Jackshirt: $45.00"]}`
+- **webarena-208**: Find the customer name and email with phone number +1 2058812302
+  - answer: `{"must_include": ["John Smith", "john.smith.xyz@gmail.com"]}`
+- **webarena-209**: Find the customer name and email with phone number 2137418080
+  - answer: `{"must_include": ["Jennifer White", "jennifer.white@yahoo.com"]}`
+- **webarena-210**: Find the customer name and email with phone number 2065555555
+  - answer: `{"must_include": ["Adam Garcia", "gamingpro456@gmail.com"]}`
+- **webarena-211**: Find the customer name and email with phone number 8015551212
+  - answer: `{"must_include": ["Sean Miller", "sean.miller@gmail.com"]}`
+- **webarena-212**: Find the customer name and email with phone number 555-229-3326
+  - answer: `{"must_include": ["Veronica Costello", "roni_cost@example.com"]}`
+- **webarena-213**: What are the key aspects that the customers don't like about Antonia Racer Tank
+  - answer: `{"fuzzy_match": ["Not suitable for high-impact workouts"]}`
+- **webarena-214**: What are the key aspects that the customers don't like about Zing Jump Rope
+  - answer: `{"fuzzy_match": ["There are no negative feedbacks."]}`
+- **webarena-215**: What are the key aspects that the customers don't like about Circe Hooded Ice Fleece
+  - answer: `{"fuzzy_match": ["Material quality, fit, insufficient warmth, color"]}`
+- **webarena-216**: What are the key aspects that the customers don't like about Electra Bra Top
+  - answer: `{"fuzzy_match": ["Not true to size"]}`
+- **webarena-217**: What are the key aspects that the customers don't like about Pursuit Tone Band
+  - answer: `{"fuzzy_match": ["Insufficient resistance for their workouts."]}`
+- **webarena-243**: Get the email address of the customer who is the most unhappy with Circe Hooded Ice Fleece
+  - answer: `{"exact_match": "hannah.lim@gmail.com"}`
+- **webarena-244**: Get the email address of the customer who is the most unhappy with Olivia zip jacket
+  - answer: `{"exact_match": "emma.lopez@gmail.com"}`
+- **webarena-245**: Get the name of the customer who is the most unhappy with Antonia racer tank
+  - answer: `{"exact_match": "Shaunte"}`
+- **webarena-246**: Get the name of the customer who is the most unhappy with Chloe tank
+  - answer: `{"exact_match": "Teofila"}`
+- **webarena-247**: Get the email address of the customer who is the most unhappy with the style of Zoe products
+  - answer: `{"fuzzy_match": "N/A"}`
+  - url: `Valorie doesn't have a email in the system`
+- **webarena-288**: Get the email of the customer who has the most cancellations in the history
+  - answer: `{"exact_match": "Samantha Jones"}`
+- **webarena-289**: Tell me the email address, name, phone number of the customer who has the most cancellations in the history
+  - answer: `{"fuzzy_match": ["email: coolcat321@hotmail.com", "name: Samantha Jones", "phone number: 3055551212"]}`
+- **webarena-290**: Get the product SKUs in the most recent cancelled orders of the customer who has the most cancellations in the history
+  - answer: `{"must_include": ["WSH09-29-White", "WSH09-28-Green", "MSH11-34-Blue", "WP09-29-Purple"]}`
+- **webarena-291**: Tell me the total spend on products in the most recent cancelled orders of the customer who has the most cancellations in the history
+  - answer: `{"must_include": ["148"]}`
+- **webarena-292**: Tell me the total number of cancellations of the customer who has the most cancellations in the history
+  - answer: `{"must_include": ["9"]}`
+- **webarena-344**: How many reviews our shop received by far?
+  - answer: `{"must_include": ["351"]}`
+- **webarena-345**: How many reviews our shop received in Apr 2023?
+  - answer: `{"must_include": ["351"]}`
+- **webarena-346**: How many reviews our shop received during 2022?
+  - answer: `{"must_include": ["0"]}`
+- **webarena-347**: How many reviews our shop received from the beginning of the shop?
+  - answer: `{"must_include": ["351"]}`
+- **webarena-348**: How many reviews our shop received in May 2023?
+  - answer: `{"must_include": ["0"]}`
+- **webarena-374**: Go to the Magento Blank theme settings page
+  - url: `__SHOPPING_ADMIN__/admin/system_design_theme/edit/id/1`
+- **webarena-375**: Go to the Magento Luma theme settings page
+  - url: `__SHOPPING_ADMIN__/admin/system_design_theme/edit/id/3/`
+- **webarena-423**: Set all Hollister shirts to on-sale status
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/126/` locator=`document.querySelector('input[name="product[sale]"]').value` required=`{"exact_match": "1"}`
+- **webarena-453**: Disable Teton pullover hoodie from the site, they are facing some quality issues.
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/78/` locator=`document.querySelector('[name="product[status]"').value` required=`{"exact_match": "2"}`
+- **webarena-454**: Disable Ryker Tee Crew Neck from the site, they are facing some quality issues.
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/478/` locator=`document.querySelector('[name="product[status]"').value` required=`{"exact_match": "2"}`
+- **webarena-455**: Disable Helios Endurance Tank from the site, they are facing some quality issues.
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/676/` locator=`document.querySelector('[name="product[status]"').value` required=`{"exact_match": "2"}`
+- **webarena-456**: Disable Cora Pant from the site, they are facing some quality issues.
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1840/` locator=`document.querySelector('[name="product[status]"').value` required=`{"exact_match": "2"}`
+- **webarena-457**: Disable Karmen yoga pants from the site, they are facing some quality issues.
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1819/` locator=`document.querySelector('[name="product[status]"').value` required=`{"exact_match": "2"}`
+- **webarena-458**: Reduce the price of the product on the current page by $5
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1481/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "27.00"}`
+- **webarena-459**: Reduce the price of the product on the current page by 10%
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/237/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "62.10"}`
+- **webarena-460**: Reduce the price of the product on the current page by 15%
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/418/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "38.25"}`
+- **webarena-461**: Increase the price of the product on the current page by $11.5
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/721/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "29.50"}`
+- **webarena-462**: Increase the price of the product on the current page by 10%
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/710/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "19.80"}`
+- **webarena-463**: Increase the price of the product on the current page by 15%
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/996/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "36.80"}`
+- **webarena-464**: Update the product description of Antonia Racer Tank to "{count} customer(s) love it!" where count is the number of reviews with 4 stars or above, or "don't miss out on this amazing product" when there are no such reviews.
+  - program_html: url=`__SHOPPING_ADMIN__/../antonia-racer-tank.html` locator=`document.querySelector('.data.item.content').outerText + (document.querySelector('.product.attribute.overview [itemprop="description"]')?.outerText || '')` required=`{"must_include": ["This is in regular rotation at the gym", "Its colorful and looks kinda cute under my exercise tanks", "it's very stylish for yoga or something else low impact"]}`
+- **webarena-470**: Cancel order 302
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/302/` locator=`document.querySelector("#order_status").outerText` required=`{"exact_match": "Canceled"}`
+- **webarena-471**: Cancel order 307
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/307/` locator=`document.querySelector("#order_status").outerText` required=`{"exact_match": "Canceled"}`
+- **webarena-472**: Cancel order 299
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/299/` locator=`document.querySelector("#order_status").outerText` required=`{"exact_match": "Canceled"}`
+- **webarena-473**: Cancel order 301
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/301/` locator=`document.querySelector("#order_status").outerText` required=`{"exact_match": "Canceled"}`
+- **webarena-474**: Cancel order 305
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/305/` locator=`document.querySelector("#order_status").outerText` required=`{"exact_match": "Canceled"}`
+- **webarena-486**: Change the page title of "404 Not Found" page on my site to "Bruh bro you clicked the wrong page".
+  - program_html: url=`__SHOPPING_ADMIN__/cms/page/edit/page_id/1/` locator=`document.querySelector('input[name="title"').value` required=`{"exact_match": "Bruh bro you clicked the wrong page"}`
+- **webarena-487**: Change the page title of "Enable Cookies" page on my site to "Cookie monster coming to your place".
+  - program_html: url=`__SHOPPING_ADMIN__/cms/page/edit/page_id/3/` locator=`document.querySelector('input[name="title"').value` required=`{"exact_match": "Cookie monster coming to your place"}`
+- **webarena-488**: Change the page title of "Home Page" page on my site to "This is the home page!! Leave here!!".
+  - program_html: url=`__SHOPPING_ADMIN__/cms/page/edit/page_id/2/` locator=`document.querySelector('input[name="title"').value` required=`{"exact_match": "This is the home page!! Leave here!!"}`
+- **webarena-489**: Change the page title of "Privacy Policy" page on my site to "No privacy policy is needed in this dystopian world".
+  - program_html: url=`__SHOPPING_ADMIN__/cms/page/edit/page_id/4/` locator=`document.querySelector('input[name="title"').value` required=`{"exact_match": "No privacy policy is needed in this dystopian world"}`
+- **webarena-490**: Change the page title of "About us" page on my site to "Secret".
+  - program_html: url=`__SHOPPING_ADMIN__/cms/page/edit/page_id/5/` locator=`document.querySelector('input[name="title"').value` required=`{"exact_match": "Secret"}`
+- **webarena-491**: Notify Alexander Thomas in their most recent pending order with message "the order is ready to be shipped soon!"
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/304/` locator=`document.querySelector("#order_history_block").querySelector(".note-list").firstElementChild.querySelector(".note-list-comment").outerText` required=`{"exact_match": "the order is ready to be shipped soon!"}`
+- **webarena-492**: Notify Jane Doe in their most recent pending order with message "sorry we are out of stock, please reorder"
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/302/` locator=`document.querySelector("#order_history_block").querySelector(".note-list").firstElementChild.querySelector(".note-list-comment").outerText` required=`{"exact_match": "sorry we are out of stock, please reorder"}`
+- **webarena-493**: Notify Grace Nguyen in their most recent pending order with message "sorry we are bankrupt, please contact our customer service for refund"
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/307/` locator=`document.querySelector("#order_history_block").querySelector(".note-list").firstElementChild.querySelector(".note-list-comment").outerText` required=`{"exact_match": "sorry we are bankrupt, please contact our customer service for refund"}`
+- **webarena-494**: Notify Alex Thomas in their most recent pending order with message "Yo, your order will be shipped soon!"
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/304/` locator=`document.querySelector("#order_history_block").querySelector(".note-list").firstElementChild.querySelector(".note-list-comment").outerText` required=`{"exact_match": "Yo, your order will be shipped soon!"}`
+- **webarena-495**: Notify Lily Potter in their most recent pending order with message "Thanks, your order is ready to be shipped!"
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/303/` locator=`document.querySelector("#order_history_block").querySelector(".note-list").firstElementChild.querySelector(".note-list-comment").outerText` required=`{"exact_match": "Thanks, your order is ready to be shipped!"}`
+- **webarena-496**: Update order #308 with the Federal Express tracking number 8974568499
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/commentsHistory/order_id/308/active_tab/order_shipments/` locator=`` required=`{"must_include": ["Tracking number 8974568499 for Federal Express assigned"]}`
+- **webarena-497**: Update order #307 shipping information with the DHL tracking number 24353446464
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/commentsHistory/order_id/307/active_tab/order_shipments/` locator=`` required=`{"must_include": ["Tracking number 24353446464 for DHL assigned"]}`
+- **webarena-498**: Update order #306 shipping information with the UPS tracking number 55591023930
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/commentsHistory/order_id/306/active_tab/order_shipments/` locator=`` required=`{"must_include": ["Tracking number 55591023930 for United Parcel Service assigned"]}`
+- **webarena-499**: Update order #304 shipping information with the USPS tracking number 13849373987
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/commentsHistory/order_id/304/active_tab/order_shipments/` locator=`` required=`{"must_include": ["Tracking number 13849373987 for United States Postal Service assigned"]}`
+- **webarena-500**: Update order #301 shipping information with the DHL tracking number 239028439840
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/commentsHistory/order_id/301/active_tab/order_shipments/` locator=`` required=`{"must_include": ["Tracking number 239028439840 for DHL assigned"]}`
+- **webarena-501**: Mark all Taurus Elements Shell as out of stock
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/350/` locator=`document.querySelector('[name="product[quantity_and_stock_status][is_in_stock]"').value` required=`{"exact_match": "0"}`
+- **webarena-502**: Mark all Gobi HeatTec Tee as out of stock
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/446/` locator=`document.querySelector('[name="product[quantity_and_stock_status][is_in_stock]"').value` required=`{"exact_match": "0"}`
+- **webarena-503**: Mark all rocco gym tank as out of stock
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/682/` locator=`document.querySelector('[name="product[quantity_and_stock_status][is_in_stock]"').value` required=`{"exact_match": "0"}`
+- **webarena-504**: Mark all Selene yoga hoodie as out of stock
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1108/` locator=`document.querySelector('[name="product[quantity_and_stock_status][is_in_stock]"').value` required=`{"exact_match": "0"}`
+- **webarena-505**: Mark all Aeon capri as out of stock
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1861/` locator=`document.querySelector('[name="product[quantity_and_stock_status][is_in_stock]"').value` required=`{"exact_match": "0"}`
+- **webarena-538**: Modify the billing address of order #299 to 456 Oak Avenue, Apartment 5B, New York, NY, 10001
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/299` locator=`` required=`{"must_include": ["456 Oak Avenue", "Apartment 5B", "New York", "10001"]}`
+- **webarena-539**: Modify the billing address of order #65 to 789 Pine Lane, San Francisco, CA, 94102
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/65` locator=`` required=`{"must_include": ["789 Pine Lane", "San Francisco", "California", "94102"]}`
+- **webarena-540**: Modify the billing address of order #301 to 321 Birch Boulevard, Suite 200, Dallas, TX, 75201
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/301` locator=`` required=`{"must_include": ["321 Birch Boulevard", "Suite 200", "Dallas", "Texas", "75201"]}`
+- **webarena-541**: Modify the billing address of order #125 to 654 Elm Drive, Apartment 12, Miami, FL, 33101
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/125` locator=`` required=`{"must_include": ["654 Elm Drive", "Apartment 12", "Miami", "Florida", "33101"]}`
+- **webarena-542**: Modify the billing address of order #300 to 987 Cedar Court, Los Angeles, CA, 90012
+  - program_html: url=`__SHOPPING_ADMIN__/sales/order/view/order_id/300` locator=`` required=`{"must_include": ["987 Cedar Court", "Los Angeles", "California", "90012"]}`
+- **webarena-543**: Update the product description of Bella Tank to highlight the real user positive reviews by quoting the comments
+  - program_html: url=`__SHOPPING_ADMIN__/../bella-tank.html` locator=`document.querySelector('.data.item.content').outerText + (document.querySelector('.product.attribute.overview [itemprop="description"]')?.outerText || '')` required=`{"must_include": ["Good choice for working out and stylin' enough to wear when I'm hanging with friends on hot days", "Also washes really well", "Always a sweet n sporty look for the gym", "Keeps me cool and the seams don't rub up against me like some of my other tanks"]}`
+- **webarena-544**: Update the description of Selena Yoga Hoodie to highlight the real user positive reviews by quoting the comments
+  - program_html: url=`__SHOPPING_ADMIN__/../selene-yoga-hoodie.html` locator=`document.querySelector('.data.item.content').outerText + (document.querySelector('.product.attribute.overview [itemprop="description"]')?.outerText || '')` required=`{"must_include": ["I was super cold and it did the job.", "The sleeves are definitely thicker than you realize, which is a good thing", "really quite substantial", "planning on buying another one of these in another color", "the best hoodie ive ever owned"]}`
+- **webarena-545**: Update the description of Radiant Tee to highlight the real user positive reviews by quoting the comments
+  - program_html: url=`__SHOPPING_ADMIN__/../radiant-tee.html` locator=`document.querySelector('.data.item.content').outerText + (document.querySelector('.product.attribute.overview [itemprop="description"]')?.outerText || '')` required=`{"must_include": ["What I rally love here is that it does the job of keeping me cool and dry", "I'm a big guy and sweat A LOT", "Even after a day of gulf, I'm still dry and comfortable", "What a versatile shirt", "Not only does it feel very soft compared to my old worn out polos, but it also does th`
+- **webarena-546**: Update the description of Lucia Cross-Fit Bra to highlight the real user positive reviews by quoting the comments
+  - program_html: url=`__SHOPPING_ADMIN__/../affirm-water-bottle.html` locator=`document.querySelector('.data.item.content').outerText + (document.querySelector('.product.attribute.overview [itemprop="description"]')?.outerText || '')` required=`{"must_include": ["Wide mouth opening makes it easy to clean"]}`
+- **webarena-547**: Add a new color option brown to the size S of Phoebe Zipper Sweatshirt
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1130/` locator=`document.querySelector('[data-index="configurable"').outerText` required=`{"must_include": ["Phoebe Zipper Sweatshirt-S-Brown"]}`
+- **webarena-548**: Add a new color blue to size S and M of Frankie Sweatshirt
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/110/` locator=`document.querySelector('[data-index="configurable"').outerText` required=`{"must_include": ["Sweatshirt-M-Blue", "Sweatshirt-S-Blue"]}`
+- **webarena-549**: Add a new size XXXL to green Minerva LumaTech V-Tee
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1492/` locator=`document.querySelector('[data-index="configurable"').outerText` required=`{"must_include": ["V-Tee-XXXL-Green"]}`
+- **webarena-550**: Add a new size XXS to blue and purple Nona Fitness Tank
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1732/` locator=`document.querySelector('[data-index="configurable"').outerText` required=`{"must_include": ["Tank-XXS-Blue", "Tank-XXS-Purple"]}`
+- **webarena-551**: Add new size 30 and 31 to all color variants of Diana Tights
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1854/` locator=`document.querySelector('[data-index="configurable"').outerText` required=`{"must_include": ["Tights-30-Blue", "Tights-30-Black", "Tights-30-Orange", "Tights-31-Blue", "Tights-31-Black", "Tights-31-Orange"]}`
+- **webarena-676**: Go to the list of orders that are suspected of being fraudulent
+  - url: `__SHOPPING_ADMIN__/sales/order/`
+  - program_html: url=`last` locator=`document.querySelector("div.admin__data-grid-filters-current").outerText` required=`{"must_include": ["Suspected Fraud"]}`
+- **webarena-677**: Go to the list of orders that are processing
+  - url: `__SHOPPING_ADMIN__/sales/order/`
+  - program_html: url=`last` locator=`document.querySelector("div.admin__data-grid-filters-current").outerText` required=`{"must_include": ["Processing"]}`
+- **webarena-678**: Go to the list of orders that are canceled
+  - url: `__SHOPPING_ADMIN__/sales/order/`
+  - program_html: url=`last` locator=`document.querySelector("div.admin__data-grid-filters-current").outerText` required=`{"must_include": ["Canceled"]}`
+- **webarena-679**: Go to the list of orders that are completed
+  - url: `__SHOPPING_ADMIN__/sales/order/`
+  - program_html: url=`last` locator=`document.querySelector("div.admin__data-grid-filters-current").outerText` required=`{"must_include": ["Complete"]}`
+- **webarena-680**: Go to the list of orders that are on hold
+  - url: `__SHOPPING_ADMIN__/sales/order/`
+  - program_html: url=`last` locator=`document.querySelector("div.admin__data-grid-filters-current").outerText` required=`{"must_include": ["On Hold"]}`
+- **webarena-694**: Add a simple product named Energy-Bulk Women Shirt with 50 in stock, available in size S and color blue, priced at $60. Use attribute set top.
+  - url: `__SHOPPING_ADMIN__/catalog/product`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "60.00"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[name]"').value` required=`{"must_include": ["Energy-Bulk Women Shirt"]}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "50"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[size]"').value` required=`{"exact_match": "167"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[color]"').value` required=`{"exact_match": "50"}`
+- **webarena-695**: Add a simple product named Energy-Bulk Man Yoga Pant with 50 in stock, available in size 38 and color yellow, priced at $69.99. Use attribute set bottom.
+  - url: `__SHOPPING_ADMIN__/catalog/product`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "69.99"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[name]"').value` required=`{"must_include": ["Energy-Bulk Man Yoga Pant"]}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "50"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[size]"').value` required=`{"exact_match": "179"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[color]"').value` required=`{"exact_match": "60"}`
+- **webarena-696**: Add a simple product named FancyBoy Man Causal Jeans with 42 in stock, available in size 34 and color Blue, priced at $169.99. Use attribute set bottom.
+  - url: `__SHOPPING_ADMIN__/catalog/product`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[name]"').value` required=`{"must_include": ["FancyBoy Man Causal Jeans"]}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "42"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "169.99"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[size]"').value` required=`{"exact_match": "177"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[color]"').value` required=`{"exact_match": "50"}`
+- **webarena-697**: Add a simple product named Swaatch Smart Watch with 42 in stock, available in color Blue, priced at $769.99. Use attribute set gear.
+  - url: `__SHOPPING_ADMIN__/catalog/product`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[name]"').value` required=`{"must_include": ["Swaatch Smart Watch"]}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "42"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "769.99"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[color]"').value` required=`{"exact_match": "50"}`
+- **webarena-698**: Add a simple product named Lelelumon Yoga Mat with 42 in stock, available in color black, priced at $769.99. Use attribute set gear.
+  - url: `__SHOPPING_ADMIN__/catalog/product`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[name]"').value` required=`{"must_include": ["Lelelumon Yoga Mat"]}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "42"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "769.99"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="product[color]"').value` required=`{"exact_match": "49"}`
+- **webarena-699**: Create a new marketing cart price rule called "spring sale" for all registered customers that offers a 20 percent discount site-wide
+  - program_html: url=`last` locator=`func:shopping_admin_get_cart_price_rule('spring sale')` required=`{"must_include": ["\"name\": \"spring sale\"", "\"customer_group_ids\": [1]", "\"simple_action\": \"by_percent\"", "\"discount_amount\": \"20\""]}`
+- **webarena-700**: Create a new marketing cart price rule called "fall discount" for all registered customers that offers $10 discount for whole cart on checkout
+  - program_html: url=`last` locator=`func:shopping_admin_get_cart_price_rule('fall discount')` required=`{"must_include": ["\"name\": \"fall discount\"", "\"customer_group_ids\": [1]", "\"simple_action\": \"cart_fixed\"", "\"discount_amount\": \"10\""]}`
+- **webarena-701**: Create a new marketing cart price rule called "Mother's day sale" for all registered customers that offers 15% discount on checkout on all their cart
+  - program_html: url=`last` locator=`func:shopping_admin_get_cart_price_rule("Mother's daysale")` required=`{"must_include": ["\"name\": \"Mother's day sale\"", "\"customer_group_ids\": [1]", "\"simple_action\": \"by_percent\"", "\"discount_amount\": \"15\""]}`
+- **webarena-702**: Create a new marketing cart price rule called "Pride Month" for all registered customers that offers 45% off on all products
+  - program_html: url=`last` locator=`func:shopping_admin_get_cart_price_rule('Pride Month')` required=`{"must_include": ["\"name\": \"Pride Month\"", "\"customer_group_ids\": [1]", "\"simple_action\": \"by_percent\"", "\"discount_amount\": \"45\""]}`
+- **webarena-703**: Create a new marketing cart price rule called "Thanks giving sale" for all registered customers that offers $40 discount for whole cart on all their purchase
+  - program_html: url=`last` locator=`func:shopping_admin_get_cart_price_rule('Thanks giving sale')` required=`{"must_include": ["\"name\": \"Thanks giving sale\"", "\"customer_group_ids\": [1]", "\"simple_action\": \"cart_fixed\"", "\"discount_amount\": \"40\""]}`
+- **webarena-704**: Show the sales order report for for last months (today is March 15, 2023).
+  - url: `__SHOPPING_ADMIN__/reports/report_sales/sales`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_from"').value` required=`{"exact_match": "2/1/23"}`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_to"').value` required=`{"exact_match": "2/28/23"}`
+- **webarena-705**: Show the sales order report for over the last 45 days (today is March 15, 2023).
+  - url: `__SHOPPING_ADMIN__/reports/report_sales/sales`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_from"').value` required=`{"exact_match": "1/29/23"}`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_to"').value` required=`{"exact_match": "3/15/23"}`
+- **webarena-706**: Show the refund report for for Q1 (today is March 15, 2023).
+  - url: `__SHOPPING_ADMIN__/reports/report_sales/refunded`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_from"').value` required=`{"exact_match": "1/1/23"}`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_to"').value` required=`{"exact_match": "3/31/23"}`
+- **webarena-707**: Show the sales order report for for last year (today is March 15, 2023).
+  - url: `__SHOPPING_ADMIN__/reports/report_sales/sales`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_from"').value` required=`{"exact_match": "1/1/22"}`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_to"').value` required=`{"exact_match": "12/31/22"}`
+- **webarena-708**: Show the tax report for for this year (today is March 15, 2023).
+  - url: `__SHOPPING_ADMIN__/reports/report_sales/tax/`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_from"').value` required=`{"exact_match": "1/1/23"}`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_to"').value` required=`{"exact_match": "3/15/23"}`
+- **webarena-709**: Show the orders report from May 1, 2021 to March 31, 2022.
+  - url: `__SHOPPING_ADMIN__/reports/report_sales/sales`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_from"').value` required=`{"exact_match": "5/1/21"}`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_to"').value` required=`{"exact_match": "3/31/22"}`
+- **webarena-710**: Show the shipping report from August 5, 2022 to March 1, 2023.
+  - url: `__SHOPPING_ADMIN__/reports/report_sales/shipping`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_from"').value` required=`{"exact_match": "8/5/22"}`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_to"').value` required=`{"exact_match": "3/1/23"}`
+- **webarena-711**: Show the product view report from July 5, 2021 to May 31, 2023.
+  - url: `__SHOPPING_ADMIN__/reports/report_product/viewed/`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_from"').value` required=`{"exact_match": "7/5/21"}`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_to"').value` required=`{"exact_match": "5/31/23"}`
+- **webarena-712**: Show the coupons report from May 1, 2021 to May 15, 2023.
+  - url: `__SHOPPING_ADMIN__/reports/report_sales/coupons/`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_from"').value` required=`{"exact_match": "5/1/21"}`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_to"').value` required=`{"exact_match": "5/15/23"}`
+- **webarena-713**: Show the best sellers report from May 1, 2022 to May 31, 2023.
+  - url: `__SHOPPING_ADMIN__/reports/report_sales/bestsellers/`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_from"').value` required=`{"exact_match": "5/1/22"}`
+  - program_html: url=`last` locator=`document.querySelector('[id="sales_report_to"').value` required=`{"exact_match": "5/31/23"}`
+- **webarena-759**: Show on the map the route and driving time from the city where my E-commerce customer Sophia Young lives to New York City. (Use the OSRM direction service.)
+  - program_html: url=`last` locator=`document.querySelector("div#content select.routing_engines").selectedIndex` required=`{"exact_match": "1"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="route_from"').value` required=`{"must_include": ["Boston"]}`
+  - program_html: url=`last` locator=`document.querySelector('[name="route_to"').value` required=`{"must_include": ["New York"]}`
+- **webarena-760**: Show on the map the route and driving time from Allentown, PA to the city where my E-commerce customer Amanda Kim lives. (Use the OSRM direction service.)
+  - program_html: url=`last` locator=`document.querySelector("div#content select.routing_engines").selectedIndex` required=`{"exact_match": "1"}`
+  - program_html: url=`last` locator=`document.querySelector('[name="route_from"').value` required=`{"must_include": ["Allentown"]}`
+  - program_html: url=`last` locator=`document.querySelector('[name="route_to"').value` required=`{"must_include": ["Hoboken", "New Jersey"]}`
+- **webarena-768**: 5 blue Cronus yoga pants with size 33 arrived, update the stock. If previous stock exist, add to it. If it does not exist previously, also update stock status to in stock.
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/872/` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "5"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/872/` locator=`document.querySelector('[name="product[quantity_and_stock_status][is_in_stock]"').value` required=`{"exact_match": "1"}`
+- **webarena-769**: We've received additional 378 brown Aero daily fitness tee in every size, please update the inventory. If previous stock exist, add to it. If it does not exist previously, also update stock status to in stock.
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/544/` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "478"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/547/` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "478"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/550/` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "478"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/553/` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "478"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/556/` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "478"}`
+- **webarena-770**: We've received additional 12 white Cora parachute pant of size 28 and 56 blue of size 29, update the inventory. If previous stock exist, add to it. If it does not exist previously, also update stock status to in stock.
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1836/` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "112"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1838/` locator=`document.querySelector('[name="product[quantity_and_stock_status][qty]"').value` required=`{"exact_match": "156"}`
+- **webarena-771**: Approve reviews with four stars or higher to display in our store.
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/352` locator=`document.querySelector('[name="status_id"').value` required=`{"exact_match": 1}`
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/347` locator=`document.querySelector('[name="status_id"').value` required=`{"exact_match": 1}`
+- **webarena-772**: Delete all pending negative reviews for Circe Hooded Ice Fleece
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/999` locator=`` required=`{"must_include": ["Rating isn't Available"]}`
+- **webarena-773**: Delete all pending negative reviews
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/351` locator=`` required=`{"must_include": ["Rating isn't Available"]}`
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/353` locator=`` required=`{"must_include": ["Rating isn't Available"]}`
+- **webarena-774**: Delete all pending reviews with less than 4 stars
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/351` locator=`` required=`{"must_include": ["Rating isn't Available"]}`
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/353` locator=`` required=`{"must_include": ["Rating isn't Available"]}`
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/349` locator=`` required=`{"must_include": ["Rating isn't Available"]}`
+- **webarena-775**: Delete all reviews from the scammer Arden
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/51` locator=`` required=`{"must_include": ["Rating isn't Available"]}`
+- **webarena-776**: Delete all reviews from the scammer Carlo
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/93` locator=`` required=`{"must_include": ["Rating isn't Available"]}`
+  - program_html: url=`__SHOPPING_ADMIN__/review/product/edit/id/109` locator=`` required=`{"must_include": ["Rating isn't Available"]}`
+- **webarena-777**: Reduce the price of green Hollister backyard sweatshirt in all sizes by $5
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/120/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "47.00"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/117/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "47.00"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/114/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "47.00"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/111/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "47.00"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/123/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "47.00"}`
+- **webarena-778**: Reduce the price of size 28 Sahara leggings of all colors by 13.5%
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1841/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "64.88"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1842/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "64.88"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1843/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "64.88"}`
+- **webarena-779**: Reduce the price of yellow shirts from Gwyn Endurance in all sizes below L by 15%
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1559/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "20.40"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1562/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "20.40"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1565/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "20.40"}`
+- **webarena-780**: Increase the price of white Ingrid Running with size L and above by $17
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1264/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "64.00"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1267/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "64.00"}`
+- **webarena-781**: Increase the price of black fitness tshirts from Desiree with size XS by 37%
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/1573/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "32.88"}`
+- **webarena-782**: Increase the price of all blue running tshirts in extra small and small sizes by 23%
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/496/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "22.33"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/499/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "22.33"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/479/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "21.56"}`
+  - program_html: url=`__SHOPPING_ADMIN__/catalog/product/edit/id/482/` locator=`document.querySelector('[name="product[price]"').value` required=`{"exact_match": "21.56"}`
+- **webarena-790**: Delete all negative reviews for Sybil running short
+  - answer: `{"fuzzy_match": "N/A"}`

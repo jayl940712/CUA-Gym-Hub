@@ -1,0 +1,2354 @@
+[
+ {
+  "product_super_attribute_id": 2,
+  "product_id": 62,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 3,
+  "product_id": 62,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 4,
+  "product_id": 78,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 5,
+  "product_id": 78,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 6,
+  "product_id": 94,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 7,
+  "product_id": 94,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 8,
+  "product_id": 110,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 9,
+  "product_id": 110,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 10,
+  "product_id": 126,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 11,
+  "product_id": 126,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 12,
+  "product_id": 142,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 13,
+  "product_id": 142,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 14,
+  "product_id": 158,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 15,
+  "product_id": 158,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 16,
+  "product_id": 174,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 17,
+  "product_id": 174,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 18,
+  "product_id": 190,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 19,
+  "product_id": 190,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 20,
+  "product_id": 206,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 21,
+  "product_id": 206,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 22,
+  "product_id": 222,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 23,
+  "product_id": 222,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 24,
+  "product_id": 238,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 25,
+  "product_id": 238,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 26,
+  "product_id": 254,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 27,
+  "product_id": 254,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 28,
+  "product_id": 270,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 29,
+  "product_id": 270,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 30,
+  "product_id": 286,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 31,
+  "product_id": 286,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 32,
+  "product_id": 302,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 33,
+  "product_id": 302,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 34,
+  "product_id": 318,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 35,
+  "product_id": 318,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 36,
+  "product_id": 334,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 37,
+  "product_id": 334,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 38,
+  "product_id": 350,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 39,
+  "product_id": 350,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 40,
+  "product_id": 366,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 41,
+  "product_id": 366,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 42,
+  "product_id": 382,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 43,
+  "product_id": 382,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 44,
+  "product_id": 398,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 45,
+  "product_id": 398,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 46,
+  "product_id": 414,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 47,
+  "product_id": 414,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 48,
+  "product_id": 430,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 49,
+  "product_id": 430,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 50,
+  "product_id": 446,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 51,
+  "product_id": 446,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 52,
+  "product_id": 462,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 53,
+  "product_id": 462,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 54,
+  "product_id": 478,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 55,
+  "product_id": 478,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 56,
+  "product_id": 494,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 57,
+  "product_id": 494,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 58,
+  "product_id": 510,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 59,
+  "product_id": 510,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 60,
+  "product_id": 526,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 61,
+  "product_id": 526,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 62,
+  "product_id": 542,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 63,
+  "product_id": 542,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 64,
+  "product_id": 558,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 65,
+  "product_id": 558,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 66,
+  "product_id": 574,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 67,
+  "product_id": 574,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 68,
+  "product_id": 590,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 69,
+  "product_id": 590,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 70,
+  "product_id": 606,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 71,
+  "product_id": 606,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 72,
+  "product_id": 622,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 73,
+  "product_id": 622,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 74,
+  "product_id": 638,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 75,
+  "product_id": 638,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 76,
+  "product_id": 654,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 77,
+  "product_id": 654,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 78,
+  "product_id": 670,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 79,
+  "product_id": 670,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 80,
+  "product_id": 676,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 81,
+  "product_id": 676,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 82,
+  "product_id": 682,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 83,
+  "product_id": 682,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 84,
+  "product_id": 688,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 85,
+  "product_id": 688,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 86,
+  "product_id": 694,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 87,
+  "product_id": 694,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 88,
+  "product_id": 700,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 89,
+  "product_id": 700,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 90,
+  "product_id": 706,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 91,
+  "product_id": 706,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 92,
+  "product_id": 712,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 93,
+  "product_id": 712,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 94,
+  "product_id": 718,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 95,
+  "product_id": 718,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 96,
+  "product_id": 724,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 97,
+  "product_id": 724,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 98,
+  "product_id": 737,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 99,
+  "product_id": 737,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 100,
+  "product_id": 750,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 101,
+  "product_id": 750,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 102,
+  "product_id": 763,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 103,
+  "product_id": 763,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 104,
+  "product_id": 776,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 105,
+  "product_id": 776,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 106,
+  "product_id": 789,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 107,
+  "product_id": 789,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 108,
+  "product_id": 802,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 109,
+  "product_id": 802,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 110,
+  "product_id": 815,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 111,
+  "product_id": 815,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 112,
+  "product_id": 828,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 113,
+  "product_id": 828,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 114,
+  "product_id": 841,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 115,
+  "product_id": 841,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 116,
+  "product_id": 854,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 117,
+  "product_id": 854,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 118,
+  "product_id": 867,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 119,
+  "product_id": 867,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 120,
+  "product_id": 880,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 121,
+  "product_id": 880,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 122,
+  "product_id": 893,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 123,
+  "product_id": 893,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 124,
+  "product_id": 898,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 125,
+  "product_id": 898,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 126,
+  "product_id": 911,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 127,
+  "product_id": 911,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 128,
+  "product_id": 924,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 129,
+  "product_id": 924,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 130,
+  "product_id": 937,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 131,
+  "product_id": 937,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 132,
+  "product_id": 950,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 133,
+  "product_id": 950,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 134,
+  "product_id": 963,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 135,
+  "product_id": 963,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 136,
+  "product_id": 976,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 137,
+  "product_id": 976,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 138,
+  "product_id": 989,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 139,
+  "product_id": 989,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 140,
+  "product_id": 1002,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 141,
+  "product_id": 1002,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 142,
+  "product_id": 1015,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 143,
+  "product_id": 1015,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 144,
+  "product_id": 1028,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 145,
+  "product_id": 1028,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 146,
+  "product_id": 1044,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 147,
+  "product_id": 1044,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 148,
+  "product_id": 1060,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 149,
+  "product_id": 1060,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 150,
+  "product_id": 1076,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 151,
+  "product_id": 1076,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 152,
+  "product_id": 1092,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 153,
+  "product_id": 1092,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 154,
+  "product_id": 1108,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 155,
+  "product_id": 1108,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 156,
+  "product_id": 1114,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 157,
+  "product_id": 1114,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 158,
+  "product_id": 1130,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 159,
+  "product_id": 1130,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 160,
+  "product_id": 1146,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 161,
+  "product_id": 1146,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 162,
+  "product_id": 1162,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 163,
+  "product_id": 1162,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 164,
+  "product_id": 1178,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 165,
+  "product_id": 1178,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 166,
+  "product_id": 1194,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 167,
+  "product_id": 1194,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 168,
+  "product_id": 1210,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 169,
+  "product_id": 1210,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 170,
+  "product_id": 1220,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 171,
+  "product_id": 1220,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 172,
+  "product_id": 1236,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 173,
+  "product_id": 1236,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 174,
+  "product_id": 1252,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 175,
+  "product_id": 1252,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 176,
+  "product_id": 1268,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 177,
+  "product_id": 1268,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 178,
+  "product_id": 1284,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 179,
+  "product_id": 1284,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 180,
+  "product_id": 1300,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 181,
+  "product_id": 1300,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 182,
+  "product_id": 1316,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 183,
+  "product_id": 1316,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 184,
+  "product_id": 1332,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 185,
+  "product_id": 1332,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 186,
+  "product_id": 1348,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 187,
+  "product_id": 1348,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 188,
+  "product_id": 1364,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 189,
+  "product_id": 1364,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 190,
+  "product_id": 1380,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 191,
+  "product_id": 1380,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 192,
+  "product_id": 1396,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 193,
+  "product_id": 1396,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 194,
+  "product_id": 1412,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 195,
+  "product_id": 1412,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 196,
+  "product_id": 1428,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 197,
+  "product_id": 1428,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 198,
+  "product_id": 1444,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 199,
+  "product_id": 1444,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 200,
+  "product_id": 1460,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 201,
+  "product_id": 1460,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 202,
+  "product_id": 1476,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 203,
+  "product_id": 1476,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 204,
+  "product_id": 1492,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 205,
+  "product_id": 1492,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 206,
+  "product_id": 1508,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 207,
+  "product_id": 1508,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 208,
+  "product_id": 1524,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 209,
+  "product_id": 1524,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 210,
+  "product_id": 1540,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 211,
+  "product_id": 1540,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 212,
+  "product_id": 1556,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 213,
+  "product_id": 1556,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 214,
+  "product_id": 1572,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 215,
+  "product_id": 1572,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 216,
+  "product_id": 1588,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 217,
+  "product_id": 1588,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 218,
+  "product_id": 1604,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 219,
+  "product_id": 1604,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 220,
+  "product_id": 1620,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 221,
+  "product_id": 1620,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 222,
+  "product_id": 1636,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 223,
+  "product_id": 1636,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 224,
+  "product_id": 1652,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 225,
+  "product_id": 1652,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 226,
+  "product_id": 1668,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 227,
+  "product_id": 1668,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 228,
+  "product_id": 1684,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 229,
+  "product_id": 1684,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 230,
+  "product_id": 1700,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 231,
+  "product_id": 1700,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 232,
+  "product_id": 1716,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 233,
+  "product_id": 1716,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 234,
+  "product_id": 1732,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 235,
+  "product_id": 1732,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 236,
+  "product_id": 1748,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 237,
+  "product_id": 1748,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 238,
+  "product_id": 1764,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 239,
+  "product_id": 1764,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 240,
+  "product_id": 1780,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 241,
+  "product_id": 1780,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 242,
+  "product_id": 1796,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 243,
+  "product_id": 1796,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 244,
+  "product_id": 1812,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 245,
+  "product_id": 1812,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 246,
+  "product_id": 1819,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 247,
+  "product_id": 1819,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 248,
+  "product_id": 1826,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 249,
+  "product_id": 1826,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 250,
+  "product_id": 1833,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 251,
+  "product_id": 1833,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 252,
+  "product_id": 1840,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 253,
+  "product_id": 1840,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 254,
+  "product_id": 1847,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 255,
+  "product_id": 1847,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 256,
+  "product_id": 1854,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 257,
+  "product_id": 1854,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 258,
+  "product_id": 1861,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 259,
+  "product_id": 1861,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 260,
+  "product_id": 1868,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 261,
+  "product_id": 1868,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 262,
+  "product_id": 1875,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 263,
+  "product_id": 1875,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 264,
+  "product_id": 1882,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 265,
+  "product_id": 1882,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 266,
+  "product_id": 1889,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 267,
+  "product_id": 1889,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 268,
+  "product_id": 1896,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 269,
+  "product_id": 1896,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 270,
+  "product_id": 1903,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 271,
+  "product_id": 1903,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 272,
+  "product_id": 1919,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 273,
+  "product_id": 1919,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 274,
+  "product_id": 1935,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 275,
+  "product_id": 1935,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 276,
+  "product_id": 1951,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 277,
+  "product_id": 1951,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 278,
+  "product_id": 1967,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 279,
+  "product_id": 1967,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 280,
+  "product_id": 1983,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 281,
+  "product_id": 1983,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 282,
+  "product_id": 1990,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 283,
+  "product_id": 1990,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 284,
+  "product_id": 1997,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 285,
+  "product_id": 1997,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 286,
+  "product_id": 2003,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 287,
+  "product_id": 2003,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 288,
+  "product_id": 2010,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 289,
+  "product_id": 2010,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 290,
+  "product_id": 2017,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 291,
+  "product_id": 2017,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 292,
+  "product_id": 2024,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 293,
+  "product_id": 2024,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ },
+ {
+  "product_super_attribute_id": 294,
+  "product_id": 2040,
+  "attribute_id": 144,
+  "position": 0,
+  "attribute_code": "size",
+  "label": "Size"
+ },
+ {
+  "product_super_attribute_id": 295,
+  "product_id": 2040,
+  "attribute_id": 93,
+  "position": 1,
+  "attribute_code": "color",
+  "label": "Color"
+ }
+]

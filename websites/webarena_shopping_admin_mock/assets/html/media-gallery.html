@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+    <head >
+        <script>
+    var BASE_URL = 'http://10.186.197.203:7780/admin/media_gallery/';
+    var FORM_KEY = 'UWbSTSbjBGjgvxUk';
+    var require = {
+        'baseUrl': 'http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US'
+    };</script>        <meta charset="utf-8"/>
+<meta name="title" content="Manage Gallery / Media / Content / Magento Admin"/>
+<meta name="robots" content="NOINDEX,NOFOLLOW"/>
+<meta name="viewport" content="width=1024"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Manage Gallery / Media / Content / Magento Admin</title>
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/extjs/resources/css/ext-all.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/extjs/resources/css/ytheme-magento.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/jquery/jstree/themes/default/style.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/css/styles-old.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/css/styles.css" />
+<link  rel="icon" type="image/x-icon" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/Magento_Theme/favicon.ico" />
+<link  rel="shortcut icon" type="image/x-icon" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/Magento_Theme/favicon.ico" />
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/requirejs/require.js"></script>
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/mage/requirejs/mixins.js"></script>
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/requirejs-config.js"></script>
+            </head>
+    <body data-container="body"
+          data-mage-init='{"loaderAjax": {}, "loader": { "icon": "http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/images/loader-2.gif"}}'
+        id="html-body" class="media_gallery-media-index page-layout-admin-1column">
+        <div class="menu-wrapper">                        <a
+            href="http://10.186.197.203:7780/admin/admin/"
+            data-edition="Community Edition"            class="logo">
+            <img class="logo-img" src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/images/magento-icon.svg"
+            alt="Magento Admin Panel" title="Magento Admin Panel"/>
+        </a>
+
+<nav data-mage-init='{"globalNavigation": {}}' class="admin__menu">
+    <ul id="nav" role="menubar" ><li  data-ui-id="menu-magento-backend-dashboard"  class="item-dashboard    level-0" id="menu-magento-backend-dashboard" aria-haspopup="true" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/dashboard/"   class=""><span>Dashboard</span></a></li><li  data-ui-id="menu-magento-sales-sales"  class="item-sales  parent  level-0" id="menu-magento-sales-sales" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Sales</span></a><div class="submenu" aria-labelledby="menu-magento-sales-sales"><strong class="submenu-title">Sales</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-sales-sales-operation"  class="item-sales-operation  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Operations</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-sales-sales-order"  class="item-sales-order    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/order/"   class=""><span>Orders</span></a></li><li  data-ui-id="menu-magento-sales-sales-invoice"  class="item-sales-invoice    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/invoice/"   class=""><span>Invoices</span></a></li><li  data-ui-id="menu-magento-sales-sales-shipment"  class="item-sales-shipment    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/shipment/"   class=""><span>Shipments</span></a></li><li  data-ui-id="menu-magento-sales-sales-creditmemo"  class="item-sales-creditmemo    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/creditmemo/"   class=""><span>Credit Memos</span></a></li><li  data-ui-id="menu-magento-paypal-paypal-billing-agreement"  class="item-paypal-billing-agreement    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/paypal/billing_agreement/"   class=""><span>Billing Agreements</span></a></li><li  data-ui-id="menu-magento-sales-sales-transactions"  class="item-sales-transactions    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/transactions/"   class=""><span>Transactions</span></a></li><li  data-ui-id="menu-paypal-braintree-virtual-terminal"  class="item-virtual-terminal    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/braintree/virtual/"   class=""><span>Braintree Virtual Terminal</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-catalog-catalog"  class="item-catalog  parent  level-0" id="menu-magento-catalog-catalog" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Catalog</span></a><div class="submenu" aria-labelledby="menu-magento-catalog-catalog"><strong class="submenu-title">Catalog</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-catalog-inventory"  class="item-inventory  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Inventory</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalog-catalog-products"  class="item-catalog-products    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product/"   class=""><span>Products</span></a></li><li  data-ui-id="menu-magento-catalog-catalog-categories"  class="item-catalog-categories    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/category/"   class=""><span>Categories</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-customer-customer"  class="item-customer  parent  level-0" id="menu-magento-customer-customer" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Customers</span></a><div class="submenu" aria-labelledby="menu-magento-customer-customer"><strong class="submenu-title">Customers</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-customer-customer-manage"  class="item-customer-manage    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/index/"   class=""><span>All Customers</span></a></li><li  data-ui-id="menu-magento-customer-customer-online"  class="item-customer-online    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/online/"   class=""><span>Now Online</span></a></li><li  data-ui-id="menu-magento-loginascustomerlog-login-log"  class="item-login-log    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/loginascustomer_log/log/index/"   class=""><span>Login as Customer Log</span></a></li><li  data-ui-id="menu-magento-customer-customer-group"  class="item-customer-group    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/group/"   class=""><span>Customer Groups</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing"  class="item-marketing  parent  level-0" id="menu-magento-backend-marketing" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Marketing</span></a><div class="submenu" aria-labelledby="menu-magento-backend-marketing"><strong class="submenu-title">Marketing</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-catalogrule-promo"  class="item-promo  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Promotions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalogrule-promo-catalog"  class="item-promo-catalog    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog_rule/promo_catalog/"   class=""><span>Catalog Price Rule</span></a></li><li  data-ui-id="menu-magento-salesrule-promo-quote"  class="item-promo-quote    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales_rule/promo_quote/"   class=""><span>Cart Price Rules</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing-communications"  class="item-marketing-communications  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Communications</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-email-template"  class="item-template    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/email_template/"   class=""><span>Email Templates</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-template"  class="item-newsletter-template    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/template/"   class=""><span>Newsletter Templates</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-queue"  class="item-newsletter-queue    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/queue/"   class=""><span>Newsletter Queue</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-subscriber"  class="item-newsletter-subscriber    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/subscriber/"   class=""><span>Newsletter Subscribers</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-marketing-seo"  class="item-marketing-seo  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>SEO &amp; Search</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-urlrewrite-urlrewrite"  class="item-urlrewrite    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/url_rewrite/index/"   class=""><span>URL Rewrites</span></a></li><li  data-ui-id="menu-magento-search-search-terms"  class="item-search-terms    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/term/index/"   class=""><span>Search Terms</span></a></li><li  data-ui-id="menu-magento-search-search-synonyms"  class="item-search-synonyms    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/synonyms/index/"   class=""><span>Search Synonyms</span></a></li><li  data-ui-id="menu-magento-sitemap-catalog-sitemap"  class="item-catalog-sitemap    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/sitemap/"   class=""><span>Site Map</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing-user-content"  class="item-marketing-user-content  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>User Content</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-reviews-all"  class="item-catalog-reviews-ratings-reviews-all    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/product/index/"   class=""><span>All Reviews</span></a></li><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-pending"  class="item-catalog-reviews-ratings-pending    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/product/pending/"   class=""><span>Pending Reviews</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-content"  class="item-content _current _active parent  level-0" id="menu-magento-backend-content" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class="_active"><span>Content</span></a><div class="submenu" aria-labelledby="menu-magento-backend-content"><strong class="submenu-title">Content</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-backend-content-elements"  class="item-content-elements  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Elements</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-cms-cms-page"  class="item-cms-page    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/cms/page/"   class=""><span>Pages</span></a></li><li  data-ui-id="menu-magento-cms-cms-block"  class="item-cms-block    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/cms/block/"   class=""><span>Blocks</span></a></li><li  data-ui-id="menu-magento-widget-cms-widget-instance"  class="item-cms-widget-instance    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/widget_instance/"   class=""><span>Widgets</span></a></li><li  data-ui-id="menu-magento-pagebuilder-templates"  class="item-templates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/pagebuilder/template/"   class=""><span>Templates</span></a></li></ul></div></li><li  data-ui-id="menu-magento-mediagalleryui-media"  class="item-media  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Media</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-mediagalleryui-media-gallery"  class="item-media-gallery    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/media_gallery/media/index/"   class=""><span>Media Gallery</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-design"  class="item-system-design  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Design</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-theme-design-config"  class="item-design-config    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/theme/design_config/"   class=""><span>Configuration</span></a></li><li  data-ui-id="menu-magento-theme-system-design-theme"  class="item-system-design-theme    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_design_theme/"   class=""><span>Themes</span></a></li><li  data-ui-id="menu-magento-backend-system-design-schedule"  class="item-system-design-schedule    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_design/"   class=""><span>Schedule</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-reports-report"  class="item-report  parent  level-0" id="menu-magento-reports-report" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Reports</span></a><div class="submenu" aria-labelledby="menu-magento-reports-report"><strong class="submenu-title">Reports</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-marketing"  class="item-report-marketing  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Marketing</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-shopcart-product"  class="item-report-shopcart-product    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_shopcart/product/"   class=""><span>Products in Cart</span></a></li><li  data-ui-id="menu-magento-search-report-search-term"  class="item-report-search-term    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/term/report/"   class=""><span>Search Terms</span></a></li><li  data-ui-id="menu-magento-reports-report-shopcart-abandoned"  class="item-report-shopcart-abandoned    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_shopcart/abandoned/"   class=""><span>Abandoned Carts</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-problem"  class="item-newsletter-problem    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/problem/"   class=""><span>Newsletter Problem Reports</span></a></li></ul></div></li><li  data-ui-id="menu-magento-review-report-review"  class="item-report-review  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Reviews</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-review-report-review-customer"  class="item-report-review-customer    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_review/customer/"   class=""><span>By Customers</span></a></li><li  data-ui-id="menu-magento-review-report-review-product"  class="item-report-review-product    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_review/product/"   class=""><span>By Products</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-salesroot"  class="item-report-salesroot  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Sales</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-salesroot-sales"  class="item-report-salesroot-sales    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/sales/"   class=""><span>Orders</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-tax"  class="item-report-salesroot-tax    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/tax/"   class=""><span>Tax</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-invoiced"  class="item-report-salesroot-invoiced    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/invoiced/"   class=""><span>Invoiced</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-shipping"  class="item-report-salesroot-shipping    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/shipping/"   class=""><span>Shipping</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-refunded"  class="item-report-salesroot-refunded    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/refunded/"   class=""><span>Refunds</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-coupons"  class="item-report-salesroot-coupons    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/coupons/"   class=""><span>Coupons</span></a></li><li  data-ui-id="menu-magento-paypal-report-salesroot-paypal-settlement-reports"  class="item-report-salesroot-paypal-settlement-reports    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/paypal/paypal_reports/"   class=""><span>PayPal Settlement</span></a></li><li  data-ui-id="menu-paypal-braintree-settlement-report"  class="item-settlement-report    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/braintree/report/"   class=""><span>Braintree Settlement</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-customers"  class="item-report-customers  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Customers</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-customers-totals"  class="item-report-customers-totals    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/totals/"   class=""><span>Order Total</span></a></li><li  data-ui-id="menu-magento-reports-report-customers-orders"  class="item-report-customers-orders    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/orders/"   class=""><span>Order Count</span></a></li><li  data-ui-id="menu-magento-reports-report-customers-accounts"  class="item-report-customers-accounts    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/accounts/"   class=""><span>New</span></a></li></ul></div></li><li  data-ui-id="menu-magento-reports-report-products"  class="item-report-products  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Products</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-products-viewed"  class="item-report-products-viewed    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/viewed/"   class=""><span>Views</span></a></li><li  data-ui-id="menu-magento-reports-report-products-bestsellers"  class="item-report-products-bestsellers    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/bestsellers/"   class=""><span>Bestsellers</span></a></li><li  data-ui-id="menu-magento-reports-report-products-lowstock"  class="item-report-products-lowstock    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/lowstock/"   class=""><span>Low Stock</span></a></li><li  data-ui-id="menu-magento-reports-report-products-sold"  class="item-report-products-sold    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/sold/"   class=""><span>Ordered</span></a></li><li  data-ui-id="menu-magento-downloadable-report-products-downloads"  class="item-report-products-downloads    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/downloads/"   class=""><span>Downloads</span></a></li></ul></div></li><li  data-ui-id="menu-magento-reports-report-statistics"  class="item-report-statistics  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Statistics</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-statistics-refresh"  class="item-report-statistics-refresh    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_statistics/"   class=""><span>Refresh Statistics</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-analytics-business-intelligence"  class="item-business-intelligence  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Business Intelligence</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-analytics-advanced-reporting"  class="item-advanced-reporting    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/analytics/reports/show/" target=_blank  class=""><span>Advanced Reporting</span></a></li><li  data-ui-id="menu-magento-analytics-bi-essentials"  class="item-bi-essentials    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/analytics/biessentials/signup/" target=_blank  class=""><span>BI Essentials</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-stores"  class="item-stores  parent  level-0" id="menu-magento-backend-stores" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Stores</span></a><div class="submenu" aria-labelledby="menu-magento-backend-stores"><strong class="submenu-title">Stores</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-stores-settings"  class="item-stores-settings  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Settings</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-backend-system-store"  class="item-system-store    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_store/"   class=""><span>All Stores</span></a></li><li  data-ui-id="menu-magento-config-system-config"  class="item-system-config    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_config/"   class=""><span>Configuration</span></a></li><li  data-ui-id="menu-magento-checkoutagreements-sales-checkoutagreement"  class="item-sales-checkoutagreement    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/checkout/agreement/"   class=""><span>Terms and Conditions</span></a></li><li  data-ui-id="menu-magento-sales-system-order-statuses"  class="item-system-order-statuses    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/order_status/"   class=""><span>Order Status</span></a></li></ul></div></li><li  data-ui-id="menu-magento-inventoryadminui-inventory"  class="item-inventory  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Inventory</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-inventoryadminui-source"  class="item-source    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/inventory/source/index/"   class=""><span>Sources</span></a></li><li  data-ui-id="menu-magento-inventoryadminui-stock"  class="item-stock    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/inventory/stock/index/"   class=""><span>Stocks</span></a></li></ul></div></li><li  data-ui-id="menu-magento-tax-sales-tax"  class="item-sales-tax  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Taxes</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-tax-sales-tax-rules"  class="item-sales-tax-rules    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rule/"   class=""><span>Tax Rules</span></a></li><li  data-ui-id="menu-magento-tax-sales-tax-rates"  class="item-sales-tax-rates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rate/"   class=""><span>Tax Zones and Rates</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-currencysymbol-system-currency"  class="item-system-currency  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Currency</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-currencysymbol-system-currency-rates"  class="item-system-currency-rates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_currency/"   class=""><span>Currency Rates</span></a></li><li  data-ui-id="menu-magento-currencysymbol-system-currency-symbols"  class="item-system-currency-symbols    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_currencysymbol/"   class=""><span>Currency Symbols</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-stores-attributes"  class="item-stores-attributes  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Attributes</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalog-catalog-attributes-attributes"  class="item-catalog-attributes-attributes    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product_attribute/"   class=""><span>Product</span></a></li><li  data-ui-id="menu-magento-catalog-catalog-attributes-sets"  class="item-catalog-attributes-sets    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product_set/"   class=""><span>Attribute Set</span></a></li><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-ratings"  class="item-catalog-reviews-ratings-ratings    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/rating/"   class=""><span>Rating</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-other-settings"  class="item-other-settings    level-1" role="menu-item"></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-system"  class="item-system  parent  level-0" id="menu-magento-backend-system" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>System</span></a><div class="submenu" aria-labelledby="menu-magento-backend-system"><strong class="submenu-title">System</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-system-convert"  class="item-system-convert  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Data Transfer</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-importexport-system-convert-import"  class="item-system-convert-import    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/import/"   class=""><span>Import</span></a></li><li  data-ui-id="menu-magento-importexport-system-convert-export"  class="item-system-convert-export    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/export/"   class=""><span>Export</span></a></li><li  data-ui-id="menu-magento-taximportexport-system-convert-tax"  class="item-system-convert-tax    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rate/importExport/"   class=""><span>Import/Export Tax Rates</span></a></li><li  data-ui-id="menu-magento-importexport-system-convert-history"  class="item-system-convert-history    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/history/"   class=""><span>Import History</span></a></li></ul></div></li><li  data-ui-id="menu-magento-integration-system-extensions"  class="item-system-extensions  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Extensions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-integration-system-integrations"  class="item-system-integrations    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/integration/"   class=""><span>Integrations</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-tools"  class="item-system-tools  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Tools</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-backend-system-cache"  class="item-system-cache    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/cache/"   class=""><span>Cache Management</span></a></li><li  data-ui-id="menu-magento-indexer-system-index"  class="item-system-index    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/indexer/indexer/list/"   class=""><span>Index Management</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-user-system-acl"  class="item-system-acl  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Permissions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-user-system-acl-users"  class="item-system-acl-users    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/user/"   class=""><span>All Users</span></a></li><li  data-ui-id="menu-magento-user-system-acl-locks"  class="item-system-acl-locks    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/locks/"   class=""><span>Locked Users</span></a></li><li  data-ui-id="menu-magento-user-system-acl-roles"  class="item-system-acl-roles    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/user_role/"   class=""><span>User Roles</span></a></li></ul></div></li><li  data-ui-id="menu-magento-asynchronousoperations-system-magento-logging"  class="item-system-magento-logging  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Action Logs</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-asynchronousoperations-system-magento-logging-bulk-operations"  class="item-system-magento-logging-bulk-operations    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/bulk/index/"   class=""><span>Bulk Actions</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-other-settings"  class="item-system-other-settings  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Other Settings</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-adminnotification-system-adminnotification"  class="item-system-adminnotification    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/notification/"   class=""><span>Notifications</span></a></li><li  data-ui-id="menu-magento-variable-system-variable"  class="item-system-variable    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_variable/"   class=""><span>Custom Variables</span></a></li><li  data-ui-id="menu-magento-encryptionkey-system-crypt-key"  class="item-system-crypt-key    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/crypt_key/"   class=""><span>Manage Encryption Key</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-marketplace-partners"  class="item-partners   last level-0" id="menu-magento-marketplace-partners" aria-haspopup="true" role="menu-item"><a href="http://10.186.197.203:7780/admin/marketplace/index/"   class=""><span>Find Partners &amp; Extensions</span></a></li></ul></nav>
+
+</div>
+
+
+<script>
+require([
+    "jquery",
+    "jquery/ui"
+], function($){
+
+    $.extend(true, $, {
+        calendarConfig: {
+            dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+            dayNamesMin: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+            monthNames: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+            monthNamesShort: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+            infoTitle: "About\u0020the\u0020calendar",
+            firstDay: 0,
+            closeText: "Close",
+            currentText: "Go\u0020Today",
+            prevText: "Previous",
+            nextText: "Next",
+            weekHeader: "WK",
+            timeText: "Time",
+            hourText: "Hour",
+            minuteText: "Minute",
+            dateFormat: $.datepicker.RFC_2822,
+            showOn: "button",
+            showAnim: "",
+            changeMonth: true,
+            changeYear: true,
+            buttonImageOnly: null,
+            buttonImage: null,
+            showButtonPanel: true,
+            showOtherMonths: true,
+            showWeek: false,
+            timeFormat: '',
+            showTime: false,
+            showHour: false,
+            showMinute: false,
+            serverTimezoneSeconds: 1785945885,
+            serverTimezoneOffset: -14400,
+            yearRange: '1926\u003A2126'
+        }
+    });
+
+enUS = {"m":{"wide":["January","February","March","April","May","June","July","August","September","October","November","December"],"abbr":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]}}; // en_US locale reference
+
+});</script>
+<script>
+    window.cookiesConfig = window.cookiesConfig || {};
+    window.cookiesConfig.secure = false;
+</script><script>    require.config({
+        map: {
+            '*': {
+                wysiwygAdapter: 'mage/adminhtml/wysiwyg/tiny_mce/tinymce5Adapter'
+            }
+        }
+    });</script><div class="page-wrapper"><div class="notices-wrapper">    <noscript>
+        <div class="messages">
+            <div class="message message-warning message-noscript">
+                <strong>JavaScript may be disabled in your browser.</strong>
+                To use this website you must first enable JavaScript in your browser.            </div>
+        </div>
+    </noscript>
+<!--
+/**
+ * Copyright &copy; Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+--><div class="admin__data-grid-outer-wrap" data-bind="scope: 'notification_area.notification_area'">
+    <div data-role="spinner" data-component="notification_area.notification_area.columns" class="admin__data-grid-loading-mask">
+        <div class="spinner">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+    <!-- ko template: getTemplate() --><!-- /ko -->
+<script type="text/x-magento-init">{"*": {"Magento_Ui/js/core/app": {"types":{"dataSource":[],"text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"notification_area"},"column.text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"notification_area"},"action":{"extends":"notification_area"},"column.actions":{"extends":"notification_area"},"columns":{"extends":"notification_area"},"container":{"extends":"notification_area"},"notification_area":{"deps":["notification_area.notification_area_data_source"],"provider":"notification_area.notification_area_data_source"},"html_content":{"component":"Magento_Ui\/js\/form\/components\/html","extends":"notification_area"}},"components":{"notification_area":{"children":{"notification_area":{"type":"notification_area","name":"notification_area","children":{"columns":{"type":"columns","name":"columns","children":{"created_at":{"type":"column.text","name":"created_at","config":{"dataType":"text","component":"Magento_AdminNotification\/js\/grid\/columns\/message","componentType":"column","sorting":"asc","label":"","sortOrder":"30","__disableTmpl":{"label":true}}},"actions":{"type":"column.actions","name":"actions","config":{"component":"Magento_Ui\/js\/grid\/columns\/actions","label":"Action","dataType":"actions","indexField":"identity","sortOrder":"20","__disableTmpl":{"label":true}}},"dismiss":{"type":"column.actions","name":"dismiss","config":{"component":"Magento_Ui\/js\/grid\/columns\/actions","label":"Action","dataType":"actions","indexField":"identity","bodyTmpl":"Magento_AsynchronousOperations\/grid\/cells\/actions","sortOrder":"10","__disableTmpl":{"label":true}}}},"config":{"childDefaults":{"storageConfig":{"provider":"ns = ${ $.ns }, index = bookmarks","root":"columns.${ $.index }","namespace":"current.${ $.storageConfig.root }"}},"component":"Magento_AsynchronousOperations\/js\/grid\/listing","storageConfig":{"namespace":"current","provider":"ns = ${ $.ns }, index = bookmarks"},"componentType":"columns","template":"Magento_AsynchronousOperations\/grid\/listing","link":"http:\/\/10.186.197.203:7780\/admin\/bulk\/index\/","linkText":"Bulk Actions Log","dismissAllText":"Dismiss All Completed Tasks","dismissUrl":"http:\/\/10.186.197.203:7780\/admin\/bulk\/notification\/dismiss\/","isAllowed":true}},"modalContainer":{"type":"container","name":"modalContainer","children":{"modal":{"type":"container","name":"modal","children":{"insertBulk":{"type":"container","name":"insertBulk","config":{"autoRender":false,"realTimeLink":false,"render_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render_handle\/handle\/bulk_bulk_details_modal\/buttons\/1\/","update_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render\/","dataLinks":{"imports":false,"exports":false},"component":"Magento_AsynchronousOperations\/js\/insert-form","externalProvider":"${ $.ns }.bulk_details_form_modal_data_source","ns":"bulk_details_form_modal","toolbarContainer":"${ $.parentName }","formSubmitType":"ajax","loading":false,"columnsProvider":"ns = notification_area, index = columns","titlePrefix":"Action Details - #","modalTitleProvider":"${ $.externalProvider }:data.uuid"}}},"config":{"options":{"type":"slide"},"component":"Magento_Ui\/js\/modal\/modal-component"}}},"config":{"component":"uiComponent"}}},"config":{"component":"uiComponent"}},"notification_area_data_source":{"type":"dataSource","name":"notification_area_data_source","dataScope":"notification_area","config":{"data":{"totalRecords":0,"items":[]},"update_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render\/","component":"Magento_Ui\/js\/grid\/provider","storageConfig":{"indexField":"identity"},"aclResource":"Magento_AdminNotification::show_list","params":{"namespace":"notification_area"}}}}}}}}}</script></div>
+<!-- BLOCK notification_window --><!-- /BLOCK notification_window --></div><header class="page-header row"><div class="page-header-hgroup col-l-8 col-m-6">
+<div class="page-title-wrapper">
+    <h1 class="page-title">Manage Gallery</h1>
+    </div>
+</div><div class="page-header-actions col-l-4 col-m-6">        <div class="admin-user admin__action-dropdown-wrap">
+            <a
+                href="http://10.186.197.203:7780/admin/admin/system_account/index/"
+                class="admin__action-dropdown"
+                title="My Account"
+                data-mage-init='{"dropdown":{}}'
+                data-toggle="dropdown">
+                <span class="admin__action-dropdown-text">
+                    <span class="admin-user-account-text">admin</span>
+                </span>
+            </a>
+            <ul class="admin__action-dropdown-menu">
+                                <li>
+                    <a
+                        href="http://10.186.197.203:7780/admin/admin/system_account/index/"
+                         data-ui-id="user-user-account-settings"                         title="Account Setting">
+                        Account Setting (<span class="admin-user-name">admin</span>)
+                    </a>
+                </li>
+                                <li>
+                    <a
+                        href="http://10.186.197.203:7780/"
+                        title="Customer View"
+                        target="_blank" class="store-front">
+                        Customer View                    </a>
+                </li>
+                <li>
+                    <a
+                        href="http://10.186.197.203:7780/admin/admin/auth/logout/"
+                        class="account-signout"
+                        title="Sign Out">
+                        Sign Out                    </a>
+                </li>
+            </ul>
+        </div>
+
+<div
+    data-mage-init='{"toolbarEntry": {}}'
+    class="notifications-wrapper admin__action-dropdown-wrap"
+    data-notification-count="0">
+            <a
+            class="notifications-action admin__action-dropdown"
+            href="http://10.186.197.203:7780/admin/admin/notification/index/"
+            title="Notifications">
+        </a>
+    </div>
+<div class="search-global" data-mage-init='{"globalSearch": {}}'>
+    <form action="#" id="form-search">
+        <div class="search-global-field">
+            <label class="search-global-label" for="search-global"></label>
+            <input
+                    type="text"
+                    class="search-global-input"
+                    id="search-global"
+                    name="query"
+                    data-mage-init='{"suggest":{"dropdownWrapper":"<div class=\"autocomplete-results\" ><\/div >","template":"[data-template=search-suggest]","termAjaxArgument":"query","source":"http:\/\/10.186.197.203:7780\/admin\/admin\/index\/globalSearch\/","filterProperty":"name","preventClickPropagation":false,"minLength":2,"submitInputOnEnter":false}}'>
+            <button
+                type="submit"
+                class="search-global-action"
+                title="Search"
+                ></button>
+        </div>
+    </form>
+    <script data-template="search-suggest" type="text/x-magento-template">
+        <ul class="search-global-menu">
+        <li class="item">
+            <a id="searchPreviewProducts" href="http://10.186.197.203:7780/admin/catalog/product/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Products</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewOrders" href="http://10.186.197.203:7780/admin/sales/order/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Orders</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewCustomers" href="http://10.186.197.203:7780/admin/customer/index/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Customers</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewPages" href="http://10.186.197.203:7780/admin/cms/page/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Pages</a>
+        </li>
+            <% if (data.items.length) { %>
+            <% _.each(data.items, function(value){ %>
+            <li class="item"
+                <%= data.optionData(value) %>
+                >
+                <a href="<%- value.url %>" class="title"><%- value.name %></a>
+                <span class="type"><%- value.type %></span>
+                <%- value.description || "" %>
+            </li>
+            <% }); %>
+        <% } else { %>
+            <li>
+                <span class="mage-suggest-no-records">
+                    No records found.                </span>
+            </li>
+        <% } %>
+        </ul>
+    </script>
+</div>
+</div></header><div><input name="form_key" type="hidden" value="UWbSTSbjBGjgvxUk" /></div>
+<main id="anchor-content" class="page-content"><div class="page-main-actions">    <div data-mage-init='{"floatingHeader": {}}' class="page-actions floating-header"  data-ui-id="page-actions-toolbar-content-header" >
+        <button id="create_folder" title="Create Folder" type="button" class="action- scalable action-default scalable add media-gallery-actions-buttons" ui-button-widget-hook-id="buttonIdxCJjh1HZQ7"  data-ui-id="create-folder-button" >
+    <span>Create Folder</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListenerLMbHq7ku6l () {
+        jQuery("#create_folder").trigger("create_folder");;
+    }
+    var listenedElementLMbHq7ku6lArray = document.querySelectorAll("*[ui-button-widget-hook-id='buttonIdxCJjh1HZQ7']");
+    if(listenedElementLMbHq7ku6lArray.length !== 'undefined'){
+        listenedElementLMbHq7ku6lArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerLMbHq7ku6l.apply(targetElement);
+                };
+            }
+        });
+    }</script><button id="upload_image" title="Upload Image" type="button" class="action- scalable action-default scalable add media-gallery-actions-buttons" ui-button-widget-hook-id="buttonIdxXN9LAhvUE"  data-ui-id="upload-image-button" >
+    <span>Upload Image</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListenerSvB5pWfYPZ () {
+        jQuery("#image-uploader-input").click();;
+    }
+    var listenedElementSvB5pWfYPZArray = document.querySelectorAll("*[ui-button-widget-hook-id='buttonIdxXN9LAhvUE']");
+    if(listenedElementSvB5pWfYPZArray.length !== 'undefined'){
+        listenedElementSvB5pWfYPZArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerSvB5pWfYPZ.apply(targetElement);
+                };
+            }
+        });
+    }</script><button id="delete_folder" title="Delete Folder" type="button" class="action- scalable action-default scalable add media-gallery-actions-buttons disabled" disabled="disabled" ui-button-widget-hook-id="buttonId1O47lRdmLc"  data-ui-id="delete-folder-button" >
+    <span>Delete Folder</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListenerjM5r1b3kAV () {
+        jQuery("#delete_folder").trigger("delete_folder");;
+    }
+    var listenedElementjM5r1b3kAVArray = document.querySelectorAll("*[ui-button-widget-hook-id='buttonId1O47lRdmLc']");
+    if(listenedElementjM5r1b3kAVArray.length !== 'undefined'){
+        listenedElementjM5r1b3kAVArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerjM5r1b3kAV.apply(targetElement);
+                };
+            }
+        });
+    }</script><button id="delete_massaction" title="Delete Images..." type="button" class="action- scalable action-default scalable add media-gallery-actions-buttons" ui-button-widget-hook-id="buttonIdBkpsDIvsjO"  data-ui-id="delete-massaction-button" >
+    <span>Delete Images...</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListenercDpQllkj7d () {
+        jQuery(window).trigger("massAction.MediaGallery");
+    }
+    var listenedElementcDpQllkj7dArray = document.querySelectorAll("*[ui-button-widget-hook-id='buttonIdBkpsDIvsjO']");
+    if(listenedElementcDpQllkj7dArray.length !== 'undefined'){
+        listenedElementcDpQllkj7dArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenercDpQllkj7d.apply(targetElement);
+                };
+            }
+        });
+    }</script><button id="search_adobe_stock" title="Search Adobe Stock" type="button" class="action- scalable media-gallery-actions-buttons" ui-button-widget-hook-id="buttonIdfe4OMRboz4"  data-ui-id="search-adobe-stock-button" >
+    <span>Search Adobe Stock</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListenerixygxoSaKH () {
+        jQuery(".adobe-search-images-modal").trigger("openModal");;
+    }
+    var listenedElementixygxoSaKHArray = document.querySelectorAll("*[ui-button-widget-hook-id='buttonIdfe4OMRboz4']");
+    if(listenedElementixygxoSaKHArray.length !== 'undefined'){
+        listenedElementixygxoSaKHArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerixygxoSaKH.apply(targetElement);
+                };
+            }
+        });
+    }</script>    </div>
+</div><div id="page:main-container" class="page-columns"><div class="admin__old"><div id="container" class="main-col"><div class="media-gallery-container"><!--
+/**
+ * Copyright &copy; Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+--><div class="admin__data-grid-outer-wrap" data-bind="scope: 'standalone_media_gallery_listing.standalone_media_gallery_listing'">
+    <div data-role="spinner" data-component="standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_columns" class="admin__data-grid-loading-mask">
+        <div class="spinner">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+    <!-- ko template: getTemplate() --><!-- /ko -->
+<script type="text/x-magento-init">{"*": {"Magento_Ui/js/core/app": {"types":{"dataSource":[],"container":{"extends":"standalone_media_gallery_listing"},"bookmark":{"extends":"standalone_media_gallery_listing","current":{"filters":{"applied":{"placeholder":true,"path":"wysiwyg\/mens"}},"search":{"value":""},"columns":{"newest_first":{"visible":false,"sorting":false},"oldest_first":{"visible":false,"sorting":false},"created_at":{"visible":false,"sorting":false},"path":{"visible":false,"sorting":false},"directory_desc":{"visible":false,"sorting":false},"directory_asc":{"visible":false,"sorting":false},"title":{"visible":false,"sorting":false},"name_az":{"visible":false,"sorting":false},"name_za":{"visible":false,"sorting":false},"source":{"visible":false,"sorting":false},"overlay":{"visible":true,"sorting":false},"thumbnail_url":{"visible":true,"sorting":false}},"paging":{"pageSize":"32","current":1,"options":{"32":{"value":32,"label":"32"},"48":{"value":48,"label":"48"},"64":{"value":64,"label":"64"}},"value":"32"},"displayMode":"grid","positions":{"source":0,"overlay":1,"thumbnail_url":2,"newest_first":3,"oldest_first":4,"created_at":5,"path":6,"directory_desc":7,"directory_asc":8,"title":9,"name_az":10,"name_za":11}},"activeIndex":"default","views":{"default":{"label":"Default View","index":"default","editable":false,"data":{"filters":{"applied":{"placeholder":true}},"search":{"value":""},"columns":{"newest_first":{"visible":false,"sorting":false},"oldest_first":{"visible":false,"sorting":false},"created_at":{"visible":false,"sorting":false},"path":{"visible":false,"sorting":false},"directory_desc":{"visible":false,"sorting":false},"directory_asc":{"visible":false,"sorting":false},"title":{"visible":false,"sorting":false},"name_az":{"visible":false,"sorting":false},"name_za":{"visible":false,"sorting":false},"source":{"visible":false,"sorting":false},"overlay":{"visible":true,"sorting":false},"thumbnail_url":{"visible":true,"sorting":false}},"paging":{"pageSize":"32","current":1,"options":{"32":{"value":32,"label":"32"},"48":{"value":48,"label":"48"},"64":{"value":64,"label":"64"}},"value":"32"},"displayMode":"grid","positions":{"source":0,"overlay":1,"thumbnail_url":2,"newest_first":3,"oldest_first":4,"created_at":5,"path":6,"directory_desc":7,"directory_asc":8,"title":9,"name_az":10,"name_za":11}},"value":"Default View"}},"component":"Magento_Ui\/js\/grid\/controls\/bookmarks\/bookmarks","displayArea":"dataGridActions","storageConfig":{"namespace":"${ $.ns }","saveUrl":"http:\/\/10.186.197.203:7780\/admin\/mui\/bookmark\/save\/","deleteUrl":"http:\/\/10.186.197.203:7780\/admin\/mui\/bookmark\/delete\/"}},"keyword_search":{"extends":"standalone_media_gallery_listing"},"input":{"extends":"standalone_media_gallery_listing"},"filter_input":{"extends":"standalone_media_gallery_listing"},"date":{"extends":"standalone_media_gallery_listing"},"filter_date":{"extends":"standalone_media_gallery_listing"},"select":{"extends":"standalone_media_gallery_listing"},"filter_select":{"extends":"standalone_media_gallery_listing"},"filters":{"extends":"standalone_media_gallery_listing"},"paging":{"extends":"standalone_media_gallery_listing"},"text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"standalone_media_gallery_listing"},"column.text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"standalone_media_gallery_listing"},"column.date":{"extends":"standalone_media_gallery_listing"},"columns":{"extends":"standalone_media_gallery_listing"},"standalone_media_gallery_listing":{"deps":["standalone_media_gallery_listing.media_gallery_listing_data_source"],"provider":"standalone_media_gallery_listing.media_gallery_listing_data_source"},"html_content":{"component":"Magento_Ui\/js\/form\/components\/html","extends":"standalone_media_gallery_listing"}},"components":{"standalone_media_gallery_listing":{"children":{"standalone_media_gallery_listing":{"type":"standalone_media_gallery_listing","name":"standalone_media_gallery_listing","children":{"messages":{"type":"container","name":"messages","config":{"component":"Magento_MediaGalleryUi\/js\/grid\/messages","sortOrder":"20","messageDelay":"10"}},"listing_top":{"type":"container","name":"listing_top","children":{"bookmarks":{"type":"bookmark","name":"bookmarks","config":{"current":{"filters":{"applied":{"placeholder":true,"path":"wysiwyg\/mens"}},"search":{"value":""},"columns":{"newest_first":{"visible":false,"sorting":false},"oldest_first":{"visible":false,"sorting":false},"created_at":{"visible":false,"sorting":false},"path":{"visible":false,"sorting":false},"directory_desc":{"visible":false,"sorting":false},"directory_asc":{"visible":false,"sorting":false},"title":{"visible":false,"sorting":false},"name_az":{"visible":false,"sorting":false},"name_za":{"visible":false,"sorting":false},"source":{"visible":false,"sorting":false},"overlay":{"visible":true,"sorting":false},"thumbnail_url":{"visible":true,"sorting":false}},"paging":{"pageSize":"32","current":1,"options":{"32":{"value":32,"label":"32"},"48":{"value":48,"label":"48"},"64":{"value":64,"label":"64"}},"value":"32"},"displayMode":"grid","positions":{"source":0,"overlay":1,"thumbnail_url":2,"newest_first":3,"oldest_first":4,"created_at":5,"path":6,"directory_desc":7,"directory_asc":8,"title":9,"name_az":10,"name_za":11}},"activeIndex":"default","views":{"default":{"label":"Default View","index":"default","editable":false,"data":{"filters":{"applied":{"placeholder":true}},"search":{"value":""},"columns":{"newest_first":{"visible":false,"sorting":false},"oldest_first":{"visible":false,"sorting":false},"created_at":{"visible":false,"sorting":false},"path":{"visible":false,"sorting":false},"directory_desc":{"visible":false,"sorting":false},"directory_asc":{"visible":false,"sorting":false},"title":{"visible":false,"sorting":false},"name_az":{"visible":false,"sorting":false},"name_za":{"visible":false,"sorting":false},"source":{"visible":false,"sorting":false},"overlay":{"visible":true,"sorting":false},"thumbnail_url":{"visible":true,"sorting":false}},"paging":{"pageSize":"32","current":1,"options":{"32":{"value":32,"label":"32"},"48":{"value":48,"label":"48"},"64":{"value":64,"label":"64"}},"value":"32"},"displayMode":"grid","positions":{"source":0,"overlay":1,"thumbnail_url":2,"newest_first":3,"oldest_first":4,"created_at":5,"path":6,"directory_desc":7,"directory_asc":8,"title":9,"name_az":10,"name_za":11}},"value":"Default View"}},"component":"Magento_Ui\/js\/grid\/controls\/bookmarks\/bookmarks","displayArea":"dataGridActions","storageConfig":{"namespace":"${ $.ns }","saveUrl":"http:\/\/10.186.197.203:7780\/admin\/mui\/bookmark\/save\/","deleteUrl":"http:\/\/10.186.197.203:7780\/admin\/mui\/bookmark\/delete\/"}}},"fulltext":{"type":"keyword_search","name":"fulltext","config":{"component":"Magento_Ui\/js\/grid\/search\/search","displayArea":"dataGridFilters","storageConfig":{"namespace":"current.search","provider":"ns = ${ $.ns }, index = bookmarks"}}},"listing_filters":{"type":"filters","name":"listing_filters","children":{"path":{"type":"filter_input","name":"path","dataScope":"path","config":{"component":"Magento_Ui\/js\/form\/element\/abstract","template":"ui\/form\/field","visible":false,"label":"Directory","provider":"${ $.parentName }","sortOrder":"2000"}},"created_at":{"type":"filter_date","name":"created_at","dataScope":"created_at","config":{"component":"Magento_Ui\/js\/grid\/filters\/range","template":"ui\/grid\/filters\/elements\/group","storeTimeZone":"America\/New_York","options":{"dateFormat":"M\/d\/yy","storeLocale":"en_US"},"label":"Uploaded Date","rangeType":"date","provider":"${ $.parentName }","sortOrder":"10"}},"updated_at":{"type":"filter_date","name":"updated_at","dataScope":"updated_at","config":{"component":"Magento_Ui\/js\/grid\/filters\/range","template":"ui\/grid\/filters\/elements\/group","storeTimeZone":"America\/New_York","options":{"dateFormat":"M\/d\/yy","storeLocale":"en_US"},"label":"Modification Date","rangeType":"date","provider":"${ $.parentName }","sortOrder":"20"}},"entity_type":{"type":"filter_select","name":"entity_type","dataScope":"entity_type","config":{"component":"Magento_Ui\/js\/form\/element\/ui-select","template":"ui\/grid\/filters\/elements\/ui-select","options":[{"value":"cms_page","label":"Pages"},{"value":"catalog_category","label":"Categories"},{"value":"cms_block","label":"Blocks"},{"value":"catalog_product","label":"Products"},{"value":"not_used","label":"Not used anywhere"}],"caption":"All","label":"Show Images Used In","provider":"${ $.parentName }","sortOrder":"210","__disableTmpl":{"label":true}}},"source":{"type":"filter_select","name":"source","dataScope":"source","config":{"component":"Magento_Ui\/js\/form\/element\/select","template":"ui\/grid\/filters\/field","options":[{"value":"Local","label":"Uploaded Locally"},{"value":"Adobe Stock","label":"Adobe Stock"}],"caption":"All","label":"Source","provider":"${ $.parentName }","sortOrder":"60","__disableTmpl":{"label":true}}},"content_status":{"type":"filter_select","name":"content_status","dataScope":"content_status","config":{"component":"Magento_Ui\/js\/form\/element\/select","template":"ui\/grid\/filters\/field","options":[{"value":"1","label":"Enabled"},{"value":"0","label":"Disabled"}],"caption":"All","label":"Content Status","provider":"${ $.parentName }","sortOrder":"220","__disableTmpl":{"label":true}}},"store_id":{"type":"filter_select","name":"store_id","dataScope":"store_id","config":{"component":"Magento_Ui\/js\/form\/element\/select","template":"ui\/grid\/filters\/field","options":[{"label":"All Store Views","value":"0"},{"label":"Main Website","value":[{"label":"    Main Website Store","value":[{"label":"        Default Store View","value":"1"}]}]}],"captionValue":"0","label":"Store View","provider":"${ $.parentName }","sortOrder":"200","imports":{"visible":"componentType = column, index = ${ $.index }:visible"},"__disableTmpl":{"label":true}}},"duplicated":{"type":"filter_input","name":"duplicated","dataScope":"duplicated","config":{"component":"Magento_Ui\/js\/form\/element\/single-checkbox","template":"Magento_MediaGalleryUi\/grid\/filter\/checkbox","label":"Show duplicates","provider":"${ $.parentName }","sortOrder":"300","description":"Show duplicates","valueMap":{"true":"Yes"}}},"product_id":{"type":"filter_select","name":"product_id","dataScope":"product_id","config":{"component":"Magento_Ui\/js\/grid\/filters\/elements\/ui-select","template":"ui\/grid\/filters\/elements\/ui-select","label":"Used in Products","provider":"${ $.parentName }","sortOrder":"110","filterOptions":true,"searchOptions":true,"filterPlaceholder":"Product Name or SKU","emptyOptionsHtml":"Start typing to find products","missingValuePlaceholder":"Product with ID: %s doesn\\'t exist","isDisplayMissingValuePlaceholder":true,"isDisplayEmptyPlaceholder":true,"isRemoveSelectedIcon":true,"filterRateLimit":"1000","filterRateLimitMethod":"notifyWhenChangesStop","levelsVisibility":"1","searchUrl":"http:\/\/10.186.197.203:7780\/admin\/catalog\/product\/search\/","validationUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery_catalog\/product\/getSelected\/","__disableTmpl":{"label":true}}},"category_id":{"type":"filter_select","name":"category_id","dataScope":"category_id","config":{"component":"Magento_Catalog\/js\/components\/new-category","template":"ui\/grid\/filters\/elements\/ui-select","options":[{"value":"2","is_active":"1","label":"Default Category","optgroup":[{"value":"3","is_active":"1","label":"Gear","optgroup":[{"value":"4","is_active":"1","label":"Bags"},{"value":"5","is_active":"1","label":"Fitness Equipment"},{"value":"6","is_active":"1","label":"Watches"}]},{"value":"7","is_active":"0","label":"Collections","optgroup":[{"value":"8","is_active":"1","label":"New Luma Yoga Collection"},{"value":"34","is_active":"1","label":"Erin Recommends"},{"value":"35","is_active":"1","label":"Performance Fabrics"},{"value":"36","is_active":"1","label":"Eco Friendly"},{"value":"39","is_active":"1","label":"Performance Sportswear New"},{"value":"40","is_active":"1","label":"Eco Collection New"}]},{"value":"9","is_active":"1","label":"Training","optgroup":[{"value":"10","is_active":"1","label":"Video Download"}]},{"value":"11","is_active":"1","label":"Men","optgroup":[{"value":"12","is_active":"1","label":"Tops","optgroup":[{"value":"14","is_active":"1","label":"Jackets"},{"value":"15","is_active":"1","label":"Hoodies & Sweatshirts"},{"value":"16","is_active":"1","label":"Tees"},{"value":"17","is_active":"1","label":"Tanks"}]},{"value":"13","is_active":"1","label":"Bottoms","optgroup":[{"value":"18","is_active":"1","label":"Pants"},{"value":"19","is_active":"1","label":"Shorts"}]}]},{"value":"20","is_active":"1","label":"Women","optgroup":[{"value":"21","is_active":"1","label":"Tops","optgroup":[{"value":"23","is_active":"1","label":"Jackets"},{"value":"24","is_active":"1","label":"Hoodies & Sweatshirts"},{"value":"25","is_active":"1","label":"Tees"},{"value":"26","is_active":"1","label":"Bras & Tanks"}]},{"value":"22","is_active":"1","label":"Bottoms","optgroup":[{"value":"27","is_active":"1","label":"Pants"},{"value":"28","is_active":"1","label":"Shorts"}]}]},{"value":"29","is_active":"0","label":"Promotions","optgroup":[{"value":"30","is_active":"1","label":"Women Sale"},{"value":"31","is_active":"1","label":"Men Sale"},{"value":"32","is_active":"1","label":"Pants"},{"value":"33","is_active":"1","label":"Tees"}]},{"value":"37","is_active":"1","label":"Sale"},{"value":"38","is_active":"1","label":"What's New"}]}],"label":"Used in Categories","provider":"${ $.parentName }","sortOrder":"100","listens":{"${ $.namespace }.${ $.namespace }:responseData":"setParsed"},"filterOptions":true,"levelsVisibility":"1","filterPlaceholder":"Category Name","emptyOptionsHtml":"Start typing to find categories","__disableTmpl":{"label":true}}},"page_id":{"type":"filter_select","name":"page_id","dataScope":"page_id","config":{"component":"Magento_Ui\/js\/grid\/filters\/elements\/ui-select","template":"ui\/grid\/filters\/elements\/ui-select","label":"Used in Pages","provider":"${ $.parentName }","sortOrder":"120","filterOptions":true,"searchOptions":true,"searchUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery_cms\/page\/search\/","levelsVisibility":"1","showPath":false,"filterPlaceholder":"Page Title","emptyOptionsHtml":"Start typing to find pages","filterRateLimit":"1000","filterRateLimitMethod":"notifyWhenChangesStop","validationUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery_cms\/page\/getSelected\/","__disableTmpl":{"label":true}}},"block_id":{"type":"filter_select","name":"block_id","dataScope":"block_id","config":{"component":"Magento_Ui\/js\/grid\/filters\/elements\/ui-select","template":"ui\/grid\/filters\/elements\/ui-select","label":"Used in Blocks","provider":"${ $.parentName }","sortOrder":"130","filterOptions":true,"searchOptions":true,"searchUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery_cms\/block\/search\/","levelsVisibility":"1","showPath":false,"filterPlaceholder":"Block Title","emptyOptionsHtml":"Start typing to find blocks","filterRateLimit":"1000","filterRateLimitMethod":"notifyWhenChangesStop","validationUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery_cms\/block\/getSelected\/","__disableTmpl":{"label":true}}},"is_licensed":{"type":"filter_select","name":"is_licensed","dataScope":"is_licensed","config":{"component":"Magento_Ui\/js\/form\/element\/select","template":"ui\/grid\/filters\/field","options":[{"value":"1","label":"Licensed"},{"value":"0","label":"Unlicensed"}],"caption":"All","label":"License Status","provider":"${ $.parentName }","sortOrder":"40","__disableTmpl":{"label":true}}}},"dataScope":"filters","config":{"component":"Magento_Ui\/js\/grid\/filters\/filters","displayArea":"dataGridFilters","storageConfig":{"namespace":"current.filters","provider":"ns = ${ $.ns }, index = bookmarks"},"options":{"dateFormat":"M\/d\/yy"}}},"listing_paging":{"type":"paging","name":"listing_paging","config":{"current":1,"component":"Magento_Ui\/js\/grid\/paging\/paging","displayArea":"bottom","storageConfig":{"namespace":"current.paging","provider":"ns = ${ $.ns }, index = bookmarks"},"options":{"32":{"value":32,"label":"32"},"48":{"value":48,"label":"48"},"64":{"value":64,"label":"64"}},"pageSize":"32"}},"sorting":{"type":"container","name":"sorting","config":{"component":"Magento_MediaGalleryUi\/js\/grid\/sortBy","provider":"standalone_media_gallery_listing.media_gallery_listing_data_source","sortOrder":"20","displayArea":"sorting","deps":["standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_columns"]}},"media_gallery_massactions":{"type":"container","name":"media_gallery_massactions","config":{"component":"Magento_MediaGalleryUi\/js\/grid\/massaction\/massactions","template":"Magento_MediaGalleryUi\/grid\/massactions\/count","sortOrder":"10","displayArea":"sorting","checkboxComponentName":"standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_columns.massaction_checkbox","imageModelName":"standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_columns.thumbnail_url","mediaGalleryProvider":"standalone_media_gallery_listing.media_gallery_listing_data_source","allowedActions":["delete_assets"]}}},"config":{"component":"Magento_Ui\/js\/grid\/toolbar","template":"Magento_MediaGalleryUi\/grid\/toolbar"}},"media_gallery_directories":{"type":"container","name":"media_gallery_directories","config":{"component":"Magento_MediaGalleryUi\/js\/directory\/directoryTree","template":"Magento_MediaGalleryUi\/grid\/directories\/directoryTree","allowedActions":["delete_folder"],"getDirectoryTreeUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery\/directories\/gettree\/","deleteDirectoryUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery\/directories\/delete\/","createDirectoryUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery\/directories\/create\/"}},"media_gallery_columns":{"type":"columns","name":"media_gallery_columns","children":{"source":{"type":"column.text","name":"source","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/overlay","componentType":"column","sortable":false,"label":"Source","visible":false,"__disableTmpl":{"label":true}}},"thumbnail_url":{"type":"column.text","name":"thumbnail_url","config":{"dataType":"text","component":"Magento_AdobeStockImageAdminUi\/js\/mediaGallery\/grid\/columns\/licenseImage","componentType":"column","sortable":false,"label":"Thumbnail Image","visible":true,"fields":{"url":"thumbnail_url"},"url":"thumbnail_url","deleteImageUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery\/image\/delete\/","massactionComponentName":"standalone_media_gallery_listing.standalone_media_gallery_listing.listing_top.media_gallery_massactions","messagesName":"standalone_media_gallery_listing.standalone_media_gallery_listing.messages","mediaGalleryDirectoryComponent":"standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_directories","imageDetailsurl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery\/image\/details\/","imageComponent":"standalone_adobe_stock_images_listing.standalone_adobe_stock_images_listing.adobe_stock_images_columns.preview","__disableTmpl":{"label":true},"allowedActions":["image-details","insert","delete","edit"],"onInsertUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery\/image\/oninsert\/","storeId":"1"}},"newest_first":{"type":"column.text","name":"newest_first","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Newest first","visible":false,"sort_by":{"field":"created_at","direction":"desc"},"__disableTmpl":{"label":true}}},"oldest_first":{"type":"column.text","name":"oldest_first","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Oldest first","visible":false,"sort_by":{"field":"created_at"},"__disableTmpl":{"label":true}}},"created_at":{"type":"column.date","name":"created_at","config":{"component":"Magento_Ui\/js\/grid\/columns\/column","template":"ui\/form\/field","storeTimeZone":"America\/New_York","options":{"dateFormat":"M\/d\/yy","storeLocale":"en_US"},"dataType":"date","componentType":"column","sortable":true,"label":"Uploaded Date","visible":false,"sort_by":{"excluded":true},"__disableTmpl":{"label":true}}},"path":{"type":"column.text","name":"path","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"visible":false,"sort_by":{"excluded":true},"__disableTmpl":{"label":true}}},"directory_desc":{"type":"column.text","name":"directory_desc","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Directory: Descending","visible":false,"sort_by":{"field":"path","direction":"desc"},"__disableTmpl":{"label":true}}},"directory_asc":{"type":"column.text","name":"directory_asc","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Directory: Ascending","visible":false,"sort_by":{"field":"path"},"__disableTmpl":{"label":true}}},"title":{"type":"column.text","name":"title","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"visible":false,"sort_by":{"excluded":true},"__disableTmpl":{"label":true}}},"name_az":{"type":"column.text","name":"name_az","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Name: A to Z","visible":false,"sort_by":{"field":"title"},"__disableTmpl":{"label":true}}},"name_za":{"type":"column.text","name":"name_za","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Name: Z to A","visible":false,"sort_by":{"field":"title","direction":"desc"},"__disableTmpl":{"label":true}}},"overlay":{"type":"column.text","name":"overlay","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/overlay","componentType":"column","sortable":false,"label":"Overlay","visible":true,"sortOrder":"1","__disableTmpl":{"label":true}}}},"config":{"childDefaults":{"storageConfig":{"provider":"ns = ${ $.ns }, index = bookmarks","root":"columns.${ $.index }","namespace":"current.${ $.storageConfig.root }"}},"component":"Magento_MediaGalleryUi\/js\/grid\/masonry","storageConfig":{"namespace":"current","provider":"ns = ${ $.ns }, index = bookmarks"},"componentType":"columns","containerId":"media-gallery-masonry-grid"}},"media_gallery_image_uploader":{"type":"container","name":"media_gallery_image_uploader","config":{"component":"Magento_MediaGalleryUi\/js\/image-uploader","template":"Magento_MediaGalleryUi\/image-uploader","sortByName":"standalone_media_gallery_listing.standalone_media_gallery_listing.listing_top.sorting","listingPagingName":"standalone_media_gallery_listing.standalone_media_gallery_listing.listing_top.listing_paging","imageUploadUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery\/image\/upload\/type\/image\/","acceptFileTypes":"\/(\\.|\\\/)(gif|jpe?g|png)$\/i","allowedExtensions":"jpg jpeg png gif","maxFileSize":8388608,"actionsPath":"standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_columns.thumbnail_url","directoriesPath":"standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_directories","messagesPath":"standalone_media_gallery_listing.standalone_media_gallery_listing.messages"}}},"config":{"component":"uiComponent"}},"media_gallery_listing_data_source":{"type":"dataSource","name":"media_gallery_listing_data_source","dataScope":"standalone_media_gallery_listing","config":{"data":{"items":[],"totalRecords":0},"update_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render\/","component":"Magento_Ui\/js\/grid\/provider","storageConfig":{"indexField":"id"},"aclResource":"Magento_Cms::media_gallery","params":{"namespace":"standalone_media_gallery_listing"}}}}}}}}}</script></div>
+
+<div class="media-gallery-image-details-modal"
+     data-bind="mageInit: {
+        'Magento_Ui/js/modal/modal': {
+            type: 'slide',
+            buttons: [],
+            modalClass: 'media-gallery-image-details',
+            title: 'Image&#x20;Details'
+        }
+     }">
+    <div class="page-main-actions" data-bind="scope: 'mediaGalleryImageActions'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+    <div id="media-gallery-image-details-messages" data-bind="scope: 'mediaGalleryImageDetailsMessages'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+    <div id="media-gallery-image-details" data-bind="scope: 'mediaGalleryImageDetails'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#media-gallery-image-details": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "mediaGalleryImageDetails": {
+                        "component": "Magento_MediaGalleryUi/js/image/image-details",
+                        "imageDetailsUrl": "http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Fmedia_gallery\u002Fimage\u002Fdetails\u002F",
+                        "modalSelector": ".media-gallery-image-details-modal",
+                        "modalWindowSelector": ".media-gallery-image-details",
+                        "mediaGridMessages": "standalone_media_gallery_listing.standalone_media_gallery_listing.messages"
+                    },
+                    "mediaGalleryImageActions": {
+                        "component": "Magento_MediaGalleryUi/js/image/image-actions",
+                        "modalSelector": ".media-gallery-image-details-modal",
+                        "modalWindowSelector": ".media-gallery-image-details",
+                        "mediaGalleryImageDetailsName": "mediaGalleryImageDetails",
+                        "imageModelName" : "standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_columns.thumbnail_url",
+                        "actionsList": [{"title":"Cancel","handler":"closeModal","name":"cancel","classes":"action-default scalable cancel action-quaternary"},{"title":"Delete Image","handler":"deleteImageAction","name":"delete","classes":"action-default scalable delete action-quaternary"},{"title":"Edit Details","handler":"editImageAction","name":"edit","classes":"action-default scalable edit action-quaternary"}]                    },
+                    "mediaGalleryImageDetailsMessages": {
+                        "component": "Magento_MediaGalleryUi/js/grid/messages"
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<script type="text/x-magento-init">
+{
+    "#media-gallery-image-details": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "mediaGalleryImageDetails": {
+                    "children": {
+                        "adobeStockImageDetails": {
+                            "displayArea": "additional_image_details",
+                            "component": "uiElement",
+                            "template": "Magento_AdobeStockImageAdminUi/image/adobe-stock-image-details"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+</script>
+
+<div class="media-gallery-edit-image-details-modal"
+     data-bind="mageInit: {
+        'Magento_Ui/js/modal/modal': {
+            type: 'slide',
+            buttons: [],
+            modalClass: 'media-gallery-edit-image-details',
+            title: 'Edit&#x20;Image'
+        }
+     }">
+    <div class="page-main-actions" data-bind="scope: 'mediaGalleryImageEditActions'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+    <div id="media-gallery-image-edit-details-messages" data-bind="scope: 'mediaGalleryEditDetailsMessages'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+    <form data-bind="mageInit:{'validation':{}}" id="image-edit-details-form" method="post" enctype="multipart/form-data">
+        <div id="media-gallery-image-edit-details" data-bind="scope: 'mediaGalleryEditDetails'">
+            <!-- ko template: getTemplate() --><!-- /ko -->
+        </div>
+    </form>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#media-gallery-image-edit-details": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "mediaGalleryEditDetails": {
+                        "component": "Magento_MediaGalleryUi/js/image/image-edit",
+                        "imageEditDetailsUrl": "http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Fmedia_gallery\u002Fimage\u002Fdetails\u002F",
+                        "saveDetailsUrl": "http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Fmedia_gallery\u002Fimage\u002FsaveDetails\u002F",
+                        "mediaGridMessages": "standalone_media_gallery_listing.standalone_media_gallery_listing.messages"
+                    },
+                    "mediaGalleryEditDetailsMessages": {
+                        "component": "Magento_MediaGalleryUi/js/grid/messages"
+                    },
+                    "mediaGalleryImageEditActions": {
+                        "component": "Magento_MediaGalleryUi/js/image/image-actions",
+                        "modalSelector": ".media-gallery-edit-image-details-modal",
+                        "modalWindowSelector": ".media-gallery-edit-image-details",
+                        "mediaGalleryEditDetailsName": "mediaGalleryEditDetails",
+                        "imageModelName" : "standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_columns.thumbnail_url",
+                        "actionsList": [
+                            {
+                                "title": "Cancel",
+                                "handler": "closeModal",
+                                "name": "cancel",
+                                "classes": "action-default scalable cancel action-quaternary"
+                            },
+                            {
+                                "title": "Save",
+                                "handler": "saveImageDetailsAction",
+                                "name": "save",
+                                "classes": "action-default scalable save action-quaternary"
+                            }
+                        ]
+                    }
+                }
+            },
+            "Magento_MediaGalleryUi/js/validation/validate-image-title": {},
+            "Magento_MediaGalleryUi/js/validation/validate-image-description": {},
+            "Magento_MediaGalleryUi/js/validation/validate-image-keyword": {}
+        }
+    }
+</script>
+
+
+
+<div id="adobe-stock-images-search-modal" class="adobe-search-images-modal" style="display: none;">
+    <div class="adobe-stock-images-search-modal-content">
+        <div data-bind="scope: 'adobe-login'" class="adobe-login-container">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "adobe-login": {"component":"Magento_AdobeStockImageAdminUi\/js\/signIn","template":"Magento_AdobeStockImageAdminUi\/signIn","profileUrl":"http:\/\/10.186.197.203:7780\/admin\/adobe_ims\/user\/profile\/","logoutUrl":"http:\/\/10.186.197.203:7780\/admin\/adobe_ims\/user\/logout\/","user":{"isAuthorized":false,"name":"","email":"","image":""},"isGlobalSignInEnabled":false,"loginConfig":{"url":"https:\/\/ims-na1.adobelogin.com\/ims\/authorize\/v2?client_id=&redirect_uri=http:\/\/10.186.197.203:7780\/admin\/adobe_ims\/oauth\/callback\/&locale=en_US&scope=openid,creative_sdk,email,profile&response_type=code","callbackParsingParams":{"regexpPattern":"auth\\[code=(success|error);message=(.+)\\]","codeIndex":1,"messageIndex":2,"successCode":"success","errorCode":"error"}},"userQuota":{"images":0,"credits":0},"quotaUrl":"http:\/\/10.186.197.203:7780\/admin\/adobe_stock\/license\/quota\/"}                }
+            }
+        }
+    }
+</script>
+<!--
+/**
+ * Copyright &copy; Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+--><div class="admin__data-grid-outer-wrap" data-bind="scope: 'standalone_adobe_stock_images_listing.standalone_adobe_stock_images_listing'">
+    <div data-role="spinner" data-component="standalone_adobe_stock_images_listing.standalone_adobe_stock_images_listing.adobe_stock_images_columns" class="admin__data-grid-loading-mask">
+        <div class="spinner">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+    <!-- ko template: getTemplate() --><!-- /ko -->
+<script type="text/x-magento-init">{"*": {"Magento_Ui/js/core/app": {"types":{"dataSource":[],"container":{"extends":"standalone_adobe_stock_images_listing"},"bookmark":{"extends":"standalone_adobe_stock_images_listing","current":{"filters":{"applied":{"placeholder":true}},"search":{"value":""},"columns":{"relevance":{"visible":false,"sorting":false},"creation":{"visible":false,"sorting":false},"popularity":{"visible":false,"sorting":false},"nb_downloads":{"visible":false,"sorting":false},"undiscovered":{"visible":false,"sorting":false},"thumbnail_url":{"visible":true,"sorting":false},"preview":{"visible":true,"sorting":false,"lastOpenedImage":false},"overlay":{"visible":true,"sorting":false}},"paging":{"pageSize":32,"current":1,"value":32},"displayMode":"grid","positions":{"overlay":0,"thumbnail_url":1,"preview":2,"relevance":3,"creation":4,"popularity":5,"nb_downloads":6,"undiscovered":7}},"activeIndex":"default","views":{"default":{"label":"Default View","index":"default","editable":false,"data":{"filters":{"applied":{"placeholder":true}},"search":{"value":""},"columns":{"relevance":{"visible":false,"sorting":false},"creation":{"visible":false,"sorting":false},"popularity":{"visible":false,"sorting":false},"nb_downloads":{"visible":false,"sorting":false},"undiscovered":{"visible":false,"sorting":false},"thumbnail_url":{"visible":true,"sorting":false},"preview":{"visible":true,"sorting":false,"lastOpenedImage":false},"overlay":{"visible":true,"sorting":false}},"paging":{"pageSize":32,"current":1,"value":32},"displayMode":"grid","positions":{"overlay":0,"thumbnail_url":1,"preview":2,"relevance":3,"creation":4,"popularity":5,"nb_downloads":6,"undiscovered":7}},"value":"Default View"}},"component":"Magento_Ui\/js\/grid\/controls\/bookmarks\/bookmarks","displayArea":"dataGridActions","storageConfig":{"namespace":"${ $.ns }","saveUrl":"http:\/\/10.186.197.203:7780\/admin\/mui\/bookmark\/save\/","deleteUrl":"http:\/\/10.186.197.203:7780\/admin\/mui\/bookmark\/delete\/"}},"keyword_search":{"extends":"standalone_adobe_stock_images_listing"},"paging":{"extends":"standalone_adobe_stock_images_listing"},"select":{"extends":"standalone_adobe_stock_images_listing"},"filter_select":{"extends":"standalone_adobe_stock_images_listing"},"input":{"extends":"standalone_adobe_stock_images_listing"},"filter_input":{"extends":"standalone_adobe_stock_images_listing"},"filters":{"extends":"standalone_adobe_stock_images_listing"},"text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"standalone_adobe_stock_images_listing"},"column.text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"standalone_adobe_stock_images_listing"},"columns":{"extends":"standalone_adobe_stock_images_listing"},"standalone_adobe_stock_images_listing":{"deps":["standalone_adobe_stock_images_listing.adobe_stock_images_listing_data_source"],"provider":"standalone_adobe_stock_images_listing.adobe_stock_images_listing_data_source"},"html_content":{"component":"Magento_Ui\/js\/form\/components\/html","extends":"standalone_adobe_stock_images_listing"}},"components":{"standalone_adobe_stock_images_listing":{"children":{"standalone_adobe_stock_images_listing":{"type":"standalone_adobe_stock_images_listing","name":"standalone_adobe_stock_images_listing","children":{"messages":{"type":"container","name":"messages","config":{"component":"Magento_MediaGalleryUi\/js\/grid\/messages","sortOrder":"10","messageDelay":"10"}},"listing_top":{"type":"container","name":"listing_top","children":{"bookmarks":{"type":"bookmark","name":"bookmarks","config":{"current":{"filters":{"applied":{"placeholder":true}},"search":{"value":""},"columns":{"relevance":{"visible":false,"sorting":false},"creation":{"visible":false,"sorting":false},"popularity":{"visible":false,"sorting":false},"nb_downloads":{"visible":false,"sorting":false},"undiscovered":{"visible":false,"sorting":false},"thumbnail_url":{"visible":true,"sorting":false},"preview":{"visible":true,"sorting":false,"lastOpenedImage":false},"overlay":{"visible":true,"sorting":false}},"paging":{"pageSize":32,"current":1,"value":32},"displayMode":"grid","positions":{"overlay":0,"thumbnail_url":1,"preview":2,"relevance":3,"creation":4,"popularity":5,"nb_downloads":6,"undiscovered":7}},"activeIndex":"default","views":{"default":{"label":"Default View","index":"default","editable":false,"data":{"filters":{"applied":{"placeholder":true}},"search":{"value":""},"columns":{"relevance":{"visible":false,"sorting":false},"creation":{"visible":false,"sorting":false},"popularity":{"visible":false,"sorting":false},"nb_downloads":{"visible":false,"sorting":false},"undiscovered":{"visible":false,"sorting":false},"thumbnail_url":{"visible":true,"sorting":false},"preview":{"visible":true,"sorting":false,"lastOpenedImage":false},"overlay":{"visible":true,"sorting":false}},"paging":{"pageSize":32,"current":1,"value":32},"displayMode":"grid","positions":{"overlay":0,"thumbnail_url":1,"preview":2,"relevance":3,"creation":4,"popularity":5,"nb_downloads":6,"undiscovered":7}},"value":"Default View"}},"component":"Magento_Ui\/js\/grid\/controls\/bookmarks\/bookmarks","displayArea":"dataGridActions","storageConfig":{"namespace":"${ $.ns }","saveUrl":"http:\/\/10.186.197.203:7780\/admin\/mui\/bookmark\/save\/","deleteUrl":"http:\/\/10.186.197.203:7780\/admin\/mui\/bookmark\/delete\/"}}},"words":{"type":"keyword_search","name":"words","config":{"component":"Magento_Ui\/js\/grid\/search\/search","displayArea":"dataGridFilters","storageConfig":{"namespace":"current.search","provider":"ns = ${ $.ns }, index = bookmarks"}}},"listing_paging":{"type":"paging","name":"listing_paging","config":{"current":1,"component":"Magento_Ui\/js\/grid\/paging\/paging","displayArea":"bottom","storageConfig":{"namespace":"current.paging","provider":"ns = ${ $.ns }, index = bookmarks"},"sizesConfig":{"component":"Magento_AdobeStockImageAdminUi\/js\/components\/images-grid-sizes"},"options":{"20":{"value":20,"label":20},"30":{"value":30,"label":30},"50":{"value":50,"label":50},"100":{"value":100,"label":100},"200":{"value":200,"label":200}},"pageSize":20}},"sorting":{"type":"container","name":"sorting","config":{"component":"Magento_Ui\/js\/grid\/sortBy","provider":"standalone_adobe_stock_images_listing.adobe_stock_images_listing_data_source","sortOrder":"20","displayArea":"sorting","deps":["standalone_adobe_stock_images_listing.standalone_adobe_stock_images_listing.adobe_stock_images_columns"]}},"listing_filters":{"type":"filters","name":"listing_filters","children":{"content_type_filter":{"type":"filter_select","name":"content_type_filter","dataScope":"content_type_filter","config":{"component":"Magento_Ui\/js\/form\/element\/select","template":"ui\/grid\/filters\/field","options":[{"value":"photo","label":"Photo"},{"value":"illustration","label":"Illustration"}],"caption":"All","label":"Subcategory","provider":"${ $.parentName }","sortOrder":"10","__disableTmpl":{"label":true}}},"orientation_filter":{"type":"filter_select","name":"orientation_filter","dataScope":"orientation_filter","config":{"component":"Magento_Ui\/js\/form\/element\/select","template":"ui\/grid\/filters\/field","options":[{"label":"Horizontal","value":"HORIZONTAL"},{"label":"Vertical","value":"VERTICAL"},{"label":"Square","value":"SQUARE"},{"label":"Panoramic","value":"PANORAMIC"}],"caption":"All","label":"Orientation","provider":"${ $.parentName }","sortOrder":"20","__disableTmpl":{"label":true}}},"colors_filter":{"type":"filter_input","name":"colors_filter","dataScope":"colors_filter","config":{"component":"Magento_Ui\/js\/form\/element\/color-picker","template":"Magento_AdobeStockImageAdminUi\/grid\/filter\/color","label":"Color","placeholder":"HEX color","provider":"${ $.parentName }","sortOrder":"30","colorFormat":"HEX","colorPickerConfig":{"showInput":true,"showInitial":false,"showPalette":true,"showAlpha":true,"showSelectionPalette":true,"preferredFormat":"HEX"}}},"premium_price_filter":{"type":"filter_select","name":"premium_price_filter","dataScope":"premium_price_filter","config":{"component":"Magento_Ui\/js\/form\/element\/select","template":"ui\/grid\/filters\/field","options":[{"label":"Standard","value":"FALSE"},{"label":"Premium","value":"TRUE"}],"caption":"All","label":"Price","provider":"${ $.parentName }","sortOrder":"40","__disableTmpl":{"label":true}}},"offensive_filter":{"type":"filter_input","name":"offensive_filter","dataScope":"offensive_filter","config":{"label":"Safe search","provider":"${ $.parentName }","component":"Magento_Ui\/js\/form\/element\/single-checkbox","template":"Magento_AdobeStockImageAdminUi\/grid\/filter\/checkbox","sortOrder":"50","description":"Disabled","valueMap":{"true":"Disabled"}}},"isolated_filter":{"type":"filter_input","name":"isolated_filter","dataScope":"isolated_filter","config":{"label":"Isolated Assets","tooltip":{"description":"Isolated assets have subjects appear alone on a solid background."},"additionalClasses":{"admin__isolated_filter":true},"provider":"${ $.parentName }","component":"Magento_Ui\/js\/form\/element\/single-checkbox","template":"Magento_AdobeStockImageAdminUi\/grid\/filter\/checkbox","sortOrder":"60","description":"Isolated Only","valueMap":{"true":"Isolated Only"}}},"serie_id":{"type":"filter_input","name":"serie_id","dataScope":"serie_id","config":{"component":"Magento_Ui\/js\/form\/element\/abstract","template":"ui\/form\/field","visible":false,"label":"Serie Id","provider":"${ $.parentName }","sortOrder":"70"}},"model_id":{"type":"filter_input","name":"model_id","dataScope":"model_id","config":{"component":"Magento_Ui\/js\/form\/element\/abstract","template":"ui\/form\/field","visible":false,"label":"Model Id","provider":"${ $.parentName }","sortOrder":"80"}}},"dataScope":"filters","config":{"component":"Magento_Ui\/js\/grid\/filters\/filters","displayArea":"dataGridFilters","storageConfig":{"namespace":"current.filters","provider":"ns = ${ $.ns }, index = bookmarks"},"chipsConfig":{"template":"Magento_AdobeStockImageAdminUi\/grid\/filter\/chips"},"sortOrder":"10","options":{"dateFormat":"M\/d\/yy"}}}},"config":{"component":"Magento_Ui\/js\/grid\/toolbar","template":"Magento_AdobeStockImageAdminUi\/grid\/toolbar"}},"adobe_stock_images_columns":{"type":"columns","name":"adobe_stock_images_columns","children":{"overlay":{"type":"column.text","name":"overlay","config":{"dataType":"text","component":"Magento_AdobeStockImageAdminUi\/js\/components\/grid\/column\/overlay","componentType":"column","sortable":false,"bodyTmpl":"Magento_AdobeStockImageAdminUi\/grid\/column\/overlay","label":"Overlay","visible":true,"__disableTmpl":{"label":true},"getImagesUrl":"http:\/\/10.186.197.203:7780\/admin\/adobe_stock\/license\/getlist\/"}},"thumbnail_url":{"type":"column.text","name":"thumbnail_url","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/image","componentType":"column","sortable":false,"bodyTmpl":"ui\/grid\/columns\/image","label":"Thumbnail Image","visible":true,"__disableTmpl":{"label":true},"fields":{"id":"id","url":"thumbnail_240_url"}}},"preview":{"type":"column.text","name":"preview","config":{"dataType":"text","component":"Magento_AdobeStockImageAdminUi\/js\/components\/grid\/column\/image-preview","componentType":"column","sortable":false,"bodyTmpl":"Magento_AdobeStockImageAdminUi\/grid\/column\/image-preview","label":"Image Preview","visible":true,"mediaGalleryName":"standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_directories","mediaGalleryComponent":"standalone_media_gallery_listing.standalone_media_gallery_listing.media_gallery_columns.thumbnail_url","mediaGalleryProvider":"standalone_media_gallery_listing.media_gallery_listing_data_source","mediaGallerySortBy":"standalone_media_gallery_listing.standalone_media_gallery_listing.listing_top.sorting","mediaGallerySearchInput":"standalone_media_gallery_listing.standalone_media_gallery_listing.listing_top.fulltext","mediaGalleryListingFilters":"standalone_media_gallery_listing.standalone_media_gallery_listing.listing_top.listing_filters","listingPaging":"standalone_media_gallery_listing.standalone_media_gallery_listing.listing_top.listing_paging","sortByComponentName":"standalone_adobe_stock_images_listing.standalone_adobe_stock_images_listing.listing_top.sorting","__disableTmpl":{"label":true},"downloadImagePreviewUrl":"http:\/\/10.186.197.203:7780\/admin\/adobe_stock\/preview\/download\/","licenseAndDownloadUrl":"http:\/\/10.186.197.203:7780\/admin\/adobe_stock\/license\/license\/","saveLicensedAndDownloadUrl":"http:\/\/10.186.197.203:7780\/admin\/adobe_stock\/license\/saveLicensed\/","confirmationUrl":"http:\/\/10.186.197.203:7780\/admin\/adobe_stock\/license\/confirmation\/","relatedImagesUrl":"http:\/\/10.186.197.203:7780\/admin\/adobe_stock\/preview\/relatedimages\/","getMediaGalleryAsset":"http:\/\/10.186.197.203:7780\/admin\/adobe_stock\/asset\/getmediagalleryasset\/","buyCreditsUrl":"https:\/\/stock.adobe.com\/","imageEditDetailsUrl":"http:\/\/10.186.197.203:7780\/admin\/media_gallery\/image\/details\/"}},"relevance":{"type":"column.text","name":"relevance","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Relevance","visible":false,"__disableTmpl":{"label":true}}},"creation":{"type":"column.text","name":"creation","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Most Recent","visible":false,"__disableTmpl":{"label":true}}},"popularity":{"type":"column.text","name":"popularity","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Popularity","visible":false,"__disableTmpl":{"label":true}}},"nb_downloads":{"type":"column.text","name":"nb_downloads","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Downloads","visible":false,"__disableTmpl":{"label":true}}},"undiscovered":{"type":"column.text","name":"undiscovered","config":{"dataType":"text","component":"Magento_Ui\/js\/grid\/columns\/column","componentType":"column","sortable":true,"label":"Undiscovered","visible":false,"__disableTmpl":{"label":true}}}},"config":{"childDefaults":{"storageConfig":{"provider":"ns = ${ $.ns }, index = bookmarks","root":"columns.${ $.index }","namespace":"current.${ $.storageConfig.root }"}},"component":"Magento_Ui\/js\/grid\/masonry","storageConfig":{"namespace":"current","provider":"ns = ${ $.ns }, index = bookmarks"},"componentType":"columns","template":"ui\/grid\/masonry","containerId":"adobe-stock-images-masonry-grid"}},"listing_bottom":{"type":"container","name":"listing_bottom","children":{"listing_paging":{"type":"paging","name":"listing_paging","config":{"current":1,"component":"Magento_Ui\/js\/grid\/paging\/paging","displayArea":"bottom","storageConfig":{"namespace":"current.paging","provider":"ns = ${ $.ns }, index = bookmarks"},"sizesConfig":{"component":"Magento_AdobeStockImageAdminUi\/js\/components\/images-grid-sizes"},"options":{"20":{"value":20,"label":20},"30":{"value":30,"label":30},"50":{"value":50,"label":50},"100":{"value":100,"label":100},"200":{"value":200,"label":200}},"pageSize":20}}},"config":{"component":"Magento_Ui\/js\/grid\/toolbar","template":"Magento_AdobeStockImageAdminUi\/grid\/toolbar"}}},"config":{"component":"uiComponent"}},"adobe_stock_images_listing_data_source":{"type":"dataSource","name":"adobe_stock_images_listing_data_source","dataScope":"standalone_adobe_stock_images_listing","config":{"data":{"items":[],"totalRecords":0},"update_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render\/","component":"Magento_Ui\/js\/grid\/provider","storageConfig":{"indexField":"id"},"aclResource":"Magento_AdobeStockImageAdminUi::save_preview_images","params":{"namespace":"standalone_adobe_stock_images_listing"}}}}}}}}}</script></div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#adobe-stock-images-search-modal": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "stock_panel": {
+                        "component": "Magento_AdobeStockImageAdminUi/js/panel",
+                        "containerId": ".adobe-search-images-modal",
+                        "masonryComponentPath":"standalone_adobe_stock_images_listing.standalone_adobe_stock_images_listing.adobe_stock_images_columns",
+                        "dataSourcePath": "standalone_adobe_stock_images_listing.standalone_adobe_stock_images_listing_data_source"
+                    }
+                }
+            },
+            "Magento_AdobeStockImageAdminUi/js/validation/validate-image-name": {}
+        }
+    }
+</script>
+</div></div></div></div></main><footer class="page-footer"><div class="page-footer-content row"><div class="footer-legal"><p class="copyright col-m-6"><a class="link-copyright" href="http://magento.com" target="_blank" title="Magento"></a>
+Copyright &copy; 2026 Magento Commerce Inc. All rights reserved.</p><div class="footer-legal-system col-m-6"><p class="magento-version">
+    <strong>Magento</strong>
+    ver. 2.4.6</p>
+
+<a class="link-report" href="https://www.adobe.com/privacy/policy.html" id="footer_privacy" target="_blank">
+    Privacy Policy</a> |<a class="link-account-activity"
+    href="http://10.186.197.203:7780/admin/security/session/activity/"
+    id="footer_account_activity"
+    target="_blank"
+    data-mage-init='{"popupWindow": {
+        "windowURL": "http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Fsecurity\u002Fsession\u002Factivity\u002F",
+        "windowName": "session-activity",
+        "width": 600, "height": 600, "top": 50, "left": 50, "resizable": 1, "scrollbars": 1}}'>
+    Account Activity</a> |
+    <a class="link-report" href="https://github.com/magento/magento2/issues" id="footer_bug_tracking" target="_blank">
+        Report an Issue    </a>
+</div></div></div></footer></div>    </body>
+</html>

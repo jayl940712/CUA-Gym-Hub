@@ -1,0 +1,384 @@
+/**
+ * Sales-area styles (order view, invoice/shipment/credit-memo views and their
+ * creation forms). Values come from DESIGN.md / the source admin CSS, not from
+ * eyeballing: section rules #e3e3e3, secondary tables #f5f5f5 zebra, the
+ * #eb5202 accent on the active page-nav item.
+ *
+ * Scoped to `.sales-*` / Magento's own sales class names so nothing here can
+ * collide with the shared grid or layout stylesheets.
+ */
+
+/* ------------------------------------------------------- order view layout */
+
+.order-view-layout {
+  display: grid;
+  gap: 0 3rem;
+  grid-template-columns: 30rem minmax(0, 1fr);
+  align-items: start;
+}
+
+.order-view-layout > .admin__page-nav { align-self: start; }
+
+.order-view-main { min-width: 0; }
+
+.admin__page-nav-title strong { font-weight: 600; }
+
+/* ------------------------------------------------------------- page sections */
+
+.admin__page-section {
+  margin-bottom: 4rem;
+}
+
+.admin__page-section-title {
+  border-bottom: 1px solid #e3e3e3;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.admin__page-section-item {
+  min-width: 0;
+}
+
+.admin__page-section-item-title {
+  border-bottom: 1px solid #e3e3e3;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.admin__page-section-item-title .title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin__page-section-item-title .title small { font-weight: 400; }
+
+/* The source renders these as plain blue links, not buttons. */
+.sales-order-edit-link {
+  color: #007bdb;
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin-left: 1rem;
+}
+
+.sales-order-edit-link:hover { color: #007bdb; text-decoration: underline; }
+
+/* Purchase Point / Purchased From render as three indented lines. */
+.store-view-line { display: block; }
+.store-view-line._level-1 { padding-left: 1rem; }
+.store-view-line._level-2 { padding-left: 2rem; }
+
+.order-section-columns {
+  display: grid;
+  gap: 0 4rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* --------------------------------------------------- key/value info tables */
+
+.admin__table-secondary {
+  border-collapse: collapse;
+  font-size: 1.3rem;
+  width: 100%;
+}
+
+.admin__table-secondary th,
+.admin__table-secondary td {
+  background: #f5f5f5;
+  padding: 1rem 1.5rem;
+  vertical-align: top;
+}
+
+.admin__table-secondary tr:nth-child(even) th,
+.admin__table-secondary tr:nth-child(even) td { background: #fff; }
+
+.admin__table-secondary th {
+  color: #303030;
+  font-weight: 400;
+  text-align: left;
+  white-space: nowrap;
+  width: 40%;
+}
+
+.admin__table-secondary td { text-align: right; }
+
+/* --------------------------------------------------------------- addresses */
+
+.order-address-block { font-size: 1.3rem; line-height: 2.2rem; }
+.order-address-block address { font-style: normal; }
+
+/* ---------------------------------------------------- items / data tables */
+
+.order-tables,
+.admin__table-primary {
+  border-collapse: collapse;
+  font-size: 1.3rem;
+  width: 100%;
+}
+
+.order-tables th,
+.admin__table-primary th {
+  background: #514943;
+  color: #fff;
+  font-weight: 600;
+  padding: 1rem;
+  text-align: left;
+  vertical-align: bottom;
+}
+
+.order-tables td,
+.admin__table-primary td {
+  border-bottom: 1px solid #d6d6d6;
+  padding: 1rem;
+  vertical-align: top;
+}
+
+.order-tables .col-price,
+.order-tables .col-qty,
+.order-tables .col-subtotal,
+.order-tables .col-tax,
+.order-tables .col-tax-percent,
+.order-tables .col-discount,
+.order-tables .col-total { text-align: right; white-space: nowrap; }
+
+.order-tables .col-product .product-title { display: block; font-weight: 600; }
+.order-tables .col-product .product-sku-block { display: block; margin-top: .4rem; }
+.order-tables .col-product .item-options { margin: .6rem 0 0; }
+.order-tables .col-product .item-options dt { color: #303030; float: left; clear: left; margin-right: .5rem; }
+.order-tables .col-product .item-options dd { margin: 0 0 .2rem; padding-left: 6rem; }
+.order-tables .col-qty .qty-table { border-collapse: collapse; margin-left: auto; }
+.order-tables .col-qty .qty-table th { background: none; color: #303030; font-weight: 400; padding: 0 .8rem 0 0; text-align: left; }
+.order-tables .col-qty .qty-table td { border: 0; padding: 0; text-align: right; }
+.order-tables tfoot td { border-bottom: 0; }
+
+/* New Memo's qty column carries the source's `col-ordered-qty` class rather
+   than `col-qty`; same sub-table, same styling. */
+.order-creditmemo-tables .col-ordered-qty .qty-table { border-collapse: collapse; margin-left: auto; }
+.order-creditmemo-tables .col-ordered-qty .qty-table th { background: none; color: #303030; font-weight: 400; padding: 0 .8rem 0 0; text-align: left; }
+.order-creditmemo-tables .col-ordered-qty .qty-table td { border: 0; padding: 0; text-align: right; }
+.order-creditmemo-tables .col-refund .qty-input { width: 6rem; text-align: right; }
+.order-creditmemo-tables .col-return-to-stock { text-align: center; }
+.creditmemo-totals .order-totals-actions { margin-top: 1.5rem; }
+.creditmemo-totals .order-totals-actions .admin__field-option { display: block; margin: .8rem 0; }
+
+.order-item-status { display: block; }
+
+/* ------------------------------------------------------- totals / comments */
+
+.order-totals-comments {
+  display: grid;
+  gap: 0 4rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  margin-top: 3rem;
+}
+
+.order-totals-table {
+  border-collapse: collapse;
+  font-size: 1.3rem;
+  width: 100%;
+}
+
+.order-totals-table th,
+.order-totals-table td { padding: .8rem 1rem; }
+.order-totals-table th { font-weight: 400; text-align: left; }
+.order-totals-table td { text-align: right; white-space: nowrap; }
+.order-totals-table .shipping th,
+.order-totals-table .shipping td { border-bottom: 1px solid #d6d6d6; }
+.order-totals-table .grand_total th,
+.order-totals-table .grand_total td { font-size: 1.6rem; font-weight: 600; }
+.order-totals-table .grand_total th,
+.order-totals-table .grand_total td { border-top: 1px solid #d6d6d6; }
+
+/* ------------------------------------------------- comment form + note list */
+
+.edit-order-comments .edit-order-comments-block-title,
+.order-comments-history .edit-order-comments-block-title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.edit-order-comments .admin__field { margin-bottom: 1.5rem; }
+.edit-order-comments .admin__field > label { display: block; margin-bottom: .6rem; }
+.edit-order-comments .admin__control-textarea { min-height: 10rem; width: 100%; }
+.edit-order-comments .admin__control-select { min-width: 20rem; }
+.edit-order-comments .observed-element { margin-bottom: 1rem; }
+.edit-order-comments .admin__field-option { margin-bottom: .5rem; }
+.edit-order-comments .note-list-actions { margin: 1.5rem 0 2.5rem; }
+
+.note-list {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+}
+
+.note-list-item {
+  border-bottom: 1px solid #e3e3e3;
+  font-size: 1.3rem;
+  padding: 1.2rem 0;
+}
+
+.note-list-date { font-weight: 600; margin-right: .8rem; }
+.note-list-time { margin-right: 1.5rem; }
+.note-list-status { color: #303030; }
+.note-list-customer { color: #303030; margin: .5rem 0; }
+.note-list-customer-notified { color: #79a22e; }
+.note-list-customer-not-notified { color: #808080; }
+.note-list-comment { margin-top: .5rem; white-space: pre-wrap; }
+
+/* ---------------------------------------------- new invoice / shipment form */
+
+.order-create-form .admin__page-section-title { margin-top: 3rem; }
+
+.tracking-table { border-collapse: collapse; font-size: 1.3rem; width: 100%; }
+.tracking-table th {
+  background: #514943;
+  color: #fff;
+  font-weight: 600;
+  padding: 1rem;
+  text-align: left;
+}
+.tracking-table td { border-bottom: 1px solid #d6d6d6; padding: .8rem 1rem; }
+.tracking-table .admin__control-text,
+.tracking-table .admin__control-select { width: 100%; }
+.tracking-table .col-action { text-align: center; width: 8rem; }
+.tracking-table tfoot td { border-bottom: 0; padding-top: 1.2rem; }
+
+.order-shipment-totals { margin-top: 3rem; }
+
+.qty-input { text-align: right; width: 8rem; }
+
+.order-form-actions { margin-top: 2.5rem; text-align: right; }
+.order-form-actions .action-primary { margin-left: 1.2rem; }
+
+/* ------------------------------------------------------------ misc helpers */
+
+.sales-order-view-link { color: #007bdb; }
+
+.order-status-legend { color: #303030; font-size: 1.3rem; margin-bottom: 2rem; }
+
+@media (max-width: 1279px) {
+  .order-view-layout { grid-template-columns: 24rem minmax(0, 1fr); }
+  .order-section-columns,
+  .order-totals-comments { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ------------------------------------------- Magento confirmation modal
+ * `Magento_Ui/js/modal/confirm` — rendered in the DOM by the source, so OK /
+ * Cancel are clickable elements. See components/sales/ConfirmModal.jsx. */
+
+.modals-overlay {
+  background: rgba(0, 0, 0, .35);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 900;
+}
+
+.modal-popup {
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 902;
+}
+
+.modal-popup .modal-inner-wrap {
+  background: #fff;
+  box-shadow: 0 0 12px 2px rgba(0, 0, 0, .35);
+  margin: 5rem auto;
+  max-width: 75rem;
+  width: 75%;
+}
+
+.modal-popup .modal-header {
+  padding: 3rem 4rem 0;
+  position: relative;
+}
+
+.modal-popup .action-close {
+  background: none;
+  border: 0;
+  color: #8f8f8f;
+  cursor: pointer;
+  font-size: 0;
+  padding: 1rem;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+.modal-popup .action-close::before {
+  content: '\2715';
+  font-size: 1.6rem;
+}
+
+.modal-popup .modal-content {
+  color: #303030;
+  font-size: 1.4rem;
+  padding: 1rem 4rem 3rem;
+}
+
+.modal-popup .modal-footer {
+  border-top: 1px solid #e3e3e3;
+  padding: 2rem 4rem 3rem;
+  text-align: right;
+}
+
+.modal-popup .modal-footer button { margin-left: 1.3rem; }
+
+.modal-popup .action-secondary {
+  background: #e3e3e3;
+  border: 1px solid #adadad;
+  border-radius: 3px;
+  color: #514943;
+  cursor: pointer;
+  font-size: 1.4rem;
+  padding: .7rem 1.5rem;
+}
+
+.modal-popup .action-primary {
+  background: #eb5202;
+  border: 1px solid #eb5202;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.4rem;
+  padding: .7rem 1.5rem;
+}
+
+.modal-popup .action-primary:hover { background: #ba4000; border-color: #ba4000; }
+.modal-popup .action-secondary:hover { background: #dbdbdb; }
+
+/* --------------------------- document-view section headings & sub-blocks */
+
+/* The `Order Total` / `Memo Total` heading the source puts above the
+ * history + totals pair on the order, invoice, shipment and credit-memo views. */
+.order-total-title {
+  border-bottom: 1px solid #e3e3e3;
+  margin: 3rem 0 0;
+  padding-bottom: 1rem;
+}
+
+.order-total-title .title {
+  color: #303030;
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.shipping-description-wrapper {
+  color: #303030;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+}
+
+.shipping-description-title { font-weight: 600; }
+
+.admin__page-section.inventory .admin__page-section-content {
+  color: #303030;
+  font-size: 1.3rem;
+}

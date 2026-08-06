@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="en">
+    <head >
+        <script>
+    var BASE_URL = 'http://10.186.197.203:7780/admin/admin/';
+    var FORM_KEY = 'UWbSTSbjBGjgvxUk';
+    var require = {
+        'baseUrl': 'http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US'
+    };</script>        <meta charset="utf-8"/>
+<meta name="title" content="Import / Import/Export / Data Transfer / System / Magento Admin"/>
+<meta name="robots" content="NOINDEX,NOFOLLOW"/>
+<meta name="viewport" content="width=1024"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Import / Import/Export / Data Transfer / System / Magento Admin</title>
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/extjs/resources/css/ext-all.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/extjs/resources/css/ytheme-magento.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/jquery/jstree/themes/default/style.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/css/styles-old.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/css/styles.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/Magento_ImportExport/css/importexport.css" />
+<link  rel="icon" type="image/x-icon" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/Magento_Theme/favicon.ico" />
+<link  rel="shortcut icon" type="image/x-icon" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/Magento_Theme/favicon.ico" />
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/requirejs/require.js"></script>
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/mage/requirejs/mixins.js"></script>
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/requirejs-config.js"></script>
+            </head>
+    <body data-container="body"
+          data-mage-init='{"loaderAjax": {}, "loader": { "icon": "http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/images/loader-2.gif"}}'
+        id="html-body" class="adminhtml-import-index page-layout-admin-1column">
+        <div class="menu-wrapper">                        <a
+            href="http://10.186.197.203:7780/admin/admin/"
+            data-edition="Community Edition"            class="logo">
+            <img class="logo-img" src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/images/magento-icon.svg"
+            alt="Magento Admin Panel" title="Magento Admin Panel"/>
+        </a>
+
+<nav data-mage-init='{"globalNavigation": {}}' class="admin__menu">
+    <ul id="nav" role="menubar" ><li  data-ui-id="menu-magento-backend-dashboard"  class="item-dashboard    level-0" id="menu-magento-backend-dashboard" aria-haspopup="true" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/dashboard/"   class=""><span>Dashboard</span></a></li><li  data-ui-id="menu-magento-sales-sales"  class="item-sales  parent  level-0" id="menu-magento-sales-sales" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Sales</span></a><div class="submenu" aria-labelledby="menu-magento-sales-sales"><strong class="submenu-title">Sales</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-sales-sales-operation"  class="item-sales-operation  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Operations</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-sales-sales-order"  class="item-sales-order    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/order/"   class=""><span>Orders</span></a></li><li  data-ui-id="menu-magento-sales-sales-invoice"  class="item-sales-invoice    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/invoice/"   class=""><span>Invoices</span></a></li><li  data-ui-id="menu-magento-sales-sales-shipment"  class="item-sales-shipment    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/shipment/"   class=""><span>Shipments</span></a></li><li  data-ui-id="menu-magento-sales-sales-creditmemo"  class="item-sales-creditmemo    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/creditmemo/"   class=""><span>Credit Memos</span></a></li><li  data-ui-id="menu-magento-paypal-paypal-billing-agreement"  class="item-paypal-billing-agreement    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/paypal/billing_agreement/"   class=""><span>Billing Agreements</span></a></li><li  data-ui-id="menu-magento-sales-sales-transactions"  class="item-sales-transactions    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/transactions/"   class=""><span>Transactions</span></a></li><li  data-ui-id="menu-paypal-braintree-virtual-terminal"  class="item-virtual-terminal    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/braintree/virtual/"   class=""><span>Braintree Virtual Terminal</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-catalog-catalog"  class="item-catalog  parent  level-0" id="menu-magento-catalog-catalog" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Catalog</span></a><div class="submenu" aria-labelledby="menu-magento-catalog-catalog"><strong class="submenu-title">Catalog</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-catalog-inventory"  class="item-inventory  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Inventory</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalog-catalog-products"  class="item-catalog-products    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product/"   class=""><span>Products</span></a></li><li  data-ui-id="menu-magento-catalog-catalog-categories"  class="item-catalog-categories    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/category/"   class=""><span>Categories</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-customer-customer"  class="item-customer  parent  level-0" id="menu-magento-customer-customer" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Customers</span></a><div class="submenu" aria-labelledby="menu-magento-customer-customer"><strong class="submenu-title">Customers</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-customer-customer-manage"  class="item-customer-manage    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/index/"   class=""><span>All Customers</span></a></li><li  data-ui-id="menu-magento-customer-customer-online"  class="item-customer-online    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/online/"   class=""><span>Now Online</span></a></li><li  data-ui-id="menu-magento-loginascustomerlog-login-log"  class="item-login-log    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/loginascustomer_log/log/index/"   class=""><span>Login as Customer Log</span></a></li><li  data-ui-id="menu-magento-customer-customer-group"  class="item-customer-group    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/group/"   class=""><span>Customer Groups</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing"  class="item-marketing  parent  level-0" id="menu-magento-backend-marketing" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Marketing</span></a><div class="submenu" aria-labelledby="menu-magento-backend-marketing"><strong class="submenu-title">Marketing</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-catalogrule-promo"  class="item-promo  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Promotions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalogrule-promo-catalog"  class="item-promo-catalog    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog_rule/promo_catalog/"   class=""><span>Catalog Price Rule</span></a></li><li  data-ui-id="menu-magento-salesrule-promo-quote"  class="item-promo-quote    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales_rule/promo_quote/"   class=""><span>Cart Price Rules</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing-communications"  class="item-marketing-communications  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Communications</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-email-template"  class="item-template    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/email_template/"   class=""><span>Email Templates</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-template"  class="item-newsletter-template    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/template/"   class=""><span>Newsletter Templates</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-queue"  class="item-newsletter-queue    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/queue/"   class=""><span>Newsletter Queue</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-subscriber"  class="item-newsletter-subscriber    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/subscriber/"   class=""><span>Newsletter Subscribers</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-marketing-seo"  class="item-marketing-seo  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>SEO &amp; Search</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-urlrewrite-urlrewrite"  class="item-urlrewrite    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/url_rewrite/index/"   class=""><span>URL Rewrites</span></a></li><li  data-ui-id="menu-magento-search-search-terms"  class="item-search-terms    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/term/index/"   class=""><span>Search Terms</span></a></li><li  data-ui-id="menu-magento-search-search-synonyms"  class="item-search-synonyms    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/synonyms/index/"   class=""><span>Search Synonyms</span></a></li><li  data-ui-id="menu-magento-sitemap-catalog-sitemap"  class="item-catalog-sitemap    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/sitemap/"   class=""><span>Site Map</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing-user-content"  class="item-marketing-user-content  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>User Content</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-reviews-all"  class="item-catalog-reviews-ratings-reviews-all    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/product/index/"   class=""><span>All Reviews</span></a></li><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-pending"  class="item-catalog-reviews-ratings-pending    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/product/pending/"   class=""><span>Pending Reviews</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-content"  class="item-content  parent  level-0" id="menu-magento-backend-content" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Content</span></a><div class="submenu" aria-labelledby="menu-magento-backend-content"><strong class="submenu-title">Content</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-backend-content-elements"  class="item-content-elements  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Elements</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-cms-cms-page"  class="item-cms-page    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/cms/page/"   class=""><span>Pages</span></a></li><li  data-ui-id="menu-magento-cms-cms-block"  class="item-cms-block    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/cms/block/"   class=""><span>Blocks</span></a></li><li  data-ui-id="menu-magento-widget-cms-widget-instance"  class="item-cms-widget-instance    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/widget_instance/"   class=""><span>Widgets</span></a></li><li  data-ui-id="menu-magento-pagebuilder-templates"  class="item-templates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/pagebuilder/template/"   class=""><span>Templates</span></a></li></ul></div></li><li  data-ui-id="menu-magento-mediagalleryui-media"  class="item-media  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Media</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-mediagalleryui-media-gallery"  class="item-media-gallery    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/media_gallery/media/index/"   class=""><span>Media Gallery</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-design"  class="item-system-design  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Design</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-theme-design-config"  class="item-design-config    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/theme/design_config/"   class=""><span>Configuration</span></a></li><li  data-ui-id="menu-magento-theme-system-design-theme"  class="item-system-design-theme    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_design_theme/"   class=""><span>Themes</span></a></li><li  data-ui-id="menu-magento-backend-system-design-schedule"  class="item-system-design-schedule    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_design/"   class=""><span>Schedule</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-reports-report"  class="item-report  parent  level-0" id="menu-magento-reports-report" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Reports</span></a><div class="submenu" aria-labelledby="menu-magento-reports-report"><strong class="submenu-title">Reports</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-marketing"  class="item-report-marketing  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Marketing</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-shopcart-product"  class="item-report-shopcart-product    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_shopcart/product/"   class=""><span>Products in Cart</span></a></li><li  data-ui-id="menu-magento-search-report-search-term"  class="item-report-search-term    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/term/report/"   class=""><span>Search Terms</span></a></li><li  data-ui-id="menu-magento-reports-report-shopcart-abandoned"  class="item-report-shopcart-abandoned    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_shopcart/abandoned/"   class=""><span>Abandoned Carts</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-problem"  class="item-newsletter-problem    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/problem/"   class=""><span>Newsletter Problem Reports</span></a></li></ul></div></li><li  data-ui-id="menu-magento-review-report-review"  class="item-report-review  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Reviews</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-review-report-review-customer"  class="item-report-review-customer    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_review/customer/"   class=""><span>By Customers</span></a></li><li  data-ui-id="menu-magento-review-report-review-product"  class="item-report-review-product    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_review/product/"   class=""><span>By Products</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-salesroot"  class="item-report-salesroot  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Sales</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-salesroot-sales"  class="item-report-salesroot-sales    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/sales/"   class=""><span>Orders</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-tax"  class="item-report-salesroot-tax    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/tax/"   class=""><span>Tax</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-invoiced"  class="item-report-salesroot-invoiced    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/invoiced/"   class=""><span>Invoiced</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-shipping"  class="item-report-salesroot-shipping    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/shipping/"   class=""><span>Shipping</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-refunded"  class="item-report-salesroot-refunded    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/refunded/"   class=""><span>Refunds</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-coupons"  class="item-report-salesroot-coupons    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/coupons/"   class=""><span>Coupons</span></a></li><li  data-ui-id="menu-magento-paypal-report-salesroot-paypal-settlement-reports"  class="item-report-salesroot-paypal-settlement-reports    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/paypal/paypal_reports/"   class=""><span>PayPal Settlement</span></a></li><li  data-ui-id="menu-paypal-braintree-settlement-report"  class="item-settlement-report    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/braintree/report/"   class=""><span>Braintree Settlement</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-customers"  class="item-report-customers  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Customers</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-customers-totals"  class="item-report-customers-totals    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/totals/"   class=""><span>Order Total</span></a></li><li  data-ui-id="menu-magento-reports-report-customers-orders"  class="item-report-customers-orders    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/orders/"   class=""><span>Order Count</span></a></li><li  data-ui-id="menu-magento-reports-report-customers-accounts"  class="item-report-customers-accounts    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/accounts/"   class=""><span>New</span></a></li></ul></div></li><li  data-ui-id="menu-magento-reports-report-products"  class="item-report-products  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Products</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-products-viewed"  class="item-report-products-viewed    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/viewed/"   class=""><span>Views</span></a></li><li  data-ui-id="menu-magento-reports-report-products-bestsellers"  class="item-report-products-bestsellers    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/bestsellers/"   class=""><span>Bestsellers</span></a></li><li  data-ui-id="menu-magento-reports-report-products-lowstock"  class="item-report-products-lowstock    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/lowstock/"   class=""><span>Low Stock</span></a></li><li  data-ui-id="menu-magento-reports-report-products-sold"  class="item-report-products-sold    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/sold/"   class=""><span>Ordered</span></a></li><li  data-ui-id="menu-magento-downloadable-report-products-downloads"  class="item-report-products-downloads    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/downloads/"   class=""><span>Downloads</span></a></li></ul></div></li><li  data-ui-id="menu-magento-reports-report-statistics"  class="item-report-statistics  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Statistics</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-statistics-refresh"  class="item-report-statistics-refresh    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_statistics/"   class=""><span>Refresh Statistics</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-analytics-business-intelligence"  class="item-business-intelligence  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Business Intelligence</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-analytics-advanced-reporting"  class="item-advanced-reporting    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/analytics/reports/show/" target=_blank  class=""><span>Advanced Reporting</span></a></li><li  data-ui-id="menu-magento-analytics-bi-essentials"  class="item-bi-essentials    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/analytics/biessentials/signup/" target=_blank  class=""><span>BI Essentials</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-stores"  class="item-stores  parent  level-0" id="menu-magento-backend-stores" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Stores</span></a><div class="submenu" aria-labelledby="menu-magento-backend-stores"><strong class="submenu-title">Stores</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-stores-settings"  class="item-stores-settings  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Settings</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-backend-system-store"  class="item-system-store    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_store/"   class=""><span>All Stores</span></a></li><li  data-ui-id="menu-magento-config-system-config"  class="item-system-config    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_config/"   class=""><span>Configuration</span></a></li><li  data-ui-id="menu-magento-checkoutagreements-sales-checkoutagreement"  class="item-sales-checkoutagreement    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/checkout/agreement/"   class=""><span>Terms and Conditions</span></a></li><li  data-ui-id="menu-magento-sales-system-order-statuses"  class="item-system-order-statuses    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/order_status/"   class=""><span>Order Status</span></a></li></ul></div></li><li  data-ui-id="menu-magento-inventoryadminui-inventory"  class="item-inventory  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Inventory</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-inventoryadminui-source"  class="item-source    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/inventory/source/index/"   class=""><span>Sources</span></a></li><li  data-ui-id="menu-magento-inventoryadminui-stock"  class="item-stock    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/inventory/stock/index/"   class=""><span>Stocks</span></a></li></ul></div></li><li  data-ui-id="menu-magento-tax-sales-tax"  class="item-sales-tax  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Taxes</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-tax-sales-tax-rules"  class="item-sales-tax-rules    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rule/"   class=""><span>Tax Rules</span></a></li><li  data-ui-id="menu-magento-tax-sales-tax-rates"  class="item-sales-tax-rates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rate/"   class=""><span>Tax Zones and Rates</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-currencysymbol-system-currency"  class="item-system-currency  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Currency</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-currencysymbol-system-currency-rates"  class="item-system-currency-rates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_currency/"   class=""><span>Currency Rates</span></a></li><li  data-ui-id="menu-magento-currencysymbol-system-currency-symbols"  class="item-system-currency-symbols    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_currencysymbol/"   class=""><span>Currency Symbols</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-stores-attributes"  class="item-stores-attributes  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Attributes</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalog-catalog-attributes-attributes"  class="item-catalog-attributes-attributes    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product_attribute/"   class=""><span>Product</span></a></li><li  data-ui-id="menu-magento-catalog-catalog-attributes-sets"  class="item-catalog-attributes-sets    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product_set/"   class=""><span>Attribute Set</span></a></li><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-ratings"  class="item-catalog-reviews-ratings-ratings    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/rating/"   class=""><span>Rating</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-other-settings"  class="item-other-settings    level-1" role="menu-item"></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-system"  class="item-system _current _active parent  level-0" id="menu-magento-backend-system" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class="_active"><span>System</span></a><div class="submenu" aria-labelledby="menu-magento-backend-system"><strong class="submenu-title">System</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-system-convert"  class="item-system-convert  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Data Transfer</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-importexport-system-convert-import"  class="item-system-convert-import    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/import/"   class=""><span>Import</span></a></li><li  data-ui-id="menu-magento-importexport-system-convert-export"  class="item-system-convert-export    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/export/"   class=""><span>Export</span></a></li><li  data-ui-id="menu-magento-taximportexport-system-convert-tax"  class="item-system-convert-tax    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rate/importExport/"   class=""><span>Import/Export Tax Rates</span></a></li><li  data-ui-id="menu-magento-importexport-system-convert-history"  class="item-system-convert-history    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/history/"   class=""><span>Import History</span></a></li></ul></div></li><li  data-ui-id="menu-magento-integration-system-extensions"  class="item-system-extensions  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Extensions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-integration-system-integrations"  class="item-system-integrations    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/integration/"   class=""><span>Integrations</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-tools"  class="item-system-tools  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Tools</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-backend-system-cache"  class="item-system-cache    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/cache/"   class=""><span>Cache Management</span></a></li><li  data-ui-id="menu-magento-indexer-system-index"  class="item-system-index    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/indexer/indexer/list/"   class=""><span>Index Management</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-user-system-acl"  class="item-system-acl  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Permissions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-user-system-acl-users"  class="item-system-acl-users    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/user/"   class=""><span>All Users</span></a></li><li  data-ui-id="menu-magento-user-system-acl-locks"  class="item-system-acl-locks    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/locks/"   class=""><span>Locked Users</span></a></li><li  data-ui-id="menu-magento-user-system-acl-roles"  class="item-system-acl-roles    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/user_role/"   class=""><span>User Roles</span></a></li></ul></div></li><li  data-ui-id="menu-magento-asynchronousoperations-system-magento-logging"  class="item-system-magento-logging  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Action Logs</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-asynchronousoperations-system-magento-logging-bulk-operations"  class="item-system-magento-logging-bulk-operations    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/bulk/index/"   class=""><span>Bulk Actions</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-other-settings"  class="item-system-other-settings  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Other Settings</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-adminnotification-system-adminnotification"  class="item-system-adminnotification    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/notification/"   class=""><span>Notifications</span></a></li><li  data-ui-id="menu-magento-variable-system-variable"  class="item-system-variable    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_variable/"   class=""><span>Custom Variables</span></a></li><li  data-ui-id="menu-magento-encryptionkey-system-crypt-key"  class="item-system-crypt-key    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/crypt_key/"   class=""><span>Manage Encryption Key</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-marketplace-partners"  class="item-partners   last level-0" id="menu-magento-marketplace-partners" aria-haspopup="true" role="menu-item"><a href="http://10.186.197.203:7780/admin/marketplace/index/"   class=""><span>Find Partners &amp; Extensions</span></a></li></ul></nav>
+
+</div>
+
+
+<script>
+require([
+    "jquery",
+    "jquery/ui"
+], function($){
+
+    $.extend(true, $, {
+        calendarConfig: {
+            dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+            dayNamesMin: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+            monthNames: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+            monthNamesShort: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+            infoTitle: "About\u0020the\u0020calendar",
+            firstDay: 0,
+            closeText: "Close",
+            currentText: "Go\u0020Today",
+            prevText: "Previous",
+            nextText: "Next",
+            weekHeader: "WK",
+            timeText: "Time",
+            hourText: "Hour",
+            minuteText: "Minute",
+            dateFormat: $.datepicker.RFC_2822,
+            showOn: "button",
+            showAnim: "",
+            changeMonth: true,
+            changeYear: true,
+            buttonImageOnly: null,
+            buttonImage: null,
+            showButtonPanel: true,
+            showOtherMonths: true,
+            showWeek: false,
+            timeFormat: '',
+            showTime: false,
+            showHour: false,
+            showMinute: false,
+            serverTimezoneSeconds: 1785945894,
+            serverTimezoneOffset: -14400,
+            yearRange: '1926\u003A2126'
+        }
+    });
+
+enUS = {"m":{"wide":["January","February","March","April","May","June","July","August","September","October","November","December"],"abbr":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]}}; // en_US locale reference
+
+});</script>
+<script>
+    window.cookiesConfig = window.cookiesConfig || {};
+    window.cookiesConfig.secure = false;
+</script><script>    require.config({
+        map: {
+            '*': {
+                wysiwygAdapter: 'mage/adminhtml/wysiwyg/tiny_mce/tinymce5Adapter'
+            }
+        }
+    });</script><div class="page-wrapper"><div class="notices-wrapper">    <noscript>
+        <div class="messages">
+            <div class="message message-warning message-noscript">
+                <strong>JavaScript may be disabled in your browser.</strong>
+                To use this website you must first enable JavaScript in your browser.            </div>
+        </div>
+    </noscript>
+<!--
+/**
+ * Copyright &copy; Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+--><div class="admin__data-grid-outer-wrap" data-bind="scope: 'notification_area.notification_area'">
+    <div data-role="spinner" data-component="notification_area.notification_area.columns" class="admin__data-grid-loading-mask">
+        <div class="spinner">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+    <!-- ko template: getTemplate() --><!-- /ko -->
+<script type="text/x-magento-init">{"*": {"Magento_Ui/js/core/app": {"types":{"dataSource":[],"text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"notification_area"},"column.text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"notification_area"},"action":{"extends":"notification_area"},"column.actions":{"extends":"notification_area"},"columns":{"extends":"notification_area"},"container":{"extends":"notification_area"},"notification_area":{"deps":["notification_area.notification_area_data_source"],"provider":"notification_area.notification_area_data_source"},"html_content":{"component":"Magento_Ui\/js\/form\/components\/html","extends":"notification_area"}},"components":{"notification_area":{"children":{"notification_area":{"type":"notification_area","name":"notification_area","children":{"columns":{"type":"columns","name":"columns","children":{"created_at":{"type":"column.text","name":"created_at","config":{"dataType":"text","component":"Magento_AdminNotification\/js\/grid\/columns\/message","componentType":"column","sorting":"asc","label":"","sortOrder":"30","__disableTmpl":{"label":true}}},"actions":{"type":"column.actions","name":"actions","config":{"component":"Magento_Ui\/js\/grid\/columns\/actions","label":"Action","dataType":"actions","indexField":"identity","sortOrder":"20","__disableTmpl":{"label":true}}},"dismiss":{"type":"column.actions","name":"dismiss","config":{"component":"Magento_Ui\/js\/grid\/columns\/actions","label":"Action","dataType":"actions","indexField":"identity","bodyTmpl":"Magento_AsynchronousOperations\/grid\/cells\/actions","sortOrder":"10","__disableTmpl":{"label":true}}}},"config":{"childDefaults":{"storageConfig":{"provider":"ns = ${ $.ns }, index = bookmarks","root":"columns.${ $.index }","namespace":"current.${ $.storageConfig.root }"}},"component":"Magento_AsynchronousOperations\/js\/grid\/listing","storageConfig":{"namespace":"current","provider":"ns = ${ $.ns }, index = bookmarks"},"componentType":"columns","template":"Magento_AsynchronousOperations\/grid\/listing","link":"http:\/\/10.186.197.203:7780\/admin\/bulk\/index\/","linkText":"Bulk Actions Log","dismissAllText":"Dismiss All Completed Tasks","dismissUrl":"http:\/\/10.186.197.203:7780\/admin\/bulk\/notification\/dismiss\/","isAllowed":true}},"modalContainer":{"type":"container","name":"modalContainer","children":{"modal":{"type":"container","name":"modal","children":{"insertBulk":{"type":"container","name":"insertBulk","config":{"autoRender":false,"realTimeLink":false,"render_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render_handle\/handle\/bulk_bulk_details_modal\/buttons\/1\/","update_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render\/","dataLinks":{"imports":false,"exports":false},"component":"Magento_AsynchronousOperations\/js\/insert-form","externalProvider":"${ $.ns }.bulk_details_form_modal_data_source","ns":"bulk_details_form_modal","toolbarContainer":"${ $.parentName }","formSubmitType":"ajax","loading":false,"columnsProvider":"ns = notification_area, index = columns","titlePrefix":"Action Details - #","modalTitleProvider":"${ $.externalProvider }:data.uuid"}}},"config":{"options":{"type":"slide"},"component":"Magento_Ui\/js\/modal\/modal-component"}}},"config":{"component":"uiComponent"}}},"config":{"component":"uiComponent"}},"notification_area_data_source":{"type":"dataSource","name":"notification_area_data_source","dataScope":"notification_area","config":{"data":{"totalRecords":0,"items":[]},"update_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render\/","component":"Magento_Ui\/js\/grid\/provider","storageConfig":{"indexField":"identity"},"aclResource":"Magento_AdminNotification::show_list","params":{"namespace":"notification_area"}}}}}}}}}</script></div>
+<!-- BLOCK notification_window --><!-- /BLOCK notification_window --></div><header class="page-header row"><div class="page-header-hgroup col-l-8 col-m-6">
+<div class="page-title-wrapper">
+    <h1 class="page-title">Import</h1>
+    </div>
+</div><div class="page-header-actions col-l-4 col-m-6">        <div class="admin-user admin__action-dropdown-wrap">
+            <a
+                href="http://10.186.197.203:7780/admin/admin/system_account/index/"
+                class="admin__action-dropdown"
+                title="My Account"
+                data-mage-init='{"dropdown":{}}'
+                data-toggle="dropdown">
+                <span class="admin__action-dropdown-text">
+                    <span class="admin-user-account-text">admin</span>
+                </span>
+            </a>
+            <ul class="admin__action-dropdown-menu">
+                                <li>
+                    <a
+                        href="http://10.186.197.203:7780/admin/admin/system_account/index/"
+                         data-ui-id="user-user-account-settings"                         title="Account Setting">
+                        Account Setting (<span class="admin-user-name">admin</span>)
+                    </a>
+                </li>
+                                <li>
+                    <a
+                        href="http://10.186.197.203:7780/"
+                        title="Customer View"
+                        target="_blank" class="store-front">
+                        Customer View                    </a>
+                </li>
+                <li>
+                    <a
+                        href="http://10.186.197.203:7780/admin/admin/auth/logout/"
+                        class="account-signout"
+                        title="Sign Out">
+                        Sign Out                    </a>
+                </li>
+            </ul>
+        </div>
+
+<div
+    data-mage-init='{"toolbarEntry": {}}'
+    class="notifications-wrapper admin__action-dropdown-wrap"
+    data-notification-count="0">
+            <a
+            class="notifications-action admin__action-dropdown"
+            href="http://10.186.197.203:7780/admin/admin/notification/index/"
+            title="Notifications">
+        </a>
+    </div>
+<div class="search-global" data-mage-init='{"globalSearch": {}}'>
+    <form action="#" id="form-search">
+        <div class="search-global-field">
+            <label class="search-global-label" for="search-global"></label>
+            <input
+                    type="text"
+                    class="search-global-input"
+                    id="search-global"
+                    name="query"
+                    data-mage-init='{"suggest":{"dropdownWrapper":"<div class=\"autocomplete-results\" ><\/div >","template":"[data-template=search-suggest]","termAjaxArgument":"query","source":"http:\/\/10.186.197.203:7780\/admin\/admin\/index\/globalSearch\/","filterProperty":"name","preventClickPropagation":false,"minLength":2,"submitInputOnEnter":false}}'>
+            <button
+                type="submit"
+                class="search-global-action"
+                title="Search"
+                ></button>
+        </div>
+    </form>
+    <script data-template="search-suggest" type="text/x-magento-template">
+        <ul class="search-global-menu">
+        <li class="item">
+            <a id="searchPreviewProducts" href="http://10.186.197.203:7780/admin/catalog/product/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Products</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewOrders" href="http://10.186.197.203:7780/admin/sales/order/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Orders</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewCustomers" href="http://10.186.197.203:7780/admin/customer/index/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Customers</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewPages" href="http://10.186.197.203:7780/admin/cms/page/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Pages</a>
+        </li>
+            <% if (data.items.length) { %>
+            <% _.each(data.items, function(value){ %>
+            <li class="item"
+                <%= data.optionData(value) %>
+                >
+                <a href="<%- value.url %>" class="title"><%- value.name %></a>
+                <span class="type"><%- value.type %></span>
+                <%- value.description || "" %>
+            </li>
+            <% }); %>
+        <% } else { %>
+            <li>
+                <span class="mage-suggest-no-records">
+                    No records found.                </span>
+            </li>
+        <% } %>
+        </ul>
+    </script>
+</div>
+</div></header><div><input name="form_key" type="hidden" value="UWbSTSbjBGjgvxUk" /></div>
+<main id="anchor-content" class="page-content"><div class="page-main-actions">    <div data-mage-init='{"floatingHeader": {}}' class="page-actions floating-header"  data-ui-id="page-actions-toolbar-content-header" >
+        <button id="upload_button" title="Check Data" type="button" class="action-default scalable save primary" backend-button-widget-hook-id="buttonIdqGHuM1GDPf"  data-ui-id="import-form-container-upload-button-button" >
+    <span>Check Data</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListener4vzzou4H1d () {
+        varienImport.postToFrame();;
+    }
+    var listenedElement4vzzou4H1dArray = document.querySelectorAll("*[backend-button-widget-hook-id='buttonIdqGHuM1GDPf']");
+    if(listenedElement4vzzou4H1dArray.length !== 'undefined'){
+        listenedElement4vzzou4H1dArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListener4vzzou4H1d.apply(targetElement);
+                };
+            }
+        });
+    }</script>    </div>
+</div><div id="messages"><div class="messages"><div class="message message-notice notice"><div data-ui-id="messages-message-notice" >Make sure your file isn't more than 8M.</div></div></div></div><div id="page:main-container" class="page-columns"><div class="admin__old"><div id="container" class="main-col">
+<script>require([
+    'jquery',
+    'Magento_Ui/js/modal/alert',
+    'prototype'
+], function(jQuery, alert){
+
+//<![CDATA[
+    // Temporary Class will be replaced after refactoring of import/export functionality
+    varienImport = {
+        /**
+         * Name and ID for iframe for data POST-ing.
+         * @type {string}
+         */
+        ifrElemName: 'import_post_target_frame',
+
+        /**
+         * List of existing behavior sets
+         * @type {Array}
+         */
+        uniqueBehaviors: ["basic_behavior","custom_behavior"],
+
+        /**
+         * Behaviour codes for import entities
+         * @type {Array}
+         */
+        entityBehaviors: {"advanced_pricing":"basic_behavior","catalog_product":"basic_behavior","customer_composite":"basic_behavior","customer":"custom_behavior","customer_address":"custom_behavior","stock_sources":"basic_behavior"},
+
+        /**
+         * Behaviour notes for import entities
+         * @type {Array}
+         */
+        entityBehaviorsNotes: {"advanced_pricing":[],"catalog_product":{"append":"New product data is added to the existing product data for the existing entries in the database. All fields except sku can be updated.","replace":"The existing product data is replaced with new data. <b>Exercise caution when replacing data because the existing product data will be completely cleared and all references in the system will be lost.<\/b>","delete":"Any entities in the import data that already exist in the database are deleted from the database."},"customer_composite":[],"customer":[],"customer_address":[],"stock_sources":[]},
+
+        /**
+         * Base url
+         * @type {string}
+         */
+        sampleFilesBaseUrl: 'http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Fadmin\u002Fimport\u002Fdownload\u002Ffilename\u002Fentity\u002Dname\u002F',
+
+        /**
+        * Loaded file last modified
+        * @type {int|null}
+        */
+        loadedFileLastModified: null,
+
+        /**
+         * Reset selected index
+         * @param {string} elementId
+         */
+        resetSelectIndex: function(elementId) {
+            var element = jQuery('#' + elementId);
+            if (element) {
+                element[0].selectedIndex = 0;
+            }
+        },
+
+        /**
+         * Show behavior selector
+         * @param {string|boolean} entity If false, then hide all behavior selectors
+         */
+        showBehavior: function(entity) {
+            var requiredBehavior = this.entityBehaviors[entity];
+            for (i = 0; i < this.uniqueBehaviors.length; i++) {
+                var currentBehavior = this.uniqueBehaviors[i];
+                this.showBehaviorFieldset(currentBehavior, requiredBehavior == currentBehavior);
+            }
+        },
+
+        /**
+         * Show/hide one behavior fieldset
+         * @param {string} behaviorId
+         * @param {boolean} isShow
+         */
+        showBehaviorFieldset: function(behaviorId, isShow) {
+            var behaviorFieldset = jQuery('#' + behaviorId + '_fieldset'),
+                behaviorFields = jQuery('.' + behaviorId);
+            if (isShow) {
+                behaviorFieldset.show();
+            } else {
+                behaviorFieldset.hide();
+                this.resetSelectIndex(behaviorId);
+            }
+            behaviorFields.each(function(k, behaviorField){
+                behaviorField = jQuery(behaviorField);
+                if (isShow) {
+                    behaviorField.prop('disabled', false);
+                    behaviorField.addClass('required-entry');
+                } else {
+                    behaviorField.prop('disabled', 'disabled');
+                    behaviorField.removeClass('required-entry');
+                }
+            });
+        },
+
+        /**
+         * Show upload file field
+         * @param {boolean} isShow
+         */
+        showUploadFile: function(isShow) {
+            if (isShow == true) {
+                jQuery('#upload_file_fieldset').show();
+            } else {
+                jQuery('#upload_file_fieldset').hide();
+            }
+        },
+
+        /**
+         * Show/hide sample file link
+         * @param {string} entityId
+         */
+        showSampleFile: function(entityId) {
+            var sampleFileSpan = jQuery('#sample-file-span');
+            if (entityId) {
+                var sampleFileLink = this.sampleFilesBaseUrl.replace('entity-name', entityId);
+                jQuery('#sample-file-link').attr('href', sampleFileLink);
+                if (sampleFileSpan.is(':hidden')) {
+                    sampleFileSpan.show();
+                }
+            } else {
+                sampleFileSpan.hide();
+            }
+        },
+
+        /**
+         * Handle value change in entity type selector
+         */
+        handleEntityTypeSelector: function() {
+            var entity = jQuery('#entity');
+            if (entity && entity.val()) {
+                this.showBehavior(entity.val());
+                this.showUploadFile(true);
+                this.showSampleFile(entity.val());
+            } else {
+                this.showBehavior(false);
+                this.showUploadFile(false);
+                this.showSampleFile(false);
+            }
+            this.handleImportBehaviorSelector();
+        },
+
+        /**
+         * Handle value change in behavior selector
+         */
+        handleImportBehaviorSelector: function() {
+            var entity = jQuery('#entity');
+            if (entity && entity.val()) {
+                var notes = this.entityBehaviorsNotes[entity.val()];
+                var requiredBehavior = this.entityBehaviors[entity.val()];
+                var behaviorInput = jQuery('#' + requiredBehavior);
+                var behavior = behaviorInput && behaviorInput.val();
+                if (behavior && notes[behavior]) {
+                    jQuery('#' + requiredBehavior + '-note').html(notes[behavior]);
+                } else {
+                    jQuery('#' + requiredBehavior + '-note').html('');
+                }
+            }
+        },
+
+        /**
+         * Refresh loaded file last modified
+         */
+        refreshLoadedFileLastModified: function(e) {
+            if (jQuery(e)[0].files.length > 0) {
+                this.loadedFileLastModified = jQuery(e)[0].files[0].lastModified;
+            } else {
+                this.loadedFileLastModified = null;
+            }
+        },
+
+        /**
+         * Post form data to dynamic iframe.
+         * @param {string} newActionUrl OPTIONAL Change form action to this if specified
+         */
+        postToFrame: function(newActionUrl) {
+            var fileUploader = document.getElementById('import_file');
+
+            if (fileUploader.files.length > 0) {
+                var file = fileUploader.files[0],
+                    ifrElName = this.ifrElemName,
+                    reader = new FileReader();
+
+                reader.readAsText(file, "UTF-8");
+
+                reader.onerror = function () {
+                    jQuery('body').loader('hide');
+                    alert({
+                        content: 'Content of uploaded file was changed, please re-upload the file'
+                    });
+                    fileUploader.value = null;
+                    jQuery('iframe#' + ifrElName).remove();
+                    return;
+                }
+
+                if (file.lastModified !== this.loadedFileLastModified) {
+                    alert({
+                        content: 'Content of uploaded file was changed, please re-upload the file'
+                    });
+                    fileUploader.value = null;
+                    return;
+                }
+            }
+
+            if (!jQuery('[name="' + this.ifrElemName + '"]').length) {
+                jQuery('body').append('<iframe name="' + this.ifrElemName + '" id="' + this.ifrElemName + '"/>');
+                jQuery('iframe#' + this.ifrElemName).attr('display', 'none');
+            }
+            jQuery('body')
+                .loader({
+                    icon: jQuery('#loading_mask_loader img').attr('src')
+                })
+                .loader('show');
+            var form = jQuery('#edit_form')
+                .one('invalid-form.validate', function(e){jQuery('body').loader('hide')});
+
+            newActionUrl = (newActionUrl ? newActionUrl : form.attr('action'));
+            if (newActionUrl.lastIndexOf('form_key') === -1) {
+                newActionUrl = newActionUrl +
+                    (newActionUrl.lastIndexOf('?') !== -1 ? '&' : '?') +
+                    'form_key=' + encodeURIComponent(form.find('[name="form_key"]').val());
+            }
+
+            form.trigger('save', [{
+                action: newActionUrl,
+                target: this.ifrElemName
+            }]);
+        },
+
+        /**
+         * Actions after data post complete. Hide load mask, remove iframe, run response processing method.
+         * @param {Object} response
+         */
+        postToFrameComplete: function(response) {
+            jQuery('body').loader('hide');
+            jQuery('#' + this.ifrElemName).remove();
+            this.postToFrameProcessResponse(response);
+        },
+
+        /**
+         * Process response JSON.
+         * @param {Object} response
+         */
+        postToFrameProcessResponse: function(response) {
+            if ('object' != typeof(response)) {
+                alert({
+                    content: 'Invalid response'
+                });
+
+                return false;
+            }
+            $H(response).each(function(pair) {
+                switch (pair.key) {
+                    case 'show':
+                    case 'clear':
+                    case 'hide':
+                        $H(pair.value).each(function(val) {
+                            if ($(val.value)) {
+                                $(val.value)[pair.key]();
+                            }
+                        });
+                        break;
+                    case 'innerHTML':
+                    case 'value':
+                        $H(pair.value).each(function(val) {
+                            var el = $(val.key);
+                            if (el) {
+                                el[pair.key] = val.value;
+                                // if element does not visible
+                                el.offsetWidth || el.up('div.entry-edit').show();
+                            }
+                        });
+                        break;
+                    case 'removeClassName':
+                    case 'addClassName':
+                        $H(pair.value).each(function(val) {
+                            if ($(val.key)) $(val.key)[pair.key](val.value);
+                        });
+                        break;
+                    default:
+                        alert({
+                            content: pair.key + ': ' + pair.value
+                        });
+                        break;
+                }
+            });
+        },
+
+        /**
+         * Send form data to Start action when file is validated.
+         * @param {string} newActionUrl
+         * @param {string} sourceFileField
+         */
+        startImport: function(newActionUrl, sourceFileField) {
+            jQuery('#' + sourceFileField).removeClass('required-entry');
+            this.postToFrame(newActionUrl);
+            jQuery('#' + sourceFileField).addClass('required-entry');
+        }
+    };
+//]]>
+
+});</script>
+<div class="entry-edit form-inline">
+    <form id="edit_form" action="http://10.186.197.203:7780/admin/admin/import/validate/" method="post" enctype="multipart/form-data"><div><input name="form_key" type="hidden" value="UWbSTSbjBGjgvxUk" /></div>
+
+
+            <fieldset class="fieldset&#x20;admin__fieldset&#x20;" id="base_fieldset">
+                            <legend class="admin__legend legend">
+                <span>Import Settings</span>
+            </legend><br />
+            
+
+    <div class="messages">
+            </div>
+
+
+    
+    
+        
+        
+        <div class="admin__field field field-entity  with-addon required _required"  data-ui-id="import-form-container-form-fieldset-element-form-field-entity" >
+                    <label class="label admin__field-label" for="entity" data-ui-id="import-form-container-form-fieldset-element-select-entity-label" ><span>Entity Type</span></label>
+            <div class="admin__field-control control">
+                <div class="admin__field"><select id="entity" name="entity" title="Entity Type" class=" required-entry _required select admin__control-select" formelementhookid="elemIddJQBtv3red" data-ui-id="import-form-container-form-fieldset-element-select-entity" >
+<option value="" id="optIdbph8KbTD"  selected="selected">-- Please Select --</option>
+<option value="advanced_pricing" id="optIdp2YWtYpx" >Advanced Pricing</option>
+<option value="catalog_product" id="optIdBhHpllIv" >Products</option>
+<option value="customer_composite" id="optIdFOP7gp2l" >Customers and Addresses (single file)</option>
+<option value="customer" id="optIdRMQrGWZJ" >Customers Main File</option>
+<option value="customer_address" id="optId4ZWYtuat" >Customer Addresses</option>
+<option value="stock_sources" id="optId5gRn6RFB" >Stock Sources</option>
+</select>
+<label class="addafter" for="entity">
+<span id="sample-file-span" class="no-display"><a id="sample-file-link" href="#">Download Sample File</a></span><script type="text&#x2F;javascript">    function eventListenere8PxwUkVQb () {
+        varienImport.handleEntityTypeSelector();;
+    }
+    var listenedElemente8PxwUkVQbArray = document.querySelectorAll("*[formelementhookid='elemIddJQBtv3red']");
+    if(listenedElemente8PxwUkVQbArray.length !== 'undefined'){
+        listenedElemente8PxwUkVQbArray.forEach(function(element) {
+            if (element) {
+                element.onchange = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenere8PxwUkVQb.apply(targetElement);
+                };
+            }
+        });
+    }</script>
+</label>
+</div>                            </div>
+            </div>
+    
+        
+        
+        
+        
+    
+
+            </fieldset>
+    
+
+
+
+            <fieldset class="fieldset&#x20;admin__fieldset&#x20;no-display" id="basic_behavior_fieldset">
+                            <legend class="admin__legend legend">
+                <span>Import Behavior</span>
+            </legend><br />
+            
+
+    <div class="messages">
+            </div>
+
+
+    
+    
+        
+        
+        <div class="admin__field field field-basic_behavior  with-addon required _required with-note"  data-ui-id="import-form-container-form-fieldset-element-form-field-basic-behavior" >
+                    <label class="label admin__field-label" for="basic_behavior" data-ui-id="import-form-container-form-fieldset-element-select-behavior-label" ><span>Import Behavior</span></label>
+            <div class="admin__field-control control">
+                <div class="admin__field"><select id="basic_behavior" name="behavior" title="Import Behavior" disabled="disabled" class="basic_behavior required-entry _required select admin__control-select" formelementhookid="elemIdILagUOg8oM" data-ui-id="import-form-container-form-fieldset-element-select-behavior" >
+<option value="" id="optIdHBxm7xua"  selected="selected">-- Please Select --</option>
+<option value="append" id="optIdjbTm4XOU" >Add/Update</option>
+<option value="replace" id="optIdmMZcOMIe" >Replace</option>
+<option value="delete" id="optIdcex1SqtO" >Delete</option>
+</select>
+<label class="addafter" for="basic_behavior">
+<div class="admin__field-tooltip tooltip">
+            <a class="admin__field-tooltip-action action-help" target="_blank" title="What is this?"
+                href="https://docs.magento.com/user-guide/system/data-import.html"><span>What is this?</span></a></div><script type="text&#x2F;javascript">    function eventListeneranaKPGHSRU () {
+        varienImport.handleImportBehaviorSelector();;
+    }
+    var listenedElementanaKPGHSRUArray = document.querySelectorAll("*[formelementhookid='elemIdILagUOg8oM']");
+    if(listenedElementanaKPGHSRUArray.length !== 'undefined'){
+        listenedElementanaKPGHSRUArray.forEach(function(element) {
+            if (element) {
+                element.onchange = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListeneranaKPGHSRU.apply(targetElement);
+                };
+            }
+        });
+    }</script>
+</label>
+</div>                <div class="note admin__field-note" id="basic_behavior-note"> </div>            </div>
+            </div>
+    
+        <div class="admin__field field field-basic_behaviorvalidation_strategy  with-addon required _required"  data-ui-id="import-form-container-form-fieldset-element-form-field-basic-behaviorvalidation-strategy" >
+                    <label class="label admin__field-label" for="basic_behaviorvalidation_strategy" data-ui-id="import-form-container-form-fieldset-element-select-validation-strategy-label" ><span>Validation Strategy</span></label>
+            <div class="admin__field-control control">
+                <div class="admin__field"><select id="basic_behaviorvalidation_strategy" name="validation_strategy" title="Validation Strategy" class="basic_behavior required-entry _required select admin__control-select" disabled="disabled" formelementhookid="elemId9DBd3kPpsX" data-ui-id="import-form-container-form-fieldset-element-select-validation-strategy" >
+<option value="validation-stop-on-errors" id="optId8vJbldh7" >Stop on Error</option>
+<option value="validation-skip-errors" id="optIdi8T9goLm" >Skip error entries</option>
+</select>
+<label class="addafter" for="basic_behaviorvalidation_strategy">
+<span id="sample-file-span" class="no-display"><a id="sample-file-link" href="#">Download Sample File</a></span>
+</label>
+</div>                            </div>
+            </div>
+    
+        <div class="admin__field field field-basic_behavior_allowed_error_count  required _required with-note"  data-ui-id="import-form-container-form-fieldset-element-form-field-basic-behavior-allowed-error-count" >
+                    <label class="label admin__field-label" for="basic_behavior_allowed_error_count" data-ui-id="import-form-container-form-fieldset-element-text-allowed-error-count-label" ><span>Allowed Errors Count</span></label>
+            <div class="admin__field-control control">
+                <input id="basic_behavior_allowed_error_count" name="allowed_error_count"  data-ui-id="import-form-container-form-fieldset-element-text-allowed-error-count"  value="10" title="Allowed Errors Count" disabled="disabled" class="basic_behavior validate-number validate-zero-or-greater input-text input-text admin__control-text required-entry _required" type="text" formelementhookid="elemId7Woivkzyr8"/>                <div class="note admin__field-note" id="basic_behavior_allowed_error_count-note">Please specify number of errors to halt import process</div>            </div>
+            </div>
+    
+        <div class="admin__field field field-basic_behavior__import_field_separator  required _required"  data-ui-id="import-form-container-form-fieldset-element-form-field-basic-behavior-import-field-separator" >
+                    <label class="label admin__field-label" for="basic_behavior__import_field_separator" data-ui-id="import-form-container-form-fieldset-element-text-import-field-separator-label" ><span>Field separator</span></label>
+            <div class="admin__field-control control">
+                <input id="basic_behavior__import_field_separator" name="_import_field_separator"  data-ui-id="import-form-container-form-fieldset-element-text-import-field-separator"  value="," title="Field separator" disabled="disabled" class="basic_behavior input-text admin__control-text required-entry _required" type="text" formelementhookid="elemIdJEfNgEY3hr"/>                            </div>
+            </div>
+    
+        <div class="admin__field field field-basic_behavior_import_multiple_value_separator  required _required"  data-ui-id="import-form-container-form-fieldset-element-form-field-basic-behavior-import-multiple-value-separator" >
+                    <label class="label admin__field-label" for="basic_behavior_import_multiple_value_separator" data-ui-id="import-form-container-form-fieldset-element-text-import-multiple-value-separator-label" ><span>Multiple value separator</span></label>
+            <div class="admin__field-control control">
+                <input id="basic_behavior_import_multiple_value_separator" name="_import_multiple_value_separator"  data-ui-id="import-form-container-form-fieldset-element-text-import-multiple-value-separator"  value="," title="Multiple value separator" disabled="disabled" class="basic_behavior input-text admin__control-text required-entry _required" type="text" formelementhookid="elemId2spxQEXLSL"/>                            </div>
+            </div>
+    
+        <div class="admin__field field field-basic_behavior_import_empty_attribute_value_constant  required _required"  data-ui-id="import-form-container-form-fieldset-element-form-field-basic-behavior-import-empty-attribute-value-constant" >
+                    <label class="label admin__field-label" for="basic_behavior_import_empty_attribute_value_constant" data-ui-id="import-form-container-form-fieldset-element-text-import-empty-attribute-value-constant-label" ><span>Empty attribute value constant</span></label>
+            <div class="admin__field-control control">
+                <input id="basic_behavior_import_empty_attribute_value_constant" name="_import_empty_attribute_value_constant"  data-ui-id="import-form-container-form-fieldset-element-text-import-empty-attribute-value-constant"  value="__EMPTY__VALUE__" title="Empty attribute value constant" disabled="disabled" class="basic_behavior input-text admin__control-text required-entry _required" type="text" formelementhookid="elemIdfR67cxVLqE"/>                            </div>
+            </div>
+    
+        <div class="admin__field field field-basic_behaviorfields_enclosure "  data-ui-id="import-form-container-form-fieldset-element-form-field-basic-behaviorfields-enclosure" >
+                    <label class="label admin__field-label" for="basic_behaviorfields_enclosure" data-ui-id="import-form-container-form-fieldset-element-checkbox-fields-enclosure-label" ><span>Fields enclosure</span></label>
+            <div class="admin__field-control control">
+                <input id="basic_behaviorfields_enclosure" name="fields_enclosure"  data-ui-id="import-form-container-form-fieldset-element-checkbox-fields-enclosure"  value="1" title="Fields enclosure" type="checkbox" formelementhookid="elemIdtPRXkoHq1c"/>                            </div>
+            </div>
+    
+        
+        
+        
+        
+    
+
+            </fieldset>
+    
+
+
+
+            <fieldset class="fieldset&#x20;admin__fieldset&#x20;no-display" id="custom_behavior_fieldset">
+                            <legend class="admin__legend legend">
+                <span>Import Behavior</span>
+            </legend><br />
+            
+
+    <div class="messages">
+            </div>
+
+
+    
+    
+        
+        
+        <div class="admin__field field field-custom_behavior  with-addon required _required with-note"  data-ui-id="import-form-container-form-fieldset-element-form-field-custom-behavior" >
+                    <label class="label admin__field-label" for="custom_behavior" data-ui-id="import-form-container-form-fieldset-element-select-behavior-label" ><span>Import Behavior</span></label>
+            <div class="admin__field-control control">
+                <div class="admin__field"><select id="custom_behavior" name="behavior" title="Import Behavior" disabled="disabled" class="custom_behavior required-entry _required select admin__control-select" formelementhookid="elemIdEhb6d7gO31" data-ui-id="import-form-container-form-fieldset-element-select-behavior" >
+<option value="" id="optIdBeNt5iE9"  selected="selected">-- Please Select --</option>
+<option value="add_update" id="optIdawG6CE6V" >Add/Update Complex Data</option>
+<option value="delete" id="optIdSU6CsNuf" >Delete Entities</option>
+<option value="custom" id="optIdMbLEVKqf" >Custom Action</option>
+</select>
+<label class="addafter" for="custom_behavior">
+<div class="admin__field-tooltip tooltip">
+            <a class="admin__field-tooltip-action action-help" target="_blank" title="What is this?"
+                href="https://docs.magento.com/user-guide/system/data-import.html"><span>What is this?</span></a></div><script type="text&#x2F;javascript">    function eventListenerhHiTsfE6zF () {
+        varienImport.handleImportBehaviorSelector();;
+    }
+    var listenedElementhHiTsfE6zFArray = document.querySelectorAll("*[formelementhookid='elemIdEhb6d7gO31']");
+    if(listenedElementhHiTsfE6zFArray.length !== 'undefined'){
+        listenedElementhHiTsfE6zFArray.forEach(function(element) {
+            if (element) {
+                element.onchange = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerhHiTsfE6zF.apply(targetElement);
+                };
+            }
+        });
+    }</script>
+</label>
+</div>                <div class="note admin__field-note" id="custom_behavior-note"> </div>            </div>
+            </div>
+    
+        <div class="admin__field field field-custom_behaviorvalidation_strategy  with-addon required _required"  data-ui-id="import-form-container-form-fieldset-element-form-field-custom-behaviorvalidation-strategy" >
+                    <label class="label admin__field-label" for="custom_behaviorvalidation_strategy" data-ui-id="import-form-container-form-fieldset-element-select-validation-strategy-label" ><span>Validation Strategy</span></label>
+            <div class="admin__field-control control">
+                <div class="admin__field"><select id="custom_behaviorvalidation_strategy" name="validation_strategy" title="Validation Strategy" class="custom_behavior required-entry _required select admin__control-select" disabled="disabled" formelementhookid="elemIdauynYUozMu" data-ui-id="import-form-container-form-fieldset-element-select-validation-strategy" >
+<option value="validation-stop-on-errors" id="optId8yb3eLbp" >Stop on Error</option>
+<option value="validation-skip-errors" id="optIdpWf51Gab" >Skip error entries</option>
+</select>
+<label class="addafter" for="custom_behaviorvalidation_strategy">
+<span id="sample-file-span" class="no-display"><a id="sample-file-link" href="#">Download Sample File</a></span>
+</label>
+</div>                            </div>
+            </div>
+    
+        <div class="admin__field field field-custom_behavior_allowed_error_count  required _required with-note"  data-ui-id="import-form-container-form-fieldset-element-form-field-custom-behavior-allowed-error-count" >
+                    <label class="label admin__field-label" for="custom_behavior_allowed_error_count" data-ui-id="import-form-container-form-fieldset-element-text-allowed-error-count-label" ><span>Allowed Errors Count</span></label>
+            <div class="admin__field-control control">
+                <input id="custom_behavior_allowed_error_count" name="allowed_error_count"  data-ui-id="import-form-container-form-fieldset-element-text-allowed-error-count"  value="10" title="Allowed Errors Count" disabled="disabled" class="custom_behavior validate-number validate-zero-or-greater input-text input-text admin__control-text required-entry _required" type="text" formelementhookid="elemIdn03Ox6UCBE"/>                <div class="note admin__field-note" id="custom_behavior_allowed_error_count-note">Please specify number of errors to halt import process</div>            </div>
+            </div>
+    
+        <div class="admin__field field field-custom_behavior__import_field_separator  required _required"  data-ui-id="import-form-container-form-fieldset-element-form-field-custom-behavior-import-field-separator" >
+                    <label class="label admin__field-label" for="custom_behavior__import_field_separator" data-ui-id="import-form-container-form-fieldset-element-text-import-field-separator-label" ><span>Field separator</span></label>
+            <div class="admin__field-control control">
+                <input id="custom_behavior__import_field_separator" name="_import_field_separator"  data-ui-id="import-form-container-form-fieldset-element-text-import-field-separator"  value="," title="Field separator" disabled="disabled" class="custom_behavior input-text admin__control-text required-entry _required" type="text" formelementhookid="elemIdeTGjV14rxB"/>                            </div>
+            </div>
+    
+        <div class="admin__field field field-custom_behavior_import_multiple_value_separator  required _required"  data-ui-id="import-form-container-form-fieldset-element-form-field-custom-behavior-import-multiple-value-separator" >
+                    <label class="label admin__field-label" for="custom_behavior_import_multiple_value_separator" data-ui-id="import-form-container-form-fieldset-element-text-import-multiple-value-separator-label" ><span>Multiple value separator</span></label>
+            <div class="admin__field-control control">
+                <input id="custom_behavior_import_multiple_value_separator" name="_import_multiple_value_separator"  data-ui-id="import-form-container-form-fieldset-element-text-import-multiple-value-separator"  value="," title="Multiple value separator" disabled="disabled" class="custom_behavior input-text admin__control-text required-entry _required" type="text" formelementhookid="elemIdORrPfYBHyY"/>                            </div>
+            </div>
+    
+        <div class="admin__field field field-custom_behavior_import_empty_attribute_value_constant  required _required"  data-ui-id="import-form-container-form-fieldset-element-form-field-custom-behavior-import-empty-attribute-value-constant" >
+                    <label class="label admin__field-label" for="custom_behavior_import_empty_attribute_value_constant" data-ui-id="import-form-container-form-fieldset-element-text-import-empty-attribute-value-constant-label" ><span>Empty attribute value constant</span></label>
+            <div class="admin__field-control control">
+                <input id="custom_behavior_import_empty_attribute_value_constant" name="_import_empty_attribute_value_constant"  data-ui-id="import-form-container-form-fieldset-element-text-import-empty-attribute-value-constant"  value="__EMPTY__VALUE__" title="Empty attribute value constant" disabled="disabled" class="custom_behavior input-text admin__control-text required-entry _required" type="text" formelementhookid="elemIdKjVYcfwZaX"/>                            </div>
+            </div>
+    
+        <div class="admin__field field field-custom_behaviorfields_enclosure "  data-ui-id="import-form-container-form-fieldset-element-form-field-custom-behaviorfields-enclosure" >
+                    <label class="label admin__field-label" for="custom_behaviorfields_enclosure" data-ui-id="import-form-container-form-fieldset-element-checkbox-fields-enclosure-label" ><span>Fields enclosure</span></label>
+            <div class="admin__field-control control">
+                <input id="custom_behaviorfields_enclosure" name="fields_enclosure"  data-ui-id="import-form-container-form-fieldset-element-checkbox-fields-enclosure"  value="1" title="Fields enclosure" type="checkbox" formelementhookid="elemIdC9jONwd7Rg"/>                            </div>
+            </div>
+    
+        
+        
+        
+        
+    
+
+            </fieldset>
+    
+
+
+
+            <fieldset class="fieldset&#x20;admin__fieldset&#x20;no-display" id="upload_file_fieldset">
+                            <legend class="admin__legend legend">
+                <span>File to Import</span>
+            </legend><br />
+            
+
+    <div class="messages">
+            </div>
+
+
+    
+    
+        
+        
+        <div class="admin__field field field-import_file  with-addon required _required with-note"  data-ui-id="import-form-container-form-fieldset-element-form-field-import-file" >
+                    <label class="label admin__field-label" for="import_file" data-ui-id="import-form-container-form-fieldset-element-file-import-file-label" ><span>Select File to Import</span></label>
+            <div class="admin__field-control control">
+                <div class="admin__field"><input id="import_file" name="import_file"  data-ui-id="import-form-container-form-fieldset-element-file-import-file"  value="" title="Select File to Import" class="input-file required-entry _required" type="file" formelementhookid="elemId4iCQTqlYMj"/><label class="addafter" for="import_file"><script type="text&#x2F;javascript">    function eventListenerUs2a5nn1Yz () {
+        varienImport.refreshLoadedFileLastModified(this);;
+    }
+    var listenedElementUs2a5nn1YzArray = document.querySelectorAll("*[formelementhookid='elemId4iCQTqlYMj']");
+    if(listenedElementUs2a5nn1YzArray.length !== 'undefined'){
+        listenedElementUs2a5nn1YzArray.forEach(function(element) {
+            if (element) {
+                element.onchange = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerUs2a5nn1Yz.apply(targetElement);
+                };
+            }
+        });
+    }</script></label></div>                <div class="note admin__field-note" id="import_file-note">File must be saved in UTF-8 encoding for proper import</div>            </div>
+            </div>
+    
+        <div class="admin__field field field-import_images_file_dir  with-note"  data-ui-id="import-form-container-form-fieldset-element-form-field-import-images-file-dir" >
+                    <label class="label admin__field-label" for="import_images_file_dir" data-ui-id="import-form-container-form-fieldset-element-text-import-images-file-dir-label" ><span>Images File Directory</span></label>
+            <div class="admin__field-control control">
+                <input id="import_images_file_dir" name="import_images_file_dir"  data-ui-id="import-form-container-form-fieldset-element-text-import-images-file-dir"  value="" title="Images File Directory" class="input-text input-text admin__control-text" type="text" formelementhookid="elemId9b8bdtVmf7"/>                <div class="note admin__field-note" id="import_images_file_dir-note">For Type &quot;Local Server&quot; use relative path to &lt;Magento root directory&gt;/var/import/images, e.g. <i>product_images</i>, <i>import_images/batch1</i>.<br><br>For example, in case <i>product_images</i>, files should be placed into <i>&lt;Magento root directory&gt;/var/import/images/product_images</i> folder.<br><br>If remote storage is enabled, in case <i>product_images</i>, files should be placed into <i>&lt;Remote Storage&gt;/var/import/images/product_images</i> folder.</div>            </div>
+            </div>
+    
+            <input id="_import_ids" name="_import_ids"  data-ui-id="import-form-container-form-fieldset-element-hidden-import-ids"  value="" title="Import id" type="hidden" formelementhookid="elemIdEgEU3bNKLH"/>    
+        
+        
+        
+        
+    
+
+            </fieldset>
+    
+</form></div>
+<script>
+require([
+    'jquery',
+    'mage/mage'
+], function($){
+
+    $('#edit_form').mage('form').mage('validation', {
+            validationUrl: '',
+            highlight: function(element) {
+                var detailsElement = $(element).closest('details');
+                if (detailsElement.length && detailsElement.is('.details')) {
+                    var summaryElement = detailsElement.find('summary');
+                    if (summaryElement.length && summaryElement.attr('aria-expanded') === "false") {
+                        summaryElement.trigger('click');
+                    }
+                }
+                $(element).trigger('highlight.validate');
+            }
+    });
+});
+</script>
+<div class="entry-edit fieldset" id="import_validation_container">
+    <div class="entry-edit-head legend">
+        <span class="icon-head head-edit-form fieldset-legend"
+            id="import_validation_container_header">Validation Results</span>
+    </div><br>
+    <div id="import_validation_messages" class="fieldset"><!-- --></div>
+</div>
+<script type="text&#x2F;javascript">    var elemOij95f8AArray = document.querySelectorAll('div#import_validation_container');
+    if(elemOij95f8AArray.length !== 'undefined'){
+        elemOij95f8AArray.forEach(function(element) {
+            if (element) {
+                element.style.display = 'none';
+
+            }
+        });
+    }</script><script>require(['jquery', 'Magento_Ui/js/modal/alert', 'prototype'], function(jQuery){
+//<![CDATA[
+    varienImport.resetSelectIndex('entity'); // forced resetting entity selector after page refresh
+//]]>
+
+});</script></div></div></div></main><footer class="page-footer"><div class="page-footer-content row"><div class="footer-legal"><p class="copyright col-m-6"><a class="link-copyright" href="http://magento.com" target="_blank" title="Magento"></a>
+Copyright &copy; 2026 Magento Commerce Inc. All rights reserved.</p><div class="footer-legal-system col-m-6"><p class="magento-version">
+    <strong>Magento</strong>
+    ver. 2.4.6</p>
+
+<a class="link-report" href="https://www.adobe.com/privacy/policy.html" id="footer_privacy" target="_blank">
+    Privacy Policy</a> |<a class="link-account-activity"
+    href="http://10.186.197.203:7780/admin/security/session/activity/"
+    id="footer_account_activity"
+    target="_blank"
+    data-mage-init='{"popupWindow": {
+        "windowURL": "http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Fsecurity\u002Fsession\u002Factivity\u002F",
+        "windowName": "session-activity",
+        "width": 600, "height": 600, "top": 50, "left": 50, "resizable": 1, "scrollbars": 1}}'>
+    Account Activity</a> |
+    <a class="link-report" href="https://github.com/magento/magento2/issues" id="footer_bug_tracking" target="_blank">
+        Report an Issue    </a>
+</div></div></div></footer></div>    </body>
+</html>

@@ -1,0 +1,96 @@
+/* DIFF-R52 — the report filter date field + its jQuery-UI datepicker trigger. */
+
+.date-input-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.date-input-wrap .ui-datepicker-trigger {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0 6px;
+  line-height: 1;
+  color: #514943;
+}
+
+.date-input-wrap .ui-datepicker-trigger span {
+  font-size: 0;
+}
+
+.date-input-wrap .ui-datepicker-trigger::after {
+  content: '\1F4C5';
+  font-size: 16px;
+}
+
+.date-input-wrap .ui-datepicker-trigger:hover::after { opacity: .7; }
+
+.date-input-wrap .ui-datepicker {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 500;
+  background: #fff;
+  border: 1px solid #adadad;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .2);
+  padding: 8px;
+  width: 220px;
+}
+
+.date-input-wrap .ui-datepicker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.date-input-wrap .ui-datepicker-header button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0;
+  color: #514943;
+  padding: 0 4px;
+}
+
+.date-input-wrap .ui-datepicker-prev::after { content: '\2039'; font-size: 16px; }
+.date-input-wrap .ui-datepicker-next::after { content: '\203A'; font-size: 16px; }
+
+.date-input-wrap .ui-datepicker-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: #303030;
+}
+
+.date-input-wrap .ui-datepicker-calendar {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.date-input-wrap .ui-datepicker-calendar th {
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  padding: 2px;
+  text-align: center;
+}
+
+.date-input-wrap .ui-datepicker-calendar td {
+  padding: 1px;
+  text-align: center;
+}
+
+.date-input-wrap .ui-datepicker-calendar a {
+  display: block;
+  padding: 4px 0;
+  font-size: 12px;
+  color: #303030;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.date-input-wrap .ui-datepicker-calendar a:hover {
+  background: #e0f6fe;
+  border-color: #007bdb;
+}

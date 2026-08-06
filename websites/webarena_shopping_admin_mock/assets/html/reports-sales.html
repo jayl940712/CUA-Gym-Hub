@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+    <head >
+        <script>
+    var BASE_URL = 'http://10.186.197.203:7780/admin/reports/';
+    var FORM_KEY = 'UWbSTSbjBGjgvxUk';
+    var require = {
+        'baseUrl': 'http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US'
+    };</script>        <meta charset="utf-8"/>
+<meta name="title" content="Orders Report / Sales / Reports / Magento Admin"/>
+<meta name="robots" content="NOINDEX,NOFOLLOW"/>
+<meta name="viewport" content="width=1024"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Orders Report / Sales / Reports / Magento Admin</title>
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/extjs/resources/css/ext-all.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/extjs/resources/css/ytheme-magento.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/jquery/jstree/themes/default/style.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/css/styles-old.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/css/styles.css" />
+<link  rel="icon" type="image/x-icon" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/Magento_Theme/favicon.ico" />
+<link  rel="shortcut icon" type="image/x-icon" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/Magento_Theme/favicon.ico" />
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/requirejs/require.js"></script>
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/mage/requirejs/mixins.js"></script>
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/requirejs-config.js"></script>
+            </head>
+    <body data-container="body"
+          data-mage-init='{"loaderAjax": {}, "loader": { "icon": "http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/images/loader-2.gif"}}'
+        id="html-body" class="reports-report_sales-sales page-layout-admin-1column">
+        <div class="menu-wrapper">                        <a
+            href="http://10.186.197.203:7780/admin/admin/"
+            data-edition="Community Edition"            class="logo">
+            <img class="logo-img" src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/images/magento-icon.svg"
+            alt="Magento Admin Panel" title="Magento Admin Panel"/>
+        </a>
+
+<nav data-mage-init='{"globalNavigation": {}}' class="admin__menu">
+    <ul id="nav" role="menubar" ><li  data-ui-id="menu-magento-backend-dashboard"  class="item-dashboard    level-0" id="menu-magento-backend-dashboard" aria-haspopup="true" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/dashboard/"   class=""><span>Dashboard</span></a></li><li  data-ui-id="menu-magento-sales-sales"  class="item-sales  parent  level-0" id="menu-magento-sales-sales" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Sales</span></a><div class="submenu" aria-labelledby="menu-magento-sales-sales"><strong class="submenu-title">Sales</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-sales-sales-operation"  class="item-sales-operation  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Operations</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-sales-sales-order"  class="item-sales-order    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/order/"   class=""><span>Orders</span></a></li><li  data-ui-id="menu-magento-sales-sales-invoice"  class="item-sales-invoice    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/invoice/"   class=""><span>Invoices</span></a></li><li  data-ui-id="menu-magento-sales-sales-shipment"  class="item-sales-shipment    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/shipment/"   class=""><span>Shipments</span></a></li><li  data-ui-id="menu-magento-sales-sales-creditmemo"  class="item-sales-creditmemo    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/creditmemo/"   class=""><span>Credit Memos</span></a></li><li  data-ui-id="menu-magento-paypal-paypal-billing-agreement"  class="item-paypal-billing-agreement    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/paypal/billing_agreement/"   class=""><span>Billing Agreements</span></a></li><li  data-ui-id="menu-magento-sales-sales-transactions"  class="item-sales-transactions    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/transactions/"   class=""><span>Transactions</span></a></li><li  data-ui-id="menu-paypal-braintree-virtual-terminal"  class="item-virtual-terminal    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/braintree/virtual/"   class=""><span>Braintree Virtual Terminal</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-catalog-catalog"  class="item-catalog  parent  level-0" id="menu-magento-catalog-catalog" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Catalog</span></a><div class="submenu" aria-labelledby="menu-magento-catalog-catalog"><strong class="submenu-title">Catalog</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-catalog-inventory"  class="item-inventory  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Inventory</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalog-catalog-products"  class="item-catalog-products    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product/"   class=""><span>Products</span></a></li><li  data-ui-id="menu-magento-catalog-catalog-categories"  class="item-catalog-categories    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/category/"   class=""><span>Categories</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-customer-customer"  class="item-customer  parent  level-0" id="menu-magento-customer-customer" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Customers</span></a><div class="submenu" aria-labelledby="menu-magento-customer-customer"><strong class="submenu-title">Customers</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-customer-customer-manage"  class="item-customer-manage    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/index/"   class=""><span>All Customers</span></a></li><li  data-ui-id="menu-magento-customer-customer-online"  class="item-customer-online    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/online/"   class=""><span>Now Online</span></a></li><li  data-ui-id="menu-magento-loginascustomerlog-login-log"  class="item-login-log    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/loginascustomer_log/log/index/"   class=""><span>Login as Customer Log</span></a></li><li  data-ui-id="menu-magento-customer-customer-group"  class="item-customer-group    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/group/"   class=""><span>Customer Groups</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing"  class="item-marketing  parent  level-0" id="menu-magento-backend-marketing" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Marketing</span></a><div class="submenu" aria-labelledby="menu-magento-backend-marketing"><strong class="submenu-title">Marketing</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-catalogrule-promo"  class="item-promo  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Promotions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalogrule-promo-catalog"  class="item-promo-catalog    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog_rule/promo_catalog/"   class=""><span>Catalog Price Rule</span></a></li><li  data-ui-id="menu-magento-salesrule-promo-quote"  class="item-promo-quote    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales_rule/promo_quote/"   class=""><span>Cart Price Rules</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing-communications"  class="item-marketing-communications  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Communications</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-email-template"  class="item-template    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/email_template/"   class=""><span>Email Templates</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-template"  class="item-newsletter-template    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/template/"   class=""><span>Newsletter Templates</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-queue"  class="item-newsletter-queue    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/queue/"   class=""><span>Newsletter Queue</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-subscriber"  class="item-newsletter-subscriber    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/subscriber/"   class=""><span>Newsletter Subscribers</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-marketing-seo"  class="item-marketing-seo  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>SEO &amp; Search</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-urlrewrite-urlrewrite"  class="item-urlrewrite    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/url_rewrite/index/"   class=""><span>URL Rewrites</span></a></li><li  data-ui-id="menu-magento-search-search-terms"  class="item-search-terms    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/term/index/"   class=""><span>Search Terms</span></a></li><li  data-ui-id="menu-magento-search-search-synonyms"  class="item-search-synonyms    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/synonyms/index/"   class=""><span>Search Synonyms</span></a></li><li  data-ui-id="menu-magento-sitemap-catalog-sitemap"  class="item-catalog-sitemap    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/sitemap/"   class=""><span>Site Map</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing-user-content"  class="item-marketing-user-content  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>User Content</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-reviews-all"  class="item-catalog-reviews-ratings-reviews-all    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/product/index/"   class=""><span>All Reviews</span></a></li><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-pending"  class="item-catalog-reviews-ratings-pending    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/product/pending/"   class=""><span>Pending Reviews</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-content"  class="item-content  parent  level-0" id="menu-magento-backend-content" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Content</span></a><div class="submenu" aria-labelledby="menu-magento-backend-content"><strong class="submenu-title">Content</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-backend-content-elements"  class="item-content-elements  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Elements</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-cms-cms-page"  class="item-cms-page    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/cms/page/"   class=""><span>Pages</span></a></li><li  data-ui-id="menu-magento-cms-cms-block"  class="item-cms-block    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/cms/block/"   class=""><span>Blocks</span></a></li><li  data-ui-id="menu-magento-widget-cms-widget-instance"  class="item-cms-widget-instance    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/widget_instance/"   class=""><span>Widgets</span></a></li><li  data-ui-id="menu-magento-pagebuilder-templates"  class="item-templates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/pagebuilder/template/"   class=""><span>Templates</span></a></li></ul></div></li><li  data-ui-id="menu-magento-mediagalleryui-media"  class="item-media  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Media</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-mediagalleryui-media-gallery"  class="item-media-gallery    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/media_gallery/media/index/"   class=""><span>Media Gallery</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-design"  class="item-system-design  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Design</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-theme-design-config"  class="item-design-config    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/theme/design_config/"   class=""><span>Configuration</span></a></li><li  data-ui-id="menu-magento-theme-system-design-theme"  class="item-system-design-theme    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_design_theme/"   class=""><span>Themes</span></a></li><li  data-ui-id="menu-magento-backend-system-design-schedule"  class="item-system-design-schedule    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_design/"   class=""><span>Schedule</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-reports-report"  class="item-report _current _active parent  level-0" id="menu-magento-reports-report" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class="_active"><span>Reports</span></a><div class="submenu" aria-labelledby="menu-magento-reports-report"><strong class="submenu-title">Reports</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-marketing"  class="item-report-marketing  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Marketing</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-shopcart-product"  class="item-report-shopcart-product    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_shopcart/product/"   class=""><span>Products in Cart</span></a></li><li  data-ui-id="menu-magento-search-report-search-term"  class="item-report-search-term    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/term/report/"   class=""><span>Search Terms</span></a></li><li  data-ui-id="menu-magento-reports-report-shopcart-abandoned"  class="item-report-shopcart-abandoned    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_shopcart/abandoned/"   class=""><span>Abandoned Carts</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-problem"  class="item-newsletter-problem    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/problem/"   class=""><span>Newsletter Problem Reports</span></a></li></ul></div></li><li  data-ui-id="menu-magento-review-report-review"  class="item-report-review  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Reviews</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-review-report-review-customer"  class="item-report-review-customer    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_review/customer/"   class=""><span>By Customers</span></a></li><li  data-ui-id="menu-magento-review-report-review-product"  class="item-report-review-product    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_review/product/"   class=""><span>By Products</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-salesroot"  class="item-report-salesroot  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Sales</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-salesroot-sales"  class="item-report-salesroot-sales    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/sales/"   class=""><span>Orders</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-tax"  class="item-report-salesroot-tax    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/tax/"   class=""><span>Tax</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-invoiced"  class="item-report-salesroot-invoiced    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/invoiced/"   class=""><span>Invoiced</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-shipping"  class="item-report-salesroot-shipping    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/shipping/"   class=""><span>Shipping</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-refunded"  class="item-report-salesroot-refunded    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/refunded/"   class=""><span>Refunds</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-coupons"  class="item-report-salesroot-coupons    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/coupons/"   class=""><span>Coupons</span></a></li><li  data-ui-id="menu-magento-paypal-report-salesroot-paypal-settlement-reports"  class="item-report-salesroot-paypal-settlement-reports    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/paypal/paypal_reports/"   class=""><span>PayPal Settlement</span></a></li><li  data-ui-id="menu-paypal-braintree-settlement-report"  class="item-settlement-report    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/braintree/report/"   class=""><span>Braintree Settlement</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-customers"  class="item-report-customers  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Customers</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-customers-totals"  class="item-report-customers-totals    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/totals/"   class=""><span>Order Total</span></a></li><li  data-ui-id="menu-magento-reports-report-customers-orders"  class="item-report-customers-orders    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/orders/"   class=""><span>Order Count</span></a></li><li  data-ui-id="menu-magento-reports-report-customers-accounts"  class="item-report-customers-accounts    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/accounts/"   class=""><span>New</span></a></li></ul></div></li><li  data-ui-id="menu-magento-reports-report-products"  class="item-report-products  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Products</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-products-viewed"  class="item-report-products-viewed    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/viewed/"   class=""><span>Views</span></a></li><li  data-ui-id="menu-magento-reports-report-products-bestsellers"  class="item-report-products-bestsellers    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/bestsellers/"   class=""><span>Bestsellers</span></a></li><li  data-ui-id="menu-magento-reports-report-products-lowstock"  class="item-report-products-lowstock    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/lowstock/"   class=""><span>Low Stock</span></a></li><li  data-ui-id="menu-magento-reports-report-products-sold"  class="item-report-products-sold    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/sold/"   class=""><span>Ordered</span></a></li><li  data-ui-id="menu-magento-downloadable-report-products-downloads"  class="item-report-products-downloads    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/downloads/"   class=""><span>Downloads</span></a></li></ul></div></li><li  data-ui-id="menu-magento-reports-report-statistics"  class="item-report-statistics  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Statistics</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-statistics-refresh"  class="item-report-statistics-refresh    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_statistics/"   class=""><span>Refresh Statistics</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-analytics-business-intelligence"  class="item-business-intelligence  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Business Intelligence</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-analytics-advanced-reporting"  class="item-advanced-reporting    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/analytics/reports/show/" target=_blank  class=""><span>Advanced Reporting</span></a></li><li  data-ui-id="menu-magento-analytics-bi-essentials"  class="item-bi-essentials    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/analytics/biessentials/signup/" target=_blank  class=""><span>BI Essentials</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-stores"  class="item-stores  parent  level-0" id="menu-magento-backend-stores" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Stores</span></a><div class="submenu" aria-labelledby="menu-magento-backend-stores"><strong class="submenu-title">Stores</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-stores-settings"  class="item-stores-settings  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Settings</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-backend-system-store"  class="item-system-store    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_store/"   class=""><span>All Stores</span></a></li><li  data-ui-id="menu-magento-config-system-config"  class="item-system-config    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_config/"   class=""><span>Configuration</span></a></li><li  data-ui-id="menu-magento-checkoutagreements-sales-checkoutagreement"  class="item-sales-checkoutagreement    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/checkout/agreement/"   class=""><span>Terms and Conditions</span></a></li><li  data-ui-id="menu-magento-sales-system-order-statuses"  class="item-system-order-statuses    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/order_status/"   class=""><span>Order Status</span></a></li></ul></div></li><li  data-ui-id="menu-magento-inventoryadminui-inventory"  class="item-inventory  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Inventory</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-inventoryadminui-source"  class="item-source    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/inventory/source/index/"   class=""><span>Sources</span></a></li><li  data-ui-id="menu-magento-inventoryadminui-stock"  class="item-stock    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/inventory/stock/index/"   class=""><span>Stocks</span></a></li></ul></div></li><li  data-ui-id="menu-magento-tax-sales-tax"  class="item-sales-tax  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Taxes</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-tax-sales-tax-rules"  class="item-sales-tax-rules    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rule/"   class=""><span>Tax Rules</span></a></li><li  data-ui-id="menu-magento-tax-sales-tax-rates"  class="item-sales-tax-rates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rate/"   class=""><span>Tax Zones and Rates</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-currencysymbol-system-currency"  class="item-system-currency  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Currency</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-currencysymbol-system-currency-rates"  class="item-system-currency-rates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_currency/"   class=""><span>Currency Rates</span></a></li><li  data-ui-id="menu-magento-currencysymbol-system-currency-symbols"  class="item-system-currency-symbols    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_currencysymbol/"   class=""><span>Currency Symbols</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-stores-attributes"  class="item-stores-attributes  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Attributes</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalog-catalog-attributes-attributes"  class="item-catalog-attributes-attributes    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product_attribute/"   class=""><span>Product</span></a></li><li  data-ui-id="menu-magento-catalog-catalog-attributes-sets"  class="item-catalog-attributes-sets    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product_set/"   class=""><span>Attribute Set</span></a></li><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-ratings"  class="item-catalog-reviews-ratings-ratings    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/rating/"   class=""><span>Rating</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-other-settings"  class="item-other-settings    level-1" role="menu-item"></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-system"  class="item-system  parent  level-0" id="menu-magento-backend-system" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>System</span></a><div class="submenu" aria-labelledby="menu-magento-backend-system"><strong class="submenu-title">System</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-system-convert"  class="item-system-convert  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Data Transfer</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-importexport-system-convert-import"  class="item-system-convert-import    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/import/"   class=""><span>Import</span></a></li><li  data-ui-id="menu-magento-importexport-system-convert-export"  class="item-system-convert-export    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/export/"   class=""><span>Export</span></a></li><li  data-ui-id="menu-magento-taximportexport-system-convert-tax"  class="item-system-convert-tax    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rate/importExport/"   class=""><span>Import/Export Tax Rates</span></a></li><li  data-ui-id="menu-magento-importexport-system-convert-history"  class="item-system-convert-history    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/history/"   class=""><span>Import History</span></a></li></ul></div></li><li  data-ui-id="menu-magento-integration-system-extensions"  class="item-system-extensions  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Extensions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-integration-system-integrations"  class="item-system-integrations    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/integration/"   class=""><span>Integrations</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-tools"  class="item-system-tools  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Tools</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-backend-system-cache"  class="item-system-cache    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/cache/"   class=""><span>Cache Management</span></a></li><li  data-ui-id="menu-magento-indexer-system-index"  class="item-system-index    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/indexer/indexer/list/"   class=""><span>Index Management</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-user-system-acl"  class="item-system-acl  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Permissions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-user-system-acl-users"  class="item-system-acl-users    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/user/"   class=""><span>All Users</span></a></li><li  data-ui-id="menu-magento-user-system-acl-locks"  class="item-system-acl-locks    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/locks/"   class=""><span>Locked Users</span></a></li><li  data-ui-id="menu-magento-user-system-acl-roles"  class="item-system-acl-roles    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/user_role/"   class=""><span>User Roles</span></a></li></ul></div></li><li  data-ui-id="menu-magento-asynchronousoperations-system-magento-logging"  class="item-system-magento-logging  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Action Logs</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-asynchronousoperations-system-magento-logging-bulk-operations"  class="item-system-magento-logging-bulk-operations    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/bulk/index/"   class=""><span>Bulk Actions</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-other-settings"  class="item-system-other-settings  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Other Settings</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-adminnotification-system-adminnotification"  class="item-system-adminnotification    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/notification/"   class=""><span>Notifications</span></a></li><li  data-ui-id="menu-magento-variable-system-variable"  class="item-system-variable    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_variable/"   class=""><span>Custom Variables</span></a></li><li  data-ui-id="menu-magento-encryptionkey-system-crypt-key"  class="item-system-crypt-key    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/crypt_key/"   class=""><span>Manage Encryption Key</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-marketplace-partners"  class="item-partners   last level-0" id="menu-magento-marketplace-partners" aria-haspopup="true" role="menu-item"><a href="http://10.186.197.203:7780/admin/marketplace/index/"   class=""><span>Find Partners &amp; Extensions</span></a></li></ul></nav>
+
+</div>
+
+
+<script>
+require([
+    "jquery",
+    "jquery/ui"
+], function($){
+
+    $.extend(true, $, {
+        calendarConfig: {
+            dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+            dayNamesMin: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+            monthNames: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+            monthNamesShort: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+            infoTitle: "About\u0020the\u0020calendar",
+            firstDay: 0,
+            closeText: "Close",
+            currentText: "Go\u0020Today",
+            prevText: "Previous",
+            nextText: "Next",
+            weekHeader: "WK",
+            timeText: "Time",
+            hourText: "Hour",
+            minuteText: "Minute",
+            dateFormat: $.datepicker.RFC_2822,
+            showOn: "button",
+            showAnim: "",
+            changeMonth: true,
+            changeYear: true,
+            buttonImageOnly: null,
+            buttonImage: null,
+            showButtonPanel: true,
+            showOtherMonths: true,
+            showWeek: false,
+            timeFormat: '',
+            showTime: false,
+            showHour: false,
+            showMinute: false,
+            serverTimezoneSeconds: 1785945865,
+            serverTimezoneOffset: -14400,
+            yearRange: '1926\u003A2126'
+        }
+    });
+
+enUS = {"m":{"wide":["January","February","March","April","May","June","July","August","September","October","November","December"],"abbr":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]}}; // en_US locale reference
+
+});</script>
+<script>
+    window.cookiesConfig = window.cookiesConfig || {};
+    window.cookiesConfig.secure = false;
+</script><script>    require.config({
+        map: {
+            '*': {
+                wysiwygAdapter: 'mage/adminhtml/wysiwyg/tiny_mce/tinymce5Adapter'
+            }
+        }
+    });</script><div class="page-wrapper"><div class="notices-wrapper">    <noscript>
+        <div class="messages">
+            <div class="message message-warning message-noscript">
+                <strong>JavaScript may be disabled in your browser.</strong>
+                To use this website you must first enable JavaScript in your browser.            </div>
+        </div>
+    </noscript>
+<!--
+/**
+ * Copyright &copy; Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+--><div class="admin__data-grid-outer-wrap" data-bind="scope: 'notification_area.notification_area'">
+    <div data-role="spinner" data-component="notification_area.notification_area.columns" class="admin__data-grid-loading-mask">
+        <div class="spinner">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+    <!-- ko template: getTemplate() --><!-- /ko -->
+<script type="text/x-magento-init">{"*": {"Magento_Ui/js/core/app": {"types":{"dataSource":[],"text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"notification_area"},"column.text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"notification_area"},"action":{"extends":"notification_area"},"column.actions":{"extends":"notification_area"},"columns":{"extends":"notification_area"},"container":{"extends":"notification_area"},"notification_area":{"deps":["notification_area.notification_area_data_source"],"provider":"notification_area.notification_area_data_source"},"html_content":{"component":"Magento_Ui\/js\/form\/components\/html","extends":"notification_area"}},"components":{"notification_area":{"children":{"notification_area":{"type":"notification_area","name":"notification_area","children":{"columns":{"type":"columns","name":"columns","children":{"created_at":{"type":"column.text","name":"created_at","config":{"dataType":"text","component":"Magento_AdminNotification\/js\/grid\/columns\/message","componentType":"column","sorting":"asc","label":"","sortOrder":"30","__disableTmpl":{"label":true}}},"actions":{"type":"column.actions","name":"actions","config":{"component":"Magento_Ui\/js\/grid\/columns\/actions","label":"Action","dataType":"actions","indexField":"identity","sortOrder":"20","__disableTmpl":{"label":true}}},"dismiss":{"type":"column.actions","name":"dismiss","config":{"component":"Magento_Ui\/js\/grid\/columns\/actions","label":"Action","dataType":"actions","indexField":"identity","bodyTmpl":"Magento_AsynchronousOperations\/grid\/cells\/actions","sortOrder":"10","__disableTmpl":{"label":true}}}},"config":{"childDefaults":{"storageConfig":{"provider":"ns = ${ $.ns }, index = bookmarks","root":"columns.${ $.index }","namespace":"current.${ $.storageConfig.root }"}},"component":"Magento_AsynchronousOperations\/js\/grid\/listing","storageConfig":{"namespace":"current","provider":"ns = ${ $.ns }, index = bookmarks"},"componentType":"columns","template":"Magento_AsynchronousOperations\/grid\/listing","link":"http:\/\/10.186.197.203:7780\/admin\/bulk\/index\/","linkText":"Bulk Actions Log","dismissAllText":"Dismiss All Completed Tasks","dismissUrl":"http:\/\/10.186.197.203:7780\/admin\/bulk\/notification\/dismiss\/","isAllowed":true}},"modalContainer":{"type":"container","name":"modalContainer","children":{"modal":{"type":"container","name":"modal","children":{"insertBulk":{"type":"container","name":"insertBulk","config":{"autoRender":false,"realTimeLink":false,"render_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render_handle\/handle\/bulk_bulk_details_modal\/buttons\/1\/","update_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render\/","dataLinks":{"imports":false,"exports":false},"component":"Magento_AsynchronousOperations\/js\/insert-form","externalProvider":"${ $.ns }.bulk_details_form_modal_data_source","ns":"bulk_details_form_modal","toolbarContainer":"${ $.parentName }","formSubmitType":"ajax","loading":false,"columnsProvider":"ns = notification_area, index = columns","titlePrefix":"Action Details - #","modalTitleProvider":"${ $.externalProvider }:data.uuid"}}},"config":{"options":{"type":"slide"},"component":"Magento_Ui\/js\/modal\/modal-component"}}},"config":{"component":"uiComponent"}}},"config":{"component":"uiComponent"}},"notification_area_data_source":{"type":"dataSource","name":"notification_area_data_source","dataScope":"notification_area","config":{"data":{"totalRecords":0,"items":[]},"update_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render\/","component":"Magento_Ui\/js\/grid\/provider","storageConfig":{"indexField":"identity"},"aclResource":"Magento_AdminNotification::show_list","params":{"namespace":"notification_area"}}}}}}}}}</script></div>
+<!-- BLOCK notification_window --><!-- /BLOCK notification_window --></div><header class="page-header row"><div class="page-header-hgroup col-l-8 col-m-6">
+<div class="page-title-wrapper">
+    <h1 class="page-title">Orders Report</h1>
+    </div>
+</div><div class="page-header-actions col-l-4 col-m-6">        <div class="admin-user admin__action-dropdown-wrap">
+            <a
+                href="http://10.186.197.203:7780/admin/admin/system_account/index/"
+                class="admin__action-dropdown"
+                title="My Account"
+                data-mage-init='{"dropdown":{}}'
+                data-toggle="dropdown">
+                <span class="admin__action-dropdown-text">
+                    <span class="admin-user-account-text">admin</span>
+                </span>
+            </a>
+            <ul class="admin__action-dropdown-menu">
+                                <li>
+                    <a
+                        href="http://10.186.197.203:7780/admin/admin/system_account/index/"
+                         data-ui-id="user-user-account-settings"                         title="Account Setting">
+                        Account Setting (<span class="admin-user-name">admin</span>)
+                    </a>
+                </li>
+                                <li>
+                    <a
+                        href="http://10.186.197.203:7780/"
+                        title="Customer View"
+                        target="_blank" class="store-front">
+                        Customer View                    </a>
+                </li>
+                <li>
+                    <a
+                        href="http://10.186.197.203:7780/admin/admin/auth/logout/"
+                        class="account-signout"
+                        title="Sign Out">
+                        Sign Out                    </a>
+                </li>
+            </ul>
+        </div>
+
+<div
+    data-mage-init='{"toolbarEntry": {}}'
+    class="notifications-wrapper admin__action-dropdown-wrap"
+    data-notification-count="0">
+            <a
+            class="notifications-action admin__action-dropdown"
+            href="http://10.186.197.203:7780/admin/admin/notification/index/"
+            title="Notifications">
+        </a>
+    </div>
+<div class="search-global" data-mage-init='{"globalSearch": {}}'>
+    <form action="#" id="form-search">
+        <div class="search-global-field">
+            <label class="search-global-label" for="search-global"></label>
+            <input
+                    type="text"
+                    class="search-global-input"
+                    id="search-global"
+                    name="query"
+                    data-mage-init='{"suggest":{"dropdownWrapper":"<div class=\"autocomplete-results\" ><\/div >","template":"[data-template=search-suggest]","termAjaxArgument":"query","source":"http:\/\/10.186.197.203:7780\/admin\/admin\/index\/globalSearch\/","filterProperty":"name","preventClickPropagation":false,"minLength":2,"submitInputOnEnter":false}}'>
+            <button
+                type="submit"
+                class="search-global-action"
+                title="Search"
+                ></button>
+        </div>
+    </form>
+    <script data-template="search-suggest" type="text/x-magento-template">
+        <ul class="search-global-menu">
+        <li class="item">
+            <a id="searchPreviewProducts" href="http://10.186.197.203:7780/admin/catalog/product/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Products</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewOrders" href="http://10.186.197.203:7780/admin/sales/order/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Orders</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewCustomers" href="http://10.186.197.203:7780/admin/customer/index/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Customers</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewPages" href="http://10.186.197.203:7780/admin/cms/page/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Pages</a>
+        </li>
+            <% if (data.items.length) { %>
+            <% _.each(data.items, function(value){ %>
+            <li class="item"
+                <%= data.optionData(value) %>
+                >
+                <a href="<%- value.url %>" class="title"><%- value.name %></a>
+                <span class="type"><%- value.type %></span>
+                <%- value.description || "" %>
+            </li>
+            <% }); %>
+        <% } else { %>
+            <li>
+                <span class="mage-suggest-no-records">
+                    No records found.                </span>
+            </li>
+        <% } %>
+        </ul>
+    </script>
+</div>
+</div></header><div><input name="form_key" type="hidden" value="UWbSTSbjBGjgvxUk" /></div>
+<main id="anchor-content" class="page-content"><div class="page-main-actions">    <div class="store-switcher store-view">
+        <span class="store-switcher-label">Scope:</span>
+        <div class="actions dropdown closable">
+            <input type="hidden" name="store_switcher" id="store_switcher"
+                   data-role="store-view-id" data-param="store_ids"
+                   value="0"
+                 data-ui-id="store-switcher"  />
+            <script type="text&#x2F;javascript">    function eventListenerqT0xUvjsy7 () {
+        switchScope(this);;
+    }
+    var listenedElementqT0xUvjsy7Array = document.querySelectorAll("#store_switcher");
+    if(listenedElementqT0xUvjsy7Array.length !== 'undefined'){
+        listenedElementqT0xUvjsy7Array.forEach(function(element) {
+            if (element) {
+                element.onchange = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerqT0xUvjsy7.apply(targetElement);
+                };
+            }
+        });
+    }</script>            <input type="hidden" name="store_group_switcher" id="store_group_switcher"
+                   data-role="store-group-id" data-param="group"
+                   value="0"
+                 data-ui-id="store-switcher"  />
+            <script type="text&#x2F;javascript">    function eventListenerJzEtEcuYkG () {
+        switchScope(this);;
+    }
+    var listenedElementJzEtEcuYkGArray = document.querySelectorAll("#store_group_switcher");
+    if(listenedElementJzEtEcuYkGArray.length !== 'undefined'){
+        listenedElementJzEtEcuYkGArray.forEach(function(element) {
+            if (element) {
+                element.onchange = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerJzEtEcuYkG.apply(targetElement);
+                };
+            }
+        });
+    }</script>            <input type="hidden" name="website_switcher" id="website_switcher"
+                   data-role="website-id" data-param="website"
+                   value="0"
+                 data-ui-id="store-switcher"  />
+            <script type="text&#x2F;javascript">    function eventListenerirxsZhFUW8 () {
+        switchScope(this);;
+    }
+    var listenedElementirxsZhFUW8Array = document.querySelectorAll("#website_switcher");
+    if(listenedElementirxsZhFUW8Array.length !== 'undefined'){
+        listenedElementirxsZhFUW8Array.forEach(function(element) {
+            if (element) {
+                element.onchange = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerirxsZhFUW8.apply(targetElement);
+                };
+            }
+        });
+    }</script>            <button
+                type="button"
+                class="admin__action-dropdown"
+                data-mage-init='{"dropdown":{}}'
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                id="store-change-button">
+                All Websites            </button>
+            <ul class="dropdown-menu" data-role="stores-list">
+                                    <li class="store-switcher-all disabled ">
+                                                    <span>All Websites</span>
+                                            </li>
+                                                                                                                                                                                                                    <li class="store-switcher-website  ">
+                                                                            <a data-role="website-id" data-value="1" href="#">
+                                            Main Website                                        </a>
+                                                                    </li>
+                                                                                                                        <li class="store-switcher-store  ">
+                                                                            <a data-role="store-group-id"
+                                           data-value="1" href="#">
+                                            Main Website Store                                        </a>
+                                                                    </li>
+                                                        <li class="store-switcher-store-view  ">
+                                                                    <a data-role="store-view-id"
+                                       data-value="1" href="#">
+                                        Default Store View                                    </a>
+                                                            </li>
+                                                                                        </ul>
+        </div>
+        <div class="admin__field-tooltip tooltip"><a href="https://docs.magento.com/user-guide/configuration/scope.html" onclick="this.target='_blank'"  title="What&#x20;is&#x20;this&#x3F;"
+            class="admin__field-tooltip-action action-help"><span>What is this?</span></a></div>    </div>
+
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Backend/js/store-switcher": {
+                    "useConfirm": 1,
+                    "isUsingIframe": 0,
+                    "switchUrl": "http://10.186.197.203:7780/admin/reports/report_sales/sales/",
+                    "storeId": 0                }
+            }
+        }
+    </script>
+    <div data-mage-init='{"floatingHeader": {}}' class="page-actions floating-header"  data-ui-id="page-actions-toolbar-content-header" >
+        <button id="filter_form_submit" title="Show Report" type="button" class="action-default scalable primary" backend-button-widget-hook-id="buttonIdCAx1lFHymQ"  data-ui-id="sales-report-grid-container-filter-form-submit-button" >
+    <span>Show Report</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListeneriIlaNvUMQj () {
+        filterFormSubmit();
+    }
+    var listenedElementiIlaNvUMQjArray = document.querySelectorAll("*[backend-button-widget-hook-id='buttonIdCAx1lFHymQ']");
+    if(listenedElementiIlaNvUMQjArray.length !== 'undefined'){
+        listenedElementiIlaNvUMQjArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListeneriIlaNvUMQj.apply(targetElement);
+                };
+            }
+        });
+    }</script>    </div>
+</div><div id="messages"><div class="messages"><div class="message message-notice notice"><div data-ui-id="messages-message-notice" >For accurate reporting, be sure to refresh lifetime statistics whenever you change the time zone.</div></div><div class="message message-notice notice"><div data-ui-id="messages-message-notice" >Last updated: Jun 17, 2023, 12:00:03 AM. To refresh last day's <a href="http://10.186.197.203:7780/admin/reports/report_statistics/">statistics</a>, click <a href="#2" data-post="{&quot;action&quot;:&quot;http:\/\/10.186.197.203:7780\/admin\/reports\/report_statistics\/refreshRecent\/&quot;,&quot;data&quot;:{&quot;code&quot;:&quot;sales&quot;}}">here</a>.</div></div></div></div><div id="page:main-container" class="page-columns"><div class="admin__old"><div id="container" class="main-col">
+<div class="reports-content">
+    
+<div class="entry-edit form-inline">
+    <form id="filter_form" action="http://10.186.197.203:7780/admin/reports/report_sales/sales/" method="get"><div></div>
+
+
+            <fieldset class="fieldset&#x20;admin__fieldset&#x20;" id="sales_report_base_fieldset">
+                            <legend class="admin__legend legend">
+                <span>Filter</span>
+            </legend><br />
+            
+
+    <div class="messages">
+            </div>
+
+
+    
+    
+        
+        
+            <input id="sales_report_store_ids" name="store_ids"  data-ui-id="grid-filter-form-fieldset-element-hidden-store-ids"  value="" type="hidden" formelementhookid="elemIdSJAXj5nMGP"/>    
+        <div class="admin__field field field-report_type  with-note"  data-ui-id="grid-filter-form-fieldset-element-form-field-report-type" >
+                    <label class="label admin__field-label" for="sales_report_report_type" data-ui-id="grid-filter-form-fieldset-element-select-report-type-label" ><span>Date Used</span></label>
+            <div class="admin__field-control control">
+                <select id="sales_report_report_type" name="report_type" class=" select admin__control-select" formelementhookid="elemIdPn0dbGh7Ux" data-ui-id="grid-filter-form-fieldset-element-select-report-type" >
+<option value="created_at_order" id="optIdFrCE4oc9" >Order Created</option>
+<option value="updated_at_order" id="optIdUmZeidJw" >Order Updated</option>
+</select>
+                <div class="note admin__field-note" id="report_type-note">The Order Updated report is created in real time and does not require a refresh.</div>            </div>
+            </div>
+    
+        <div class="admin__field field field-period_type "  data-ui-id="grid-filter-form-fieldset-element-form-field-period-type" >
+                    <label class="label admin__field-label" for="sales_report_period_type" data-ui-id="grid-filter-form-fieldset-element-select-period-type-label" ><span>Period</span></label>
+            <div class="admin__field-control control">
+                <select id="sales_report_period_type" name="period_type" title="Period" class=" select admin__control-select" formelementhookid="elemIdc8XSl28V0s" data-ui-id="grid-filter-form-fieldset-element-select-period-type" >
+<option value="day" id="optIdAyQt6vXu" >Day</option>
+<option value="month" id="optIdYnsB3Zp4" >Month</option>
+<option value="year" id="optIdIF5Wu3Je" >Year</option>
+</select>
+                            </div>
+            </div>
+    
+        <div class="admin__field field field-from admin__field-small required _required"  data-ui-id="grid-filter-form-fieldset-element-form-field-from" >
+                    <label class="label admin__field-label" for="sales_report_from" data-ui-id="grid-filter-form-fieldset-element-text-from-label" ><span>From</span></label>
+            <div class="admin__field-control control">
+                <input name="from" id="sales_report_from" value="" title="From" class="admin__control-text required-entry _required admin__control-text input-text input-date" type="text" formelementhookid="elemId22YtAnrGOe" data-mage-init="{&quot;calendar&quot;:{&quot;dateFormat&quot;:&quot;M\/d\/yy&quot;,&quot;showsTime&quot;:false,&quot;timeFormat&quot;:null,&quot;buttonImage&quot;:null,&quot;buttonText&quot;:&quot;Select Date&quot;,&quot;disabled&quot;:null,&quot;minDate&quot;:null,&quot;maxDate&quot;:null}}" />                            </div>
+            </div>
+    
+        <div class="admin__field field field-to admin__field-small required _required"  data-ui-id="grid-filter-form-fieldset-element-form-field-to" >
+                    <label class="label admin__field-label" for="sales_report_to" data-ui-id="grid-filter-form-fieldset-element-text-to-label" ><span>To</span></label>
+            <div class="admin__field-control control">
+                <input name="to" id="sales_report_to" value="" title="To" class="admin__control-text required-entry _required admin__control-text input-text input-date" type="text" formelementhookid="elemId9CORTSvsuk" data-mage-init="{&quot;calendar&quot;:{&quot;dateFormat&quot;:&quot;M\/d\/yy&quot;,&quot;showsTime&quot;:false,&quot;timeFormat&quot;:null,&quot;buttonImage&quot;:null,&quot;buttonText&quot;:&quot;Select Date&quot;,&quot;disabled&quot;:null,&quot;minDate&quot;:null,&quot;maxDate&quot;:null}}" />                            </div>
+            </div>
+    
+        <div class="admin__field field field-show_order_statuses  with-note"  data-ui-id="grid-filter-form-fieldset-element-form-field-show-order-statuses" >
+                    <label class="label admin__field-label" for="sales_report_show_order_statuses" data-ui-id="grid-filter-form-fieldset-element-select-show-order-statuses-label" ><span>Order Status</span></label>
+            <div class="admin__field-control control">
+                <select id="sales_report_show_order_statuses" name="show_order_statuses" class=" select admin__control-select" formelementhookid="elemId2aoY0hePs6" data-ui-id="grid-filter-form-fieldset-element-select-show-order-statuses" >
+<option value="0" id="optIdTSzTxAop"  selected="selected">Any</option>
+<option value="1" id="optIdu178nit8" >Specified</option>
+</select>
+                <div class="note admin__field-note" id="show_order_statuses-note">Applies to Any of the Specified Order Statuses except canceled orders</div>            </div>
+            </div>
+    
+        <div class="admin__field field field-order_statuses "  data-ui-id="grid-filter-form-fieldset-element-form-field-order-statuses" >
+                    <label class="label admin__field-label" for="sales_report_order_statuses" data-ui-id="grid-filter-form-fieldset-element-select-order-statuses-label" ><span></span></label>
+            <div class="admin__field-control control">
+                <select id="sales_report_order_statuses" name="order_statuses[]" size="10" class=" select multiselect admin__control-multiselect" formelementhookid="elemIdL81gQxmBcb" data-ui-id="grid-filter-form-fieldset-element-select-order-statuses"  multiple="multiple">
+<option value="canceled" id="optIdnrZK7ZiM" >Canceled</option>
+<option value="closed" id="optIdu4rMuQoj" >Closed</option>
+<option value="complete" id="optIdPaxl7ri8" >Complete</option>
+<option value="fraud" id="optId7C7XepkC" >Suspected Fraud</option>
+<option value="holded" id="optIdbdnBfLlj" >On Hold</option>
+<option value="payment_review" id="optId71WV6eeK" >Payment Review</option>
+<option value="paypal_canceled_reversal" id="optIdZalbvONc" >PayPal Canceled Reversal</option>
+<option value="paypal_reversed" id="optIdi7vAe1bG" >PayPal Reversed</option>
+<option value="processing" id="optId8NMwd2Sf" >Processing</option>
+</select>
+                            </div>
+            </div>
+    
+        <div class="admin__field field field-show_empty_rows "  data-ui-id="grid-filter-form-fieldset-element-form-field-show-empty-rows" >
+                    <label class="label admin__field-label" for="sales_report_show_empty_rows" data-ui-id="grid-filter-form-fieldset-element-select-show-empty-rows-label" ><span>Empty Rows</span></label>
+            <div class="admin__field-control control">
+                <select id="sales_report_show_empty_rows" name="show_empty_rows" title="Empty Rows" class=" select admin__control-select" formelementhookid="elemIdpdh3Vd6Dto" data-ui-id="grid-filter-form-fieldset-element-select-show-empty-rows" >
+<option value="1" id="optIdaageda2f" >Yes</option>
+<option value="0" id="optIdYSAS43nN"  selected="selected">No</option>
+</select>
+                            </div>
+            </div>
+    
+        <div class="admin__field field field-show_actual_columns "  data-ui-id="grid-filter-form-fieldset-element-form-field-show-actual-columns" >
+                    <label class="label admin__field-label" for="sales_report_show_actual_columns" data-ui-id="grid-filter-form-fieldset-element-select-show-actual-columns-label" ><span>Show Actual Values</span></label>
+            <div class="admin__field-control control">
+                <select id="sales_report_show_actual_columns" name="show_actual_columns" class=" select admin__control-select" formelementhookid="elemIdpolxATKvOl" data-ui-id="grid-filter-form-fieldset-element-select-show-actual-columns" >
+<option value="1" id="optIdMxeGhESb" >Yes</option>
+<option value="0" id="optIdOZkPbd9p"  selected="selected">No</option>
+</select>
+                            </div>
+            </div>
+    
+        
+        
+        
+        
+    
+
+            </fieldset>
+    
+</form></div>
+<script>require(['mage/adminhtml/form'], function(){
+    new FormElementDependenceController({"sales_report_order_statuses":{"sales_report_show_order_statuses":{"values":["1"],"negative":false}}});
+});</script></div>
+
+    
+    <div id="id_RATf0d65mvonidUbWVgFKbkkQSvGqPZg" data-grid-id="id_RATf0d65mvonidUbWVgFKbkkQSvGqPZg">
+                    <div class="admin__data-grid-header admin__data-grid-toolbar">
+            <div class="admin__data-grid-header-row">
+                                            <div class="admin__data-grid-export">
+                    <label
+                        class="admin__control-support-text"
+                        for="id_RATf0d65mvonidUbWVgFKbkkQSvGqPZg_export">
+                        Export to:                    </label>
+                    <select name="id_RATf0d65mvonidUbWVgFKbkkQSvGqPZg_export"
+                            id="id_RATf0d65mvonidUbWVgFKbkkQSvGqPZg_export"
+                            class="admin__control-select">
+                                                    <option value="http&#x3A;&#x2F;&#x2F;10.186.197.203&#x3A;7780&#x2F;admin&#x2F;reports&#x2F;report_sales&#x2F;exportSalesCsv&#x2F;">
+                                CSV                            </option>
+                                                    <option value="http&#x3A;&#x2F;&#x2F;10.186.197.203&#x3A;7780&#x2F;admin&#x2F;reports&#x2F;report_sales&#x2F;exportSalesExcel&#x2F;">
+                                Excel XML                            </option>
+                                            </select>
+                    <button id="id_BU5vTwzl8ShQjvluVuqCkMlSZdZDYuLD" title="Export" type="button" class="action-default scalable task" backend-button-widget-hook-id="buttonId7OPk7o75T2"  data-ui-id="widget-button-0" >
+    <span>Export</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListeneriO6SgVNRJY () {
+        id_RATf0d65mvonidUbWVgFKbkkQSvGqPZgJsObject.doExport();
+    }
+    var listenedElementiO6SgVNRJYArray = document.querySelectorAll("*[backend-button-widget-hook-id='buttonId7OPk7o75T2']");
+    if(listenedElementiO6SgVNRJYArray.length !== 'undefined'){
+        listenedElementiO6SgVNRJYArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListeneriO6SgVNRJY.apply(targetElement);
+                };
+            }
+        });
+    }</script>                </div>
+                        </div>
+
+            <div class="admin__data-grid-header-row ">
+                                                                                    <div class="admin__control-support-text">
+                                            <span id="id_RATf0d65mvonidUbWVgFKbkkQSvGqPZg-total-count"
+                             data-ui-id="adminhtml-sales-sales-grid-total-count" >
+                            0                        </span>
+                        records found                                        <span id="id_RATf0d65mvonidUbWVgFKbkkQSvGqPZg_massaction-count"
+                          class="mass-select-info _empty">
+                        <strong data-role="counter">0</strong>
+                        <span>selected</span>
+                    </span>
+                </div>
+
+                        </div>
+        </div>
+    
+    <div class="admin__data-grid-wrap admin__data-grid-wrap-static">
+        <table class="data-grid" id="id_RATf0d65mvonidUbWVgFKbkkQSvGqPZg_table">
+                                        <thead>
+                                    <tr>
+                                                                                    <th class="data-grid-th col-period no-link col-period"><span>Interval</span></th>                                                                                                                <th class="data-grid-th col-orders no-link col-orders_count"><span>Orders</span></th>                                                                                                                <th class="data-grid-th col-sales-items no-link col-total_qty_ordered"><span>Sales Items</span></th>                                                                                                                <th class="data-grid-th col-sales-total no-link col-total_income_amount"><span>Sales Total</span></th>                                                                                                                <th class="data-grid-th col-invoiced no-link col-total_invoiced_amount"><span>Invoiced</span></th>                                                                                                                <th class="data-grid-th col-refunded no-link col-total_refunded_amount"><span>Refunded</span></th>                                                                                                                <th class="data-grid-th col-sales-tax no-link col-total_tax_amount"><span>Sales Tax</span></th>                                                                                                                <th class="data-grid-th col-sales-shipping no-link col-total_shipping_amount"><span>Sales Shipping</span></th>                                                                                                                <th class="data-grid-th col-sales-discount no-link col-total_discount_amount"><span>Sales Discount</span></th>                                                                                                                <th class="data-grid-th col-canceled no-link col-total_canceled_amount"><span>Canceled</span></th>                                                                        </tr>
+                                                </thead>
+                        
+            <tbody>
+                            <tr class="data-grid-tr-no-data">
+                    <td class="empty-text"
+                        colspan="10">We couldn&#039;t find any records.</td>
+                </tr>
+                        </tbody>
+        </table>
+
+    </div>
+        </div>
+                    <script>
+    var deps = [];
+    deps.push('mage/adminhtml/grid');
+    require(deps, function(){
+
+        //<![CDATA[
+
+    id_RATf0d65mvonidUbWVgFKbkkQSvGqPZgJsObject = new varienGrid("id_RATf0d65mvonidUbWVgFKbkkQSvGqPZg",
+         'http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Freports\u002Freport_sales\u002Fsales\u002F',
+         'page',
+         'sort',
+         'dir',
+         'filter'
+         );
+
+        id_RATf0d65mvonidUbWVgFKbkkQSvGqPZgJsObject.useAjax = '';
+
+            id_RATf0d65mvonidUbWVgFKbkkQSvGqPZgJsObject.rowClickCallback = openGridRow;
+
+    //]]>
+
+});</script>
+<script>
+require([
+    'jquery',
+    'mage/backend/validation',
+    "prototype"
+], function(jQuery){
+
+//<![CDATA[
+    jQuery('#filter_form').mage('validation', {errorClass: 'mage-error'});
+    function filterFormSubmit() {
+        var filters = $$('#filter_form input', '#filter_form select'),
+            elements = [];
+
+        for (var i in filters) {
+            if (filters[i].value && filters[i].value.length && !filters[i].disabled) {
+                elements.push(filters[i]);
+            }
+        }
+
+        if (jQuery('#filter_form').valid()) {
+            setLocation('http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Freports\u002Freport_sales\u002Fsales\u002Ffilter/'+
+                Base64.encode(Form.serializeElements(elements))+'/'
+            );
+        }
+    }
+//]]>
+    window.filterFormSubmit = filterFormSubmit;
+});
+</script></div></div></div></main><footer class="page-footer"><div class="page-footer-content row"><div class="footer-legal"><p class="copyright col-m-6"><a class="link-copyright" href="http://magento.com" target="_blank" title="Magento"></a>
+Copyright &copy; 2026 Magento Commerce Inc. All rights reserved.</p><div class="footer-legal-system col-m-6"><p class="magento-version">
+    <strong>Magento</strong>
+    ver. 2.4.6</p>
+
+<a class="link-report" href="https://www.adobe.com/privacy/policy.html" id="footer_privacy" target="_blank">
+    Privacy Policy</a> |<a class="link-account-activity"
+    href="http://10.186.197.203:7780/admin/security/session/activity/"
+    id="footer_account_activity"
+    target="_blank"
+    data-mage-init='{"popupWindow": {
+        "windowURL": "http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Fsecurity\u002Fsession\u002Factivity\u002F",
+        "windowName": "session-activity",
+        "width": 600, "height": 600, "top": 50, "left": 50, "resizable": 1, "scrollbars": 1}}'>
+    Account Activity</a> |
+    <a class="link-report" href="https://github.com/magento/magento2/issues" id="footer_bug_tracking" target="_blank">
+        Report an Issue    </a>
+</div></div></div></footer></div>    </body>
+</html>

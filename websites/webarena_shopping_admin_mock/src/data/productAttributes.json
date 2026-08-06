@@ -1,0 +1,2521 @@
+[
+ {
+  "attribute_id": 137,
+  "attribute_code": "activity",
+  "frontend_label": "Activity",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 1,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 4,
+    "label": "Hike",
+    "sort_order": 0
+   },
+   {
+    "option_id": 5,
+    "label": "Outdoor",
+    "sort_order": 1
+   },
+   {
+    "option_id": 6,
+    "label": "Running",
+    "sort_order": 2
+   },
+   {
+    "option_id": 7,
+    "label": "Warmup",
+    "sort_order": 3
+   },
+   {
+    "option_id": 8,
+    "label": "Yoga",
+    "sort_order": 4
+   },
+   {
+    "option_id": 9,
+    "label": "Recreation",
+    "sort_order": 5
+   },
+   {
+    "option_id": 10,
+    "label": "Lounge",
+    "sort_order": 6
+   },
+   {
+    "option_id": 11,
+    "label": "Gym",
+    "sort_order": 7
+   },
+   {
+    "option_id": 12,
+    "label": "Climbing",
+    "sort_order": 8
+   },
+   {
+    "option_id": 13,
+    "label": "Crosstraining",
+    "sort_order": 9
+   },
+   {
+    "option_id": 14,
+    "label": "Post-workout",
+    "sort_order": 10
+   },
+   {
+    "option_id": 15,
+    "label": "Cycling",
+    "sort_order": 11
+   },
+   {
+    "option_id": 16,
+    "label": "Athletic",
+    "sort_order": 12
+   },
+   {
+    "option_id": 17,
+    "label": "Sports",
+    "sort_order": 13
+   },
+   {
+    "option_id": 18,
+    "label": "Hiking",
+    "sort_order": 14
+   },
+   {
+    "option_id": 19,
+    "label": "Overnight",
+    "sort_order": 15
+   },
+   {
+    "option_id": 20,
+    "label": "School",
+    "sort_order": 16
+   },
+   {
+    "option_id": 21,
+    "label": "Trail",
+    "sort_order": 17
+   },
+   {
+    "option_id": 22,
+    "label": "Travel",
+    "sort_order": 18
+   },
+   {
+    "option_id": 23,
+    "label": "Urban",
+    "sort_order": 19
+   }
+  ]
+ },
+ {
+  "attribute_id": 143,
+  "attribute_code": "category_gear",
+  "frontend_label": "Category Gear",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 85,
+    "label": "Cardio",
+    "sort_order": 0
+   },
+   {
+    "option_id": 86,
+    "label": "Electronic",
+    "sort_order": 1
+   },
+   {
+    "option_id": 87,
+    "label": "Exercise",
+    "sort_order": 2
+   },
+   {
+    "option_id": 88,
+    "label": "Fashion",
+    "sort_order": 3
+   },
+   {
+    "option_id": 89,
+    "label": "Hydration",
+    "sort_order": 4
+   },
+   {
+    "option_id": 90,
+    "label": "Timepiece",
+    "sort_order": 5
+   }
+  ]
+ },
+ {
+  "attribute_id": 105,
+  "attribute_code": "category_ids",
+  "frontend_label": "Categories",
+  "frontend_input": "text",
+  "backend_type": "static",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 156,
+  "attribute_code": "climate",
+  "frontend_label": "Climate",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 201,
+    "label": "All-Weather",
+    "sort_order": 0
+   },
+   {
+    "option_id": 202,
+    "label": "Cold",
+    "sort_order": 1
+   },
+   {
+    "option_id": 203,
+    "label": "Cool",
+    "sort_order": 2
+   },
+   {
+    "option_id": 204,
+    "label": "Indoor",
+    "sort_order": 3
+   },
+   {
+    "option_id": 205,
+    "label": "Mild",
+    "sort_order": 4
+   },
+   {
+    "option_id": 206,
+    "label": "Rainy",
+    "sort_order": 5
+   },
+   {
+    "option_id": 207,
+    "label": "Spring",
+    "sort_order": 6
+   },
+   {
+    "option_id": 208,
+    "label": "Warm",
+    "sort_order": 7
+   },
+   {
+    "option_id": 209,
+    "label": "Windy",
+    "sort_order": 8
+   },
+   {
+    "option_id": 210,
+    "label": "Wintry",
+    "sort_order": 9
+   },
+   {
+    "option_id": 211,
+    "label": "Hot",
+    "sort_order": 10
+   }
+  ]
+ },
+ {
+  "attribute_id": 154,
+  "attribute_code": "collar",
+  "frontend_label": "Collar",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 180,
+    "label": "N/A",
+    "sort_order": 0
+   },
+   {
+    "option_id": 181,
+    "label": "? zip",
+    "sort_order": 1
+   },
+   {
+    "option_id": 182,
+    "label": "Boat Neck",
+    "sort_order": 2
+   },
+   {
+    "option_id": 183,
+    "label": "Crew",
+    "sort_order": 3
+   },
+   {
+    "option_id": 184,
+    "label": "Full zip",
+    "sort_order": 4
+   },
+   {
+    "option_id": 185,
+    "label": "V-neck",
+    "sort_order": 5
+   },
+   {
+    "option_id": 186,
+    "label": "Ballet",
+    "sort_order": 6
+   },
+   {
+    "option_id": 187,
+    "label": "Scoop",
+    "sort_order": 7
+   },
+   {
+    "option_id": 188,
+    "label": "High Collar",
+    "sort_order": 8
+   },
+   {
+    "option_id": 189,
+    "label": "Stand Collar",
+    "sort_order": 9
+   },
+   {
+    "option_id": 190,
+    "label": "Roll Neck",
+    "sort_order": 10
+   },
+   {
+    "option_id": 191,
+    "label": "Square Neck",
+    "sort_order": 11
+   }
+  ]
+ },
+ {
+  "attribute_id": 93,
+  "attribute_code": "color",
+  "frontend_label": "Color",
+  "frontend_input": "select",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "49",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 49,
+    "label": "Black",
+    "sort_order": 0
+   },
+   {
+    "option_id": 50,
+    "label": "Blue",
+    "sort_order": 1
+   },
+   {
+    "option_id": 51,
+    "label": "Brown",
+    "sort_order": 2
+   },
+   {
+    "option_id": 52,
+    "label": "Gray",
+    "sort_order": 3
+   },
+   {
+    "option_id": 53,
+    "label": "Green",
+    "sort_order": 4
+   },
+   {
+    "option_id": 54,
+    "label": "Lavender",
+    "sort_order": 5
+   },
+   {
+    "option_id": 55,
+    "label": "Multi",
+    "sort_order": 6
+   },
+   {
+    "option_id": 56,
+    "label": "Orange",
+    "sort_order": 7
+   },
+   {
+    "option_id": 57,
+    "label": "Purple",
+    "sort_order": 8
+   },
+   {
+    "option_id": 58,
+    "label": "Red",
+    "sort_order": 9
+   },
+   {
+    "option_id": 59,
+    "label": "White",
+    "sort_order": 10
+   },
+   {
+    "option_id": 60,
+    "label": "Yellow",
+    "sort_order": 11
+   }
+  ]
+ },
+ {
+  "attribute_id": 81,
+  "attribute_code": "cost",
+  "frontend_label": "Cost",
+  "frontend_input": "price",
+  "backend_type": "decimal",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 114,
+  "attribute_code": "country_of_manufacture",
+  "frontend_label": "Country of Manufacture",
+  "frontend_input": "select",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 2,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 112,
+  "attribute_code": "created_at",
+  "frontend_label": null,
+  "frontend_input": "date",
+  "backend_type": "static",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 100,
+  "attribute_code": "custom_design",
+  "frontend_label": "New Theme",
+  "frontend_input": "select",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 101,
+  "attribute_code": "custom_design_from",
+  "frontend_label": "Active From",
+  "frontend_input": "date",
+  "backend_type": "datetime",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 102,
+  "attribute_code": "custom_design_to",
+  "frontend_label": "Active To",
+  "frontend_input": "date",
+  "backend_type": "datetime",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 116,
+  "attribute_code": "custom_layout",
+  "frontend_label": "New Layout",
+  "frontend_input": "select",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 103,
+  "attribute_code": "custom_layout_update",
+  "frontend_label": "Layout Update XML",
+  "frontend_input": "textarea",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 117,
+  "attribute_code": "custom_layout_update_file",
+  "frontend_label": "Custom Layout Update",
+  "frontend_input": "select",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 75,
+  "attribute_code": "description",
+  "frontend_label": "Description",
+  "frontend_input": "textarea",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 1,
+  "is_filterable": 0,
+  "is_comparable": 1,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 145,
+  "attribute_code": "eco_collection",
+  "frontend_label": "Eco Collection",
+  "frontend_input": "boolean",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 97,
+    "label": null,
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "attribute_id": 147,
+  "attribute_code": "erin_recommends",
+  "frontend_label": "Erin Recommends",
+  "frontend_input": "boolean",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 99,
+    "label": null,
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "attribute_id": 141,
+  "attribute_code": "features_bags",
+  "frontend_label": "Features",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 69,
+    "label": "Audio Pocket",
+    "sort_order": 0
+   },
+   {
+    "option_id": 70,
+    "label": "Wheeled",
+    "sort_order": 1
+   },
+   {
+    "option_id": 71,
+    "label": "Hydration Pocket",
+    "sort_order": 2
+   },
+   {
+    "option_id": 72,
+    "label": "Audio Pocket",
+    "sort_order": 3
+   },
+   {
+    "option_id": 73,
+    "label": "Flapover",
+    "sort_order": 4
+   },
+   {
+    "option_id": 74,
+    "label": "Waterproof",
+    "sort_order": 5
+   },
+   {
+    "option_id": 75,
+    "label": "Lightweight",
+    "sort_order": 6
+   },
+   {
+    "option_id": 76,
+    "label": "TSA Approved",
+    "sort_order": 7
+   },
+   {
+    "option_id": 77,
+    "label": "Reflective",
+    "sort_order": 8
+   },
+   {
+    "option_id": 78,
+    "label": "Laptop Sleeve",
+    "sort_order": 9
+   },
+   {
+    "option_id": 79,
+    "label": "Lockable",
+    "sort_order": 10
+   }
+  ]
+ },
+ {
+  "attribute_id": 150,
+  "attribute_code": "format",
+  "frontend_label": "Format",
+  "frontend_input": "select",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 102,
+    "label": "Download",
+    "sort_order": 0
+   },
+   {
+    "option_id": 103,
+    "label": "DVD",
+    "sort_order": 1
+   }
+  ]
+ },
+ {
+  "attribute_id": 96,
+  "attribute_code": "gallery",
+  "frontend_label": "Image Gallery",
+  "frontend_input": "gallery",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 142,
+  "attribute_code": "gender",
+  "frontend_label": "Gender",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 80,
+    "label": "Men",
+    "sort_order": 0
+   },
+   {
+    "option_id": 81,
+    "label": "Women",
+    "sort_order": 1
+   },
+   {
+    "option_id": 82,
+    "label": "Boys",
+    "sort_order": 2
+   },
+   {
+    "option_id": 83,
+    "label": "Girls",
+    "sort_order": 3
+   },
+   {
+    "option_id": 84,
+    "label": "Unisex",
+    "sort_order": 4
+   }
+  ]
+ },
+ {
+  "attribute_id": 134,
+  "attribute_code": "gift_message_available",
+  "frontend_label": "Allow Gift Message",
+  "frontend_input": "select",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 108,
+  "attribute_code": "has_options",
+  "frontend_label": null,
+  "frontend_input": "text",
+  "backend_type": "static",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 87,
+  "attribute_code": "image",
+  "frontend_label": "Base",
+  "frontend_input": "media_image",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 109,
+  "attribute_code": "image_label",
+  "frontend_label": "Image Label",
+  "frontend_input": "text",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 128,
+  "attribute_code": "links_exist",
+  "frontend_label": null,
+  "frontend_input": null,
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 125,
+  "attribute_code": "links_purchased_separately",
+  "frontend_label": "Links can be purchased separately",
+  "frontend_input": null,
+  "backend_type": "int",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 127,
+  "attribute_code": "links_title",
+  "frontend_label": "Links title",
+  "frontend_input": null,
+  "backend_type": "varchar",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 83,
+  "attribute_code": "manufacturer",
+  "frontend_label": "Manufacturer",
+  "frontend_input": "select",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 1,
+  "is_filterable": 1,
+  "is_comparable": 1,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 139,
+  "attribute_code": "material",
+  "frontend_label": "Material",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 31,
+    "label": "Burlap",
+    "sort_order": 0
+   },
+   {
+    "option_id": 142,
+    "label": "Cocona&reg; performance fabric",
+    "sort_order": 0
+   },
+   {
+    "option_id": 32,
+    "label": "Canvas",
+    "sort_order": 1
+   },
+   {
+    "option_id": 143,
+    "label": "Wool",
+    "sort_order": 1
+   },
+   {
+    "option_id": 33,
+    "label": "Cotton",
+    "sort_order": 2
+   },
+   {
+    "option_id": 144,
+    "label": "Fleece",
+    "sort_order": 2
+   },
+   {
+    "option_id": 34,
+    "label": "Faux Leather",
+    "sort_order": 3
+   },
+   {
+    "option_id": 145,
+    "label": "Hemp",
+    "sort_order": 3
+   },
+   {
+    "option_id": 35,
+    "label": "Leather",
+    "sort_order": 4
+   },
+   {
+    "option_id": 146,
+    "label": "Jersey",
+    "sort_order": 4
+   },
+   {
+    "option_id": 36,
+    "label": "Mesh",
+    "sort_order": 5
+   },
+   {
+    "option_id": 147,
+    "label": "LumaTech&trade;",
+    "sort_order": 5
+   },
+   {
+    "option_id": 37,
+    "label": "Nylon",
+    "sort_order": 6
+   },
+   {
+    "option_id": 148,
+    "label": "Lycra&reg;",
+    "sort_order": 6
+   },
+   {
+    "option_id": 38,
+    "label": "Polyester",
+    "sort_order": 7
+   },
+   {
+    "option_id": 149,
+    "label": "Microfiber",
+    "sort_order": 7
+   },
+   {
+    "option_id": 39,
+    "label": "Rayon",
+    "sort_order": 8
+   },
+   {
+    "option_id": 150,
+    "label": "Spandex",
+    "sort_order": 8
+   },
+   {
+    "option_id": 40,
+    "label": "Ripstop",
+    "sort_order": 9
+   },
+   {
+    "option_id": 151,
+    "label": "HeatTec&reg;",
+    "sort_order": 9
+   },
+   {
+    "option_id": 41,
+    "label": "Suede",
+    "sort_order": 10
+   },
+   {
+    "option_id": 152,
+    "label": "EverCool&trade;",
+    "sort_order": 10
+   },
+   {
+    "option_id": 42,
+    "label": "Foam",
+    "sort_order": 11
+   },
+   {
+    "option_id": 153,
+    "label": "Organic Cotton",
+    "sort_order": 11
+   },
+   {
+    "option_id": 43,
+    "label": "Metal",
+    "sort_order": 12
+   },
+   {
+    "option_id": 154,
+    "label": "TENCEL",
+    "sort_order": 12
+   },
+   {
+    "option_id": 44,
+    "label": "Plastic",
+    "sort_order": 13
+   },
+   {
+    "option_id": 155,
+    "label": "CoolTech&trade;",
+    "sort_order": 13
+   },
+   {
+    "option_id": 45,
+    "label": "Rubber",
+    "sort_order": 14
+   },
+   {
+    "option_id": 156,
+    "label": "Khaki",
+    "sort_order": 14
+   },
+   {
+    "option_id": 46,
+    "label": "Synthetic",
+    "sort_order": 15
+   },
+   {
+    "option_id": 157,
+    "label": "Linen",
+    "sort_order": 15
+   },
+   {
+    "option_id": 47,
+    "label": "Stainless Steel",
+    "sort_order": 16
+   },
+   {
+    "option_id": 158,
+    "label": "Wool",
+    "sort_order": 16
+   },
+   {
+    "option_id": 48,
+    "label": "Silicone",
+    "sort_order": 17
+   },
+   {
+    "option_id": 159,
+    "label": "Terry",
+    "sort_order": 17
+   }
+  ]
+ },
+ {
+  "attribute_id": 90,
+  "attribute_code": "media_gallery",
+  "frontend_label": "Media Gallery",
+  "frontend_input": "gallery",
+  "backend_type": "static",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 86,
+  "attribute_code": "meta_description",
+  "frontend_label": "Meta Description",
+  "frontend_input": "textarea",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 85,
+  "attribute_code": "meta_keyword",
+  "frontend_label": "Meta Keywords",
+  "frontend_input": "textarea",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 84,
+  "attribute_code": "meta_title",
+  "frontend_label": "Meta Title",
+  "frontend_input": "text",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 98,
+  "attribute_code": "minimal_price",
+  "frontend_label": "Minimal Price",
+  "frontend_input": "price",
+  "backend_type": "decimal",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 123,
+  "attribute_code": "msrp",
+  "frontend_label": "Minimum Advertised Price",
+  "frontend_input": "price",
+  "backend_type": "decimal",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 124,
+  "attribute_code": "msrp_display_actual_price_type",
+  "frontend_label": "Display Actual Price",
+  "frontend_input": "select",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": "0",
+  "is_global": 2,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 73,
+  "attribute_code": "name",
+  "frontend_label": "Product Name",
+  "frontend_input": "text",
+  "backend_type": "varchar",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 1,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 148,
+  "attribute_code": "new",
+  "frontend_label": "New",
+  "frontend_input": "boolean",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 100,
+    "label": null,
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "attribute_id": 94,
+  "attribute_code": "news_from_date",
+  "frontend_label": "Set Product as New from Date",
+  "frontend_input": "date",
+  "backend_type": "datetime",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 2,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 95,
+  "attribute_code": "news_to_date",
+  "frontend_label": "Set Product as New to Date",
+  "frontend_input": "date",
+  "backend_type": "datetime",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 2,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 91,
+  "attribute_code": "old_id",
+  "frontend_label": null,
+  "frontend_input": "text",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 106,
+  "attribute_code": "options_container",
+  "frontend_label": "Display Product Options In",
+  "frontend_input": "select",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": "container2",
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 104,
+  "attribute_code": "page_layout",
+  "frontend_label": "Layout",
+  "frontend_input": "select",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 155,
+  "attribute_code": "pattern",
+  "frontend_label": "Pattern",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 192,
+    "label": "Color-Blocked",
+    "sort_order": 0
+   },
+   {
+    "option_id": 193,
+    "label": "Checked",
+    "sort_order": 1
+   },
+   {
+    "option_id": 194,
+    "label": "Color-Blocked",
+    "sort_order": 2
+   },
+   {
+    "option_id": 195,
+    "label": "Graphic Print",
+    "sort_order": 3
+   },
+   {
+    "option_id": 196,
+    "label": "Solid",
+    "sort_order": 4
+   },
+   {
+    "option_id": 197,
+    "label": "Solid-Highlight",
+    "sort_order": 5
+   },
+   {
+    "option_id": 198,
+    "label": "Striped",
+    "sort_order": 6
+   },
+   {
+    "option_id": 199,
+    "label": "Camo",
+    "sort_order": 7
+   },
+   {
+    "option_id": 200,
+    "label": "Geometric",
+    "sort_order": 8
+   }
+  ]
+ },
+ {
+  "attribute_id": 146,
+  "attribute_code": "performance_fabric",
+  "frontend_label": "Performance Fabric",
+  "frontend_input": "boolean",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 98,
+    "label": null,
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "attribute_id": 77,
+  "attribute_code": "price",
+  "frontend_label": "Price",
+  "frontend_input": "price",
+  "backend_type": "decimal",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 1,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 129,
+  "attribute_code": "price_type",
+  "frontend_label": "Dynamic Price",
+  "frontend_input": "boolean",
+  "backend_type": "int",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": "0",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 132,
+  "attribute_code": "price_view",
+  "frontend_label": "Price View",
+  "frontend_input": "select",
+  "backend_type": "int",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 115,
+  "attribute_code": "quantity_and_stock_status",
+  "frontend_label": "Quantity",
+  "frontend_input": "select",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": "1",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 107,
+  "attribute_code": "required_options",
+  "frontend_label": null,
+  "frontend_input": "text",
+  "backend_type": "static",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 149,
+  "attribute_code": "sale",
+  "frontend_label": "Sale",
+  "frontend_input": "boolean",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 101,
+    "label": null,
+    "sort_order": 0
+   }
+  ]
+ },
+ {
+  "attribute_id": 126,
+  "attribute_code": "samples_title",
+  "frontend_label": "Samples title",
+  "frontend_input": null,
+  "backend_type": "varchar",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 133,
+  "attribute_code": "shipment_type",
+  "frontend_label": "Ship Bundle Items",
+  "frontend_input": "select",
+  "backend_type": "int",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": "0",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 76,
+  "attribute_code": "short_description",
+  "frontend_label": "Short Description",
+  "frontend_input": "textarea",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 1,
+  "is_filterable": 0,
+  "is_comparable": 1,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 144,
+  "attribute_code": "size",
+  "frontend_label": "Size",
+  "frontend_input": "select",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "91",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 91,
+    "label": "55 cm",
+    "sort_order": 0
+   },
+   {
+    "option_id": 166,
+    "label": "XS",
+    "sort_order": 1
+   },
+   {
+    "option_id": 92,
+    "label": "65 cm",
+    "sort_order": 2
+   },
+   {
+    "option_id": 167,
+    "label": "S",
+    "sort_order": 3
+   },
+   {
+    "option_id": 93,
+    "label": "75 cm",
+    "sort_order": 4
+   },
+   {
+    "option_id": 168,
+    "label": "M",
+    "sort_order": 5
+   },
+   {
+    "option_id": 94,
+    "label": "6 foot",
+    "sort_order": 6
+   },
+   {
+    "option_id": 169,
+    "label": "L",
+    "sort_order": 7
+   },
+   {
+    "option_id": 95,
+    "label": "8 foot",
+    "sort_order": 8
+   },
+   {
+    "option_id": 170,
+    "label": "XL",
+    "sort_order": 9
+   },
+   {
+    "option_id": 96,
+    "label": "10 foot",
+    "sort_order": 10
+   },
+   {
+    "option_id": 171,
+    "label": "28",
+    "sort_order": 11
+   },
+   {
+    "option_id": 172,
+    "label": "29",
+    "sort_order": 12
+   },
+   {
+    "option_id": 173,
+    "label": "30",
+    "sort_order": 13
+   },
+   {
+    "option_id": 174,
+    "label": "31",
+    "sort_order": 14
+   },
+   {
+    "option_id": 175,
+    "label": "32",
+    "sort_order": 15
+   },
+   {
+    "option_id": 176,
+    "label": "33",
+    "sort_order": 16
+   },
+   {
+    "option_id": 177,
+    "label": "34",
+    "sort_order": 17
+   },
+   {
+    "option_id": 178,
+    "label": "36",
+    "sort_order": 18
+   },
+   {
+    "option_id": 179,
+    "label": "38",
+    "sort_order": 19
+   }
+  ]
+ },
+ {
+  "attribute_id": 74,
+  "attribute_code": "sku",
+  "frontend_label": "SKU",
+  "frontend_input": "text",
+  "backend_type": "static",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 1,
+  "is_filterable": 0,
+  "is_comparable": 1,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 130,
+  "attribute_code": "sku_type",
+  "frontend_label": "Dynamic SKU",
+  "frontend_input": "boolean",
+  "backend_type": "int",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": "0",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 153,
+  "attribute_code": "sleeve",
+  "frontend_label": "Sleeve",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 160,
+    "label": "Sleeve",
+    "sort_order": 0
+   },
+   {
+    "option_id": 161,
+    "label": "Long-Sleeve",
+    "sort_order": 1
+   },
+   {
+    "option_id": 162,
+    "label": "Short-Sleeve",
+    "sort_order": 2
+   },
+   {
+    "option_id": 163,
+    "label": "Sleeveless",
+    "sort_order": 3
+   },
+   {
+    "option_id": 164,
+    "label": "Tank",
+    "sort_order": 4
+   },
+   {
+    "option_id": 165,
+    "label": "Strap",
+    "sort_order": 5
+   }
+  ]
+ },
+ {
+  "attribute_id": 88,
+  "attribute_code": "small_image",
+  "frontend_label": "Small",
+  "frontend_input": "media_image",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 110,
+  "attribute_code": "small_image_label",
+  "frontend_label": "Small Image Label",
+  "frontend_input": "text",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 79,
+  "attribute_code": "special_from_date",
+  "frontend_label": "Special Price From Date",
+  "frontend_input": "date",
+  "backend_type": "datetime",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 2,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 78,
+  "attribute_code": "special_price",
+  "frontend_label": "Special Price",
+  "frontend_input": "price",
+  "backend_type": "decimal",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 80,
+  "attribute_code": "special_to_date",
+  "frontend_label": "Special Price To Date",
+  "frontend_input": "date",
+  "backend_type": "datetime",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 2,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 97,
+  "attribute_code": "status",
+  "frontend_label": "Enable Product",
+  "frontend_input": "select",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": "1",
+  "is_global": 2,
+  "is_searchable": 1,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 140,
+  "attribute_code": "strap_bags",
+  "frontend_label": "Strap/Handle",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 61,
+    "label": "Adjustable",
+    "sort_order": 0
+   },
+   {
+    "option_id": 62,
+    "label": "Cross Body",
+    "sort_order": 1
+   },
+   {
+    "option_id": 63,
+    "label": "Detachable",
+    "sort_order": 2
+   },
+   {
+    "option_id": 64,
+    "label": "Double",
+    "sort_order": 3
+   },
+   {
+    "option_id": 65,
+    "label": "Padded",
+    "sort_order": 4
+   },
+   {
+    "option_id": 66,
+    "label": "Shoulder",
+    "sort_order": 5
+   },
+   {
+    "option_id": 67,
+    "label": "Single",
+    "sort_order": 6
+   },
+   {
+    "option_id": 68,
+    "label": "Telescoping",
+    "sort_order": 7
+   }
+  ]
+ },
+ {
+  "attribute_id": 138,
+  "attribute_code": "style_bags",
+  "frontend_label": "Style Bags",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 24,
+    "label": "Backpack",
+    "sort_order": 0
+   },
+   {
+    "option_id": 25,
+    "label": "Luggage",
+    "sort_order": 1
+   },
+   {
+    "option_id": 26,
+    "label": "Duffel",
+    "sort_order": 2
+   },
+   {
+    "option_id": 27,
+    "label": "Messenger",
+    "sort_order": 3
+   },
+   {
+    "option_id": 28,
+    "label": "Laptop",
+    "sort_order": 4
+   },
+   {
+    "option_id": 29,
+    "label": "Exercise",
+    "sort_order": 5
+   },
+   {
+    "option_id": 30,
+    "label": "Tote",
+    "sort_order": 6
+   }
+  ]
+ },
+ {
+  "attribute_id": 151,
+  "attribute_code": "style_bottom",
+  "frontend_label": "Style Bottom",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 104,
+    "label": "Base Layer",
+    "sort_order": 0
+   },
+   {
+    "option_id": 105,
+    "label": "Basic",
+    "sort_order": 1
+   },
+   {
+    "option_id": 106,
+    "label": "Capri",
+    "sort_order": 2
+   },
+   {
+    "option_id": 107,
+    "label": "Compression",
+    "sort_order": 3
+   },
+   {
+    "option_id": 108,
+    "label": "Leggings",
+    "sort_order": 4
+   },
+   {
+    "option_id": 109,
+    "label": "Parachute",
+    "sort_order": 5
+   },
+   {
+    "option_id": 110,
+    "label": "Skort",
+    "sort_order": 6
+   },
+   {
+    "option_id": 111,
+    "label": "Snug",
+    "sort_order": 7
+   },
+   {
+    "option_id": 112,
+    "label": "Sweatpants",
+    "sort_order": 8
+   },
+   {
+    "option_id": 113,
+    "label": "Tights",
+    "sort_order": 9
+   },
+   {
+    "option_id": 114,
+    "label": "Track Pants",
+    "sort_order": 10
+   },
+   {
+    "option_id": 115,
+    "label": "Workout Pants",
+    "sort_order": 11
+   }
+  ]
+ },
+ {
+  "attribute_id": 152,
+  "attribute_code": "style_general",
+  "frontend_label": "Style General",
+  "frontend_input": "multiselect",
+  "backend_type": "text",
+  "is_required": 0,
+  "is_user_defined": 1,
+  "default_value": "",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 1,
+  "is_comparable": 0,
+  "is_visible_on_front": 1,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": [
+   {
+    "option_id": 116,
+    "label": "Insulated",
+    "sort_order": 0
+   },
+   {
+    "option_id": 117,
+    "label": "Jacket",
+    "sort_order": 1
+   },
+   {
+    "option_id": 118,
+    "label": "Vest",
+    "sort_order": 2
+   },
+   {
+    "option_id": 119,
+    "label": "Lightweight",
+    "sort_order": 3
+   },
+   {
+    "option_id": 120,
+    "label": "Hooded",
+    "sort_order": 4
+   },
+   {
+    "option_id": 121,
+    "label": "Heavy Duty",
+    "sort_order": 5
+   },
+   {
+    "option_id": 122,
+    "label": "Rain Coat",
+    "sort_order": 6
+   },
+   {
+    "option_id": 123,
+    "label": "Hard Shell",
+    "sort_order": 7
+   },
+   {
+    "option_id": 124,
+    "label": "Soft Shell",
+    "sort_order": 8
+   },
+   {
+    "option_id": 125,
+    "label": "Windbreaker",
+    "sort_order": 9
+   },
+   {
+    "option_id": 126,
+    "label": "&frac12; zip",
+    "sort_order": 10
+   },
+   {
+    "option_id": 127,
+    "label": "&frac14; zip",
+    "sort_order": 11
+   },
+   {
+    "option_id": 128,
+    "label": "Full Zip",
+    "sort_order": 12
+   },
+   {
+    "option_id": 129,
+    "label": "Reversible",
+    "sort_order": 13
+   },
+   {
+    "option_id": 130,
+    "label": "Bra",
+    "sort_order": 14
+   },
+   {
+    "option_id": 131,
+    "label": "Hoodie",
+    "sort_order": 15
+   },
+   {
+    "option_id": 132,
+    "label": "Sweatshirt",
+    "sort_order": 16
+   },
+   {
+    "option_id": 133,
+    "label": "Polo",
+    "sort_order": 17
+   },
+   {
+    "option_id": 134,
+    "label": "Tank",
+    "sort_order": 18
+   },
+   {
+    "option_id": 135,
+    "label": "Tee",
+    "sort_order": 19
+   },
+   {
+    "option_id": 136,
+    "label": "Pullover",
+    "sort_order": 20
+   },
+   {
+    "option_id": 137,
+    "label": "Hoodie",
+    "sort_order": 21
+   },
+   {
+    "option_id": 138,
+    "label": "Cardigan",
+    "sort_order": 22
+   },
+   {
+    "option_id": 139,
+    "label": "Henley",
+    "sort_order": 23
+   },
+   {
+    "option_id": 140,
+    "label": "Tunic",
+    "sort_order": 24
+   },
+   {
+    "option_id": 141,
+    "label": "Camisole",
+    "sort_order": 25
+   }
+  ]
+ },
+ {
+  "attribute_id": 135,
+  "attribute_code": "swatch_image",
+  "frontend_label": "Swatch",
+  "frontend_input": "media_image",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 136,
+  "attribute_code": "tax_class_id",
+  "frontend_label": "Tax Class",
+  "frontend_input": "select",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": "2",
+  "is_global": 2,
+  "is_searchable": 1,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 89,
+  "attribute_code": "thumbnail",
+  "frontend_label": "Thumbnail",
+  "frontend_input": "media_image",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 111,
+  "attribute_code": "thumbnail_label",
+  "frontend_label": "Thumbnail Label",
+  "frontend_input": "text",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 92,
+  "attribute_code": "tier_price",
+  "frontend_label": "Tier Price",
+  "frontend_input": "text",
+  "backend_type": "decimal",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 2,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 113,
+  "attribute_code": "updated_at",
+  "frontend_label": null,
+  "frontend_input": "date",
+  "backend_type": "static",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 121,
+  "attribute_code": "url_key",
+  "frontend_label": "URL Key",
+  "frontend_input": "text",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 1,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 122,
+  "attribute_code": "url_path",
+  "frontend_label": null,
+  "frontend_input": "text",
+  "backend_type": "varchar",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 99,
+  "attribute_code": "visibility",
+  "frontend_label": "Visibility",
+  "frontend_input": "select",
+  "backend_type": "int",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": "4",
+  "is_global": 0,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 82,
+  "attribute_code": "weight",
+  "frontend_label": "Weight",
+  "frontend_input": "weight",
+  "backend_type": "decimal",
+  "is_required": 0,
+  "is_user_defined": 0,
+  "default_value": null,
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 0,
+  "is_used_for_price_rules": 0,
+  "options": []
+ },
+ {
+  "attribute_id": 131,
+  "attribute_code": "weight_type",
+  "frontend_label": "Dynamic Weight",
+  "frontend_input": "boolean",
+  "backend_type": "int",
+  "is_required": 1,
+  "is_user_defined": 0,
+  "default_value": "0",
+  "is_global": 1,
+  "is_searchable": 0,
+  "is_filterable": 0,
+  "is_comparable": 0,
+  "is_visible_on_front": 0,
+  "used_in_product_listing": 1,
+  "is_used_for_price_rules": 0,
+  "options": []
+ }
+]

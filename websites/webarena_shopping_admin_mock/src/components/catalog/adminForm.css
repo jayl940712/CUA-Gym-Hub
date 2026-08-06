@@ -1,0 +1,844 @@
+/**
+ * Magento admin form chrome (`.admin__fieldset`, collapsible `.admin__collapsible-block`,
+ * the left `.admin__page-nav` used by the customer edit page, the category jsTree).
+ *
+ * Tokens come from DESIGN.md — the same greys/oranges index.css already uses.
+ * Scoped to classes index.css does not define, so nothing here collides with the
+ * shared stylesheet.
+ */
+
+/* ------------------------------------------------------------------ layout */
+
+.admin-form-columns {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.admin-form-columns__nav {
+  flex: 0 0 300px;
+  max-width: 300px;
+}
+
+.admin-form-columns__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-left: 30px;
+}
+
+/* ---------------------------------------------------------------- fieldset */
+
+.admin__fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* The second selector reaches through a `display: contents` wrapper
+   (`IndexWrap`, and F-12's `[data-index="container_group"]`): those keep the
+   element out of LAYOUT but not out of SELECTOR matching, so `>` alone stopped
+   matching the rows inside them and the label/control row collapsed. */
+.admin__fieldset > .admin__field,
+.admin__fieldset > [data-index] > .admin__field {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2.9rem;
+}
+
+.admin__field-label-wrap {
+  flex: 0 0 32%;
+  max-width: 32%;
+  padding-right: 3rem;
+  text-align: right;
+  padding-top: 0.6rem;
+}
+
+.admin__field-label-wrap .admin__field-label {
+  display: inline;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #303030;
+  margin: 0;
+}
+
+.admin__field-label-wrap .admin__field-scope {
+  display: block;
+  color: #a79d95;
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin-top: 0.2rem;
+}
+
+.admin__field-required-mark {
+  color: #e02b27;
+  margin-left: 0.4rem;
+}
+
+.admin__field-control {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 64rem;
+}
+
+.admin__field-control .admin__control-text,
+.admin__field-control .admin__control-select,
+.admin__field-control .admin__control-textarea {
+  width: 100%;
+}
+
+.admin__field-control--short .admin__control-text,
+.admin__field-control--short .admin__control-select {
+  max-width: 20rem;
+}
+
+.admin__field-note {
+  color: #303030;
+  font-size: 1.2rem;
+  margin-top: 0.6rem;
+}
+
+.admin__field-error {
+  color: #e02b27;
+  font-size: 1.2rem;
+  margin-top: 0.6rem;
+}
+
+.admin__field-addon {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin__addon-suffix {
+  color: #a79d95;
+  font-size: 1.3rem;
+}
+
+.admin__field-inline-link {
+  display: inline-block;
+  margin-top: 0.8rem;
+  color: #007bdb;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 1.3rem;
+}
+
+.admin__field-inline-link:hover {
+  color: #005ea6;
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ toggle */
+
+.admin__actions-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  /* The 1x1 checkbox below is absolutely positioned; without a positioning
+     context here it resolved against a distant ancestor and landed at the top
+     of the page, under the menu. */
+  position: relative;
+}
+
+/* Magento's plain admin checkbox. index.css's global `input { width: 100% }`
+   collapsed these to 0x0, which made `page.check()` un-actionable on every
+   `admin__control-checkbox` in the app (`use_auto_generation`,
+   `calculate_subtotal`, the config `[inherit]` boxes). */
+.admin__control-checkbox {
+  width: 1.4rem;
+  height: 1.4rem;
+  min-width: 1.4rem;
+  margin: 0;
+  vertical-align: middle;
+}
+
+/* Geometry copied from the source's own switcher, measured live: the checkbox
+   is 1x1 at opacity 1 and `visibility: visible`, sitting under the pill — NOT
+   0x0 at opacity 0, which is what the mock had. The difference is behavioural,
+   not cosmetic: Playwright's actionability check rejects a zero-area,
+   fully-transparent element, so `page.check('#is_active')` timed out against
+   the mock while it succeeds against the source. Every `.admin__actions-switch`
+   toggle in the app is driven through this rule. */
+.admin__actions-switch-checkbox {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  /* The 1x1 input must sit ABOVE the pill, or the label intercepts the pointer
+     and `page.check()` fails the actionability retry loop even though the box
+     is visible. The `for=` attribute still toggles it for a human clicking the
+     pill itself. */
+  z-index: 2;
+  top: 0;
+  left: 0;
+}
+
+/* Geometry measured off the source's own switcher (label 66×22, pill 37×22
+   #e3e3e3, knob 22×22 white): the pill and the knob are the label's ::after /
+   ::before, and the Yes/No caption is a `data-text-*` pseudo-element so it
+   never lands in the page's innerText. */
+.admin__actions-switch-label {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  cursor: pointer;
+}
+
+.admin__actions-switch-label::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3.7rem;
+  height: 2.2rem;
+  border-radius: 1.2rem;
+  background: #e3e3e3;
+  transition: background 0.15s ease;
+}
+
+.admin__actions-switch-label::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid #adadad;
+  border-radius: 100%;
+  background: #fff;
+  transition: transform 0.15s ease;
+}
+
+.admin__actions-switch-checkbox:checked + .admin__actions-switch-label::after {
+  background: #79a22e;
+}
+
+.admin__actions-switch-checkbox:checked + .admin__actions-switch-label::before {
+  border-color: #79a22e;
+  transform: translateX(1.5rem);
+}
+
+.admin__actions-switch-checkbox:focus + .admin__actions-switch-label::after {
+  box-shadow: 0 0 0 1px #007bdb;
+}
+
+.admin__actions-switch-text {
+  display: inline-block;
+  padding-left: 4.5rem;
+  font-size: 1.4rem;
+  color: #41362f;
+}
+
+.admin__actions-switch-text::before {
+  content: attr(data-text-off);
+}
+
+.admin__actions-switch-checkbox:checked + .admin__actions-switch-label .admin__actions-switch-text::before {
+  content: attr(data-text-on);
+}
+
+/* ------------------------------------------------------- collapsible block */
+
+.admin__collapsible-block {
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.admin__collapsible-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: 0;
+  padding: 1.8rem 0;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #303030;
+  cursor: pointer;
+  text-align: left;
+}
+
+.admin__collapsible-title:hover {
+  color: #007bdb;
+}
+
+.admin__collapsible-title__caret {
+  color: #a79d95;
+  font-size: 1.2rem;
+  transition: transform 0.15s ease;
+}
+
+.admin__collapsible-block._show .admin__collapsible-title__caret {
+  transform: rotate(180deg);
+}
+
+.admin__collapsible-content {
+  padding: 1rem 0 3rem;
+}
+
+/* --------------------------------------------------------- section heading */
+
+.admin__form-section {
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  padding: 2.5rem 3rem;
+  margin-bottom: 3rem;
+}
+
+.admin__form-section-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #303030;
+  margin: 0 0 2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.admin__form-columns-2 {
+  display: flex;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+.admin__form-columns-2 > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* --------------------------------------------------- personal-info listing */
+
+/* `admin__table-secondary` is the source class and is also styled by
+ * components/sales/sales.css, which right-aligns values for order totals. The
+ * customer Personal Information table left-aligns them, so it carries this
+ * extra modifier rather than fighting the shared rule. */
+.customer-information-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.4rem;
+}
+
+.customer-information-table th,
+.customer-information-table td {
+  padding: 1.1rem 1.5rem;
+  text-align: left;
+  vertical-align: top;
+  color: #303030;
+  font-weight: 400;
+}
+
+.customer-information-table th {
+  width: 40%;
+}
+
+.customer-information-table tr:nth-child(odd) th,
+.customer-information-table tr:nth-child(odd) td {
+  background: #f5f5f5;
+}
+
+.customer-information-table tr:nth-child(even) th,
+.customer-information-table tr:nth-child(even) td {
+  background: #fff;
+}
+
+.admin__address-card {
+  font-size: 1.4rem;
+  line-height: 2.2rem;
+  color: #303030;
+}
+
+.admin__address-card strong {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* ------------------------------------------------------------- multiselect */
+
+.admin__control-multiselect {
+  width: 100%;
+  min-height: 12rem;
+  border: 1px solid #adadad;
+  border-radius: 1px;
+  padding: 0.4rem;
+  font-size: 1.4rem;
+  color: #303030;
+  background: #fff;
+}
+
+.admin__control-multiselect:focus {
+  border-color: #007bdb;
+  outline: 0;
+}
+
+/* ------------------------------------------------------ chips (categories) */
+
+.admin__chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  border: 1px solid #adadad;
+  border-radius: 1px;
+  background: #fff;
+  padding: 0.6rem;
+  min-height: 3.2rem;
+}
+
+.admin__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #e0f6fe;
+  border: 1px solid #b4d8e6;
+  border-radius: 2px;
+  padding: 0.2rem 0.6rem;
+  font-size: 1.2rem;
+  color: #303030;
+}
+
+.admin__chip button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #7d7d7d;
+  font-size: 1.3rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.admin__chip button:hover {
+  color: #303030;
+}
+
+/* -------------------------------------------------------------- jsTree-ish */
+
+.admin__category-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem;
+}
+
+.admin__category-tree-wrap {
+  flex: 0 0 32rem;
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  padding: 2rem;
+}
+
+.admin__category-tree-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin__category-tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 1.4rem;
+}
+
+.admin__category-tree ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 1.8rem;
+}
+
+.admin__category-tree-node {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0;
+}
+
+.admin__category-tree-toggle {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #a79d95;
+  width: 1.4rem;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.admin__category-tree-link {
+  background: none;
+  border: 0;
+  padding: 0.2rem 0.4rem;
+  cursor: pointer;
+  color: #303030;
+  font-size: 1.4rem;
+  text-align: left;
+}
+
+.admin__category-tree-link:hover {
+  color: #007bdb;
+}
+
+.admin__category-tree-link._active {
+  background: #e0f6fe;
+  font-weight: 600;
+}
+
+.admin__category-form {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  padding: 2rem 3rem;
+}
+
+/* ----------------------------------------------------------- misc listings */
+
+/* index.css styles `.admin__page-nav-link` for anchors; the tabs are <button>s
+ * so the browser's default button chrome has to be reset here. */
+.admin__page-nav-link {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.admin__thumbnail-placeholder {
+  display: inline-block;
+  width: 5rem;
+  height: 5rem;
+  border: 1px solid #e3e3e3;
+  background: #f5f5f5;
+  color: #cac3be;
+}
+
+.admin__thumbnail-placeholder svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.admin__split-button {
+  display: inline-flex;
+  position: relative;
+}
+
+.admin__split-button .action-primary {
+  border-radius: 0;
+}
+
+.admin__split-button-toggle {
+  background: #eb5202;
+  border: 1px solid #eb5202;
+  border-left: 1px solid #ba4000;
+  color: #fff;
+  cursor: pointer;
+  padding: 0 1.2rem;
+  font-size: 1.1rem;
+}
+
+.admin__split-button-toggle:hover {
+  background: #ba4000;
+}
+
+.admin__split-button-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 30;
+  min-width: 20rem;
+  background: #fff;
+  border: 1px solid #adadad;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  margin-top: 0.2rem;
+  padding: 0.5rem 0;
+}
+
+.admin__split-button-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.3rem;
+  color: #303030;
+  cursor: pointer;
+}
+
+.admin__split-button-menu button:hover {
+  background: #e0f6fe;
+}
+
+/* ------------------------------------------------------------ scope select */
+
+.admin__scope-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.3rem;
+  color: #303030;
+}
+
+.admin__scope-bar label {
+  font-weight: 600;
+}
+
+/* --------------------------------------------------- variation/config grid */
+
+.admin__variations-grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.3rem;
+}
+
+.admin__variations-grid th,
+.admin__variations-grid td {
+  border-bottom: 1px solid #e3e3e3;
+  padding: 1rem;
+  text-align: left;
+  color: #303030;
+}
+
+.admin__variations-grid th {
+  font-weight: 600;
+  background: #f5f5f5;
+}
+
+/* ------------------------------------------- configurations wizard (547-551) */
+
+.admin__configurable-wizard,
+.admin__configurable-manual {
+  margin-top: 2rem;
+  padding: 2rem;
+  border: 1px solid #e3e3e3;
+  background: #fafafa;
+}
+
+.admin__configurable-manual > .admin__control-text {
+  max-width: 32rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin__configurable-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin__field-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.3rem;
+  color: #303030;
+  cursor: pointer;
+}
+
+.admin__configurable-new-value {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin__configurable-new-value .admin__control-text {
+  max-width: 24rem;
+}
+
+.admin__configurable-intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.admin__configurable-intro p {
+  margin: 0;
+  max-width: 62rem;
+}
+
+.admin__configurable-actions {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex: none;
+}
+
+/* -------------------------------- Create Product Configurations (BUG-109)
+   The source opens this as a `.modal-slide` panel that covers everything but
+   the admin's left rail. */
+
+.modal-slide {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 14.8rem;
+  z-index: 900;
+  overflow-y: auto;
+  background: #fff;
+  box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.35);
+  text-align: left;
+}
+
+.modal-slide .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.2rem 2.5rem 1.5rem 2.5rem;
+}
+
+.modal-slide .modal-title {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: #41362f;
+}
+
+.modal-slide .action-close {
+  background: none;
+  border: 0;
+  color: #8f8f8f;
+  cursor: pointer;
+  font-size: 2rem;
+  line-height: 1;
+  padding: 0.5rem 1rem;
+}
+
+.modal-slide .message {
+  margin: 0 2.5rem 1.5rem;
+}
+
+.admin__wizard-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.5rem 2.5rem;
+  background: #f5f5f5;
+  border-top: 1px solid #e3e3e3;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.admin__wizard-steps {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin__wizard-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  color: #8f8f8f;
+  max-width: 9rem;
+  text-align: center;
+}
+
+.admin__wizard-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: #cfcfcf;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.admin__wizard-step._active,
+.admin__wizard-step._complete {
+  color: #41362f;
+  font-weight: 600;
+}
+
+.admin__wizard-step._active .admin__wizard-step-number,
+.admin__wizard-step._complete .admin__wizard-step-number {
+  background: #41362f;
+}
+
+.admin__wizard-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.admin__wizard-content {
+  padding: 2rem 2.5rem 4rem;
+}
+
+.admin__wizard-content h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #41362f;
+  margin: 0 0 0.8rem;
+}
+
+.admin__wizard-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.admin__wizard-values {
+  margin-bottom: 2rem;
+}
+
+.admin__wizard-values .admin__legend {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+}
+
+.admin__wizard-option-count {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #8f8f8f;
+}
+
+.admin__wizard-values-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.admin__wizard-values .admin__configurable-values {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 22rem));
+  gap: 1rem 2rem;
+}
+
+/* The source's split-button toggle carries the visible text "Select" and draws
+ * the caret in CSS. Match the text (evaluators read it) while keeping the
+ * mock's caret rendering. */
+.admin__split-button-toggle .admin__split-button-toggle-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.admin__split-button-toggle::after {
+  content: '▾';
+}

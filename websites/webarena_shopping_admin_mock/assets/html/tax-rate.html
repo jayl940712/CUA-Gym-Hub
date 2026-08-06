@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+    <head >
+        <script>
+    var BASE_URL = 'http://10.186.197.203:7780/admin/tax/';
+    var FORM_KEY = 'UWbSTSbjBGjgvxUk';
+    var require = {
+        'baseUrl': 'http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US'
+    };</script>        <meta charset="utf-8"/>
+<meta name="title" content="Tax Zones and Rates / Taxes / Stores / Magento Admin"/>
+<meta name="robots" content="NOINDEX,NOFOLLOW"/>
+<meta name="viewport" content="width=1024"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Tax Zones and Rates / Taxes / Stores / Magento Admin</title>
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/extjs/resources/css/ext-all.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/extjs/resources/css/ytheme-magento.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/jquery/jstree/themes/default/style.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/css/styles-old.css" />
+<link  rel="stylesheet" type="text/css"  media="all" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/css/styles.css" />
+<link  rel="icon" type="image/x-icon" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/Magento_Theme/favicon.ico" />
+<link  rel="shortcut icon" type="image/x-icon" href="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/Magento_Theme/favicon.ico" />
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/requirejs/require.js"></script>
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/mage/requirejs/mixins.js"></script>
+<script  type="text/javascript"  src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/requirejs-config.js"></script>
+            </head>
+    <body data-container="body"
+          data-mage-init='{"loaderAjax": {}, "loader": { "icon": "http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/images/loader-2.gif"}}'
+        id="html-body" class="tax-rate-index page-layout-admin-1column">
+        <div class="menu-wrapper">                        <a
+            href="http://10.186.197.203:7780/admin/admin/"
+            data-edition="Community Edition"            class="logo">
+            <img class="logo-img" src="http://10.186.197.203:7780/static/version1681922233/adminhtml/Magento/backend/en_US/images/magento-icon.svg"
+            alt="Magento Admin Panel" title="Magento Admin Panel"/>
+        </a>
+
+<nav data-mage-init='{"globalNavigation": {}}' class="admin__menu">
+    <ul id="nav" role="menubar" ><li  data-ui-id="menu-magento-backend-dashboard"  class="item-dashboard    level-0" id="menu-magento-backend-dashboard" aria-haspopup="true" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/dashboard/"   class=""><span>Dashboard</span></a></li><li  data-ui-id="menu-magento-sales-sales"  class="item-sales  parent  level-0" id="menu-magento-sales-sales" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Sales</span></a><div class="submenu" aria-labelledby="menu-magento-sales-sales"><strong class="submenu-title">Sales</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-sales-sales-operation"  class="item-sales-operation  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Operations</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-sales-sales-order"  class="item-sales-order    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/order/"   class=""><span>Orders</span></a></li><li  data-ui-id="menu-magento-sales-sales-invoice"  class="item-sales-invoice    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/invoice/"   class=""><span>Invoices</span></a></li><li  data-ui-id="menu-magento-sales-sales-shipment"  class="item-sales-shipment    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/shipment/"   class=""><span>Shipments</span></a></li><li  data-ui-id="menu-magento-sales-sales-creditmemo"  class="item-sales-creditmemo    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/creditmemo/"   class=""><span>Credit Memos</span></a></li><li  data-ui-id="menu-magento-paypal-paypal-billing-agreement"  class="item-paypal-billing-agreement    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/paypal/billing_agreement/"   class=""><span>Billing Agreements</span></a></li><li  data-ui-id="menu-magento-sales-sales-transactions"  class="item-sales-transactions    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/transactions/"   class=""><span>Transactions</span></a></li><li  data-ui-id="menu-paypal-braintree-virtual-terminal"  class="item-virtual-terminal    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/braintree/virtual/"   class=""><span>Braintree Virtual Terminal</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-catalog-catalog"  class="item-catalog  parent  level-0" id="menu-magento-catalog-catalog" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Catalog</span></a><div class="submenu" aria-labelledby="menu-magento-catalog-catalog"><strong class="submenu-title">Catalog</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-catalog-inventory"  class="item-inventory  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Inventory</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalog-catalog-products"  class="item-catalog-products    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product/"   class=""><span>Products</span></a></li><li  data-ui-id="menu-magento-catalog-catalog-categories"  class="item-catalog-categories    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/category/"   class=""><span>Categories</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-customer-customer"  class="item-customer  parent  level-0" id="menu-magento-customer-customer" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Customers</span></a><div class="submenu" aria-labelledby="menu-magento-customer-customer"><strong class="submenu-title">Customers</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-customer-customer-manage"  class="item-customer-manage    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/index/"   class=""><span>All Customers</span></a></li><li  data-ui-id="menu-magento-customer-customer-online"  class="item-customer-online    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/online/"   class=""><span>Now Online</span></a></li><li  data-ui-id="menu-magento-loginascustomerlog-login-log"  class="item-login-log    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/loginascustomer_log/log/index/"   class=""><span>Login as Customer Log</span></a></li><li  data-ui-id="menu-magento-customer-customer-group"  class="item-customer-group    level-1" role="menu-item"><a href="http://10.186.197.203:7780/admin/customer/group/"   class=""><span>Customer Groups</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing"  class="item-marketing  parent  level-0" id="menu-magento-backend-marketing" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Marketing</span></a><div class="submenu" aria-labelledby="menu-magento-backend-marketing"><strong class="submenu-title">Marketing</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-catalogrule-promo"  class="item-promo  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Promotions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalogrule-promo-catalog"  class="item-promo-catalog    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog_rule/promo_catalog/"   class=""><span>Catalog Price Rule</span></a></li><li  data-ui-id="menu-magento-salesrule-promo-quote"  class="item-promo-quote    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales_rule/promo_quote/"   class=""><span>Cart Price Rules</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing-communications"  class="item-marketing-communications  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Communications</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-email-template"  class="item-template    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/email_template/"   class=""><span>Email Templates</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-template"  class="item-newsletter-template    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/template/"   class=""><span>Newsletter Templates</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-queue"  class="item-newsletter-queue    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/queue/"   class=""><span>Newsletter Queue</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-subscriber"  class="item-newsletter-subscriber    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/subscriber/"   class=""><span>Newsletter Subscribers</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-marketing-seo"  class="item-marketing-seo  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>SEO &amp; Search</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-urlrewrite-urlrewrite"  class="item-urlrewrite    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/url_rewrite/index/"   class=""><span>URL Rewrites</span></a></li><li  data-ui-id="menu-magento-search-search-terms"  class="item-search-terms    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/term/index/"   class=""><span>Search Terms</span></a></li><li  data-ui-id="menu-magento-search-search-synonyms"  class="item-search-synonyms    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/synonyms/index/"   class=""><span>Search Synonyms</span></a></li><li  data-ui-id="menu-magento-sitemap-catalog-sitemap"  class="item-catalog-sitemap    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/sitemap/"   class=""><span>Site Map</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-marketing-user-content"  class="item-marketing-user-content  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>User Content</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-reviews-all"  class="item-catalog-reviews-ratings-reviews-all    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/product/index/"   class=""><span>All Reviews</span></a></li><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-pending"  class="item-catalog-reviews-ratings-pending    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/product/pending/"   class=""><span>Pending Reviews</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-content"  class="item-content  parent  level-0" id="menu-magento-backend-content" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Content</span></a><div class="submenu" aria-labelledby="menu-magento-backend-content"><strong class="submenu-title">Content</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li  data-ui-id="menu-magento-backend-content-elements"  class="item-content-elements  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Elements</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-cms-cms-page"  class="item-cms-page    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/cms/page/"   class=""><span>Pages</span></a></li><li  data-ui-id="menu-magento-cms-cms-block"  class="item-cms-block    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/cms/block/"   class=""><span>Blocks</span></a></li><li  data-ui-id="menu-magento-widget-cms-widget-instance"  class="item-cms-widget-instance    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/widget_instance/"   class=""><span>Widgets</span></a></li><li  data-ui-id="menu-magento-pagebuilder-templates"  class="item-templates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/pagebuilder/template/"   class=""><span>Templates</span></a></li></ul></div></li><li  data-ui-id="menu-magento-mediagalleryui-media"  class="item-media  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Media</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-mediagalleryui-media-gallery"  class="item-media-gallery    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/media_gallery/media/index/"   class=""><span>Media Gallery</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-design"  class="item-system-design  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Design</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-theme-design-config"  class="item-design-config    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/theme/design_config/"   class=""><span>Configuration</span></a></li><li  data-ui-id="menu-magento-theme-system-design-theme"  class="item-system-design-theme    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_design_theme/"   class=""><span>Themes</span></a></li><li  data-ui-id="menu-magento-backend-system-design-schedule"  class="item-system-design-schedule    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_design/"   class=""><span>Schedule</span></a></li></ul></div></li></ul></div></li><li  data-ui-id="menu-magento-reports-report"  class="item-report  parent  level-0" id="menu-magento-reports-report" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>Reports</span></a><div class="submenu" aria-labelledby="menu-magento-reports-report"><strong class="submenu-title">Reports</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-marketing"  class="item-report-marketing  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Marketing</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-shopcart-product"  class="item-report-shopcart-product    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_shopcart/product/"   class=""><span>Products in Cart</span></a></li><li  data-ui-id="menu-magento-search-report-search-term"  class="item-report-search-term    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/search/term/report/"   class=""><span>Search Terms</span></a></li><li  data-ui-id="menu-magento-reports-report-shopcart-abandoned"  class="item-report-shopcart-abandoned    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_shopcart/abandoned/"   class=""><span>Abandoned Carts</span></a></li><li  data-ui-id="menu-magento-newsletter-newsletter-problem"  class="item-newsletter-problem    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/newsletter/problem/"   class=""><span>Newsletter Problem Reports</span></a></li></ul></div></li><li  data-ui-id="menu-magento-review-report-review"  class="item-report-review  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Reviews</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-review-report-review-customer"  class="item-report-review-customer    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_review/customer/"   class=""><span>By Customers</span></a></li><li  data-ui-id="menu-magento-review-report-review-product"  class="item-report-review-product    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_review/product/"   class=""><span>By Products</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-salesroot"  class="item-report-salesroot  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Sales</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-salesroot-sales"  class="item-report-salesroot-sales    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/sales/"   class=""><span>Orders</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-tax"  class="item-report-salesroot-tax    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/tax/"   class=""><span>Tax</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-invoiced"  class="item-report-salesroot-invoiced    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/invoiced/"   class=""><span>Invoiced</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-shipping"  class="item-report-salesroot-shipping    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/shipping/"   class=""><span>Shipping</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-refunded"  class="item-report-salesroot-refunded    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/refunded/"   class=""><span>Refunds</span></a></li><li  data-ui-id="menu-magento-reports-report-salesroot-coupons"  class="item-report-salesroot-coupons    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/coupons/"   class=""><span>Coupons</span></a></li><li  data-ui-id="menu-magento-paypal-report-salesroot-paypal-settlement-reports"  class="item-report-salesroot-paypal-settlement-reports    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/paypal/paypal_reports/"   class=""><span>PayPal Settlement</span></a></li><li  data-ui-id="menu-paypal-braintree-settlement-report"  class="item-settlement-report    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/braintree/report/"   class=""><span>Braintree Settlement</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-reports-report-customers"  class="item-report-customers  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Customers</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-customers-totals"  class="item-report-customers-totals    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/totals/"   class=""><span>Order Total</span></a></li><li  data-ui-id="menu-magento-reports-report-customers-orders"  class="item-report-customers-orders    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/orders/"   class=""><span>Order Count</span></a></li><li  data-ui-id="menu-magento-reports-report-customers-accounts"  class="item-report-customers-accounts    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_customer/accounts/"   class=""><span>New</span></a></li></ul></div></li><li  data-ui-id="menu-magento-reports-report-products"  class="item-report-products  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Products</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-products-viewed"  class="item-report-products-viewed    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/viewed/"   class=""><span>Views</span></a></li><li  data-ui-id="menu-magento-reports-report-products-bestsellers"  class="item-report-products-bestsellers    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_sales/bestsellers/"   class=""><span>Bestsellers</span></a></li><li  data-ui-id="menu-magento-reports-report-products-lowstock"  class="item-report-products-lowstock    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/lowstock/"   class=""><span>Low Stock</span></a></li><li  data-ui-id="menu-magento-reports-report-products-sold"  class="item-report-products-sold    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/sold/"   class=""><span>Ordered</span></a></li><li  data-ui-id="menu-magento-downloadable-report-products-downloads"  class="item-report-products-downloads    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_product/downloads/"   class=""><span>Downloads</span></a></li></ul></div></li><li  data-ui-id="menu-magento-reports-report-statistics"  class="item-report-statistics  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Statistics</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-reports-report-statistics-refresh"  class="item-report-statistics-refresh    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/reports/report_statistics/"   class=""><span>Refresh Statistics</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-analytics-business-intelligence"  class="item-business-intelligence  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Business Intelligence</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-analytics-advanced-reporting"  class="item-advanced-reporting    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/analytics/reports/show/" target=_blank  class=""><span>Advanced Reporting</span></a></li><li  data-ui-id="menu-magento-analytics-bi-essentials"  class="item-bi-essentials    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/analytics/biessentials/signup/" target=_blank  class=""><span>BI Essentials</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-stores"  class="item-stores _current _active parent  level-0" id="menu-magento-backend-stores" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class="_active"><span>Stores</span></a><div class="submenu" aria-labelledby="menu-magento-backend-stores"><strong class="submenu-title">Stores</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-stores-settings"  class="item-stores-settings  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Settings</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-backend-system-store"  class="item-system-store    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_store/"   class=""><span>All Stores</span></a></li><li  data-ui-id="menu-magento-config-system-config"  class="item-system-config    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_config/"   class=""><span>Configuration</span></a></li><li  data-ui-id="menu-magento-checkoutagreements-sales-checkoutagreement"  class="item-sales-checkoutagreement    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/checkout/agreement/"   class=""><span>Terms and Conditions</span></a></li><li  data-ui-id="menu-magento-sales-system-order-statuses"  class="item-system-order-statuses    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/sales/order_status/"   class=""><span>Order Status</span></a></li></ul></div></li><li  data-ui-id="menu-magento-inventoryadminui-inventory"  class="item-inventory  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Inventory</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-inventoryadminui-source"  class="item-source    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/inventory/source/index/"   class=""><span>Sources</span></a></li><li  data-ui-id="menu-magento-inventoryadminui-stock"  class="item-stock    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/inventory/stock/index/"   class=""><span>Stocks</span></a></li></ul></div></li><li  data-ui-id="menu-magento-tax-sales-tax"  class="item-sales-tax  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Taxes</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-tax-sales-tax-rules"  class="item-sales-tax-rules    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rule/"   class=""><span>Tax Rules</span></a></li><li  data-ui-id="menu-magento-tax-sales-tax-rates"  class="item-sales-tax-rates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rate/"   class=""><span>Tax Zones and Rates</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-currencysymbol-system-currency"  class="item-system-currency  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Currency</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-currencysymbol-system-currency-rates"  class="item-system-currency-rates    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_currency/"   class=""><span>Currency Rates</span></a></li><li  data-ui-id="menu-magento-currencysymbol-system-currency-symbols"  class="item-system-currency-symbols    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_currencysymbol/"   class=""><span>Currency Symbols</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-stores-attributes"  class="item-stores-attributes  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Attributes</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-catalog-catalog-attributes-attributes"  class="item-catalog-attributes-attributes    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product_attribute/"   class=""><span>Product</span></a></li><li  data-ui-id="menu-magento-catalog-catalog-attributes-sets"  class="item-catalog-attributes-sets    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/catalog/product_set/"   class=""><span>Attribute Set</span></a></li><li  data-ui-id="menu-magento-review-catalog-reviews-ratings-ratings"  class="item-catalog-reviews-ratings-ratings    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/review/rating/"   class=""><span>Rating</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-other-settings"  class="item-other-settings    level-1" role="menu-item"></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-backend-system"  class="item-system  parent  level-0" id="menu-magento-backend-system" aria-haspopup="true" role="menu-item"><a href="#"   onclick="return false;" class=""><span>System</span></a><div class="submenu" aria-labelledby="menu-magento-backend-system"><strong class="submenu-title">System</strong><a href="#" class="action-close _close" data-role="close-submenu"></a><ul role="menu" ><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-backend-system-convert"  class="item-system-convert  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Data Transfer</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-importexport-system-convert-import"  class="item-system-convert-import    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/import/"   class=""><span>Import</span></a></li><li  data-ui-id="menu-magento-importexport-system-convert-export"  class="item-system-convert-export    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/export/"   class=""><span>Export</span></a></li><li  data-ui-id="menu-magento-taximportexport-system-convert-tax"  class="item-system-convert-tax    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/tax/rate/importExport/"   class=""><span>Import/Export Tax Rates</span></a></li><li  data-ui-id="menu-magento-importexport-system-convert-history"  class="item-system-convert-history    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/history/"   class=""><span>Import History</span></a></li></ul></div></li><li  data-ui-id="menu-magento-integration-system-extensions"  class="item-system-extensions  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Extensions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-integration-system-integrations"  class="item-system-integrations    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/integration/"   class=""><span>Integrations</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-tools"  class="item-system-tools  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Tools</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-backend-system-cache"  class="item-system-cache    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/cache/"   class=""><span>Cache Management</span></a></li><li  data-ui-id="menu-magento-indexer-system-index"  class="item-system-index    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/indexer/indexer/list/"   class=""><span>Index Management</span></a></li></ul></div></li></ul></li><li class="column"><ul role="menu"><li  data-ui-id="menu-magento-user-system-acl"  class="item-system-acl  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Permissions</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-user-system-acl-users"  class="item-system-acl-users    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/user/"   class=""><span>All Users</span></a></li><li  data-ui-id="menu-magento-user-system-acl-locks"  class="item-system-acl-locks    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/locks/"   class=""><span>Locked Users</span></a></li><li  data-ui-id="menu-magento-user-system-acl-roles"  class="item-system-acl-roles    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/user_role/"   class=""><span>User Roles</span></a></li></ul></div></li><li  data-ui-id="menu-magento-asynchronousoperations-system-magento-logging"  class="item-system-magento-logging  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Action Logs</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-asynchronousoperations-system-magento-logging-bulk-operations"  class="item-system-magento-logging-bulk-operations    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/bulk/index/"   class=""><span>Bulk Actions</span></a></li></ul></div></li><li  data-ui-id="menu-magento-backend-system-other-settings"  class="item-system-other-settings  parent  level-1" role="menu-item"><strong class="submenu-group-title" role="presentation"><span>Other Settings</span></strong><div class="submenu"><ul role="menu" ><li  data-ui-id="menu-magento-adminnotification-system-adminnotification"  class="item-system-adminnotification    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/notification/"   class=""><span>Notifications</span></a></li><li  data-ui-id="menu-magento-variable-system-variable"  class="item-system-variable    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/system_variable/"   class=""><span>Custom Variables</span></a></li><li  data-ui-id="menu-magento-encryptionkey-system-crypt-key"  class="item-system-crypt-key    level-2" role="menu-item"><a href="http://10.186.197.203:7780/admin/admin/crypt_key/"   class=""><span>Manage Encryption Key</span></a></li></ul></div></li></ul></li></ul></div></li><li  data-ui-id="menu-magento-marketplace-partners"  class="item-partners   last level-0" id="menu-magento-marketplace-partners" aria-haspopup="true" role="menu-item"><a href="http://10.186.197.203:7780/admin/marketplace/index/"   class=""><span>Find Partners &amp; Extensions</span></a></li></ul></nav>
+
+</div>
+
+
+<script>
+require([
+    "jquery",
+    "jquery/ui"
+], function($){
+
+    $.extend(true, $, {
+        calendarConfig: {
+            dayNames: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+            dayNamesMin: ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+            monthNames: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+            monthNamesShort: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+            infoTitle: "About\u0020the\u0020calendar",
+            firstDay: 0,
+            closeText: "Close",
+            currentText: "Go\u0020Today",
+            prevText: "Previous",
+            nextText: "Next",
+            weekHeader: "WK",
+            timeText: "Time",
+            hourText: "Hour",
+            minuteText: "Minute",
+            dateFormat: $.datepicker.RFC_2822,
+            showOn: "button",
+            showAnim: "",
+            changeMonth: true,
+            changeYear: true,
+            buttonImageOnly: null,
+            buttonImage: null,
+            showButtonPanel: true,
+            showOtherMonths: true,
+            showWeek: false,
+            timeFormat: '',
+            showTime: false,
+            showHour: false,
+            showMinute: false,
+            serverTimezoneSeconds: 1785945891,
+            serverTimezoneOffset: -14400,
+            yearRange: '1926\u003A2126'
+        }
+    });
+
+enUS = {"m":{"wide":["January","February","March","April","May","June","July","August","September","October","November","December"],"abbr":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]}}; // en_US locale reference
+
+});</script>
+<script>
+    window.cookiesConfig = window.cookiesConfig || {};
+    window.cookiesConfig.secure = false;
+</script><script>    require.config({
+        map: {
+            '*': {
+                wysiwygAdapter: 'mage/adminhtml/wysiwyg/tiny_mce/tinymce5Adapter'
+            }
+        }
+    });</script><div class="page-wrapper"><div class="notices-wrapper">    <noscript>
+        <div class="messages">
+            <div class="message message-warning message-noscript">
+                <strong>JavaScript may be disabled in your browser.</strong>
+                To use this website you must first enable JavaScript in your browser.            </div>
+        </div>
+    </noscript>
+<!--
+/**
+ * Copyright &copy; Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+--><div class="admin__data-grid-outer-wrap" data-bind="scope: 'notification_area.notification_area'">
+    <div data-role="spinner" data-component="notification_area.notification_area.columns" class="admin__data-grid-loading-mask">
+        <div class="spinner">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+    <!-- ko template: getTemplate() --><!-- /ko -->
+<script type="text/x-magento-init">{"*": {"Magento_Ui/js/core/app": {"types":{"dataSource":[],"text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"notification_area"},"column.text":{"component":"Magento_Ui\/js\/form\/element\/text","extends":"notification_area"},"action":{"extends":"notification_area"},"column.actions":{"extends":"notification_area"},"columns":{"extends":"notification_area"},"container":{"extends":"notification_area"},"notification_area":{"deps":["notification_area.notification_area_data_source"],"provider":"notification_area.notification_area_data_source"},"html_content":{"component":"Magento_Ui\/js\/form\/components\/html","extends":"notification_area"}},"components":{"notification_area":{"children":{"notification_area":{"type":"notification_area","name":"notification_area","children":{"columns":{"type":"columns","name":"columns","children":{"created_at":{"type":"column.text","name":"created_at","config":{"dataType":"text","component":"Magento_AdminNotification\/js\/grid\/columns\/message","componentType":"column","sorting":"asc","label":"","sortOrder":"30","__disableTmpl":{"label":true}}},"actions":{"type":"column.actions","name":"actions","config":{"component":"Magento_Ui\/js\/grid\/columns\/actions","label":"Action","dataType":"actions","indexField":"identity","sortOrder":"20","__disableTmpl":{"label":true}}},"dismiss":{"type":"column.actions","name":"dismiss","config":{"component":"Magento_Ui\/js\/grid\/columns\/actions","label":"Action","dataType":"actions","indexField":"identity","bodyTmpl":"Magento_AsynchronousOperations\/grid\/cells\/actions","sortOrder":"10","__disableTmpl":{"label":true}}}},"config":{"childDefaults":{"storageConfig":{"provider":"ns = ${ $.ns }, index = bookmarks","root":"columns.${ $.index }","namespace":"current.${ $.storageConfig.root }"}},"component":"Magento_AsynchronousOperations\/js\/grid\/listing","storageConfig":{"namespace":"current","provider":"ns = ${ $.ns }, index = bookmarks"},"componentType":"columns","template":"Magento_AsynchronousOperations\/grid\/listing","link":"http:\/\/10.186.197.203:7780\/admin\/bulk\/index\/","linkText":"Bulk Actions Log","dismissAllText":"Dismiss All Completed Tasks","dismissUrl":"http:\/\/10.186.197.203:7780\/admin\/bulk\/notification\/dismiss\/","isAllowed":true}},"modalContainer":{"type":"container","name":"modalContainer","children":{"modal":{"type":"container","name":"modal","children":{"insertBulk":{"type":"container","name":"insertBulk","config":{"autoRender":false,"realTimeLink":false,"render_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render_handle\/handle\/bulk_bulk_details_modal\/buttons\/1\/","update_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render\/","dataLinks":{"imports":false,"exports":false},"component":"Magento_AsynchronousOperations\/js\/insert-form","externalProvider":"${ $.ns }.bulk_details_form_modal_data_source","ns":"bulk_details_form_modal","toolbarContainer":"${ $.parentName }","formSubmitType":"ajax","loading":false,"columnsProvider":"ns = notification_area, index = columns","titlePrefix":"Action Details - #","modalTitleProvider":"${ $.externalProvider }:data.uuid"}}},"config":{"options":{"type":"slide"},"component":"Magento_Ui\/js\/modal\/modal-component"}}},"config":{"component":"uiComponent"}}},"config":{"component":"uiComponent"}},"notification_area_data_source":{"type":"dataSource","name":"notification_area_data_source","dataScope":"notification_area","config":{"data":{"totalRecords":0,"items":[]},"update_url":"http:\/\/10.186.197.203:7780\/admin\/mui\/index\/render\/","component":"Magento_Ui\/js\/grid\/provider","storageConfig":{"indexField":"identity"},"aclResource":"Magento_AdminNotification::show_list","params":{"namespace":"notification_area"}}}}}}}}}</script></div>
+<!-- BLOCK notification_window --><!-- /BLOCK notification_window --></div><header class="page-header row"><div class="page-header-hgroup col-l-8 col-m-6">
+<div class="page-title-wrapper">
+    <h1 class="page-title">Tax Zones and Rates</h1>
+    </div>
+</div><div class="page-header-actions col-l-4 col-m-6">        <div class="admin-user admin__action-dropdown-wrap">
+            <a
+                href="http://10.186.197.203:7780/admin/admin/system_account/index/"
+                class="admin__action-dropdown"
+                title="My Account"
+                data-mage-init='{"dropdown":{}}'
+                data-toggle="dropdown">
+                <span class="admin__action-dropdown-text">
+                    <span class="admin-user-account-text">admin</span>
+                </span>
+            </a>
+            <ul class="admin__action-dropdown-menu">
+                                <li>
+                    <a
+                        href="http://10.186.197.203:7780/admin/admin/system_account/index/"
+                         data-ui-id="user-user-account-settings"                         title="Account Setting">
+                        Account Setting (<span class="admin-user-name">admin</span>)
+                    </a>
+                </li>
+                                <li>
+                    <a
+                        href="http://10.186.197.203:7780/"
+                        title="Customer View"
+                        target="_blank" class="store-front">
+                        Customer View                    </a>
+                </li>
+                <li>
+                    <a
+                        href="http://10.186.197.203:7780/admin/admin/auth/logout/"
+                        class="account-signout"
+                        title="Sign Out">
+                        Sign Out                    </a>
+                </li>
+            </ul>
+        </div>
+
+<div
+    data-mage-init='{"toolbarEntry": {}}'
+    class="notifications-wrapper admin__action-dropdown-wrap"
+    data-notification-count="0">
+            <a
+            class="notifications-action admin__action-dropdown"
+            href="http://10.186.197.203:7780/admin/admin/notification/index/"
+            title="Notifications">
+        </a>
+    </div>
+<div class="search-global" data-mage-init='{"globalSearch": {}}'>
+    <form action="#" id="form-search">
+        <div class="search-global-field">
+            <label class="search-global-label" for="search-global"></label>
+            <input
+                    type="text"
+                    class="search-global-input"
+                    id="search-global"
+                    name="query"
+                    data-mage-init='{"suggest":{"dropdownWrapper":"<div class=\"autocomplete-results\" ><\/div >","template":"[data-template=search-suggest]","termAjaxArgument":"query","source":"http:\/\/10.186.197.203:7780\/admin\/admin\/index\/globalSearch\/","filterProperty":"name","preventClickPropagation":false,"minLength":2,"submitInputOnEnter":false}}'>
+            <button
+                type="submit"
+                class="search-global-action"
+                title="Search"
+                ></button>
+        </div>
+    </form>
+    <script data-template="search-suggest" type="text/x-magento-template">
+        <ul class="search-global-menu">
+        <li class="item">
+            <a id="searchPreviewProducts" href="http://10.186.197.203:7780/admin/catalog/product/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Products</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewOrders" href="http://10.186.197.203:7780/admin/sales/order/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Orders</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewCustomers" href="http://10.186.197.203:7780/admin/customer/index/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Customers</a>
+        </li>
+        <li class="item">
+            <a id="searchPreviewPages" href="http://10.186.197.203:7780/admin/cms/page/index/?search=<%- data.term%>" class="title">"<%- data.term%>" in Pages</a>
+        </li>
+            <% if (data.items.length) { %>
+            <% _.each(data.items, function(value){ %>
+            <li class="item"
+                <%= data.optionData(value) %>
+                >
+                <a href="<%- value.url %>" class="title"><%- value.name %></a>
+                <span class="type"><%- value.type %></span>
+                <%- value.description || "" %>
+            </li>
+            <% }); %>
+        <% } else { %>
+            <li>
+                <span class="mage-suggest-no-records">
+                    No records found.                </span>
+            </li>
+        <% } %>
+        </ul>
+    </script>
+</div>
+</div></header><main id="anchor-content" class="page-content"><div class="page-main-actions">    <div data-mage-init='{"floatingHeader": {}}' class="page-actions floating-header"  data-ui-id="page-actions-toolbar-content-header" >
+        <button id="add" title="Add New Tax Rate" type="button" class="action-default scalable add primary add-tax-rate" backend-button-widget-hook-id="buttonId0oPWwAu0UI"  data-ui-id="adminhtml-tax-rate-container-add-button" >
+    <span>Add New Tax Rate</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListenerGbQG9LbpZw () {
+        window.location.href='http://10.186.197.203:7780/admin/tax/rate/add/';
+    }
+    var listenedElementGbQG9LbpZwArray = document.querySelectorAll("*[backend-button-widget-hook-id='buttonId0oPWwAu0UI']");
+    if(listenedElementGbQG9LbpZwArray.length !== 'undefined'){
+        listenedElementGbQG9LbpZwArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerGbQG9LbpZw.apply(targetElement);
+                };
+            }
+        });
+    }</script>    </div>
+</div><div id="page:main-container" class="page-columns"><div class="admin__old"><div id="container" class="main-col">
+    <div id="tax_rate_grid" data-grid-id="tax_rate_grid">
+    
+        <div class="admin__data-grid-header admin__data-grid-toolbar">
+                                    <div class="admin__data-grid-header-row">
+                
+                                    <div class="admin__data-grid-export">
+    <label for="tax_rate_grid_export" class="admin__control-support-text">
+        Export to:    </label>
+    <select name="tax_rate_grid_export" id="tax_rate_grid_export" class="admin__control-select">
+                    <option value="http&#x3A;&#x2F;&#x2F;10.186.197.203&#x3A;7780&#x2F;admin&#x2F;tax&#x2F;rate&#x2F;exportCsv&#x2F;">CSV</option>
+                    <option value="http&#x3A;&#x2F;&#x2F;10.186.197.203&#x3A;7780&#x2F;admin&#x2F;tax&#x2F;rate&#x2F;exportXml&#x2F;">Excel XML</option>
+            </select>
+    <button id="id_9uMhNsuSdiCob6IBj6vtsSYJOZAU8rS0" title="Export" type="button" class="action-default scalable task" backend-button-widget-hook-id="buttonIdZrKBpbgK3c"  data-ui-id="widget-button-0" >
+    <span>Export</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListeneriHzVxjOvsK () {
+        tax_rate_gridJsObject.doExport();
+    }
+    var listenedElementiHzVxjOvsKArray = document.querySelectorAll("*[backend-button-widget-hook-id='buttonIdZrKBpbgK3c']");
+    if(listenedElementiHzVxjOvsKArray.length !== 'undefined'){
+        listenedElementiHzVxjOvsKArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListeneriHzVxjOvsK.apply(targetElement);
+                };
+            }
+        });
+    }</script></div>
+                            </div>
+                        <div class="admin__data-grid-header-row">
+                                    <div class="admin__filter-actions"><button id="id_HrIMD5H8S71tnE92I8vu0dPFSQVPF0Tc" title="Search" type="button" class="action-default scalable action-secondary" backend-button-widget-hook-id="buttonIdxH4x8VIcTT" data-action="grid-filter-apply"  data-ui-id="widget-button-2" >
+    <span>Search</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListeneroqHO0d064L () {
+        tax_rate_gridJsObject.doFilter();
+    }
+    var listenedElementoqHO0d064LArray = document.querySelectorAll("*[backend-button-widget-hook-id='buttonIdxH4x8VIcTT']");
+    if(listenedElementoqHO0d064LArray.length !== 'undefined'){
+        listenedElementoqHO0d064LArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListeneroqHO0d064L.apply(targetElement);
+                };
+            }
+        });
+    }</script><button id="id_eWUGUCuiMVuMspgyuxyHWAhB8M2gIZ2G" title="Reset Filter" type="button" class="action-default scalable action-reset action-tertiary" backend-button-widget-hook-id="buttonIdYfUVUrW1DJ" data-action="grid-filter-reset"  data-ui-id="widget-button-1" >
+    <span>Reset Filter</span>
+</button>
+<script type="text&#x2F;javascript">    function eventListenerrPicxX5Wkd () {
+        tax_rate_gridJsObject.resetFilter();
+    }
+    var listenedElementrPicxX5WkdArray = document.querySelectorAll("*[backend-button-widget-hook-id='buttonIdYfUVUrW1DJ']");
+    if(listenedElementrPicxX5WkdArray.length !== 'undefined'){
+        listenedElementrPicxX5WkdArray.forEach(function(element) {
+            if (element) {
+                element.onclick = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerrPicxX5Wkd.apply(targetElement);
+                };
+            }
+        });
+    }</script></div>                                                        <div class="admin__control-support-text">
+                        <span id="tax_rate_grid-total-count"
+                             data-ui-id="adminhtml-tax-rate-grid-total-count" >
+                            3                        </span>
+                        records found                        <span id="tax_rate_grid_massaction-count"
+                              class="mass-select-info _empty"><strong data-role="counter">0</strong>
+                            <span>selected</span>
+                        </span>
+                    </div>
+                                    <div class="admin__data-grid-pager-wrap">
+                        <select name="limit"
+                                id="tax_rate_grid_page-limit"
+                                onchange="tax_rate_gridJsObject.loadByElement(this)"
+                             data-ui-id="adminhtml-tax-rate-grid-per-page"                                 class="admin__control-select">
+                            <option value="20"                                selected="selected">20
+                            </option>
+                            <option value="30">30
+                            </option>
+                            <option value="50">50
+                            </option>
+                            <option value="100">100
+                            </option>
+                            <option value="200">200
+                            </option>
+                        </select>
+                        <label for="tax_rate_grid_page-limit"
+                            class="admin__control-support-text">per page</label>
+                        <div class="admin__data-grid-pager">
+                                                        
+                                                            <button type="button" class="action-previous disabled">
+                                    <span>Previous page</span>
+                                </button>
+                            
+                            <input type="text"
+                                   id="tax_rate_grid_page-current"
+                                   name="page"
+                                   value="1"
+                                   class="admin__control-text"
+                                    data-ui-id="adminhtml-tax-rate-grid-current-page"  />
+
+                            <script type="text&#x2F;javascript">    function eventListenerb6K0CEwC4l () {
+        tax_rate_gridJsObject.inputPage(event, '1');
+    }
+    var listenedElementb6K0CEwC4lArray = document.querySelectorAll("#tax_rate_grid_page-current");
+    if(listenedElementb6K0CEwC4lArray.length !== 'undefined'){
+        listenedElementb6K0CEwC4lArray.forEach(function(element) {
+            if (element) {
+                element.onkeypress = function (event) {
+                    var targetElement = element;
+                    if (event && event.target) {
+                        targetElement = event.target;
+                    }
+                    return eventListenerb6K0CEwC4l.apply(targetElement);
+                };
+            }
+        });
+    }</script>
+                            <label class="admin__control-support-text" for="tax_rate_grid_page-current">
+                                of <span>1</span>                            </label>
+                                                            <button type="button" class="action-next disabled">
+                                    <span>Next page</span>
+                                </button>
+                                                    </div>
+                    </div>
+                            </div>
+        </div>
+        <div class="admin__data-grid-wrap admin__data-grid-wrap-static">
+        
+            <table class="data-grid" id="tax_rate_grid_table">
+                <!-- Rendering column set -->
+                                <thead>
+                            <tr>
+                                                                                <th data-sort="code" data-direction="asc" class="data-grid-th _sortable not-sort col-name col-code"><span>Tax Identifier</span></th>                                                                                                    <th class="data-grid-th  no-link col-tax_country_id"><span>Country</span></th>                                                                                                    <th data-sort="region_name" data-direction="desc" class="data-grid-th _sortable _ascend  col-region_name"><span>State/Region</span></th>                                                                                                    <th data-sort="tax_postcode" data-direction="asc" class="data-grid-th _sortable not-sort  col-tax_postcode"><span>Zip/Post Code</span></th>                                                                                                    <th data-sort="rate" data-direction="asc" class="data-grid-th _sortable not-sort col-price last col-rate"><span>Rate</span></th>                                                    </tr>
+                                        <tr class="data-grid-filters" data-role="filter-form">
+                                            <td data-column="code"  class="col-name col-code">
+                            <input type="text" name="code" id="tax_rate_grid_filter_code" value="" class="input-text admin__control-text no-changes" data-ui-id="widget-grid-column-filter-text-0-filter-code"  />                        </td>
+                                            <td data-column="tax_country_id"  class=" no-link col-tax_country_id">
+                            <select name="tax_country_id" id="tax_rate_grid_filter_tax_country_id" data-ui-id="widget-grid-column-filter-country-0-filter-tax-country-id" class="no-changes admin__control-select"><option value="">All Countries</option><option value="AF">Afghanistan</option><option value="AL">Albania</option><option value="DZ">Algeria</option><option value="AS">American Samoa</option><option value="AD">Andorra</option><option value="AO">Angola</option><option value="AI">Anguilla</option><option value="AQ">Antarctica</option><option value="AG">Antigua &amp; Barbuda</option><option value="AR">Argentina</option><option value="AM">Armenia</option><option value="AW">Aruba</option><option value="AU">Australia</option><option value="AT">Austria</option><option value="AZ">Azerbaijan</option><option value="BS">Bahamas</option><option value="BH">Bahrain</option><option value="BD">Bangladesh</option><option value="BB">Barbados</option><option value="BY">Belarus</option><option value="BE">Belgium</option><option value="BZ">Belize</option><option value="BJ">Benin</option><option value="BM">Bermuda</option><option value="BT">Bhutan</option><option value="BO">Bolivia</option><option value="BA">Bosnia &amp; Herzegovina</option><option value="BW">Botswana</option><option value="BV">Bouvet Island</option><option value="BR">Brazil</option><option value="IO">British Indian Ocean Territory</option><option value="VG">British Virgin Islands</option><option value="BN">Brunei</option><option value="BG">Bulgaria</option><option value="BF">Burkina Faso</option><option value="BI">Burundi</option><option value="KH">Cambodia</option><option value="CM">Cameroon</option><option value="CA">Canada</option><option value="CV">Cape Verde</option><option value="BQ">Caribbean Netherlands</option><option value="KY">Cayman Islands</option><option value="CF">Central African Republic</option><option value="TD">Chad</option><option value="CL">Chile</option><option value="CN">China</option><option value="CX">Christmas Island</option><option value="CC">Cocos (Keeling) Islands</option><option value="CO">Colombia</option><option value="KM">Comoros</option><option value="CG">Congo - Brazzaville</option><option value="CD">Congo - Kinshasa</option><option value="CK">Cook Islands</option><option value="CR">Costa Rica</option><option value="HR">Croatia</option><option value="CU">Cuba</option><option value="CW">Curaçao</option><option value="CY">Cyprus</option><option value="CZ">Czechia</option><option value="CI">Côte d’Ivoire</option><option value="DK">Denmark</option><option value="DJ">Djibouti</option><option value="DM">Dominica</option><option value="DO">Dominican Republic</option><option value="EC">Ecuador</option><option value="EG">Egypt</option><option value="SV">El Salvador</option><option value="GQ">Equatorial Guinea</option><option value="ER">Eritrea</option><option value="EE">Estonia</option><option value="SZ">Eswatini</option><option value="ET">Ethiopia</option><option value="FK">Falkland Islands</option><option value="FO">Faroe Islands</option><option value="FJ">Fiji</option><option value="FI">Finland</option><option value="FR">France</option><option value="GF">French Guiana</option><option value="PF">French Polynesia</option><option value="TF">French Southern Territories</option><option value="GA">Gabon</option><option value="GM">Gambia</option><option value="GE">Georgia</option><option value="DE">Germany</option><option value="GH">Ghana</option><option value="GI">Gibraltar</option><option value="GR">Greece</option><option value="GL">Greenland</option><option value="GD">Grenada</option><option value="GP">Guadeloupe</option><option value="GU">Guam</option><option value="GT">Guatemala</option><option value="GG">Guernsey</option><option value="GN">Guinea</option><option value="GW">Guinea-Bissau</option><option value="GY">Guyana</option><option value="HT">Haiti</option><option value="HM">Heard &amp; McDonald Islands</option><option value="HN">Honduras</option><option value="HK">Hong Kong SAR China</option><option value="HU">Hungary</option><option value="IS">Iceland</option><option value="IN">India</option><option value="ID">Indonesia</option><option value="IR">Iran</option><option value="IQ">Iraq</option><option value="IE">Ireland</option><option value="IM">Isle of Man</option><option value="IL">Israel</option><option value="IT">Italy</option><option value="JM">Jamaica</option><option value="JP">Japan</option><option value="JE">Jersey</option><option value="JO">Jordan</option><option value="KZ">Kazakhstan</option><option value="KE">Kenya</option><option value="KI">Kiribati</option><option value="XK">Kosovo</option><option value="KW">Kuwait</option><option value="KG">Kyrgyzstan</option><option value="LA">Laos</option><option value="LV">Latvia</option><option value="LB">Lebanon</option><option value="LS">Lesotho</option><option value="LR">Liberia</option><option value="LY">Libya</option><option value="LI">Liechtenstein</option><option value="LT">Lithuania</option><option value="LU">Luxembourg</option><option value="MO">Macao SAR China</option><option value="MG">Madagascar</option><option value="MW">Malawi</option><option value="MY">Malaysia</option><option value="MV">Maldives</option><option value="ML">Mali</option><option value="MT">Malta</option><option value="MH">Marshall Islands</option><option value="MQ">Martinique</option><option value="MR">Mauritania</option><option value="MU">Mauritius</option><option value="YT">Mayotte</option><option value="MX">Mexico</option><option value="FM">Micronesia</option><option value="MD">Moldova</option><option value="MC">Monaco</option><option value="MN">Mongolia</option><option value="ME">Montenegro</option><option value="MS">Montserrat</option><option value="MA">Morocco</option><option value="MZ">Mozambique</option><option value="MM">Myanmar (Burma)</option><option value="NA">Namibia</option><option value="NR">Nauru</option><option value="NP">Nepal</option><option value="NL">Netherlands</option><option value="NC">New Caledonia</option><option value="NZ">New Zealand</option><option value="NI">Nicaragua</option><option value="NE">Niger</option><option value="NG">Nigeria</option><option value="NU">Niue</option><option value="NF">Norfolk Island</option><option value="KP">North Korea</option><option value="MK">North Macedonia</option><option value="MP">Northern Mariana Islands</option><option value="NO">Norway</option><option value="OM">Oman</option><option value="PK">Pakistan</option><option value="PW">Palau</option><option value="PS">Palestinian Territories</option><option value="PA">Panama</option><option value="PG">Papua New Guinea</option><option value="PY">Paraguay</option><option value="PE">Peru</option><option value="PH">Philippines</option><option value="PN">Pitcairn Islands</option><option value="PL">Poland</option><option value="PT">Portugal</option><option value="QA">Qatar</option><option value="RO">Romania</option><option value="RU">Russia</option><option value="RW">Rwanda</option><option value="RE">Réunion</option><option value="WS">Samoa</option><option value="SM">San Marino</option><option value="SA">Saudi Arabia</option><option value="SN">Senegal</option><option value="RS">Serbia</option><option value="SC">Seychelles</option><option value="SL">Sierra Leone</option><option value="SG">Singapore</option><option value="SX">Sint Maarten</option><option value="SK">Slovakia</option><option value="SI">Slovenia</option><option value="SB">Solomon Islands</option><option value="SO">Somalia</option><option value="ZA">South Africa</option><option value="GS">South Georgia &amp; South Sandwich Islands</option><option value="KR">South Korea</option><option value="ES">Spain</option><option value="LK">Sri Lanka</option><option value="BL">St. Barthélemy</option><option value="SH">St. Helena</option><option value="KN">St. Kitts &amp; Nevis</option><option value="LC">St. Lucia</option><option value="MF">St. Martin</option><option value="PM">St. Pierre &amp; Miquelon</option><option value="VC">St. Vincent &amp; Grenadines</option><option value="SD">Sudan</option><option value="SR">Suriname</option><option value="SJ">Svalbard &amp; Jan Mayen</option><option value="SE">Sweden</option><option value="CH">Switzerland</option><option value="SY">Syria</option><option value="ST">São Tomé &amp; Príncipe</option><option value="TW">Taiwan, Province of China</option><option value="TJ">Tajikistan</option><option value="TZ">Tanzania</option><option value="TH">Thailand</option><option value="TL">Timor-Leste</option><option value="TG">Togo</option><option value="TK">Tokelau</option><option value="TO">Tonga</option><option value="TT">Trinidad &amp; Tobago</option><option value="TN">Tunisia</option><option value="TR">Turkey</option><option value="TM">Turkmenistan</option><option value="TC">Turks &amp; Caicos Islands</option><option value="TV">Tuvalu</option><option value="UM">U.S. Outlying Islands</option><option value="VI">U.S. Virgin Islands</option><option value="UG">Uganda</option><option value="UA">Ukraine</option><option value="AE">United Arab Emirates</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="UY">Uruguay</option><option value="UZ">Uzbekistan</option><option value="VU">Vanuatu</option><option value="VA">Vatican City</option><option value="VE">Venezuela</option><option value="VN">Vietnam</option><option value="WF">Wallis &amp; Futuna</option><option value="EH">Western Sahara</option><option value="YE">Yemen</option><option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option><option value="AX">Åland Islands</option></select>                        </td>
+                                            <td data-column="region_name"  class=" col-region_name">
+                            <input type="text" name="region_name" id="tax_rate_grid_filter_region_name" value="" class="input-text admin__control-text no-changes" data-ui-id="widget-grid-column-filter-text-1-filter-region-name"  />                        </td>
+                                            <td data-column="tax_postcode"  class=" col-tax_postcode">
+                            <input type="text" name="tax_postcode" id="tax_rate_grid_filter_tax_postcode" value="" class="input-text admin__control-text no-changes" data-ui-id="widget-grid-column-filter-text-2-filter-tax-postcode"  />                        </td>
+                                            <td data-column="rate"  class="col-price last col-rate">
+                            <div class="range"><div class="range-line"><input type="text" name="rate[from]" id="tax_rate_grid_filter_rate_from" placeholder="From" value="" class="input-text admin__control-text no-changes"  data-ui-id="widget-grid-column-filter-range-0-filter-rate-from" /></div><div class="range-line"><input type="text" name="rate[to]" id="tax_rate_grid_filter_rate_to" placeholder="To" value="" class="input-text admin__control-text no-changes"  data-ui-id="widget-grid-column-filter-range-0-filter-rate-to" /></div></div>                        </td>
+                                    </tr>
+                    </thead>
+    
+    <tbody>
+
+                                                    <tr data-role="row" title="http&#x3A;&#x2F;&#x2F;10.186.197.203&#x3A;7780&#x2F;admin&#x2F;tax&#x2F;rate&#x2F;edit&#x2F;rate&#x2F;1&#x2F;"                >
+                                                                        <td data-column="code"
+                                class="&#x20;col-name&#x20;col-code  "
+                            >
+                                US-CA-*-Rate 1                            </td>
+                                                                                                                            <td data-column="tax_country_id"
+                                class="&#x20;col-tax_country_id  "
+                            >
+                                United States                            </td>
+                                                                                                                            <td data-column="region_name"
+                                class="&#x20;col-region_name  "
+                            >
+                                CA                            </td>
+                                                                                                                            <td data-column="tax_postcode"
+                                class="&#x20;col-tax_postcode  "
+                            >
+                                *                            </td>
+                                                                                                                            <td data-column="rate"
+                                class="&#x20;col-price&#x20;col-rate  last"
+                            >
+                                8.2500                            </td>
+                                                                                        </tr>
+                                                    <tr data-role="row" title="http&#x3A;&#x2F;&#x2F;10.186.197.203&#x3A;7780&#x2F;admin&#x2F;tax&#x2F;rate&#x2F;edit&#x2F;rate&#x2F;3&#x2F;"                >
+                                                                        <td data-column="code"
+                                class="&#x20;col-name&#x20;col-code  "
+                            >
+                                US-MI-*-Rate 1                            </td>
+                                                                                                                            <td data-column="tax_country_id"
+                                class="&#x20;col-tax_country_id  "
+                            >
+                                United States                            </td>
+                                                                                                                            <td data-column="region_name"
+                                class="&#x20;col-region_name  "
+                            >
+                                MI                            </td>
+                                                                                                                            <td data-column="tax_postcode"
+                                class="&#x20;col-tax_postcode  "
+                            >
+                                *                            </td>
+                                                                                                                            <td data-column="rate"
+                                class="&#x20;col-price&#x20;col-rate  last"
+                            >
+                                8.2500                            </td>
+                                                                                        </tr>
+                                                    <tr data-role="row" title="http&#x3A;&#x2F;&#x2F;10.186.197.203&#x3A;7780&#x2F;admin&#x2F;tax&#x2F;rate&#x2F;edit&#x2F;rate&#x2F;2&#x2F;"                >
+                                                                        <td data-column="code"
+                                class="&#x20;col-name&#x20;col-code  "
+                            >
+                                US-NY-*-Rate 1                            </td>
+                                                                                                                            <td data-column="tax_country_id"
+                                class="&#x20;col-tax_country_id  "
+                            >
+                                United States                            </td>
+                                                                                                                            <td data-column="region_name"
+                                class="&#x20;col-region_name  "
+                            >
+                                NY                            </td>
+                                                                                                                            <td data-column="tax_postcode"
+                                class="&#x20;col-tax_postcode  "
+                            >
+                                *                            </td>
+                                                                                                                            <td data-column="rate"
+                                class="&#x20;col-price&#x20;col-rate  last"
+                            >
+                                8.3750                            </td>
+                                                                                        </tr>
+                                </tbody>
+
+                </table>
+
+            
+                </div>
+    </div>
+        <script>var deps = [];
+deps.push('mage/adminhtml/grid');
+
+require(deps, function(){
+tax_rate_gridJsObject = new varienGrid('tax_rate_grid', 'http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Ftax\u002Frate\u002Findex\u002F', 'page', 'sort', 'dir', 'filter');
+
+tax_rate_gridJsObject.useAjax = false;
+tax_rate_gridJsObject.rowClickCallback = openGridRow;
+tax_rate_gridJsObject.bindSortable();
+
+});
+</script>
+
+    
+</div></div></div></main><footer class="page-footer"><div class="page-footer-content row"><div class="footer-legal"><p class="copyright col-m-6"><a class="link-copyright" href="http://magento.com" target="_blank" title="Magento"></a>
+Copyright &copy; 2026 Magento Commerce Inc. All rights reserved.</p><div class="footer-legal-system col-m-6"><p class="magento-version">
+    <strong>Magento</strong>
+    ver. 2.4.6</p>
+
+<a class="link-report" href="https://www.adobe.com/privacy/policy.html" id="footer_privacy" target="_blank">
+    Privacy Policy</a> |<a class="link-account-activity"
+    href="http://10.186.197.203:7780/admin/security/session/activity/"
+    id="footer_account_activity"
+    target="_blank"
+    data-mage-init='{"popupWindow": {
+        "windowURL": "http\u003A\u002F\u002F10.186.197.203\u003A7780\u002Fadmin\u002Fsecurity\u002Fsession\u002Factivity\u002F",
+        "windowName": "session-activity",
+        "width": 600, "height": 600, "top": 50, "left": 50, "resizable": 1, "scrollbars": 1}}'>
+    Account Activity</a> |
+    <a class="link-report" href="https://github.com/magento/magento2/issues" id="footer_bug_tracking" target="_blank">
+        Report an Issue    </a>
+</div></div></div></footer></div>    </body>
+</html>
