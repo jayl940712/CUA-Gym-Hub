@@ -93,8 +93,9 @@ explicitly and name what you could not verify.
 | Thing | Why |
 |-------|-----|
 | **URL/route structure** — path shape, path params, query params | WebArena evaluators check the agent's final URL. `/f/news`, `/user/byteblaze/project`, `/admin/sales/order/view/order_id/123` must resolve in the mock exactly as in the source. |
-| **Real entity IDs, slugs, usernames, SKUs, order numbers** | Existing WebArena tasks reference specific records by name/id. Invented data breaks every task. |
+| **Real entity IDs, slugs, usernames, SKUs, order numbers** — exactly, for records any task references; faithfully for the rest | Existing WebArena tasks reference specific records by name/id. Invented data breaks every task. See §4.1 for how to tell which records are load-bearing. |
 | **Visible strings** — labels, button text, headings, table column names, empty-state and validation copy | Evaluators do string matching on rendered page text. |
+| **The workflows tasks perform** — search, filter, add to cart, open a merge request, edit a setting, submit a form | A task fails on a missing capability long before it fails on a wrong pixel. |
 | **Layout, CSS, typography, spacing** | Agents are trained on pixels. The mock should be visually indistinguishable at a glance. |
 | **User-visible logic** — sort orders, filter semantics, pagination size, search behavior, form validation, permission-dependent UI | This is the behavior the agent must learn. |
 | **A representative sample of the real data** | See §4. Enough that browsing feels populated and task-referenced records exist. |
@@ -238,7 +239,7 @@ then curate it into `<mock>/src/data/`.
 This is the highest-value recon and does not need Docker.
 
 - Drive the live URL with the Playwright tools. Log in with the §2 credentials.
-- Screenshot every major view at 1440×900 into
+- Screenshot every major view at 1920×1080 into
   `<mock>/assets/screenshots/reference/` — these replace the `image-search`
   skill entirely. Real site > web-search screenshots.
 - Save raw HTML per route (`curl --noproxy '*' -s "$URL/path" > assets/html/<route>.html`)
@@ -280,6 +281,49 @@ identifiers.**
    bounded set of articles / a bounded bounding box with pre-rendered tiles,
    and make search resolve only within that set — with a realistic "no results"
    state outside it.
+
+### 4.1 Task anchors — what fidelity actually means
+
+A mock is not graded on resembling the source. It is graded on whether the
+site's WebArena tasks still pass on it. Those tasks are scored by evaluators in
+`webarena.jsonl`, and every evaluator compares against a fixed value:
+
+| eval_type | compares |
+|---|---|
+| `url_match` | the agent's final URL against `reference_url` |
+| `string_match` | the agent's answer against `must_include` / `exact_match` strings |
+| `program_html` | a page's rendered text against `required_contents`, optionally under a DOM `locator` |
+
+Those URLs, strings, and locators are **anchors**. Extract them before building:
+
+```bash
+python3 shared/extract-task-anchors.py --site <SITE>
+# → <mock>/assets/task_anchors.json  (machine-readable, for test scripts)
+# → <mock>/assets/task_anchors.md    (human-readable, for agents)
+```
+
+This splits the seed into two tiers, and the split governs both what `dev`
+builds and what `playwright` reports:
+
+- **Anchored data — reproduce exactly.** A route in the anchor list must
+  resolve. A string in the anchor list must appear verbatim on the page that
+  should show it. A locator in the anchor list must select a real element. A
+  paraphrase, a rounded number, or a regenerated slug fails the task silently:
+  the page looks right and the evaluator still returns 0.
+- **Unanchored data — reproduce faithfully, not identically.** Everything else
+  in the seed exists to make the site feel populated and to exercise sorting,
+  filtering, and pagination. It should be plausible, internally consistent, and
+  drawn from the real source, but individual prices, counts, timestamps, and
+  body text need not match record for record.
+
+The practical rule: **spend fidelity effort where an evaluator is looking.**
+A missing anchor is a P0. A drifted unanchored field is a P2 worth logging and
+not worth a round.
+
+Anchors also tell you what *capabilities* the site needs. Read the `question`
+field of the tasks alongside the anchors — if 40 tasks say "add to cart" or
+"find the merge request", those flows must work end to end, whatever they look
+like. Capability gaps outrank cosmetic gaps every time.
 
 ---
 

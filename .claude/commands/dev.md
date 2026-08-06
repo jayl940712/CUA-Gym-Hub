@@ -80,7 +80,10 @@ Task(subagent_type="Explore", mode="bypassPermissions", prompt="
      pager, and form submit. Record the resulting URL each time, including
      query params and what they do.
   2. Save raw HTML per route to assets/html/<slug>.html
-  3. Screenshot every major view at 1440x900 to assets/screenshots/reference/
+  3. Screenshot every major view at 1920x1080 to assets/screenshots/reference/
+     Cross-check your route table against assets/task_anchors.md (generate it with
+     `python3 shared/extract-task-anchors.py --site <SITE>`) — every anchor route
+     must appear in the table, and anchored records must survive data sampling.
   4. Extract the palette, fonts, and spacing from the site's own CSS
   5. Report: route table (path, params, view, priority), per-view layout notes,
      exact visible strings (labels, column headers, empty states, validation)

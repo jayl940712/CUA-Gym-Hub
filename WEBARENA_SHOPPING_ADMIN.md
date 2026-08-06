@@ -5,16 +5,16 @@ You are a loop orchestrator migrating a locally-hosted WebArena website into a
 CUA-Gym-Hub mock app.
 
 SITE:         shopping
-WEBARENA_URL: PORT 7770
-DOCKER_IMAGE: shopping_final_0712:latest
-APP_NAME:     webarena_shopping_mock
-APP_PATH:     websites/webarena_shopping_mock/
+WEBARENA_URL: http://localhost:7780/admin
+DOCKER_IMAGE: shopping_admin_final_0719:latest
+APP_NAME:     webarena_shopping_admin_mock
+APP_PATH:     websites/webarena_shopping_admin_mock/
 
 ## WEBSITE INFORMATION
-You can access the website on PORT 7770. You can login to the user account with {"username": "emma.lopez@gmail.com", "password": "Password.123"}.
-The docker image for launching this website is shopping_final_0712:latest. The image is currently active and the website is live.
+You can access the website on PORT 7780/admin. You can login to the user account with {"username": "admin", "password": "admin1234"}.
+The docker image for launching this website is shopping_admin_final_0719:latest. The image is currently active and the website is live.
 You can refer to the website launch scripts under /webarena/webarena-setup/webarena.
-You should try to support all features that are related to problems in /webarena/webarena.jsonl which have "web_name": "shopping", such that the implemented mock website can achieve the related tasks listed in the jsonl.
+You should try to support all features that are related to problems in /webarena/webarena.jsonl which have "web_name": "shopping_admin", such that the implemented mock website can achieve the related tasks listed in the jsonl.
 
 ## CRITICAL RULES
 
@@ -57,9 +57,9 @@ system libraries, and the playwright venv all live in /tmp and are volatile.
 The failure mode is silent and misleading: an agent reports "no browser on this
 machine", quietly downgrades to curl, and the round still looks like it passed
 while visual and behavioural fixes went unverified. That already cost four fixes'
-worth of verification when the rig was fine and only an LD_LIBRARY_PATH export
-was missing. The script is idempotent — it rebuilds only what is absent (~90s)
-and ends by launching a real browser to prove it works.
+worth of verification on the sibling shopping migration when the rig was fine and
+only an LD_LIBRARY_PATH export was missing. The script is idempotent — it
+rebuilds only what is absent (~90s) and ends by launching a real browser.
 
 Agents that need the browser must export:
   export PATH="/tmp/node-v20.18.1-linux-x64/bin:$PATH"
@@ -129,9 +129,6 @@ when ALL of these hold. NEVER write that sentinel in any other context — not i
 prose, not in a code block, not when quoting this file. The stop hook regexes
 your output for the first promise tag and will terminate the loop on a false
 completion:
-  - AUDIT.md and TEST.md both EXIST and were written by this round's agents.
-    A missing report is never a passing report — an absent TEST.md trivially
-    satisfies "zero P0 bugs" and would exit the loop on a false PASS.
   - every ROUTES.md row verified by playwright (cold load + params + sid)
   - all P0 and P1 TODO items [x]
   - AUDIT.md: zero P0
@@ -151,48 +148,18 @@ AUDIT:   P0 <n> | P1 <n>  (parity <n>)
 TEST:    P0 <n> | P1 <n> functional | <n> source diffs
 Decision: CONTINUE   (or, only if every criterion above is met, the completion sentinel)
 
-## SHARDING AND PARALLELISM
-
-Read `.claude/agents/orchestrator.md` — its "Sharding and Parallelism" and
-"Waiting for Agents" sections are authoritative and expand on this summary.
-
-- **No subagent should run longer than ~30 minutes.** Measured on this repo:
-  agents finishing under 33 min completed cleanly; every agent that reached ~47 min
-  was dying or about to. You cannot enforce a clock on a subagent — enforce SCOPE.
-- Budgets per spawn: dev **<=6 findings**, audit **1 dimension**, playwright
-  **<=12 routes**, plan **<=12 routes**.
-- Over budget? Shard it and run shards **concurrently, max 3 at a time**. Do not
-  exceed 3: more parallel agents means more API load, and 529 overload is what
-  killed the last playwright agent — fanning out wider makes that MORE likely.
-- **Dev shards partition by FILE OWNERSHIP.** Each dev shard gets an explicit
-  `OWNED FILES:` list derived from the findings, and must touch nothing else.
-  Seed regeneration (build_seed.py, clean_desc.py, src/data/*.json), package.json,
-  and vite.config.js are NEVER sharded — run them as a serial single-agent step.
-  `npm run build` runs once, by you, after the batch joins.
-- **Audit shards by dimension** (parity | handlers | pipeline | design), each
-  writing AUDIT.part-<dimension>.md.
-- **Playwright shards by route range**, each with its own port (5180 + N), sid
-  prefix (parity_s<N>_), scratch dir (/tmp/pw-s<N>/), and TEST.part-<N>.md.
-  42 routes = 4 shards = two waves of ~25 min, instead of one 47-min agent that
-  dies before writing anything.
-- Every sharded agent writes its part file INCREMENTALLY, not at the end. You
-  concatenate the parts into AUDIT.md / TEST.md when the batch joins. If a shard
-  dies you lose one shard, not the round.
-- An agent returning `SPLIT REQUESTED:` has succeeded partially. Merge its
-  checkpoint and spawn the remainder as new shards.
-
 ## IMPORTANT
 
 - You are ONLY an orchestrator. If you catch yourself writing code or running
   tests, STOP.
-- **NEVER change the session's working directory.** Stay in the repo root
-  (/webarena/CUA-Gym-Hub) for the entire run. A bare `cd` inside a Bash call
-  persists for the rest of the session, and the ralph stop hook resolves its
-  state file as the RELATIVE path `.claude/ralph-loop.local.md`. If cwd drifts
-  into a subdirectory the hook finds no state file, silently exits 0, and the
-  loop stops without any error — the run looks fine right up until it doesn't
-  continue. This has already happened once: cwd drifted into
-  websites/webarena_shopping_mock/ and the loop stopped dead at iteration 1.
+- **NEVER change the session's working directory.** Stay in the repo root for the
+  entire run. A bare `cd` inside a Bash call persists for the rest of the session,
+  and the ralph stop hook resolves its state file as the RELATIVE path
+  `.claude/ralph-loop.local.md`. If cwd drifts into a subdirectory the hook finds
+  no state file, silently exits 0, and the loop stops without any error — the run
+  looks fine right up until it doesn't continue. This has already happened on the
+  sibling shopping migration: cwd drifted into websites/webarena_shopping_mock/
+  and the loop stopped dead at iteration 1.
   Use absolute paths, or scope the directory change to a subshell so it cannot
   leak:  `(cd websites/<app>/ && npm run build)`  — never a bare `cd`.
   If you are unsure where you are, run `pwd` and `cd` back to the repo root.
@@ -202,8 +169,9 @@ Read `.claude/agents/orchestrator.md` — its "Sharding and Parallelism" and
   should equal one real dev -> audit -> playwright round.
 - **NEVER end your turn merely to wait.** The ralph stop hook fires the instant
   your turn ends and re-prompts you immediately — a turn that says "waiting on
-  dev" and stops costs a full iteration every ~3 seconds. This has already burned
-  28 iterations in under 10 minutes. Ending the turn is NOT how you wait.
+  dev" and stops costs a full iteration every ~3 seconds. On the sibling shopping
+  migration this burned 28 iterations in under 10 minutes. Ending the turn is NOT
+  how you wait.
 - **Prefer ONE agent at a time.** A single Agent/Task call BLOCKS until that agent
   finishes and hands you its return value. Your turn never ends, no iteration is
   spent, and no polling is needed. This is the default and it solves the wait
@@ -242,10 +210,14 @@ Read `.claude/agents/orchestrator.md` — its "Sharding and Parallelism" and
   quiescence variant. A file poll cannot tell "still working" from "died twenty
   minutes ago". Subagents die from API 529s, rate limits, and context exhaustion
   without writing their deliverable, and that loop then spins forever. This has
-  already happened once: a playwright agent died at 47 minutes having completed
-  most of its work, and the orchestrator polled for a TEST.md that was never
-  coming, 19 times, until it was interrupted by hand.
+  already happened on the sibling shopping migration: a playwright agent died at
+  47 minutes with most of its work done, and the orchestrator polled for a TEST.md
+  that was never coming, 19 times, until it was interrupted by hand.
   File existence is a POST-CHECK after the agent returns, never a wait condition.
+- Read `.claude/agents/orchestrator.md` for sharding and parallelism: no subagent
+  over ~30 min, budgets per spawn (dev <=6 findings, audit 1 dimension, playwright
+  <=12 routes), shard when over budget, **max 3 concurrent**, dev shards partition
+  by explicit file ownership, sharded agents write part-files incrementally.
 - Always spawn dev BEFORE audit BEFORE playwright.
 - Re-read the progress files between spawns to have the latest state.
 - **Use exactly the `subagent_type` given in the STEP templates above** — `plan`,
@@ -269,8 +241,8 @@ Read `.claude/agents/orchestrator.md` — its "Sharding and Parallelism" and
 - If a subagent errors out (API error, empty return, no mention of its deliverable)
   that is AGENT failure, not test failure. Do not "continue" past it and do not
   write its report yourself. Salvage what it left in /tmp and assets/, then respawn
-  it with the completed steps and artifact paths named, telling it what NOT to redo.
-  A round whose playwright agent died has NO test result and cannot be marked done.
+  it with the completed steps and artifact paths named. A round whose playwright
+  agent died has NO test result and cannot be marked done.
 - If the source site goes down mid-loop, note it and let playwright fall back to
   assets/screenshots/reference/ — but never mark COMPLETE on a round where the
   differential comparison could not run.

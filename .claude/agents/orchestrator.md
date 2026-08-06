@@ -299,7 +299,15 @@ curl -s -o /dev/null -w 'site: %{http_code}\n' --max-time 10 --noproxy '*' "<WEB
 # Docker reachable?
 docker ps --filter ancestor=<DOCKER_IMAGE> 2>&1 | head -5
 sudo -n docker ps 2>&1 | head -3          # only if the socket is root-only
+
+# Task contract extracted? This defines what "correct enough" means for the
+# whole run — plan seeds to it, playwright tests against it.
+python3 shared/extract-task-anchors.py --site <SITE> || echo "NO TASK FILE — see below"
 ```
+
+If the task file is missing or has no rows for this site, say so in the round
+report and tell every agent to fall back to source parity. The loop still works;
+it just loses its priority signal and will over-report cosmetic drift.
 
 **Run the toolchain check every round, not just round 1.** `/tmp` can be cleared
 mid-run, and the failure is silent and misleading: agents report "no browser on
@@ -502,14 +510,21 @@ SOURCE: <WEBARENA_URL>  (live — log in with the credentials in SOURCE.md)
 
 1. Route parity sweep FIRST: every ROUTES.md row, cold-loaded with ?sid=parity_test.
    Verify correct view renders, query params drive behavior, sid survives navigation.
-2. Test ALL interactive elements on ALL routes.
-3. Differential comparison: load the same path on source and mock at 1440x900,
-   screenshot both into assets/screenshots/diff/, compare layout, styling, AND
-   content (same records, ids, counts, prices, timestamps). Compare behavior too:
-   sort, paginate, validate, vote — the outcomes must match.
-4. Session isolation: two distinct sids, independent mutations, /go?sid= diff, reset.
-5. Write results to TEST.md.
-If route parity is complete and all P0+P1 pass (functional AND source-diff) →
+2. Task replay: read assets/task_anchors.md. Verify every anchor route resolves and
+   every anchor string appears verbatim on its page, then replay 10-20 sampled tasks
+   end to end and record whether each evaluator would pass. Anchor miss or
+   uncompletable flow = P0.
+3. Test ALL interactive elements on ALL routes.
+4. Differential comparison: load the same path on source and mock at 1920x1080,
+   screenshot both into assets/screenshots/diff/, compare layout, styling, structural
+   copy, and content SHAPE (same rows/columns, populated where the source is).
+   Compare behavior too: sort, paginate, validate, vote — the outcomes must match.
+   Do NOT reconcile record values against the source beyond the anchors; drift on
+   unanchored prices, counts, and timestamps is P2 at most.
+5. Session isolation: two distinct sids, independent mutations, /go?sid= diff, reset.
+6. Write results to TEST.md.
+Price findings by what they cost a task, not by how they look. If route parity and
+the anchor sweep are complete and all P0+P1 pass →
 end with: TEST COMPLETE: <APP_NAME> — PASS"
 ```
 
@@ -529,12 +544,15 @@ value **before** looking for `TEST.md`.
 COMPLETE requires ALL of:
   ✅ AUDIT.md and TEST.md both EXIST and were written by this round's agents
   ✅ ROUTES.md: every row verified by playwright (cold load + params + sid)
+  ✅ task_anchors.md: every anchor route resolves, every anchor string present
+  ✅ TEST.md: sampled task replay completes end to end
   ✅ TODO.md: all P0 items [x]
   ✅ TODO.md: all P1 items [x]
   ✅ AUDIT.md: zero P0 issues (parity, dead code, pipeline)
   ✅ TEST.md: zero P0 bugs
   ✅ TEST.md: zero P1 functional bugs
   ✅ TEST.md: zero P0/P1 source-vs-mock differences
+     (P2 cosmetic and unanchored value drift may remain — do not spend rounds on it)
   ✅ SCHEMA.md: exists and up-to-date
   ✅ npm run build passes
 ```

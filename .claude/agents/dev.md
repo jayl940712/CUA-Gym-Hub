@@ -26,6 +26,7 @@ All coordination is file-based.
 | `SOURCE.md` | plan → **you** | Stack, access method, observations, **known gaps** |
 | `ROUTES.md` | plan → **you** | Route parity map — your routing spec and checklist |
 | `assets/data_model.md` | plan → **you** | Entity definitions from the real schema |
+| `assets/task_anchors.md` | plan → **you** | Routes, strings, and locators real evaluators assert on — the fidelity that is non-negotiable |
 | `src/data/*.json` | plan → **you** | Curated seed data extracted from the container |
 | `assets/html/` | plan → **you** | Raw source HTML — exact DOM, class names, copy |
 | `assets/screenshots/reference/` | plan → **you** | Live-site captures — visual ground truth |
@@ -134,6 +135,11 @@ The seeds in `src/data/` came out of the container. Load them as-is.
 - Never regenerate data with faker or invent plausible-looking records. If the
   seed is missing something a TODO item needs, say so in your progress report
   rather than fabricating it.
+- **`assets/task_anchors.md` is the part of the seed that cannot bend.** It lists
+  the routes, strings, and DOM locators real WebArena evaluators compare against.
+  An anchored record must render at its anchored path with its anchored strings
+  intact, character for character. Unanchored records only have to be plausible
+  and internally consistent — do not burn a round chasing exact parity on them.
 - Keep `createInitialData()` output under ~1–2 MB; the entire state is POSTed,
   diffed, and returned by `/go` on every call. Import large corpora as separate
   modules and keep derived views (sorted/filtered lists) out of state.

@@ -27,11 +27,19 @@ the dev agent through that file.
 > worse than no button at all. Every click must produce a visible response,
 > every form must react, every link must navigate.
 >
-> **3. When the mock and the source disagree, the source is right.** Report the
-> difference with both sides quoted.
+> **3. When the mock and the source disagree, the source is right** — but not
+> every disagreement is worth a round. Weight it by whether a task could still
+> pass. Report the difference with both sides quoted, priced honestly.
+>
+> **4. Capability outranks appearance.** A flow an agent cannot complete is a
+> bug. A price that reads `$24.99` instead of `$24.95` on a record no task
+> mentions is a note.
 
 You are **not** checking whether the mock is feature-complete against the whole
-source. You are checking that what exists is not broken and does not drift.
+source, and you are **not** reconciling the seed record by record against the
+source database. You are checking three things, in this order: that the site's
+WebArena tasks remain performable, that what exists is not broken, and that the
+overall look and behavior have not drifted.
 
 ---
 
@@ -40,6 +48,7 @@ source. You are checking that what exists is not broken and does not drift.
 | File | Direction | Purpose |
 |------|-----------|---------|
 | `ROUTES.md` | plan → you read | **Route parity checklist** — test every row |
+| `assets/task_anchors.md` | plan → you read | **The task contract** — routes, strings, and locators real WebArena evaluators assert on |
 | `SOURCE.md` | plan → you read | Source URL, credentials, recon mode |
 | `assets/screenshots/reference/` | plan → you read | Live-site captures for comparison |
 | `TODO.md` | plan → you read | Which features are `[x]` done and testable |
@@ -107,6 +116,9 @@ Do not silently skip routes to fit — an unreported gap reads as a pass.
 ### Step 1: Read the Migration Artifacts
 
 - `ROUTES.md` — every row is a test case
+- `assets/task_anchors.md` — the routes, strings, and locators real evaluators
+  assert on, and the tasks behind them. This is what "correct enough" means;
+  read it before deciding any finding's priority
 - `SOURCE.md` — the live source URL and its login credentials
 - `TODO.md` — `[x]` items are your primary functional targets; skip anything
   `[ ]`, `[~]`, or under "Out of Scope"
@@ -150,6 +162,60 @@ Report as bugs:
 - `?sid=` dropped after navigation, redirect, or form submit → **P0**
 - Query param present but does not change what renders → **P1**
 - UI control changes the view but does not write back to the URL → **P1**
+
+### Step 2.6: Task Replay (the pass that decides whether the mock is usable)
+
+`assets/task_anchors.md` lists the routes, strings, and locators that this
+site's real WebArena evaluators compare against, extracted from `webarena.jsonl`.
+It is the closest thing you have to a definition of "good enough". If it is
+missing, regenerate it:
+
+```bash
+python3 shared/extract-task-anchors.py --site <SITE>
+```
+
+**First, sweep the anchors mechanically.** Every anchor route must resolve and
+render the record it names:
+
+```bash
+python3 - <<'PY'
+import json, subprocess
+anchors = json.load(open('assets/task_anchors.json'))
+for route in anchors['anchor_routes']:
+    code = subprocess.run(['curl','-s','--noproxy','*','-o','/dev/null','-w','%{http_code}',
+                           'http://localhost:5180' + route['path'] + '?sid=anchor_test'],
+                          capture_output=True, text=True).stdout
+    print(code, route['path'], route['task_ids'][:3])
+PY
+```
+
+An SPA answers 200 for everything, so open the ones that matter in the browser
+and confirm the right record renders. Then spot-check anchor **strings**: for
+each anchor bound to a page, load that page and confirm the string is present
+verbatim in `page.innerText('body')`. Case, punctuation, and spacing count —
+evaluators do substring comparison, not fuzzy matching.
+
+**Then replay whole tasks.** Sample **10–20 tasks** spread across the eval types
+in `task_anchors.md`, favoring the flows that appear most often in the `question`
+column. For each, drive the mock the way an agent would — no shortcuts, no
+direct URL entry unless the task starts there — and record whether its evaluator
+would pass:
+
+| task | flow attempted | evaluator | verdict |
+|---|---|---|---|
+| webarena-N | search → open product → read reviews | `string_match: "Catso"` | ✅ string present |
+| webarena-M | filter by price → sort → open result | `url_match: /path.html` | ❌ sort control missing |
+
+Report as bugs:
+- Anchor route does not resolve, or renders the wrong record → **P0**
+- Anchor string absent from the page that should show it → **P0**
+- Anchor locator selects nothing → **P0**
+- A replayed task cannot be completed because a control, page, or flow is
+  missing or dead → **P0**
+- A replayed task completes but takes a materially different path than the
+  source (extra step, missing intermediate page) → **P1**
+
+A task that fails on the *source* too is not a bug — note it and move on.
 
 ### Step 3: Systematic Page-by-Page Testing
 
@@ -230,6 +296,9 @@ After each test run, write `<app>_mock/TEST.md` with this exact format:
 | ROUTES.md rows verified | N / N |
 | Cold deep-link failures | N |
 | `?sid=` preservation failures | N |
+| Anchor routes resolving | N / N |
+| Anchor strings present | N / N |
+| Tasks replayed / completable | N / N |
 | Elements tested | N |
 | Source-vs-mock diffs | N |
 | ✅ Passed | N |
@@ -279,10 +348,24 @@ After each test run, write `<app>_mock/TEST.md` with this exact format:
 - BUG-003: ✅ Fixed
 ```
 
-**Bug priority:**
-- **P0** — Crash, white screen, console error, complete loss of functionality
-- **P1** — Click/interaction does nothing (silent failure)
-- **P2** — Visual glitch, missing hover state, cosmetic issue
+**Bug priority** — one scale, used for functional bugs and source-vs-mock
+differences alike. Price by **what it costs a task**, not by how it looks:
+
+- **P0 — a task cannot pass.** Crash, white screen, console error that breaks
+  the view, a flow that cannot be completed, a missing or dead control on a task
+  path, a missing anchor route/string/locator, a wrong record where a task
+  expects a specific one.
+- **P1 — a task can pass but behavior has drifted.** Click/interaction does
+  nothing (silent failure), sort/filter/search/pagination semantics differ from
+  the source, a form yields a different result, a control does not write back to
+  the URL, or layout has diverged enough that a control is hard to find.
+- **P2 — everything else.** Visual glitches, spacing, color, font weight,
+  missing hover states, and **content drift on records no anchor references**
+  (individual prices, counts, timestamps, body text). Log these; they never
+  block a round.
+
+When a finding could sit in two buckets, ask: *would a WebArena agent still
+complete its task?* If yes, it is not P0.
 
 ---
 
@@ -300,7 +383,7 @@ Round N:
   6. If 0 P0 bugs and 0 P1 bugs → declare PASS
 ```
 
-**Stop condition:** every `ROUTES.md` row loads cold with `?sid=` intact and renders the correct view, all visible interactive elements respond correctly, the source-vs-mock comparison shows no P0/P1 differences, and no P0 or P1 functional bugs remain.
+**Stop condition:** every `ROUTES.md` row loads cold with `?sid=` intact and renders the correct view, every anchor in `assets/task_anchors.md` resolves, the replayed task sample completes end to end, all visible interactive elements respond correctly, and no P0 or P1 bugs or differences remain. Outstanding P2s do not block.
 
 ### Final PASS report
 
@@ -309,12 +392,14 @@ TEST COMPLETE: webarena_<site>_mock — PASS ✅
 
 Round: <N>
 Route parity:   <N>/<N> ROUTES.md rows verified (cold load + params + sid)
+Task anchors:   <N>/<N> routes resolve · <N>/<N> strings present · <N>/<N> locators match
+Task replay:    <N>/<N> sampled tasks completable end to end
 Interactions:   all visible elements verified working
 Source diff:    0 P0/P1 differences vs <WEBARENA_URL>
 Session isolation: two sids independent, reset restores ✅
 /go endpoint:   state_diff correctly reflects all tested interactions ✅
 
-Remaining known issues (P2 cosmetic only):
+Remaining known issues (P2 only — cosmetic and unanchored value drift):
 - <item if any>
 ```
 
@@ -327,10 +412,10 @@ The source site is running. For each P0/P1 route, put the two side by side at th
 
 ### Step 5: Source-vs-Mock Comparison
 
-1. **Capture matched pairs** at identical viewport (1440×900) and identical path:
+1. **Capture matched pairs** at identical viewport (1920×1080) and identical path:
 
    ```javascript
-   await page.setViewportSize({ width: 1440, height: 900 })
+   await page.setViewportSize({ width: 1920, height: 1080 })
    await page.goto('<WEBARENA_URL>/f/news')
    await page.screenshot({ path: 'assets/screenshots/diff/source_f_news.png', fullPage: true })
    await page.goto('http://localhost:5180/f/news?sid=difftest')
@@ -343,11 +428,22 @@ The source site is running. For each P0/P1 route, put the two side by side at th
    - typography (family, size, weight, line-height)
    - spacing (padding, margins, row heights, gutters)
    - component styling (buttons, inputs, tables, cards, badges, pagers)
-   - **content**: do the same records appear, with the same ids, titles, counts,
-     prices, and timestamps?
+   - **content shape**: does the same *kind* of thing appear in the same place —
+     the same number of rows, the same columns, populated where the source is
+     populated, empty where the source is empty?
+
+   Compare record **values** only for records that appear in
+   `assets/task_anchors.md`. For the rest, sample about five per view: if the
+   shape is right and the values are plausible and self-consistent, move on.
+   Reconciling every price and timestamp against the source is not this agent's
+   job and produces noise the dev agent cannot act on.
 
 3. **Diff the text content** — this catches evaluator-breaking copy drift that
-   the eye misses:
+   the eye misses. Diff **structural copy**: labels, headings, button and menu
+   text, table column names, nav items, empty-state and validation messages,
+   plus any anchor string bound to this page. Ignore record values — a raw diff
+   of every rendered string is mostly catalog noise and will bury the findings
+   that matter:
 
    ```bash
    curl -s --noproxy '*' "<WEBARENA_URL>/f/news" \
@@ -385,12 +481,15 @@ The source site is running. For each P0/P1 route, put the two side by side at th
 | Fix hint | `src/pages/Submission.jsx` sort comparator — use `ups - downs`, tiebreak `created_at` asc |
 ```
 
-**Difference priority:**
-- **P0** — Wrong/missing records, wrong ids, content the source shows that the
-  mock does not, behavior that changes which entity a task would resolve to
-- **P1** — Major layout/color/typography mismatch, paraphrased visible strings,
-  different sort/filter/pagination semantics
-- **P2** — Minor spacing, subtle color, font-weight differences
+Differences use the same priority scale as bugs (see *Bug priority* above):
+- **P0** — a missing anchor route/string/locator, a wrong record where a task
+  expects a specific one, or behavior that changes which entity a task resolves
+  to
+- **P1** — different sort/filter/search/pagination semantics, paraphrased
+  structural copy (labels, headings, buttons, validation messages), or layout
+  divergence large enough to hide a control
+- **P2** — value drift on unanchored records, minor spacing, subtle color,
+  font-weight, and typography differences
 
 ---
 
@@ -402,6 +501,13 @@ The source site is running. For each P0/P1 route, put the two side by side at th
 - Data the source has that the seed deliberately samples out — check
   `assets/data_model.md` for the declared record counts before reporting a
   "missing record"
+- **Value drift on records no anchor references.** Different price, rating,
+  review body, timestamp, vote count, or description on a record that appears
+  nowhere in `assets/task_anchors.md` is at most P2, and a list of twenty of
+  them is one P2, not twenty. The seed is a curated sample, not a replica.
+- **Exact counts and totals** — "source shows 1,247 products, mock shows 60" is
+  the sampling strategy working as designed, not a bug
+- Ordering differences among records that are equal on the sort key
 - The absence of a login gate — the mock boots pre-logged-in by design
 - The `/go` endpoint itself being slow (it's debug-only)
 - Source-side quirks the migration contract explicitly drops (Magento's

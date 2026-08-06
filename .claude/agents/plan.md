@@ -38,6 +38,7 @@ All coordination is file-based. You write, dev reads.
 | `DESIGN.md` | Design tokens extracted from the source site's own CSS |
 | `assets/README.md` | Per-view UI/layout/behavior description |
 | `assets/data_model.md` | Entity definitions derived from the real schema |
+| `assets/task_anchors.{json,md}` | **The task contract** — routes/strings/locators real evaluators assert on, generated from `webarena.jsonl` |
 | `assets/screenshots/reference/` | Playwright captures of the **live site** |
 | `assets/html/` | Raw HTML per route, saved for the dev agent to read |
 | `src/data/*.json` | **Curated seed data extracted from the container** |
@@ -183,9 +184,40 @@ docker exec <container> find /var/www/html -name '*.twig' | head -50
 docker cp <container>:/var/www/html/templates /tmp/recon/<site>/templates
 ```
 
-Capture screenshots of every major view at 1440×900 into
+Capture screenshots of every major view at 1920×1080 into
 `assets/screenshots/reference/`. Do **not** use the `image-search` skill — the
 real site is running and is strictly better ground truth.
+
+---
+
+## Phase 2.5 — Extract the Task Contract (do this before sampling data)
+
+The site's WebArena tasks are the reason the mock exists, and their evaluators
+name the exact URLs and strings they will compare against. Pull them out first
+so the rest of recon knows what is load-bearing:
+
+```bash
+python3 shared/extract-task-anchors.py --site <SITE>
+```
+
+This writes `assets/task_anchors.json` and `assets/task_anchors.md`. Read the
+markdown, then let it steer everything downstream:
+
+- **Every anchor route must exist in `ROUTES.md`.** If the extractor names a
+  path you did not find during route discovery, you missed a route — go back and
+  map it. Anchor routes that are absent from `ROUTES.md` are the single most
+  common cause of a migrated site scoring zero.
+- **Every anchored record must survive sampling.** When you curate `src/data/`
+  (§4 of `WEBARENA_MIGRATION.md`), pull the anchored records first and by name,
+  then fill in around them. A sample that drops an anchored product, forum post,
+  or repository is a broken migration no amount of polish repairs.
+- **Every anchor string must be reproducible verbatim.** Reviewer names, product
+  titles, error copy — copy them from the source, never retype or summarize.
+- **Let the `question` column set feature priority in `TODO.md`.** Flows that
+  appear across many tasks are P0 regardless of how minor they look; a polished
+  view no task visits is P2.
+
+Note in `SOURCE.md` how many anchors you covered and any you could not.
 
 ---
 
@@ -319,7 +351,12 @@ Files written:
 - assets/data_model.md     (<N> entities)
 - assets/html/             (<N> raw pages)
 - assets/screenshots/reference/ (<N> live captures)
+- assets/task_anchors.md   (<N> tasks → <N> routes, <N> strings, <N> locators)
 - src/data/                (<N> seed files, <size> total)
+
+Task coverage:
+- <N>/<N> anchor routes present in ROUTES.md
+- <N>/<N> anchored records present in src/data/
 
 Key findings:
 - <structure/behavior insight>
