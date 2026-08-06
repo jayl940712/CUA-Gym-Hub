@@ -35,3 +35,7 @@ yarn-debug.log*
 **/.mock-states/
 **/.mock-files/
 **/.mock-state*.json
+
+# WebArena migration recon artifacts (raw, regenerable)
+**/assets/dumps/
+**/assets/screenshots/diff/

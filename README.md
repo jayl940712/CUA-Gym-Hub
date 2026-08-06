@@ -169,32 +169,42 @@ See [DEPLOY.md](DEPLOY.md) for port assignments, reverse proxy setup, and integr
 
 ## Multi-Agent Development Pipeline
 
-Each mock was built using a coordinated team of Claude Code agents defined in `.claude/agents/`:
+Mocks are built by a coordinated team of Claude Code agents defined in `.claude/agents/`:
 
 | Agent | Role |
 |-------|------|
-| `orchestrator` | Drives the dev loop; coordinates all other agents; never writes code |
-| `plan` | Web research + screenshot analysis → `TODO.md`, `DESIGN.md`, `assets/` |
+| `orchestrator` | Runs preflight, drives the loop, coordinates all other agents; never writes code |
+| `plan` | Recon of the source site → `SOURCE.md`, `ROUTES.md`, `DESIGN.md`, `assets/`, `src/data/`, `TODO.md` |
 | `dev` | Implements all source code; resolves `AUDIT.md` and `TEST.md` issues |
-| `audit` | Detects dead handlers, untracked state, missing `/go` coverage; writes `SCHEMA.md` |
-| `playwright` | Browser-tests every interactive element on every route; writes `TEST.md` bug reports |
+| `audit` | Detects route drift, fabricated seed data, dead handlers, untracked state; writes `SCHEMA.md` |
+| `playwright` | Route-parity sweep, interaction tests, and side-by-side comparison against the source; writes `TEST.md` |
 
 <p align="center">
   <img src="figures/env_pipeline_t.png" alt="Multi-agent mock development pipeline" width="100%"/>
 </p>
 
 The orchestrator runs up to 10 rounds of `dev → audit → playwright` until all of these are true:
+- Every route in `ROUTES.md` loads cold with `?sid=` intact and renders the correct view
 - Every P0 and P1 item in `TODO.md` is `[x]`
 - `AUDIT.md` has zero P0 issues
-- `TEST.md` has zero P0/P1 bugs
+- `TEST.md` has zero P0/P1 bugs and zero P0/P1 source-vs-mock differences
 - `SCHEMA.md` documents all observable state changes
 - `npm run build` passes
 
-To build a new mock app using the same pipeline, invoke the orchestrator agent from this repository in Claude Code:
+### Migrating WebArena sites
+
+The pipeline is currently targeted at **migrating locally-hosted [WebArena](https://github.com/web-arena-x/webarena) sites** (Shopping, Shopping Admin, Reddit/Postmill, GitLab, Map, Wikipedia) into mocks. A WebArena site is a heavyweight Docker deployment with a real database; the migration rebuilds its user-visible surface as a self-contained SPA — preserving URL structure and real record identifiers so existing WebArena tasks and evaluators still resolve, while dropping the database, server frameworks, and auth.
+
+See **[WEBARENA_MIGRATION.md](WEBARENA_MIGRATION.md)** for the migration contract, site inventory, Docker recon commands, and data sampling strategy. Invoke the orchestrator with the site's live URL and the Docker image it was launched from:
 
 ```
-Build a new mock for Figma with full state API support.
+Migrate the WebArena reddit site.
+SITE: reddit
+WEBARENA_URL: http://<host>:9999/forums/all
+DOCKER_IMAGE: postmill-populated-exposed-withimg
 ```
+
+For a fully autonomous run, use the ralph-loop prompt in `.claude/prompts/ralph-loop-prompt.md`.
 
 ## Contributing
 

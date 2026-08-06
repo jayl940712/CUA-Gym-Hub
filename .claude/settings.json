@@ -23,27 +23,23 @@
   },
   "agents": {
     "plan": {
-      "description": "Research and planning agent. Given an app name, performs comprehensive web research, collects UI screenshots, documents features and data models in assets/, and produces a prioritized feature todo list in memory.md for the dev agent.",
+      "description": "Recon and migration-planning agent for WebArena sites. Given a live local URL and its Docker image, probes the container and the running site to extract routes, DOM, copy, design tokens, and real seed data, then writes SOURCE.md, ROUTES.md, DESIGN.md, assets/, src/data/, and TODO.md.",
       "prompt": ".claude/agents/plan.md"
     },
     "dev": {
-      "description": "Expert frontend developer for mock web applications. Handles all code work — building from scratch, feature implementation, UI/UX polish, data structure design, and debugging.",
+      "description": "Frontend developer for WebArena to mock migrations. Rebuilds the source site as a self-contained React/Vite mock with route parity, real seed data, no database, no auth, and ?sid= session isolation.",
       "prompt": ".claude/agents/dev.md"
     },
     "playwright": {
-      "description": "UI testing agent. Launches the dev server, uses Playwright to test every interactive element on every route, writes bug reports to TEST.md, and iterates with the dev agent until all visible interactions work correctly.",
+      "description": "Differential UI testing agent. Runs the mock alongside the live WebArena source, sweeps every route in ROUTES.md for cold-load and sid parity, tests every interactive element, and compares mock against source side by side. Writes TEST.md.",
       "prompt": ".claude/agents/playwright.md"
     },
-    "task-proposal": {
-      "description": "Generate computer-use tasks by analyzing mock applications",
-      "prompt": ".claude/agents/task-proposal.md"
-    },
     "orchestrator": {
-      "description": "Loop orchestrator for mock app development. Coordinates plan, dev, audit, and playwright agents in iterative rounds.",
+      "description": "Loop orchestrator for WebArena migrations. Runs preflight on the source URL and Docker image, then coordinates plan, dev, audit, and playwright agents in rounds until route parity and the Definition of Done are met.",
       "prompt": ".claude/agents/orchestrator.md"
     },
     "audit": {
-      "description": "Code audit agent. After each dev round, audits for dead UI handlers, untracked state changes, and data pipeline integrity. Produces AUDIT.md fix list and maintains SCHEMA.md.",
+      "description": "Code audit agent. Audits migration parity (route drift, fabricated seed identifiers, external network calls, auth gates), UI completeness (dead handlers, stubs), and data pipeline integrity. Produces AUDIT.md and maintains SCHEMA.md.",
       "prompt": ".claude/agents/audit.md"
     }
   }
