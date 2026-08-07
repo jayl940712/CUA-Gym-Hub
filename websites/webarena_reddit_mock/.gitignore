@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.mock-states/
+.mock-secure-states/
+.mock-files/
+.mock-state.json
+.mock-state.initial.json
+
+# Recon working area — raw psql dumps, curated into src/data/ (WEBARENA_MIGRATION.md §3.2)
+assets/dumps/
+
+# Test artifacts: differential screenshot pairs and task-replay captures (~65 MB).
+# assets/screenshots/reference/ IS tracked — it is the design ground truth.
+assets/screenshots/diff/
+assets/screenshots/tasks/
+
+# Per-shard working reports, consolidated into AUDIT.md / TEST.md
+AUDIT.part-*.md
+TEST.part-*.md

@@ -87,11 +87,16 @@ function sendJson(res, status, payload, headers = {}) {
 
 function readBody(req) {
   return new Promise((resolve, reject) => {
-    let body = '';
+    // Buffer the raw chunks and decode ONCE at the end. Concatenating with
+    // `body += chunk` decodes each chunk independently, so a multi-byte UTF-8
+    // sequence split across a chunk boundary (~64 KB) is decoded as two
+    // U+FFFD replacement characters. Multi-MB state payloads span dozens of
+    // chunks, so this corrupted `’ — 💝 中文` on every mutation.
+    const chunks = [];
     req.on('data', (chunk) => {
-      body += chunk;
+      chunks.push(chunk);
     });
-    req.on('end', () => resolve(body));
+    req.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
     req.on('error', reject);
   });
 }

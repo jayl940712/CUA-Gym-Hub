@@ -1,0 +1,37 @@
+{
+ "user": {
+  "id": 13915,
+  "username": "MarvelsGrantMan136",
+  "email": null,
+  "created": "2020-06-24T15:02:10+00:00",
+  "admin": false,
+  "biography": "t2_5adwlxvn",
+  "locale": "en",
+  "nightMode": "light",
+  "timezone": "America/New_York",
+  "frontPage": "subscribed",
+  "frontPageSortMode": "hot",
+  "showCustomStylesheets": true,
+  "trusted": false,
+  "openExternalLinksInNewTab": false,
+  "autoFetchSubmissionTitles": true,
+  "enablePostPreviews": true,
+  "showThumbnails": true,
+  "notifyOnReply": true,
+  "notifyOnMentions": true,
+  "preferredFonts": null,
+  "allowPrivateMessages": true,
+  "poppersEnabled": true,
+  "fullWidthDisplayEnabled": false,
+  "submissionLinkDestination": "url"
+ },
+ "submissionVotes": [
+  {
+   "submission": 1,
+   "upvote": true,
+   "timestamp": "2023-06-12T16:55:45+00:00"
+  }
+ ],
+ "commentVotes": [],
+ "subscriptions": []
+}

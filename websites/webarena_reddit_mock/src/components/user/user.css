@@ -1,0 +1,6 @@
+/*
+ * Folded into src/styles/index.css §18 (the faithful `_things/table.less` /
+ * `_form/unstylable-widget.less` transcriptions are now the only copies — see
+ * the note in src/components/forms/forms.css). Kept as an empty module so the
+ * existing `import '../components/user/user.css'` sites keep resolving.
+ */

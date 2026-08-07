@@ -1,0 +1,11 @@
+/*
+ * Folded into src/styles/index.css §17.
+ *
+ * This file and src/components/user/user.css both declared `.table`,
+ * `.table__shrink`, `.unstylable-widget` and `.unstylable-widget__caret` at
+ * identical specificity with DIFFERENT values, so which one applied depended on
+ * Vite's module-graph emission order rather than on anything intentional. The
+ * duplicates that were wrong (this file's `.table*`) are gone; everything else
+ * now lives in the single base sheet. Kept as an empty module so the existing
+ * `import './forms.css'` sites keep resolving.
+ */

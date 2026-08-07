@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Discovery views — the handful of Postmill utility classes that only the
+   search / forum-index / comment-firehose templates use, and which therefore
+   were not needed by src/styles/index.css.
+
+   Every rule below is transcribed verbatim from the source LESS inside the
+   `forum` container:
+     assets/css/_things/border-list.less
+     assets/css/_things/columns.less
+     assets/css/_utilities/{pad,font-weight,block,text-align}.less
+     assets/css/_things/flex.less        (#flex() mixin -> .flex / .flex-desktop)
+     assets/css/_form/form-flex.less
+   `@desktop-min-width` is 768px (assets/css/_variables.less).
+   ========================================================================== */
+
+/* _things/border-list.less */
+.border-list {
+  border-top: solid 1px var(--border-light);
+  border-bottom: solid 1px var(--border-light);
+}
+.border-list > * + * {
+  border-top: solid 1px var(--border-light);
+}
+
+/* _things/columns.less */
+.columns {
+  columns: auto;
+  column-width: 12em;
+}
+
+/* _utilities/pad.less */
+.pad-v { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+.pad-v-slim { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+
+/* _utilities/font-weight.less, block.less, text-align.less */
+.fw-normal { font-weight: normal !important; }
+.block { display: block !important; }
+.text-align-left { text-align: left; }
+.text-align-center { text-align: center; }
+.text-align-right { text-align: right; }
+
+/* _things/flex.less — the modifiers index.css did not need yet.
+   ⚠️ These are written as COMPOUND selectors (`.flex.flex--column`, not
+   `.flex--column`). src/styles/index.css already ships `.flex { flex-wrap: wrap }`
+   and `.form-flex { flex-direction: column }`; a bare single-class modifier here
+   ties on specificity and then loses or wins purely on stylesheet injection
+   order, which Vite does not guarantee between the entry CSS and a
+   component-imported one. Compounding makes the outcome deterministic. */
+.flex.flex--no-wrap { flex-wrap: nowrap; }
+.flex.flex--column { flex-direction: column; }
+.flex.flex--row { flex-direction: row; }
+.flex__shrink { flex-shrink: 1; }
+
+@media screen and (min-width: 768px) {
+  .flex-desktop { display: flex; flex-wrap: wrap; }
+  .flex.flex-desktop--row,
+  .flex-desktop.flex-desktop--row { flex-direction: row; }
+  .flex.flex-desktop--column,
+  .flex-desktop.flex-desktop--column { flex-direction: column; }
+  .flex.flex-desktop--align-center,
+  .flex-desktop.flex-desktop--align-center { align-items: center; }
+  .flex.flex-desktop--no-wrap,
+  .flex-desktop.flex-desktop--no-wrap { flex-wrap: nowrap; }
+  .flex.flex-desktop--guttered { margin-left: -1rem; margin-bottom: -1rem; }
+  .flex.flex-desktop--guttered > * { margin-left: 1rem; margin-bottom: 1rem; }
+  .flex.flex-desktop--slim-gutters { margin-left: -0.5rem; margin-bottom: -0.5rem; }
+  .flex.flex-desktop--slim-gutters > * { margin-left: 0.5rem; margin-bottom: 0.5rem; }
+
+  /* _form/form-flex.less */
+  .form-flex.form-flex--single-line { align-items: center; flex-direction: row; }
+  .form-flex.form-flex--single-line > :not(:first-child) { margin-left: 1rem; }
+  .form-flex__align { display: inline-block; flex-shrink: 0; width: 10rem; }
+}
+
+/* The forum card's own paragraphs sit flush inside the flex row. */
+.border-list > article > div > .flex > p,
+.border-list > article p { margin: 0; }
+
+/* comment/_context.html.twig has no dedicated stylesheet in the source — it is
+   built entirely from utility classes. The one thing that needs stating is that
+   its paragraph must not inherit the comment body's block margins. */
+.comment__context > p { margin: 0; }
+
+/* Offset pagination (/forums, /users, the log pages) reuses .pagination from
+   index.css; only the disabled Previous button needs its own treatment. */
+.pagination .button[disabled] { cursor: default; opacity: 0.55; }

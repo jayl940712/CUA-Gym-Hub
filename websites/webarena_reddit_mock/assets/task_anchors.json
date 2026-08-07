@@ -1,0 +1,7399 @@
+{
+  "site": "reddit",
+  "placeholder": "__REDDIT__",
+  "source": "/webarena/webarena.jsonl",
+  "task_count": 129,
+  "eval_type_counts": {
+    "string_match": 12,
+    "program_html": 117,
+    "url_match": 71
+  },
+  "anchor_routes": [
+    {
+      "path": "/",
+      "task_ids": [
+        "webarena-27",
+        "webarena-28",
+        "webarena-29",
+        "webarena-30",
+        "webarena-31",
+        "webarena-399",
+        "webarena-400",
+        "webarena-401",
+        "webarena-402",
+        "webarena-403",
+        "webarena-404",
+        "webarena-405",
+        "webarena-406",
+        "webarena-407",
+        "webarena-408",
+        "webarena-552",
+        "webarena-553",
+        "webarena-554",
+        "webarena-555",
+        "webarena-562",
+        "webarena-563",
+        "webarena-564",
+        "webarena-565",
+        "webarena-566",
+        "webarena-580",
+        "webarena-581",
+        "webarena-582",
+        "webarena-583",
+        "webarena-584",
+        "webarena-595",
+        "webarena-596",
+        "webarena-597",
+        "webarena-598",
+        "webarena-599",
+        "webarena-600",
+        "webarena-601",
+        "webarena-602",
+        "webarena-603",
+        "webarena-604",
+        "webarena-605",
+        "webarena-606",
+        "webarena-607",
+        "webarena-608",
+        "webarena-609",
+        "webarena-610",
+        "webarena-611",
+        "webarena-612",
+        "webarena-613",
+        "webarena-614",
+        "webarena-620",
+        "webarena-621",
+        "webarena-622",
+        "webarena-623",
+        "webarena-624",
+        "webarena-625",
+        "webarena-626",
+        "webarena-627",
+        "webarena-628",
+        "webarena-629",
+        "webarena-630",
+        "webarena-631",
+        "webarena-632",
+        "webarena-633",
+        "webarena-634",
+        "webarena-635",
+        "webarena-636",
+        "webarena-637",
+        "webarena-638",
+        "webarena-639",
+        "webarena-640",
+        "webarena-641",
+        "webarena-642",
+        "webarena-643",
+        "webarena-644",
+        "webarena-645",
+        "webarena-646",
+        "webarena-647",
+        "webarena-648",
+        "webarena-649",
+        "webarena-66",
+        "webarena-67",
+        "webarena-671",
+        "webarena-672",
+        "webarena-673",
+        "webarena-674",
+        "webarena-675",
+        "webarena-68",
+        "webarena-681",
+        "webarena-682",
+        "webarena-683",
+        "webarena-684",
+        "webarena-685",
+        "webarena-686",
+        "webarena-687",
+        "webarena-688",
+        "webarena-69",
+        "webarena-714",
+        "webarena-715",
+        "webarena-716",
+        "webarena-717",
+        "webarena-718",
+        "webarena-719",
+        "webarena-720",
+        "webarena-721",
+        "webarena-722",
+        "webarena-723",
+        "webarena-724",
+        "webarena-725",
+        "webarena-726",
+        "webarena-727",
+        "webarena-728",
+        "webarena-729",
+        "webarena-730",
+        "webarena-731",
+        "webarena-732",
+        "webarena-733",
+        "webarena-734",
+        "webarena-735",
+        "webarena-791"
+      ]
+    },
+    {
+      "path": "/f/BuyItForLife",
+      "task_ids": [
+        "webarena-638"
+      ]
+    },
+    {
+      "path": "/f/Cyberpunk/edit",
+      "task_ids": [
+        "webarena-582"
+      ]
+    },
+    {
+      "path": "/f/DIY",
+      "task_ids": [
+        "webarena-636",
+        "webarena-646"
+      ]
+    },
+    {
+      "path": "/f/DIY/119019/how-can-i-bring-an-hdmi-cable-from-my-pc-downstairs-to-my-tv",
+      "task_ids": [
+        "webarena-405"
+      ]
+    },
+    {
+      "path": "/f/EarthPorn/98256/i-can-t-wait-for-all-this-green-to-start-coming-back-little",
+      "task_ids": [
+        "webarena-720"
+      ]
+    },
+    {
+      "path": "/f/EarthPorn/98297/2-years-later-this-is-still-one-of-the-most-incredible",
+      "task_ids": [
+        "webarena-720"
+      ]
+    },
+    {
+      "path": "/f/EarthPorn/98332/my-favorite-place-on-the-planet-henry-s-fork-of-the-snake",
+      "task_ids": [
+        "webarena-720"
+      ]
+    },
+    {
+      "path": "/f/Futurology/119517/openai-ceo-it-s-not-funny-that-i-m-afraid-of-the-ai-we-re",
+      "task_ids": [
+        "webarena-406"
+      ]
+    },
+    {
+      "path": "/f/IAmA/119714/i-m-ellie-jarvis-she-her-a-2nd-year-phd-student-in-the",
+      "task_ids": [
+        "webarena-721"
+      ]
+    },
+    {
+      "path": "/f/IAmA/119719/hello-reddit-i-m-nazia-mehrban-a-lecturer-in-biotechnology",
+      "task_ids": [
+        "webarena-721"
+      ]
+    },
+    {
+      "path": "/f/IAmA/119742/hi-i-m-vienne-a-doctoral-student-at-the-university-of-bath-i",
+      "task_ids": [
+        "webarena-721"
+      ]
+    },
+    {
+      "path": "/f/IAmA/13170/hello-i-m-dr-sara-fontani-from-the-university-of",
+      "task_ids": [
+        "webarena-721"
+      ]
+    },
+    {
+      "path": "/f/IAmA/13175/hi-i-m-kit-yates-i-m-a-mathematical-biologist-at-the",
+      "task_ids": [
+        "webarena-721"
+      ]
+    },
+    {
+      "path": "/f/IAmA/34032/we-re-sandhya-moise-david-phillips-and-chan-lee-from-the",
+      "task_ids": [
+        "webarena-721"
+      ]
+    },
+    {
+      "path": "/f/IAmA/55142/we-re-sadeka-nujhat-hannah-leese-and-sandhya-moise-from-the",
+      "task_ids": [
+        "webarena-721"
+      ]
+    },
+    {
+      "path": "/f/IAmA/55155/hi-i-m-dr-lucy-maddox-from-bath-university-uk-i-m-a-clinical",
+      "task_ids": [
+        "webarena-721"
+      ]
+    },
+    {
+      "path": "/f/Karaoke/edit",
+      "task_ids": [
+        "webarena-584"
+      ]
+    },
+    {
+      "path": "/f/LifeProTips",
+      "task_ids": [
+        "webarena-684"
+      ]
+    },
+    {
+      "path": "/f/MachineLearning",
+      "task_ids": [
+        "webarena-599"
+      ]
+    },
+    {
+      "path": "/f/MachineLearning/1/nvidia-rtx-4090",
+      "task_ids": [
+        "webarena-731"
+      ]
+    },
+    {
+      "path": "/f/PlantsForCatParents/edit",
+      "task_ids": [
+        "webarena-583"
+      ]
+    },
+    {
+      "path": "/f/UpliftingNews/16087/same-sex-marriage-is-now-legal-in-all-of-mexico-s-states",
+      "task_ids": [
+        "webarena-729"
+      ]
+    },
+    {
+      "path": "/f/aww",
+      "task_ids": [
+        "webarena-685"
+      ]
+    },
+    {
+      "path": "/f/books",
+      "task_ids": [
+        "webarena-596",
+        "webarena-610",
+        "webarena-611",
+        "webarena-612",
+        "webarena-613",
+        "webarena-614",
+        "webarena-640",
+        "webarena-641",
+        "webarena-642",
+        "webarena-645"
+      ]
+    },
+    {
+      "path": "/f/books/124260/adults-reading-to-each-other-out-loud",
+      "task_ids": [
+        "webarena-404"
+      ]
+    },
+    {
+      "path": "/f/books/59421/-/comment/1235250",
+      "task_ids": [
+        "webarena-409"
+      ]
+    },
+    {
+      "path": "/f/books/59421/friendly-reminder-bookshop-org-exists",
+      "task_ids": [
+        "webarena-409",
+        "webarena-650",
+        "webarena-716"
+      ]
+    },
+    {
+      "path": "/f/books/59447/appalachian-prison-book-project-seeks-notebook-donations-the",
+      "task_ids": [
+        "webarena-716"
+      ]
+    },
+    {
+      "path": "/f/books/81371/the-letters-of-t-s-eliot-to-emily-hale-that-were-kept-sealed",
+      "task_ids": [
+        "webarena-716"
+      ]
+    },
+    {
+      "path": "/f/cmu_lti/edit",
+      "task_ids": [
+        "webarena-581"
+      ]
+    },
+    {
+      "path": "/f/consoles",
+      "task_ids": [
+        "webarena-597",
+        "webarena-600",
+        "webarena-605"
+      ]
+    },
+    {
+      "path": "/f/dataisbeautiful",
+      "task_ids": [
+        "webarena-648",
+        "webarena-649"
+      ]
+    },
+    {
+      "path": "/f/deeplearning |OR| __REDDIT__/f/MachineLearning |OR| __REDDIT__/f/singularity",
+      "task_ids": [
+        "webarena-604",
+        "webarena-609"
+      ]
+    },
+    {
+      "path": "/f/deeplearning/125036/should-i-continue-with-this",
+      "task_ids": [
+        "webarena-407"
+      ]
+    },
+    {
+      "path": "/f/earthporn",
+      "task_ids": [
+        "webarena-615",
+        "webarena-617"
+      ]
+    },
+    {
+      "path": "/f/explainlikeimfive/125342/eli5-why-does-pressing-my-palms-against-my-eyes-create-a",
+      "task_ids": [
+        "webarena-408"
+      ]
+    },
+    {
+      "path": "/f/funny",
+      "task_ids": [
+        "webarena-616",
+        "webarena-618",
+        "webarena-619",
+        "webarena-687"
+      ]
+    },
+    {
+      "path": "/f/gadgets/19459/a-custom-gaming-pc-built-inside-a-vintage-1940s-motorola",
+      "task_ids": [
+        "webarena-714"
+      ]
+    },
+    {
+      "path": "/f/games",
+      "task_ids": [
+        "webarena-644"
+      ]
+    },
+    {
+      "path": "/f/gaming",
+      "task_ids": [
+        "webarena-671",
+        "webarena-672",
+        "webarena-673",
+        "webarena-674",
+        "webarena-675"
+      ]
+    },
+    {
+      "path": "/f/headphones",
+      "task_ids": [
+        "webarena-630",
+        "webarena-635",
+        "webarena-637"
+      ]
+    },
+    {
+      "path": "/f/history/105990/4-500-year-old-sumerian-temple-dedicated-to-mighty-thunder",
+      "task_ids": [
+        "webarena-715"
+      ]
+    },
+    {
+      "path": "/f/history/84338/the-scientist-who-discovered-sperm-was-so-grossed-out-he",
+      "task_ids": [
+        "webarena-715"
+      ]
+    },
+    {
+      "path": "/f/iphone",
+      "task_ids": [
+        "webarena-626",
+        "webarena-634",
+        "webarena-639"
+      ]
+    },
+    {
+      "path": "/f/machinelearning |OR| __REDDIT__/f/deeplearning",
+      "task_ids": [
+        "webarena-625",
+        "webarena-683"
+      ]
+    },
+    {
+      "path": "/f/machinelearning |OR| __REDDIT__/f/deeplearning |OR| __REDDIT__/f/technology",
+      "task_ids": [
+        "webarena-681"
+      ]
+    },
+    {
+      "path": "/f/machinelearning |OR| __REDDIT__/f/singularity |OR| __REDDIT__/f/deeplearning |OR| __REDDIT__/f/technology",
+      "task_ids": [
+        "webarena-682"
+      ]
+    },
+    {
+      "path": "/f/massachusetts/84954/the-last-of-lincoln",
+      "task_ids": [
+        "webarena-725"
+      ]
+    },
+    {
+      "path": "/f/movies",
+      "task_ids": [
+        "webarena-627"
+      ]
+    },
+    {
+      "path": "/f/movies/42682/michelle-yeoh-to-receive-palm-springs-film-festival-s",
+      "task_ids": [
+        "webarena-717"
+      ]
+    },
+    {
+      "path": "/f/movies/86029/who-will-win-the-oscar-for-film-editing",
+      "task_ids": [
+        "webarena-717"
+      ]
+    },
+    {
+      "path": "/f/movies/86055/cindy-williams-dies-laverne-amp-shirley-star-who-appeared-in",
+      "task_ids": [
+        "webarena-717"
+      ]
+    },
+    {
+      "path": "/f/movies/86174/who-will-win-the-oscar-for-actress-in-a-supporting-role",
+      "task_ids": [
+        "webarena-717"
+      ]
+    },
+    {
+      "path": "/f/news/129508/tennessee-governor-oks-bill-to-cut-nashville-council-in-half",
+      "task_ids": [
+        "webarena-724",
+        "webarena-730"
+      ]
+    },
+    {
+      "path": "/f/news/129594/arizona-gov-katie-hobbs-refuses-to-proceed-with-execution",
+      "task_ids": [
+        "webarena-724",
+        "webarena-730"
+      ]
+    },
+    {
+      "path": "/f/news/129783/don-t-say-gay-lawmaker-pleads-guilty-to-covid-relief-fraud",
+      "task_ids": [
+        "webarena-724",
+        "webarena-730"
+      ]
+    },
+    {
+      "path": "/f/news/129794/judge-halts-wyoming-abortion-ban-days-after-it-took-effect",
+      "task_ids": [
+        "webarena-724",
+        "webarena-730"
+      ]
+    },
+    {
+      "path": "/f/news/129808/disney-world-deal-with-union-will-raise-minimum-wage-to-18",
+      "task_ids": [
+        "webarena-724",
+        "webarena-730"
+      ]
+    },
+    {
+      "path": "/f/news/129816/gov-whitmer-signs-bills-to-repeal-right-to-work-restore",
+      "task_ids": [
+        "webarena-724",
+        "webarena-730"
+      ]
+    },
+    {
+      "path": "/f/news/43558/kansas-gov-laura-kelly-wins-re-election-defeating-gop",
+      "task_ids": [
+        "webarena-724",
+        "webarena-730"
+      ]
+    },
+    {
+      "path": "/f/news/43572/sec-doj-investigating-crypto-platform-ftx",
+      "task_ids": [
+        "webarena-724",
+        "webarena-730"
+      ]
+    },
+    {
+      "path": "/f/news/43781/crypto-giant-ftx-to-file-for-bankruptcy-ceo-sam-bankman",
+      "task_ids": [
+        "webarena-724",
+        "webarena-730"
+      ]
+    },
+    {
+      "path": "/f/news/43839/philadelphia-da-larry-krasner-impeached-by-pa-house",
+      "task_ids": [
+        "webarena-724",
+        "webarena-730"
+      ]
+    },
+    {
+      "path": "/f/nyc",
+      "task_ids": [
+        "webarena-601",
+        "webarena-603",
+        "webarena-606",
+        "webarena-643"
+      ]
+    },
+    {
+      "path": "/f/nyc/44650/fox-news-hosts-cast-new-york-as-crime-ridden-and-chaotic",
+      "task_ids": [
+        "webarena-722"
+      ]
+    },
+    {
+      "path": "/f/pics",
+      "task_ids": [
+        "webarena-615",
+        "webarena-616",
+        "webarena-617",
+        "webarena-618",
+        "webarena-619"
+      ]
+    },
+    {
+      "path": "/f/pittsburgh",
+      "task_ids": [
+        "webarena-598",
+        "webarena-602",
+        "webarena-607",
+        "webarena-629"
+      ]
+    },
+    {
+      "path": "/f/pittsburgh/45899/driving-in-pittsburgh-summed-up-by-one-traffic-sign",
+      "task_ids": [
+        "webarena-651"
+      ]
+    },
+    {
+      "path": "/f/relationship_advice",
+      "task_ids": [
+        "webarena-620",
+        "webarena-621",
+        "webarena-622",
+        "webarena-623",
+        "webarena-624",
+        "webarena-628"
+      ]
+    },
+    {
+      "path": "/f/sci_fi/edit",
+      "task_ids": [
+        "webarena-580"
+      ]
+    },
+    {
+      "path": "/f/science",
+      "task_ids": [
+        "webarena-688"
+      ]
+    },
+    {
+      "path": "/f/singularity/69404/-/comment/1042264",
+      "task_ids": [
+        "webarena-410"
+      ]
+    },
+    {
+      "path": "/f/singularity/69404/this-is-how-chatgpt-sees-itself",
+      "task_ids": [
+        "webarena-410"
+      ]
+    },
+    {
+      "path": "/f/space",
+      "task_ids": [
+        "webarena-595"
+      ]
+    },
+    {
+      "path": "/f/sports",
+      "task_ids": [
+        "webarena-631",
+        "webarena-632",
+        "webarena-633"
+      ]
+    },
+    {
+      "path": "/f/sports/48303/iran-football-legend-daei-will-not-attend-world-cup-amid",
+      "task_ids": [
+        "webarena-728"
+      ]
+    },
+    {
+      "path": "/f/technology",
+      "task_ids": [
+        "webarena-647",
+        "webarena-686"
+      ]
+    },
+    {
+      "path": "/f/technology/134696/india-cuts-internet-for-27-million-people-amid-search-for",
+      "task_ids": [
+        "webarena-718"
+      ]
+    },
+    {
+      "path": "/f/technology/134852/ai-experts-disown-musk-backed-campaign-citing-their-research",
+      "task_ids": [
+        "webarena-652"
+      ]
+    },
+    {
+      "path": "/f/technology/48670/brain-cancer-vaccine-succeeds-at-prolonging-survival-in",
+      "task_ids": [
+        "webarena-718"
+      ]
+    },
+    {
+      "path": "/f/technology/48785/us-judge-orders-amazon-to-cease-and-desist-anti-union",
+      "task_ids": [
+        "webarena-718"
+      ]
+    },
+    {
+      "path": "/f/technology/70233/social-media-influencers-are-charged-with-feeding-followers",
+      "task_ids": [
+        "webarena-718"
+      ]
+    },
+    {
+      "path": "/f/technology/70354/activision-s-boston-studio-workers-announce-unionization",
+      "task_ids": [
+        "webarena-718"
+      ]
+    },
+    {
+      "path": "/f/television/134868/the-night-agent-renewed-for-season-2-at-netflix",
+      "task_ids": [
+        "webarena-732"
+      ]
+    },
+    {
+      "path": "/f/television/135156/ted-lasso-season-3-premiere-scores-870k-u-s-households-up-59",
+      "task_ids": [
+        "webarena-734"
+      ]
+    },
+    {
+      "path": "/f/television/135201/star-trek-starfleet-academy-series-from-alex-kurtzman-and",
+      "task_ids": [
+        "webarena-733"
+      ]
+    },
+    {
+      "path": "/f/television/70886/the-lord-of-the-rings-the-rings-of-power-adds-8-to-season-2",
+      "task_ids": [
+        "webarena-735"
+      ]
+    },
+    {
+      "path": "/f/videos/115139/hundreds-of-civilian-turkish-volunteers-waiting-to-be-sent",
+      "task_ids": [
+        "webarena-727"
+      ]
+    },
+    {
+      "path": "/f/wallstreetbets/29458/how-much-will-the-federal-reserve-raise-interest-rates-in",
+      "task_ids": [
+        "webarena-719"
+      ]
+    },
+    {
+      "path": "/f/wallstreetbets/29478/how-will-airbnb-close-following-their-earnings-report-on",
+      "task_ids": [
+        "webarena-719"
+      ]
+    },
+    {
+      "path": "/f/washington |OR| __REDDIT__/f/washingtondc",
+      "task_ids": [
+        "webarena-608"
+      ]
+    },
+    {
+      "path": "/user/MarvelsGrantMan136",
+      "task_ids": [
+        "webarena-399",
+        "webarena-400",
+        "webarena-401",
+        "webarena-402",
+        "webarena-403"
+      ]
+    }
+  ],
+  "anchor_strings": [
+    {
+      "value": "0",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "(answer)"
+      ],
+      "task_ids": [
+        "webarena-27",
+        "webarena-28",
+        "webarena-30",
+        "webarena-31"
+      ]
+    },
+    {
+      "value": "1",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "(answer)"
+      ],
+      "task_ids": [
+        "webarena-29"
+      ]
+    },
+    {
+      "value": "100",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-631",
+        "webarena-636"
+      ]
+    },
+    {
+      "value": "1000",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-634",
+        "webarena-639"
+      ]
+    },
+    {
+      "value": "200",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-630",
+        "webarena-635"
+      ]
+    },
+    {
+      "value": "2e4fa0a328e653a97a7d07046291c298ef5b4e0d0c73a287f317ca86a8e8685f.jpg",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-616"
+      ]
+    },
+    {
+      "value": "30",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-638"
+      ]
+    },
+    {
+      "value": "500",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-632",
+        "webarena-633",
+        "webarena-637"
+      ]
+    },
+    {
+      "value": "6bfbf1280d28d84a9261695f0cac5a90addaaff1174807a2b381fdc159f3ed00.jpg",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-618"
+      ]
+    },
+    {
+      "value": "92411be6af4e9ad5ccd3ccbaa01c10457bb00e704e99c58dd430de1a958307fd.jpg",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-617"
+      ]
+    },
+    {
+      "value": "???",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-652"
+      ]
+    },
+    {
+      "value": "A Christmas Carol",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "(answer)"
+      ],
+      "task_ids": [
+        "webarena-67",
+        "webarena-68"
+      ]
+    },
+    {
+      "value": "A script to download pages from Arch Wiki for offline browsing",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-688"
+      ]
+    },
+    {
+      "value": "A storage library for AngularJS done right",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-686"
+      ]
+    },
+    {
+      "value": "A wild place for sci-fi enthusiasts",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/sci_fi/edit"
+      ],
+      "task_ids": [
+        "webarena-580"
+      ]
+    },
+    {
+      "value": "Asynchronous socket, http(s) (client+server) and websocket library for android. Based on nio, not threads.",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-687"
+      ]
+    },
+    {
+      "value": "Awesome Prompt Artist",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "/user/MarvelsGrantMan136"
+      ],
+      "task_ids": [
+        "webarena-403"
+      ]
+    },
+    {
+      "value": "Based arrived broken but game itself works",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-674"
+      ]
+    },
+    {
+      "value": "Big little lies",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-642"
+      ]
+    },
+    {
+      "value": "Books",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/Cyberpunk/edit"
+      ],
+      "task_ids": [
+        "webarena-582"
+      ]
+    },
+    {
+      "value": "Cat friendly",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/PlantsForCatParents/edit"
+      ],
+      "task_ids": [
+        "webarena-583"
+      ]
+    },
+    {
+      "value": "Cat parents & plan lovers",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/PlantsForCatParents/edit"
+      ],
+      "task_ids": [
+        "webarena-583"
+      ]
+    },
+    {
+      "value": "Charging port not compatible",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-672"
+      ]
+    },
+    {
+      "value": "Chrome extension that replaces occurrences of 'the cloud' with 'my butt'",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-684"
+      ]
+    },
+    {
+      "value": "Classic",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/sci_fi/edit"
+      ],
+      "task_ids": [
+        "webarena-580"
+      ]
+    },
+    {
+      "value": "Code not available!!",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-672"
+      ]
+    },
+    {
+      "value": "Computer setup",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-685"
+      ]
+    },
+    {
+      "value": "Crazy device for ML!",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/MachineLearning/1/nvidia-rtx-4090"
+      ],
+      "task_ids": [
+        "webarena-731"
+      ]
+    },
+    {
+      "value": "Crazy problems in automatic mode",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-673"
+      ]
+    },
+    {
+      "value": "DIY",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-636"
+      ]
+    },
+    {
+      "value": "Dec 15th",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-644"
+      ]
+    },
+    {
+      "value": "Disappointing. Didn't last long before it stopped powering on and needed to be sent in for repair.",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-671"
+      ]
+    },
+    {
+      "value": "Doesn\u2019t work with PC",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-673"
+      ]
+    },
+    {
+      "value": "Done watching, pretty cool!",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "/f/television/134868/the-night-agent-renewed-for-season-2-at-netflix"
+      ],
+      "task_ids": [
+        "webarena-732"
+      ]
+    },
+    {
+      "value": "Done watching. I love the renew!",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "/f/television/135156/ted-lasso-season-3-premiere-scores-870k-u-s-households-up-59"
+      ],
+      "task_ids": [
+        "webarena-734"
+      ]
+    },
+    {
+      "value": "EDIT: This news aged well",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/MachineLearning/1/nvidia-rtx-4090"
+      ],
+      "task_ids": [
+        "webarena-731"
+      ]
+    },
+    {
+      "value": "EU charger and wild cat card doesn\u2019t even work!",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-672"
+      ]
+    },
+    {
+      "value": "Every watch makes me feel like a kid again",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "/f/television/135201/star-trek-starfleet-academy-series-from-alex-kurtzman-and"
+      ],
+      "task_ids": [
+        "webarena-733"
+      ]
+    },
+    {
+      "value": "Freelance Web Developer",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "/user/MarvelsGrantMan136"
+      ],
+      "task_ids": [
+        "webarena-402"
+      ]
+    },
+    {
+      "value": "Fun thing to do in Pittsburgh",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-629"
+      ]
+    },
+    {
+      "value": "Future",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/Cyberpunk/edit"
+      ],
+      "task_ids": [
+        "webarena-582"
+      ]
+    },
+    {
+      "value": "Games",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/Cyberpunk/edit"
+      ],
+      "task_ids": [
+        "webarena-582"
+      ]
+    },
+    {
+      "value": "Gone with the wind",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-614"
+      ]
+    },
+    {
+      "value": "Harry Potter",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-611",
+        "webarena-641"
+      ]
+    },
+    {
+      "value": "Harry Potter movie series",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-627"
+      ]
+    },
+    {
+      "value": "I am a big fan of the bookorg",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-650"
+      ]
+    },
+    {
+      "value": "I am a robot",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "/user/MarvelsGrantMan136"
+      ],
+      "task_ids": [
+        "webarena-399"
+      ]
+    },
+    {
+      "value": "I cried",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-613"
+      ]
+    },
+    {
+      "value": "I really wanted to like this.",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-675"
+      ]
+    },
+    {
+      "value": "I wish this was better...",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-675"
+      ]
+    },
+    {
+      "value": "Iphone 14",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-626"
+      ]
+    },
+    {
+      "value": "It's a book with history",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-614"
+      ]
+    },
+    {
+      "value": "J. R. R. Tolkien",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "(answer)"
+      ],
+      "task_ids": [
+        "webarena-68"
+      ]
+    },
+    {
+      "value": "July 8th",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-641"
+      ]
+    },
+    {
+      "value": "Language Technologies Institute at Carnegie Mellon University",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/cmu_lti/edit"
+      ],
+      "task_ids": [
+        "webarena-581"
+      ]
+    },
+    {
+      "value": "Levar Burton",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "(answer)"
+      ],
+      "task_ids": [
+        "webarena-68"
+      ]
+    },
+    {
+      "value": "Local vendors",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/PlantsForCatParents/edit"
+      ],
+      "task_ids": [
+        "webarena-583"
+      ]
+    },
+    {
+      "value": "Love story",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-613"
+      ]
+    },
+    {
+      "value": "MachineLearning",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/"
+      ],
+      "task_ids": [
+        "webarena-599"
+      ]
+    },
+    {
+      "value": "March 15th",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-640"
+      ]
+    },
+    {
+      "value": "Movies",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/Cyberpunk/edit",
+        "/f/sci_fi/edit"
+      ],
+      "task_ids": [
+        "webarena-580",
+        "webarena-582"
+      ]
+    },
+    {
+      "value": "New",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/sci_fi/edit"
+      ],
+      "task_ids": [
+        "webarena-580"
+      ]
+    },
+    {
+      "value": "Not worth it for PC users",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-675"
+      ]
+    },
+    {
+      "value": "Oct 21st",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-643"
+      ]
+    },
+    {
+      "value": "Only works with certain games",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-673"
+      ]
+    },
+    {
+      "value": "Place for Karaoke lovers",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/Karaoke/edit"
+      ],
+      "task_ids": [
+        "webarena-584"
+      ]
+    },
+    {
+      "value": "Poorly Made Exterior. Consider a different Company.",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-674"
+      ]
+    },
+    {
+      "value": "Post my novel",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/sci_fi/edit"
+      ],
+      "task_ids": [
+        "webarena-580"
+      ]
+    },
+    {
+      "value": "Pro Python Developer with 20 years of Experience",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "/user/MarvelsGrantMan136"
+      ],
+      "task_ids": [
+        "webarena-400"
+      ]
+    },
+    {
+      "value": "Promotion",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/PlantsForCatParents/edit"
+      ],
+      "task_ids": [
+        "webarena-583"
+      ]
+    },
+    {
+      "value": "REFUND REJECTED",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-672"
+      ]
+    },
+    {
+      "value": "Random",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/sci_fi/edit"
+      ],
+      "task_ids": [
+        "webarena-580"
+      ]
+    },
+    {
+      "value": "Received used items!!",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-671"
+      ]
+    },
+    {
+      "value": "Seeking SDE positions",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "/user/MarvelsGrantMan136"
+      ],
+      "task_ids": [
+        "webarena-401"
+      ]
+    },
+    {
+      "value": "Sep 10th",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-642"
+      ]
+    },
+    {
+      "value": "Tears of Kingdom",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-644"
+      ]
+    },
+    {
+      "value": "The Hobbit",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "(answer)"
+      ],
+      "task_ids": [
+        "webarena-67",
+        "webarena-68"
+      ]
+    },
+    {
+      "value": "The cast is amazing!",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "/f/television/70886/the-lord-of-the-rings-the-rings-of-power-adds-8-to-season-2"
+      ],
+      "task_ids": [
+        "webarena-735"
+      ]
+    },
+    {
+      "value": "To Kill a Mockingbird by Harper Lee",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-610"
+      ]
+    },
+    {
+      "value": "Toxic plants!",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/PlantsForCatParents/edit"
+      ],
+      "task_ids": [
+        "webarena-583"
+      ]
+    },
+    {
+      "value": "Unable to set neutral steering",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-673"
+      ]
+    },
+    {
+      "value": "Welcome to the future",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/Cyberpunk/edit"
+      ],
+      "task_ids": [
+        "webarena-582"
+      ]
+    },
+    {
+      "value": "Wildcard Bonus Credits Not Redeemable!",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-672"
+      ]
+    },
+    {
+      "value": "Wonderful journey",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-611"
+      ]
+    },
+    {
+      "value": "Yeah, pittsburgh traffic, you know...",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-651"
+      ]
+    },
+    {
+      "value": "__GITLAB__/auth0/angular-storage",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-686"
+      ]
+    },
+    {
+      "value": "__GITLAB__/byteblaze/cloud-to-butt",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-684"
+      ]
+    },
+    {
+      "value": "__GITLAB__/byteblaze/dotfiles",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-685"
+      ]
+    },
+    {
+      "value": "__GITLAB__/convexegg/chatgpt",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-682"
+      ]
+    },
+    {
+      "value": "__GITLAB__/eriklindernoren/PyTorch-GAN",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-681"
+      ]
+    },
+    {
+      "value": "__GITLAB__/koush/AndroidAsync",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-687"
+      ]
+    },
+    {
+      "value": "__GITLAB__/lahwaacz/arch-wiki-docs",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-688"
+      ]
+    },
+    {
+      "value": "__GITLAB__/root/metaseq",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "last"
+      ],
+      "task_ids": [
+        "webarena-683"
+      ]
+    },
+    {
+      "value": "alumni",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/cmu_lti/edit"
+      ],
+      "task_ids": [
+        "webarena-581"
+      ]
+    },
+    {
+      "value": "announcement",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/cmu_lti/edit"
+      ],
+      "task_ids": [
+        "webarena-581"
+      ]
+    },
+    {
+      "value": "b02113033af32feae9ff147dbbe3764039368d67d193885bd04e65c2e6beea9c.jpg",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-615"
+      ]
+    },
+    {
+      "value": "bd8bc5f4c846aac4df08626faa3a34a7d47c8f3bdd92bf615a54afd939f063a7.jpg",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-619"
+      ]
+    },
+    {
+      "value": "big little lies",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-612"
+      ]
+    },
+    {
+      "value": "birthday",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-623"
+      ]
+    },
+    {
+      "value": "book reading",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-640"
+      ]
+    },
+    {
+      "value": "books",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/"
+      ],
+      "task_ids": [
+        "webarena-596"
+      ]
+    },
+    {
+      "value": "bookshop.org",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "(answer)"
+      ],
+      "task_ids": [
+        "webarena-69"
+      ]
+    },
+    {
+      "value": "break",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-624"
+      ]
+    },
+    {
+      "value": "can't stop it",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-612"
+      ]
+    },
+    {
+      "value": "cheat",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-621"
+      ]
+    },
+    {
+      "value": "consoles",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/"
+      ],
+      "task_ids": [
+        "webarena-597"
+      ]
+    },
+    {
+      "value": "devices",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/Karaoke/edit"
+      ],
+      "task_ids": [
+        "webarena-584"
+      ]
+    },
+    {
+      "value": "didn't last a year without issues",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-671"
+      ]
+    },
+    {
+      "value": "diffusion model",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-649"
+      ]
+    },
+    {
+      "value": "distance",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-620"
+      ]
+    },
+    {
+      "value": "don't panic",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/singularity/69404/-/comment/1042264"
+      ],
+      "task_ids": [
+        "webarena-410"
+      ]
+    },
+    {
+      "value": "from /f/pics",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-615",
+        "webarena-616",
+        "webarena-617",
+        "webarena-618",
+        "webarena-619"
+      ]
+    },
+    {
+      "value": "gift",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-623"
+      ]
+    },
+    {
+      "value": "good book!",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-610"
+      ]
+    },
+    {
+      "value": "harassment",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-622"
+      ]
+    },
+    {
+      "value": "headphone",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-630",
+        "webarena-635"
+      ]
+    },
+    {
+      "value": "help",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-645",
+        "webarena-646",
+        "webarena-647",
+        "webarena-648",
+        "webarena-649"
+      ]
+    },
+    {
+      "value": "http://www.reddit.com/f/books/17445/i-just-finished-reading-the-hobbit-to-my-6-year-old-daughter",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "(answer)"
+      ],
+      "task_ids": [
+        "webarena-66"
+      ]
+    },
+    {
+      "value": "http://www.reddit.com/f/books/59396/apple-books-has-a-free-audiobook-of-a-christmas-carol",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "(answer)"
+      ],
+      "task_ids": [
+        "webarena-66"
+      ]
+    },
+    {
+      "value": "https://bookshop.org",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "(answer)"
+      ],
+      "task_ids": [
+        "webarena-69"
+      ]
+    },
+    {
+      "value": "is car necessary",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-606"
+      ]
+    },
+    {
+      "value": "is car necessary in NYC",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-601"
+      ]
+    },
+    {
+      "value": "large language models",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-648"
+      ]
+    },
+    {
+      "value": "life",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-638"
+      ]
+    },
+    {
+      "value": "long",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-620"
+      ]
+    },
+    {
+      "value": "long distance relationship",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-628"
+      ]
+    },
+    {
+      "value": "machine learning",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-645"
+      ]
+    },
+    {
+      "value": "midjourney",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-646"
+      ]
+    },
+    {
+      "value": "must-have",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-638"
+      ]
+    },
+    {
+      "value": "noise-cancelling",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-630",
+        "webarena-635"
+      ]
+    },
+    {
+      "value": "not compatible in the US",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-672"
+      ]
+    },
+    {
+      "value": "open-source LLMs",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-647"
+      ]
+    },
+    {
+      "value": "pants",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-633"
+      ]
+    },
+    {
+      "value": "paper",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/cmu_lti/edit"
+      ],
+      "task_ids": [
+        "webarena-581"
+      ]
+    },
+    {
+      "value": "pedals stopped working",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-673"
+      ]
+    },
+    {
+      "value": "piece of junk ,..can't believe I spent money on this !!!!",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-674"
+      ]
+    },
+    {
+      "value": "pittsburgh",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/"
+      ],
+      "task_ids": [
+        "webarena-598"
+      ]
+    },
+    {
+      "value": "places for new drivers to learn driving",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-607"
+      ]
+    },
+    {
+      "value": "places for new drivers to learn driving in pittsburgh",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-602"
+      ]
+    },
+    {
+      "value": "product",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-638"
+      ]
+    },
+    {
+      "value": "racing cars",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-643"
+      ]
+    },
+    {
+      "value": "real user feedback on Doc and Pies Arcade Factory Cocktail Arcade Machine",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-674"
+      ]
+    },
+    {
+      "value": "real user feedback on HORI 3D Surround Gaming Neckset",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-675"
+      ]
+    },
+    {
+      "value": "real user feedback on Nintendo Switch Fortnite Wildcat Console EU",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-672"
+      ]
+    },
+    {
+      "value": "real user feedback on Racing Wheel Overdrive for Xbox X",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-673"
+      ]
+    },
+    {
+      "value": "real user feedback on Sony Computer Entertainment VR",
+      "kinds": [
+        "exact_match"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-671"
+      ]
+    },
+    {
+      "value": "relation",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-620"
+      ]
+    },
+    {
+      "value": "remedy",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-624"
+      ]
+    },
+    {
+      "value": "running",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-631",
+        "webarena-632",
+        "webarena-633"
+      ]
+    },
+    {
+      "value": "safe and budge apartment to live",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-608"
+      ]
+    },
+    {
+      "value": "safe and budge apartment to live in nyc",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-603"
+      ]
+    },
+    {
+      "value": "setup",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/Karaoke/edit"
+      ],
+      "task_ids": [
+        "webarena-584"
+      ]
+    },
+    {
+      "value": "sexual",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-622"
+      ]
+    },
+    {
+      "value": "shoes",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-631",
+        "webarena-632"
+      ]
+    },
+    {
+      "value": "sony headphone",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-637"
+      ]
+    },
+    {
+      "value": "space",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/"
+      ],
+      "task_ids": [
+        "webarena-595"
+      ]
+    },
+    {
+      "value": "thanks! I am a big fan of your website.",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/books/59421/-/comment/1235250"
+      ],
+      "task_ids": [
+        "webarena-409"
+      ]
+    },
+    {
+      "value": "the effectiveness of deep learning",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-625"
+      ]
+    },
+    {
+      "value": "toolkit",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-636"
+      ]
+    },
+    {
+      "value": "used iphone",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-634",
+        "webarena-639"
+      ]
+    },
+    {
+      "value": "virtual meetup",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-640",
+        "webarena-641",
+        "webarena-642",
+        "webarena-643",
+        "webarena-644"
+      ]
+    },
+    {
+      "value": "vote vote--user-downvoted",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/UpliftingNews/16087/same-sex-marriage-is-now-legal-in-all-of-mexico-s-states",
+        "/f/books/59421/friendly-reminder-bookshop-org-exists",
+        "/f/books/59447/appalachian-prison-book-project-seeks-notebook-donations-the",
+        "/f/books/81371/the-letters-of-t-s-eliot-to-emily-hale-that-were-kept-sealed",
+        "/f/gadgets/19459/a-custom-gaming-pc-built-inside-a-vintage-1940s-motorola",
+        "/f/history/105990/4-500-year-old-sumerian-temple-dedicated-to-mighty-thunder",
+        "/f/history/84338/the-scientist-who-discovered-sperm-was-so-grossed-out-he",
+        "/f/massachusetts/84954/the-last-of-lincoln",
+        "/f/movies/42682/michelle-yeoh-to-receive-palm-springs-film-festival-s",
+        "/f/movies/86029/who-will-win-the-oscar-for-film-editing",
+        "/f/movies/86055/cindy-williams-dies-laverne-amp-shirley-star-who-appeared-in",
+        "/f/movies/86174/who-will-win-the-oscar-for-actress-in-a-supporting-role",
+        "/f/news/129508/tennessee-governor-oks-bill-to-cut-nashville-council-in-half",
+        "/f/news/129594/arizona-gov-katie-hobbs-refuses-to-proceed-with-execution",
+        "/f/news/129783/don-t-say-gay-lawmaker-pleads-guilty-to-covid-relief-fraud",
+        "/f/news/129794/judge-halts-wyoming-abortion-ban-days-after-it-took-effect",
+        "/f/news/129808/disney-world-deal-with-union-will-raise-minimum-wage-to-18",
+        "/f/news/129816/gov-whitmer-signs-bills-to-repeal-right-to-work-restore",
+        "/f/news/43558/kansas-gov-laura-kelly-wins-re-election-defeating-gop",
+        "/f/news/43572/sec-doj-investigating-crypto-platform-ftx",
+        "/f/news/43781/crypto-giant-ftx-to-file-for-bankruptcy-ceo-sam-bankman",
+        "/f/news/43839/philadelphia-da-larry-krasner-impeached-by-pa-house",
+        "/f/sports/48303/iran-football-legend-daei-will-not-attend-world-cup-amid",
+        "/f/technology/134696/india-cuts-internet-for-27-million-people-amid-search-for",
+        "/f/technology/48670/brain-cancer-vaccine-succeeds-at-prolonging-survival-in",
+        "/f/technology/48785/us-judge-orders-amazon-to-cease-and-desist-anti-union",
+        "/f/technology/70233/social-media-influencers-are-charged-with-feeding-followers",
+        "/f/technology/70354/activision-s-boston-studio-workers-announce-unionization",
+        "/f/videos/115139/hundreds-of-civilian-turkish-volunteers-waiting-to-be-sent"
+      ],
+      "task_ids": [
+        "webarena-714",
+        "webarena-715",
+        "webarena-716",
+        "webarena-717",
+        "webarena-718",
+        "webarena-725",
+        "webarena-727",
+        "webarena-728",
+        "webarena-729",
+        "webarena-730"
+      ]
+    },
+    {
+      "value": "vote vote--user-upvoted",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "/f/DIY/119019/how-can-i-bring-an-hdmi-cable-from-my-pc-downstairs-to-my-tv",
+        "/f/EarthPorn/98256/i-can-t-wait-for-all-this-green-to-start-coming-back-little",
+        "/f/EarthPorn/98297/2-years-later-this-is-still-one-of-the-most-incredible",
+        "/f/EarthPorn/98332/my-favorite-place-on-the-planet-henry-s-fork-of-the-snake",
+        "/f/Futurology/119517/openai-ceo-it-s-not-funny-that-i-m-afraid-of-the-ai-we-re",
+        "/f/IAmA/119714/i-m-ellie-jarvis-she-her-a-2nd-year-phd-student-in-the",
+        "/f/IAmA/119719/hello-reddit-i-m-nazia-mehrban-a-lecturer-in-biotechnology",
+        "/f/IAmA/119742/hi-i-m-vienne-a-doctoral-student-at-the-university-of-bath-i",
+        "/f/IAmA/13170/hello-i-m-dr-sara-fontani-from-the-university-of",
+        "/f/IAmA/13175/hi-i-m-kit-yates-i-m-a-mathematical-biologist-at-the",
+        "/f/IAmA/34032/we-re-sandhya-moise-david-phillips-and-chan-lee-from-the",
+        "/f/IAmA/55142/we-re-sadeka-nujhat-hannah-leese-and-sandhya-moise-from-the",
+        "/f/IAmA/55155/hi-i-m-dr-lucy-maddox-from-bath-university-uk-i-m-a-clinical",
+        "/f/books/124260/adults-reading-to-each-other-out-loud",
+        "/f/deeplearning/125036/should-i-continue-with-this",
+        "/f/explainlikeimfive/125342/eli5-why-does-pressing-my-palms-against-my-eyes-create-a",
+        "/f/news/129508/tennessee-governor-oks-bill-to-cut-nashville-council-in-half",
+        "/f/news/129594/arizona-gov-katie-hobbs-refuses-to-proceed-with-execution",
+        "/f/news/129783/don-t-say-gay-lawmaker-pleads-guilty-to-covid-relief-fraud",
+        "/f/news/129794/judge-halts-wyoming-abortion-ban-days-after-it-took-effect",
+        "/f/news/129808/disney-world-deal-with-union-will-raise-minimum-wage-to-18",
+        "/f/news/129816/gov-whitmer-signs-bills-to-repeal-right-to-work-restore",
+        "/f/news/43558/kansas-gov-laura-kelly-wins-re-election-defeating-gop",
+        "/f/news/43572/sec-doj-investigating-crypto-platform-ftx",
+        "/f/news/43781/crypto-giant-ftx-to-file-for-bankruptcy-ceo-sam-bankman",
+        "/f/news/43839/philadelphia-da-larry-krasner-impeached-by-pa-house",
+        "/f/nyc/44650/fox-news-hosts-cast-new-york-as-crime-ridden-and-chaotic",
+        "/f/wallstreetbets/29458/how-much-will-the-federal-reserve-raise-interest-rates-in",
+        "/f/wallstreetbets/29478/how-will-airbnb-close-following-their-earnings-report-on"
+      ],
+      "task_ids": [
+        "webarena-404",
+        "webarena-405",
+        "webarena-406",
+        "webarena-407",
+        "webarena-408",
+        "webarena-719",
+        "webarena-720",
+        "webarena-721",
+        "webarena-722",
+        "webarena-724"
+      ]
+    },
+    {
+      "value": "what is the SOTA web navigation agent repo",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-604",
+        "webarena-609"
+      ]
+    },
+    {
+      "value": "what is the recommended console to buy these days",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-600",
+        "webarena-605"
+      ]
+    },
+    {
+      "value": "your opinion",
+      "kinds": [
+        "must_include"
+      ],
+      "pages": [
+        "func:reddit_get_post_url('__last_url__')"
+      ],
+      "task_ids": [
+        "webarena-625",
+        "webarena-626",
+        "webarena-627",
+        "webarena-628",
+        "webarena-629"
+      ]
+    }
+  ],
+  "anchor_locators": [
+    {
+      "locator": "[...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+      "task_ids": [
+        "webarena-615",
+        "webarena-616",
+        "webarena-617",
+        "webarena-618",
+        "webarena-619"
+      ]
+    },
+    {
+      "locator": "document.body.outerText",
+      "task_ids": [
+        "webarena-610",
+        "webarena-611",
+        "webarena-612",
+        "webarena-613",
+        "webarena-614"
+      ]
+    },
+    {
+      "locator": "document.querySelector(\"#forum_description\").value",
+      "task_ids": [
+        "webarena-580",
+        "webarena-581",
+        "webarena-582",
+        "webarena-583",
+        "webarena-584"
+      ]
+    },
+    {
+      "locator": "document.querySelector(\"#forum_sidebar\").value",
+      "task_ids": [
+        "webarena-580",
+        "webarena-581",
+        "webarena-582",
+        "webarena-583",
+        "webarena-584"
+      ]
+    },
+    {
+      "locator": "document.querySelector(\"#sidebar > section\").outerText",
+      "task_ids": [
+        "webarena-595",
+        "webarena-596",
+        "webarena-597",
+        "webarena-598",
+        "webarena-599"
+      ]
+    },
+    {
+      "locator": "document.querySelector(\".user-bio__biography\").outerText",
+      "task_ids": [
+        "webarena-399",
+        "webarena-400",
+        "webarena-401",
+        "webarena-402",
+        "webarena-403"
+      ]
+    },
+    {
+      "locator": "document.querySelector('.comment__body').outerText",
+      "task_ids": [
+        "webarena-650",
+        "webarena-651",
+        "webarena-652"
+      ]
+    },
+    {
+      "locator": "document.querySelector('.submission__body').outerText",
+      "task_ids": [
+        "webarena-671",
+        "webarena-672",
+        "webarena-673",
+        "webarena-674",
+        "webarena-675",
+        "webarena-731",
+        "webarena-732",
+        "webarena-733",
+        "webarena-734",
+        "webarena-735"
+      ]
+    },
+    {
+      "locator": "document.querySelector('.submission__inner').outerText",
+      "task_ids": [
+        "webarena-600",
+        "webarena-601",
+        "webarena-602",
+        "webarena-603",
+        "webarena-604",
+        "webarena-605",
+        "webarena-606",
+        "webarena-607",
+        "webarena-608",
+        "webarena-609",
+        "webarena-615",
+        "webarena-616",
+        "webarena-617",
+        "webarena-618",
+        "webarena-619",
+        "webarena-620",
+        "webarena-621",
+        "webarena-622",
+        "webarena-623",
+        "webarena-624",
+        "webarena-625",
+        "webarena-626",
+        "webarena-627",
+        "webarena-628",
+        "webarena-629",
+        "webarena-630",
+        "webarena-631",
+        "webarena-632",
+        "webarena-633",
+        "webarena-634",
+        "webarena-635",
+        "webarena-636",
+        "webarena-637",
+        "webarena-638",
+        "webarena-639",
+        "webarena-640",
+        "webarena-641",
+        "webarena-642",
+        "webarena-643",
+        "webarena-644",
+        "webarena-645",
+        "webarena-646",
+        "webarena-647",
+        "webarena-648",
+        "webarena-649",
+        "webarena-681",
+        "webarena-682",
+        "webarena-683"
+      ]
+    },
+    {
+      "locator": "document.querySelector('.submission__inner').outerText + [...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+      "task_ids": [
+        "webarena-684",
+        "webarena-685",
+        "webarena-686",
+        "webarena-687",
+        "webarena-688"
+      ]
+    },
+    {
+      "locator": "document.querySelector('.submission__title').outerText",
+      "task_ids": [
+        "webarena-610",
+        "webarena-611",
+        "webarena-612",
+        "webarena-613",
+        "webarena-614",
+        "webarena-671",
+        "webarena-672",
+        "webarena-673",
+        "webarena-674",
+        "webarena-675"
+      ]
+    },
+    {
+      "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+      "task_ids": [
+        "webarena-404",
+        "webarena-405",
+        "webarena-406",
+        "webarena-407",
+        "webarena-408",
+        "webarena-714",
+        "webarena-715",
+        "webarena-716",
+        "webarena-717",
+        "webarena-718",
+        "webarena-719",
+        "webarena-720",
+        "webarena-721",
+        "webarena-722",
+        "webarena-724",
+        "webarena-725",
+        "webarena-727",
+        "webarena-728",
+        "webarena-729",
+        "webarena-730"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "webarena-27",
+      "question": "Tell me the count of comments that have received more downvotes than upvotes for the user who made the latest post on the Showerthoughts forum.",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [
+        {
+          "value": "0",
+          "kind": "must_include"
+        }
+      ],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-28",
+      "question": "Tell me the count of comments that have received more downvotes than upvotes for the user who made the latest post on the Worcester forum.",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [
+        {
+          "value": "0",
+          "kind": "must_include"
+        }
+      ],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-29",
+      "question": "Tell me the count of comments that have received more downvotes than upvotes for the user who made the latest post on the DIY forum.",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [
+        {
+          "value": "1",
+          "kind": "must_include"
+        }
+      ],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-30",
+      "question": "Tell me the count of comments that have received more downvotes than upvotes for the user who made the latest post on the space forum.",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [
+        {
+          "value": "0",
+          "kind": "must_include"
+        }
+      ],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-31",
+      "question": "Tell me the count of comments that have received more downvotes than upvotes for the user who made the latest post on the photoshopbattles forum.",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [
+        {
+          "value": "0",
+          "kind": "must_include"
+        }
+      ],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-66",
+      "question": "Among the top 10 hottest posts in the \"Books\" forum, get the post titles from those that recommend exactly one book.",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [
+        {
+          "value": "http://www.reddit.com/f/books/59396/apple-books-has-a-free-audiobook-of-a-christmas-carol",
+          "kind": "must_include"
+        },
+        {
+          "value": "http://www.reddit.com/f/books/17445/i-just-finished-reading-the-hobbit-to-my-6-year-old-daughter",
+          "kind": "must_include"
+        }
+      ],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-67",
+      "question": "Among the top 10 hottest posts in the \"Books\" forum, get the book titles, exactly as they appear in the post description, from those that recommend exactly one book.",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [
+        {
+          "value": "A Christmas Carol",
+          "kind": "must_include"
+        },
+        {
+          "value": "The Hobbit",
+          "kind": "must_include"
+        }
+      ],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-68",
+      "question": "Among the top 10 post in \"books\" forum, show me the author name and the book name from posts that recommand a single book",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [
+        {
+          "value": "A Christmas Carol",
+          "kind": "must_include"
+        },
+        {
+          "value": "Levar Burton",
+          "kind": "must_include"
+        },
+        {
+          "value": "The Hobbit",
+          "kind": "must_include"
+        },
+        {
+          "value": "J. R. R. Tolkien",
+          "kind": "must_include"
+        }
+      ],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-69",
+      "question": "Among the top 10 hottest posts in the \"Books\" forum, get the URLs of any organizations involved, exactly as they appear in the post description, from those that talk about supporting local book stores.",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [
+        {
+          "value": "bookshop.org",
+          "kind": "must_include"
+        },
+        {
+          "value": "https://bookshop.org",
+          "kind": "must_include"
+        }
+      ],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-399",
+      "question": "Change my bio to \"I am a robot\" in the discussion forum",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/user/MarvelsGrantMan136",
+          "locator": "document.querySelector(\".user-bio__biography\").outerText",
+          "required": [
+            {
+              "value": "I am a robot",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-400",
+      "question": "Change my bio to \"Pro Python Developer with 20 years of Experience\" in the discussion forum",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/user/MarvelsGrantMan136",
+          "locator": "document.querySelector(\".user-bio__biography\").outerText",
+          "required": [
+            {
+              "value": "Pro Python Developer with 20 years of Experience",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-401",
+      "question": "Change my bio to \"Seeking SDE positions\" in the discussion forum",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/user/MarvelsGrantMan136",
+          "locator": "document.querySelector(\".user-bio__biography\").outerText",
+          "required": [
+            {
+              "value": "Seeking SDE positions",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-402",
+      "question": "Change my bio to \"Freelance Web Developer\" in the discussion forum",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/user/MarvelsGrantMan136",
+          "locator": "document.querySelector(\".user-bio__biography\").outerText",
+          "required": [
+            {
+              "value": "Freelance Web Developer",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-403",
+      "question": "Change my bio to \"Awesome Prompt Artist\" in the discussion forum",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/user/MarvelsGrantMan136",
+          "locator": "document.querySelector(\".user-bio__biography\").outerText",
+          "required": [
+            {
+              "value": "Awesome Prompt Artist",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-404",
+      "question": "Upvote the newest post in books forum",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/books/124260/adults-reading-to-each-other-out-loud",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-405",
+      "question": "Upvote the newest post in DIY forum",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/DIY/119019/how-can-i-bring-an-hdmi-cable-from-my-pc-downstairs-to-my-tv",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-406",
+      "question": "Upvote the newest post in futurology forum",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/Futurology/119517/openai-ceo-it-s-not-funny-that-i-m-afraid-of-the-ai-we-re",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-407",
+      "question": "Upvote the newest post in the deep learning forum",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/deeplearning/125036/should-i-continue-with-this",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-408",
+      "question": "Upvote the newest post in explain like im 5 forum",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/explainlikeimfive/125342/eli5-why-does-pressing-my-palms-against-my-eyes-create-a",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-409",
+      "question": "Reply to the manager of the website in this post with \"thanks! I am a big fan of your website.\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/f/books/59421/friendly-reminder-bookshop-org-exists"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/books/59421/-/comment/1235250",
+          "locator": "",
+          "required": [
+            {
+              "value": "thanks! I am a big fan of your website.",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-410",
+      "question": "Reply to the first reply in this post with \"don't panic\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/f/singularity/69404/this-is-how-chatgpt-sees-itself"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/singularity/69404/-/comment/1042264",
+          "locator": "",
+          "required": [
+            {
+              "value": "don't panic",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-552",
+      "question": "Create a folder named real_space in gimmiethat.space repo. Within it, create a file named urls.txt that contains the URLs of the 5 most recent posts from the space?",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-553",
+      "question": "Create a folder named news in gimmiethat.space repo. Within it, create a file named urls.txt that contains the URLs of the 5 most recent posts from the news related subreddits?",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-554",
+      "question": "Create a folder named moive_space in gimmiethat.space repo. Within it, create a file named urls.txt that contains the URLs of the 5 most recent posts from the movies?",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-555",
+      "question": "Create a folder named funny_pic in gimmiethat.space repo. Within it, create a file named urls.txt that contains the URLs of the 5 most recent posts from the memes?",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-562",
+      "question": "Create a private repository named Awesome_DIY_ideas with a README file containing links to the 6 most active DIY posts from the DIY forum. Use the Web IDE to create the README. Structure it with the repository name as the main heading, \"Most Active DIY Threads\" as a subheading, and a bulleted list of the posts as markdown links (using their titles as link text) in the same order they appear on the forum. Commit to the default branch.",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-563",
+      "question": "Create a private repository named fun_thing_to_do with a README file containing links to the 5 most active DIY posts from the DIY forum. Use the Web IDE to create the README. Structure it with the repository name as the main heading, \"Most Active DIY Threads\" as a subheading, and a bulleted list of the posts as markdown links (using their titles as link text) in the same order they appear on the forum. Commit to the default branch.",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-564",
+      "question": "Create a private repository named live_a_life with a README file containing links to the 3 most active DIY posts from the DIY forum. Use the Web IDE to create the README. Structure it with the repository name as the main heading, \"Most Active DIY Threads\" as a subheading, and a bulleted list of the posts as markdown links (using their titles as link text) in the same order they appear on the forum. Commit to the default branch.",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-565",
+      "question": "Create a private repository named TODO with a README file containing links to the 10 most active DIY posts from the DIY forum. Use the Web IDE to create the README. Structure it with the repository name as the main heading, \"Most Active DIY Threads\" as a subheading, and a bulleted list of the posts as markdown links (using their titles as link text) in the same order they appear on the forum. Commit to the default branch.",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-566",
+      "question": "Create a private repository named Do it myself with a README file containing links to the 8 most active DIY posts from the DIY forum. Use the Web IDE to create the README. Structure it with the repository name as the main heading, \"Most Active DIY Threads\" as a subheading, and a bulleted list of the posts as markdown links (using their titles as link text) in the same order they appear on the forum. Commit to the default branch.",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-580",
+      "question": "Create a new forum with name and title \"sci_fi\", description \"A wild place for sci-fi enthusiasts\", and sidebar \"**New**, Classic, *Movies*, Post my novel, Random\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/sci_fi/edit",
+          "locator": "document.querySelector(\"#forum_description\").value",
+          "required": [
+            {
+              "value": "A wild place for sci-fi enthusiasts",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/sci_fi/edit",
+          "locator": "document.querySelector(\"#forum_sidebar\").value",
+          "required": [
+            {
+              "value": "New",
+              "kind": "must_include"
+            },
+            {
+              "value": "Classic",
+              "kind": "must_include"
+            },
+            {
+              "value": "Movies",
+              "kind": "must_include"
+            },
+            {
+              "value": "Post my novel",
+              "kind": "must_include"
+            },
+            {
+              "value": "Random",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-581",
+      "question": "Create a new forum with name and title \"cmu_lti\", description \"Language Technologies Institute at Carnegie Mellon University\", and sidebar \"announcement, paper, alumni\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/cmu_lti/edit",
+          "locator": "document.querySelector(\"#forum_description\").value",
+          "required": [
+            {
+              "value": "Language Technologies Institute at Carnegie Mellon University",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/cmu_lti/edit",
+          "locator": "document.querySelector(\"#forum_sidebar\").value",
+          "required": [
+            {
+              "value": "announcement",
+              "kind": "must_include"
+            },
+            {
+              "value": "paper",
+              "kind": "must_include"
+            },
+            {
+              "value": "alumni",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-582",
+      "question": "Create a new forum with name and title \"Cyberpunk\", description \"Welcome to the future\", and sidebar \"Games, Books, Movies, Future\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/Cyberpunk/edit",
+          "locator": "document.querySelector(\"#forum_description\").value",
+          "required": [
+            {
+              "value": "Welcome to the future",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/Cyberpunk/edit",
+          "locator": "document.querySelector(\"#forum_sidebar\").value",
+          "required": [
+            {
+              "value": "Games",
+              "kind": "must_include"
+            },
+            {
+              "value": "Books",
+              "kind": "must_include"
+            },
+            {
+              "value": "Movies",
+              "kind": "must_include"
+            },
+            {
+              "value": "Future",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-583",
+      "question": "Create a new forum with name and title \"PlantsForCatParents\", description \"Cat parents & plan lovers\", and sidebar \"Cat friendly, Local vendors, Promotion, Toxic plants!\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/PlantsForCatParents/edit",
+          "locator": "document.querySelector(\"#forum_description\").value",
+          "required": [
+            {
+              "value": "Cat parents & plan lovers",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/PlantsForCatParents/edit",
+          "locator": "document.querySelector(\"#forum_sidebar\").value",
+          "required": [
+            {
+              "value": "Cat friendly",
+              "kind": "must_include"
+            },
+            {
+              "value": "Local vendors",
+              "kind": "must_include"
+            },
+            {
+              "value": "Promotion",
+              "kind": "must_include"
+            },
+            {
+              "value": "Toxic plants!",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-584",
+      "question": "Create a new forum with name and title \"Karaoke\", description \"Place for Karaoke lovers\", and sidebar \"devices, setup\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/Karaoke/edit",
+          "locator": "document.querySelector(\"#forum_description\").value",
+          "required": [
+            {
+              "value": "Place for Karaoke lovers",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/Karaoke/edit",
+          "locator": "document.querySelector(\"#forum_sidebar\").value",
+          "required": [
+            {
+              "value": "devices",
+              "kind": "must_include"
+            },
+            {
+              "value": "setup",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-595",
+      "question": "Subscribe to the \"space\" forum from the page of the hottest post in that forum.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/space"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/",
+          "locator": "document.querySelector(\"#sidebar > section\").outerText",
+          "required": [
+            {
+              "value": "space",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-596",
+      "question": "Subscribe to the \"books\" forum from the page of the all time top post in that forum.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/books"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/",
+          "locator": "document.querySelector(\"#sidebar > section\").outerText",
+          "required": [
+            {
+              "value": "books",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-597",
+      "question": "Subscribe to the \"consoles\" forum from the page of the most controversial post in that forum.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/consoles"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/",
+          "locator": "document.querySelector(\"#sidebar > section\").outerText",
+          "required": [
+            {
+              "value": "consoles",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-598",
+      "question": "Subscribe to the \"pittsburgh\" forum from the page of the all time most commented post in that forum.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/pittsburgh"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/",
+          "locator": "document.querySelector(\"#sidebar > section\").outerText",
+          "required": [
+            {
+              "value": "pittsburgh",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-599",
+      "question": "Subscribe to the \"machine learning\" forum from the page of the newest post in that forum.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/MachineLearning"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/",
+          "locator": "document.querySelector(\"#sidebar > section\").outerText",
+          "required": [
+            {
+              "value": "MachineLearning",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-600",
+      "question": "Post my question with the title \"what is the recommended console to buy these days?\", in a forum where I'm likely to get an answer",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/consoles"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "what is the recommended console to buy these days",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-601",
+      "question": "Post my question with the title \"is car necessary in NYC\", in a forum where I'm likely to get an answer",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/nyc"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "is car necessary in NYC",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-602",
+      "question": "Post my question with the title \"places for new drivers to learn driving in pittsburgh\", in a forum where I'm likely to get an answer",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/pittsburgh"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "places for new drivers to learn driving in pittsburgh",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-603",
+      "question": "Post my question with the title \"safe and budget apartment to live in nyc\", in a forum where I'm likely to get an answer",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/nyc"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "safe and budge apartment to live in nyc",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-604",
+      "question": "Post my question with the title \"what is the SOTA web navigation agent repo\", in a forum where I'm likely to get an answer",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/deeplearning |OR| __REDDIT__/f/MachineLearning |OR| __REDDIT__/f/singularity"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "what is the SOTA web navigation agent repo",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-605",
+      "question": "Find a forum focused on topics related to gaming consoles, and post my question, \"what is the recommended console to buy these days\" there",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/consoles"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "what is the recommended console to buy these days",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-606",
+      "question": "Find a forum focused on topics related to NYC, and post my question, \"is car necessary\" there",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/nyc"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "is car necessary",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-607",
+      "question": "Find a forum focused on topics related to city Pittsburgh, and post my question, \"places for new drivers to learn driving\" there",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/pittsburgh"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "places for new drivers to learn driving",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-608",
+      "question": "Find a forum focused on topics related to city lives in DMV area, and post my question, \"safe and budget apartment to live\" there",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/washington |OR| __REDDIT__/f/washingtondc"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "safe and budge apartment to live",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-609",
+      "question": "Find a forum focused on topics related to ML, DL, NLP, and post my question, \"what is the SOTA web navigation agent repo\" there",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/deeplearning |OR| __REDDIT__/f/MachineLearning |OR| __REDDIT__/f/singularity"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "what is the SOTA web navigation agent repo",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-610",
+      "question": "Post a review of my recent reading, titled \"To Kill a Mockingbird by Harper Lee\" in f/books and then comment \"good book!\" on the created post",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/books"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__title').outerText",
+          "required": [
+            {
+              "value": "To Kill a Mockingbird by Harper Lee",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.body.outerText",
+          "required": [
+            {
+              "value": "good book!",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-611",
+      "question": "Post a review of my recent reading, titled \"Harry Potter\" in f/books and then comment \"Wonderful journey\" on the created post",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/books"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__title').outerText",
+          "required": [
+            {
+              "value": "Harry Potter",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.body.outerText",
+          "required": [
+            {
+              "value": "Wonderful journey",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-612",
+      "question": "Post a review of my recent reading, titled \"big little lies\" in f/books and then comment \"can't stop it\" on the created post",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/books"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__title').outerText",
+          "required": [
+            {
+              "value": "big little lies",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.body.outerText",
+          "required": [
+            {
+              "value": "can't stop it",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-613",
+      "question": "Post a review of my recent reading, titled \"Love story\" in f/books and then comment \"I cried\" on the created post",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/books"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__title').outerText",
+          "required": [
+            {
+              "value": "Love story",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.body.outerText",
+          "required": [
+            {
+              "value": "I cried",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-614",
+      "question": "Post a review of my recent reading, titled \"Gone with the wind\" in f/books and then comment \"It's a book with history\" on the created post",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/books"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__title').outerText",
+          "required": [
+            {
+              "value": "Gone with the wind",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.body.outerText",
+          "required": [
+            {
+              "value": "It's a book with history",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-615",
+      "question": "Re-post the image of Bald Eagle from this forum to connecticut forum using the image URL and title \"from /f/pics\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/f/pics"
+      ],
+      "url_anchors": [
+        "/f/earthporn"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "from /f/pics",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "[...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+          "required": [
+            {
+              "value": "b02113033af32feae9ff147dbbe3764039368d67d193885bd04e65c2e6beea9c.jpg",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-616",
+      "question": "Re-post the image of Thanksgiving turkey from this forum to funny forum using the image URL and title \"from /f/pics\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/f/pics"
+      ],
+      "url_anchors": [
+        "/f/funny"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "from /f/pics",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "[...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+          "required": [
+            {
+              "value": "2e4fa0a328e653a97a7d07046291c298ef5b4e0d0c73a287f317ca86a8e8685f.jpg",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-617",
+      "question": "Re-post the image of Firework from this forum to news forum using the image URL and title \"from /f/pics\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/f/pics"
+      ],
+      "url_anchors": [
+        "/f/earthporn"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "from /f/pics",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "[...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+          "required": [
+            {
+              "value": "92411be6af4e9ad5ccd3ccbaa01c10457bb00e704e99c58dd430de1a958307fd.jpg",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-618",
+      "question": "Re-post the image of Wife's costume from this forum to funny forum using the image URL and title \"from /f/pics\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/f/pics"
+      ],
+      "url_anchors": [
+        "/f/funny"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "from /f/pics",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "[...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+          "required": [
+            {
+              "value": "6bfbf1280d28d84a9261695f0cac5a90addaaff1174807a2b381fdc159f3ed00.jpg",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-619",
+      "question": "Re-post the image of costume contest from this forum to funny forum using the image URL and title \"from /f/pics\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/f/pics"
+      ],
+      "url_anchors": [
+        "/f/funny"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "from /f/pics",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "[...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+          "required": [
+            {
+              "value": "bd8bc5f4c846aac4df08626faa3a34a7d47c8f3bdd92bf615a54afd939f063a7.jpg",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-620",
+      "question": "Ask for advice in a forum for relations. Title it \"deal with long-distance relationships\" and in post details ask \"Please help\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/relationship_advice"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "long",
+              "kind": "must_include"
+            },
+            {
+              "value": "distance",
+              "kind": "must_include"
+            },
+            {
+              "value": "relation",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-621",
+      "question": "Ask for advice in a forum for relations. Title it \"cheat\" and in post details ask \"Please help\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/relationship_advice"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "cheat",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-622",
+      "question": "Ask for advice in a forum for relations. Title it \"sexual harassment\" and in post details ask \"Please help\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/relationship_advice"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "sexual",
+              "kind": "must_include"
+            },
+            {
+              "value": "harassment",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-623",
+      "question": "Ask for advice in a forum for relations. Title it \"gift for birthday\" and in post details ask \"Please help\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/relationship_advice"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "gift",
+              "kind": "must_include"
+            },
+            {
+              "value": "birthday",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-624",
+      "question": "Ask for advice in a forum for relations. Title it \"break-up remedy\" and in post details ask \"Please help\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/relationship_advice"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "break",
+              "kind": "must_include"
+            },
+            {
+              "value": "remedy",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-625",
+      "question": "Create a discussion post titled \"the effectiveness of deep learning\" in a relevant forum and ask users for their opinions with the simple prompt, \"your opinion\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/machinelearning |OR| __REDDIT__/f/deeplearning"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "your opinion",
+              "kind": "must_include"
+            },
+            {
+              "value": "the effectiveness of deep learning",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-626",
+      "question": "Create a discussion post titled \"Iphone 14\" in a relevant forum and ask users for their opinions with the simple prompt, \"your opinion\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/iphone"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "your opinion",
+              "kind": "must_include"
+            },
+            {
+              "value": "Iphone 14",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-627",
+      "question": "Create a discussion post titled \"Harry Potter movie series\" in a relevant forum and ask users for their opinions with the simple prompt, \"your opinion\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/movies"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "your opinion",
+              "kind": "must_include"
+            },
+            {
+              "value": "Harry Potter movie series",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-628",
+      "question": "Create a discussion post titled \"long distance relationship\" in a relevant forum and ask users for their opinions with the simple prompt, \"your opinion\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/relationship_advice"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "your opinion",
+              "kind": "must_include"
+            },
+            {
+              "value": "long distance relationship",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-629",
+      "question": "Create a discussion post titled \"Fun thing to do in Pittsburgh\" in a relevant forum and ask users for their opinions with the simple prompt, \"your opinion\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/pittsburgh"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "your opinion",
+              "kind": "must_include"
+            },
+            {
+              "value": "Fun thing to do in Pittsburgh",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-630",
+      "question": "Create a post in f/headphones. Title it \"noise-cancelling headphones recommendations?\" and in post details ask \"Hey, looking for good noise-cancelling headphones under $200, any suggestions?\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/headphones"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "200",
+              "kind": "must_include"
+            },
+            {
+              "value": "noise-cancelling",
+              "kind": "must_include"
+            },
+            {
+              "value": "headphone",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-631",
+      "question": "Create a post in f/sports. Title it \"running shoes recommendations?\" and in post details ask \"Hey, looking for good running shoes under $100, any suggestions?\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/sports"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "100",
+              "kind": "must_include"
+            },
+            {
+              "value": "running",
+              "kind": "must_include"
+            },
+            {
+              "value": "shoes",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-632",
+      "question": "Create a post in f/sports. Title it \"running shoes recommendations?\" and in post details ask \"Hey, looking for good running shoes under $500, any suggestions?\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/sports"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "500",
+              "kind": "must_include"
+            },
+            {
+              "value": "running",
+              "kind": "must_include"
+            },
+            {
+              "value": "shoes",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-633",
+      "question": "Create a post in f/sports. Title it \"running pants recommendations?\" and in post details ask \"Hey, looking for good running pants under $500, any suggestions?\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/sports"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "500",
+              "kind": "must_include"
+            },
+            {
+              "value": "running",
+              "kind": "must_include"
+            },
+            {
+              "value": "pants",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-634",
+      "question": "Create a post in f/iphone. Title it \"used iphone recommendations?\" and in post details ask \"Hey, looking for good used iphone under $1000, any suggestions?\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/iphone"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "1000",
+              "kind": "must_include"
+            },
+            {
+              "value": "used iphone",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-635",
+      "question": "Create a post in the most appropriate forum. Title it \"noise-cancelling headphones recommendations\" and in post details ask \"I need recommendations for noise-cancelling headphones within a budget of $200 please\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/headphones"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "200",
+              "kind": "must_include"
+            },
+            {
+              "value": "noise-cancelling",
+              "kind": "must_include"
+            },
+            {
+              "value": "headphone",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-636",
+      "question": "Create a post in the most appropriate forum. Title it \"DIY toolkit recommendations\" and in post details ask \"I need recommendations for DIY toolkit within a budget of $100 please\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/DIY"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "100",
+              "kind": "must_include"
+            },
+            {
+              "value": "DIY",
+              "kind": "must_include"
+            },
+            {
+              "value": "toolkit",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-637",
+      "question": "Create a post in the most appropriate forum. Title it \"sony headphones recommendations\" and in post details ask \"I need recommendations for sony headphones within a budget of $500 please\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/headphones"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "500",
+              "kind": "must_include"
+            },
+            {
+              "value": "sony headphone",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-638",
+      "question": "Create a post in the most appropriate forum. Title it \"Must have product at last for ever recommendations\" and in post details ask \"I need recommendations for Must have product at last for ever within a budget of $30 please\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/BuyItForLife"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "30",
+              "kind": "must_include"
+            },
+            {
+              "value": "must-have",
+              "kind": "must_include"
+            },
+            {
+              "value": "product",
+              "kind": "must_include"
+            },
+            {
+              "value": "life",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-639",
+      "question": "Create a post in the most appropriate forum. Title it \"used iphone recommendations\" and in post details ask \"I need recommendations for used iphone within a budget of $1000 please\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/iphone"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "1000",
+              "kind": "must_include"
+            },
+            {
+              "value": "used iphone",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-640",
+      "question": "Post a notice in f/books titled \"book reading Meet up!\". Set post details to \"virtual meetup for book reading on March 15th\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/books"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "book reading",
+              "kind": "must_include"
+            },
+            {
+              "value": "March 15th",
+              "kind": "must_include"
+            },
+            {
+              "value": "virtual meetup",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-641",
+      "question": "Post a notice in books forum titled \"Harry Potter Meet up!\". Set post details to \"virtual meetup for Harry Potter on July 8th\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/books"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "Harry Potter",
+              "kind": "must_include"
+            },
+            {
+              "value": "July 8th",
+              "kind": "must_include"
+            },
+            {
+              "value": "virtual meetup",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-642",
+      "question": "Post a notice in books forum titled \"Big little lies Meet up!\". Set post details to \"virtual meetup for Big little lies on Sep 10th\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/books"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "Big little lies",
+              "kind": "must_include"
+            },
+            {
+              "value": "Sep 10th",
+              "kind": "must_include"
+            },
+            {
+              "value": "virtual meetup",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-643",
+      "question": "Post a notice in nyc forum titled \"racing cars Meet up!\". Set post details to \"virtual meetup for racing cars on Oct 21st\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/nyc"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "racing cars",
+              "kind": "must_include"
+            },
+            {
+              "value": "Oct 21st",
+              "kind": "must_include"
+            },
+            {
+              "value": "virtual meetup",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-644",
+      "question": "Post a notice in games forum titled \"Tears of Kingdom Meet up!\". Set post details to \"virtual meetup for Tears of Kingdom on Dec 15th\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/games"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "Tears of Kingdom",
+              "kind": "must_include"
+            },
+            {
+              "value": "Dec 15th",
+              "kind": "must_include"
+            },
+            {
+              "value": "virtual meetup",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-645",
+      "question": "Post in books forum with title \"What could machine learning help the books field?\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/books"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "machine learning",
+              "kind": "must_include"
+            },
+            {
+              "value": "help",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-646",
+      "question": "Post in DIY forum with title \"What could midjourney help the DIY field?\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/DIY"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "midjourney",
+              "kind": "must_include"
+            },
+            {
+              "value": "help",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-647",
+      "question": "Post in technology forum with title \"What could open-source LLMs help the technology field?\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/technology"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "open-source LLMs",
+              "kind": "must_include"
+            },
+            {
+              "value": "help",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-648",
+      "question": "Post in dataisbeautiful forum with title \"What could large language models help the dataisbeautiful field?\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/dataisbeautiful"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "large language models",
+              "kind": "must_include"
+            },
+            {
+              "value": "help",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-649",
+      "question": "Post in dataisbeautiful forum with title \"What could diffusion model help the dataisbeautiful field?\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/dataisbeautiful"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "diffusion model",
+              "kind": "must_include"
+            },
+            {
+              "value": "help",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-650",
+      "question": "Reply to the post on this page with my comment \"I am a big fan of the bookorg\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/f/books/59421/friendly-reminder-bookshop-org-exists"
+      ],
+      "url_anchors": [
+        "/f/books/59421/friendly-reminder-bookshop-org-exists"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.comment__body').outerText",
+          "required": [
+            {
+              "value": "I am a big fan of the bookorg",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-651",
+      "question": "Reply to the post on this page with my comment \"Yeah, pittsburgh traffic, you know...\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/f/pittsburgh/45899/driving-in-pittsburgh-summed-up-by-one-traffic-sign"
+      ],
+      "url_anchors": [
+        "/f/pittsburgh/45899/driving-in-pittsburgh-summed-up-by-one-traffic-sign"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.comment__body').outerText",
+          "required": [
+            {
+              "value": "Yeah, pittsburgh traffic, you know...",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-652",
+      "question": "Reply to the post on this page with my comment \"???\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/f/technology/134852/ai-experts-disown-musk-backed-campaign-citing-their-research"
+      ],
+      "url_anchors": [
+        "/f/technology/134852/ai-experts-disown-musk-backed-campaign-citing-their-research"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.comment__body').outerText",
+          "required": [
+            {
+              "value": "???",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-671",
+      "question": "Gather the titles of Sony Computer Entertainment VR reviews with 2 stars and less rating from OneStopShop, and post them in the games subreddit under the title \"real user feedback on Sony Computer Entertainment VR\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/gaming"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__title').outerText",
+          "required": [
+            {
+              "value": "real user feedback on Sony Computer Entertainment VR",
+              "kind": "exact_match"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__body').outerText",
+          "required": [
+            {
+              "value": "didn't last a year without issues",
+              "kind": "must_include"
+            },
+            {
+              "value": "Disappointing. Didn't last long before it stopped powering on and needed to be sent in for repair.",
+              "kind": "must_include"
+            },
+            {
+              "value": "Received used items!!",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "shopping"
+      ]
+    },
+    {
+      "id": "webarena-672",
+      "question": "Gather the titles of Nintendo Switch Fortnite Wildcat Console EU reviews with 3 stars and less rating from OneStopShop, and post them in the games subreddit under the title \"real user feedback on Nintendo Switch Fortnite Wildcat Console EU\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/gaming"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__title').outerText",
+          "required": [
+            {
+              "value": "real user feedback on Nintendo Switch Fortnite Wildcat Console EU",
+              "kind": "exact_match"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__body').outerText",
+          "required": [
+            {
+              "value": "EU charger and wild cat card doesn\u2019t even work!",
+              "kind": "must_include"
+            },
+            {
+              "value": "REFUND REJECTED",
+              "kind": "must_include"
+            },
+            {
+              "value": "Charging port not compatible",
+              "kind": "must_include"
+            },
+            {
+              "value": "not compatible in the US",
+              "kind": "must_include"
+            },
+            {
+              "value": "Wildcard Bonus Credits Not Redeemable!",
+              "kind": "must_include"
+            },
+            {
+              "value": "Code not available!!",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "shopping"
+      ]
+    },
+    {
+      "id": "webarena-673",
+      "question": "Gather the titles of Racing Wheel Overdrive for Xbox X reviews with 1 star rating from OneStopShop, and post them in the games subreddit under the title \"real user feedback on Racing Wheel Overdrive for Xbox X\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/gaming"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__title').outerText",
+          "required": [
+            {
+              "value": "real user feedback on Racing Wheel Overdrive for Xbox X",
+              "kind": "exact_match"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__body').outerText",
+          "required": [
+            {
+              "value": "Unable to set neutral steering",
+              "kind": "must_include"
+            },
+            {
+              "value": "Doesn\u2019t work with PC",
+              "kind": "must_include"
+            },
+            {
+              "value": "Crazy problems in automatic mode",
+              "kind": "must_include"
+            },
+            {
+              "value": "pedals stopped working",
+              "kind": "must_include"
+            },
+            {
+              "value": "Only works with certain games",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "shopping"
+      ]
+    },
+    {
+      "id": "webarena-674",
+      "question": "Gather the titles of Doc and Pies Arcade Factory Cocktail Arcade Machine reviews with 3 stars and less rating from OneStopShop, and post them in the games subreddit under the title \"real user feedback on Doc and Pies Arcade Factory Cocktail Arcade Machine\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/gaming"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__title').outerText",
+          "required": [
+            {
+              "value": "real user feedback on Doc and Pies Arcade Factory Cocktail Arcade Machine",
+              "kind": "exact_match"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__body').outerText",
+          "required": [
+            {
+              "value": "Poorly Made Exterior. Consider a different Company.",
+              "kind": "must_include"
+            },
+            {
+              "value": "piece of junk ,..can't believe I spent money on this !!!!",
+              "kind": "must_include"
+            },
+            {
+              "value": "Based arrived broken but game itself works",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "shopping"
+      ]
+    },
+    {
+      "id": "webarena-675",
+      "question": "Gather the titles of HORI 3D Surround Gaming Neckset reviews with 2 stars and less rating from OneStopShop, and post them in the games subreddit under the title \"real user feedback on HORI 3D Surround Gaming Neckset\"",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/gaming"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__title').outerText",
+          "required": [
+            {
+              "value": "real user feedback on HORI 3D Surround Gaming Neckset",
+              "kind": "exact_match"
+            }
+          ]
+        },
+        {
+          "page": "func:reddit_get_post_url('__last_url__')",
+          "locator": "document.querySelector('.submission__body').outerText",
+          "required": [
+            {
+              "value": "Not worth it for PC users",
+              "kind": "must_include"
+            },
+            {
+              "value": "I really wanted to like this.",
+              "kind": "must_include"
+            },
+            {
+              "value": "I wish this was better...",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "shopping"
+      ]
+    },
+    {
+      "id": "webarena-681",
+      "question": "Find a GitLab repository related to gan implementation and make a Reddit post in a relevant subreddit. Include the repo link in the post body.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/machinelearning |OR| __REDDIT__/f/deeplearning |OR| __REDDIT__/f/technology"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "__GITLAB__/eriklindernoren/PyTorch-GAN",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-682",
+      "question": "Find a GitLab repository related to chatGPT and make a Reddit in a relevant subreddit. Include the repo link in the post body.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/machinelearning |OR| __REDDIT__/f/singularity |OR| __REDDIT__/f/deeplearning |OR| __REDDIT__/f/technology"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "__GITLAB__/convexegg/chatgpt",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-683",
+      "question": "Find a GitLab repository related to metaseq and make a Reddit post about it in a relevant subreddit. Include the repo link in the post body.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/machinelearning |OR| __REDDIT__/f/deeplearning"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.submission__inner').outerText",
+          "required": [
+            {
+              "value": "__GITLAB__/root/metaseq",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-684",
+      "question": "Promote byteblaze/cloud-to-butt to subreddit LifeProTips. In the post body include description from the repo itself and also the repo link.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/LifeProTips"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.submission__inner').outerText + [...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+          "required": [
+            {
+              "value": "Chrome extension that replaces occurrences of 'the cloud' with 'my butt'",
+              "kind": "must_include"
+            },
+            {
+              "value": "__GITLAB__/byteblaze/cloud-to-butt",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-685",
+      "question": "Promote byteblaze/dotfiles to subreddit aww. In the post body include description from the repo itself and also the repo link.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/aww"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.submission__inner').outerText + [...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+          "required": [
+            {
+              "value": "Computer setup",
+              "kind": "must_include"
+            },
+            {
+              "value": "__GITLAB__/byteblaze/dotfiles",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-686",
+      "question": "Promote auth0/angular-storage to subreddit technology. In the post body include description from the repo itself and also the repo link.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/technology"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.submission__inner').outerText + [...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+          "required": [
+            {
+              "value": "A storage library for AngularJS done right",
+              "kind": "must_include"
+            },
+            {
+              "value": "__GITLAB__/auth0/angular-storage",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-687",
+      "question": "Promote koush/AndroidAsync to subreddit funny. In the post body include description from the repo itself and also the repo link.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/funny"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.submission__inner').outerText + [...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+          "required": [
+            {
+              "value": "Asynchronous socket, http(s) (client+server) and websocket library for android. Based on nio, not threads.",
+              "kind": "must_include"
+            },
+            {
+              "value": "__GITLAB__/koush/AndroidAsync",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-688",
+      "question": "Promote lahwaacz/arch-wiki-docs to subreddit science. In the post body include description from the repo itself and also the repo link.",
+      "eval_types": [
+        "url_match",
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [
+        "/f/science"
+      ],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "last",
+          "locator": "document.querySelector('.submission__inner').outerText + [...document.querySelector('.submission__inner').querySelectorAll('[href],[src]')].map(elem => elem.getAttribute('href') || elem.getAttribute('src')).join(' ')",
+          "required": [
+            {
+              "value": "A script to download pages from Arch Wiki for offline browsing",
+              "kind": "must_include"
+            },
+            {
+              "value": "__GITLAB__/lahwaacz/arch-wiki-docs",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    },
+    {
+      "id": "webarena-714",
+      "question": "Thumbs down the top 1 post ever in gadgets.",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/gadgets/19459/a-custom-gaming-pc-built-inside-a-vintage-1940s-motorola",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-715",
+      "question": "Thumbs down the top 2 post ever in history forum.",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/history/84338/the-scientist-who-discovered-sperm-was-so-grossed-out-he",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/history/105990/4-500-year-old-sumerian-temple-dedicated-to-mighty-thunder",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-716",
+      "question": "Thumbs down the top 3 post ever in books.",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/books/81371/the-letters-of-t-s-eliot-to-emily-hale-that-were-kept-sealed",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/books/59421/friendly-reminder-bookshop-org-exists",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/books/59447/appalachian-prison-book-project-seeks-notebook-donations-the",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-717",
+      "question": "Thumbs down the top 4 post ever in movies.",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/movies/86174/who-will-win-the-oscar-for-actress-in-a-supporting-role",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/movies/86029/who-will-win-the-oscar-for-film-editing",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/movies/86055/cindy-williams-dies-laverne-amp-shirley-star-who-appeared-in",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/movies/42682/michelle-yeoh-to-receive-palm-springs-film-festival-s",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-718",
+      "question": "Thumbs down the top 5 post ever in technology.",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/technology/48670/brain-cancer-vaccine-succeeds-at-prolonging-survival-in",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/technology/134696/india-cuts-internet-for-27-million-people-amid-search-for",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/technology/48785/us-judge-orders-amazon-to-cease-and-desist-anti-union",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/technology/70354/activision-s-boston-studio-workers-announce-unionization",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/technology/70233/social-media-influencers-are-charged-with-feeding-followers",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-719",
+      "question": "Like all submissions created by ThetaGang_wsb in forum wallstreetbets",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/wallstreetbets/29478/how-will-airbnb-close-following-their-earnings-report-on",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/wallstreetbets/29458/how-much-will-the-federal-reserve-raise-interest-rates-in",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-720",
+      "question": "Like all submissions created by CameronKelsey in forum earthporn",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/EarthPorn/98332/my-favorite-place-on-the-planet-henry-s-fork-of-the-snake",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/EarthPorn/98297/2-years-later-this-is-still-one-of-the-most-incredible",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/EarthPorn/98256/i-can-t-wait-for-all-this-green-to-start-coming-back-little",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-721",
+      "question": "Like all submissions created by UniversityofBath in forum IAmA",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/IAmA/119742/hi-i-m-vienne-a-doctoral-student-at-the-university-of-bath-i",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/IAmA/119719/hello-reddit-i-m-nazia-mehrban-a-lecturer-in-biotechnology",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/IAmA/119714/i-m-ellie-jarvis-she-her-a-2nd-year-phd-student-in-the",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/IAmA/55155/hi-i-m-dr-lucy-maddox-from-bath-university-uk-i-m-a-clinical",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/IAmA/55142/we-re-sadeka-nujhat-hannah-leese-and-sandhya-moise-from-the",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/IAmA/34032/we-re-sandhya-moise-david-phillips-and-chan-lee-from-the",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/IAmA/13175/hi-i-m-kit-yates-i-m-a-mathematical-biologist-at-the",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/IAmA/13170/hello-i-m-dr-sara-fontani-from-the-university-of",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-722",
+      "question": "Like all submissions created by Don_Gato1 in forum nyc",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/nyc/44650/fox-news-hosts-cast-new-york-as-crime-ridden-and-chaotic",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-723",
+      "question": "Like all submissions created by FTorrez81 in forum iphone13",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [
+        {
+          "value": "N/A",
+          "kind": "fuzzy_match"
+        }
+      ],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-724",
+      "question": "Like all submissions created by Hrekires in forum news",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/news/129816/gov-whitmer-signs-bills-to-repeal-right-to-work-restore",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/129808/disney-world-deal-with-union-will-raise-minimum-wage-to-18",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/129794/judge-halts-wyoming-abortion-ban-days-after-it-took-effect",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/129783/don-t-say-gay-lawmaker-pleads-guilty-to-covid-relief-fraud",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/129594/arizona-gov-katie-hobbs-refuses-to-proceed-with-execution",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/129508/tennessee-governor-oks-bill-to-cut-nashville-council-in-half",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/43839/philadelphia-da-larry-krasner-impeached-by-pa-house",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/43781/crypto-giant-ftx-to-file-for-bankruptcy-ceo-sam-bankman",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/43572/sec-doj-investigating-crypto-platform-ftx",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/43558/kansas-gov-laura-kelly-wins-re-election-defeating-gop",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-upvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-725",
+      "question": "DisLike all submissions created by RickyDontLoseThat in forum massachusetts",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/massachusetts/84954/the-last-of-lincoln",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-726",
+      "question": "DisLike all submissions created by jacyanthis in forum earthporn",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [
+        {
+          "value": "N/A",
+          "kind": "fuzzy_match"
+        }
+      ],
+      "page_anchors": [],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-727",
+      "question": "DisLike all submissions created by PatientBuilder499 in forum videos",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/videos/115139/hundreds-of-civilian-turkish-volunteers-waiting-to-be-sent",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-728",
+      "question": "DisLike all submissions created by sirbarani in forum sports",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/sports/48303/iran-football-legend-daei-will-not-attend-world-cup-amid",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-729",
+      "question": "DisLike all submissions created by AdamCannon in forum UpliftingNews",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/UpliftingNews/16087/same-sex-marriage-is-now-legal-in-all-of-mexico-s-states",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-730",
+      "question": "DisLike all submissions created by Hrekires in forum news",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/news/129816/gov-whitmer-signs-bills-to-repeal-right-to-work-restore",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/129808/disney-world-deal-with-union-will-raise-minimum-wage-to-18",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/129794/judge-halts-wyoming-abortion-ban-days-after-it-took-effect",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/129783/don-t-say-gay-lawmaker-pleads-guilty-to-covid-relief-fraud",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/129594/arizona-gov-katie-hobbs-refuses-to-proceed-with-execution",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/129508/tennessee-governor-oks-bill-to-cut-nashville-council-in-half",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/43839/philadelphia-da-larry-krasner-impeached-by-pa-house",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/43781/crypto-giant-ftx-to-file-for-bankruptcy-ceo-sam-bankman",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/43572/sec-doj-investigating-crypto-platform-ftx",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        },
+        {
+          "page": "/f/news/43558/kansas-gov-laura-kelly-wins-re-election-defeating-gop",
+          "locator": "document.querySelector('div.submission__vote').querySelector('form').getAttribute('class')",
+          "required": [
+            {
+              "value": "vote vote--user-downvoted",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-731",
+      "question": "Edit my post on Nvidia RTX 4090 by adding a line to the body that says \"EDIT: This news aged well\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/MachineLearning/1/nvidia-rtx-4090",
+          "locator": "document.querySelector('.submission__body').outerText",
+          "required": [
+            {
+              "value": "EDIT: This news aged well",
+              "kind": "must_include"
+            },
+            {
+              "value": "Crazy device for ML!",
+              "kind": "must_include"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-732",
+      "question": "Edit my post on The Night Agent by adding a line to the body that says \"Done watching, pretty cool!\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/television/134868/the-night-agent-renewed-for-season-2-at-netflix",
+          "locator": "document.querySelector('.submission__body').outerText",
+          "required": [
+            {
+              "value": "Done watching, pretty cool!",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-733",
+      "question": "Edit my post on Star Trek Starfleet Academy series by adding a line to the body that says \"Every watch makes me feel like a kid again\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/television/135201/star-trek-starfleet-academy-series-from-alex-kurtzman-and",
+          "locator": "document.querySelector('.submission__body').outerText",
+          "required": [
+            {
+              "value": "Every watch makes me feel like a kid again",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-734",
+      "question": "Edit my post on Ted Lasso season 3 premiere by adding a line to the body that says \"Done watching. I love the renew!\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/television/135156/ted-lasso-season-3-premiere-scores-870k-u-s-households-up-59",
+          "locator": "document.querySelector('.submission__body').outerText",
+          "required": [
+            {
+              "value": "Done watching. I love the renew!",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-735",
+      "question": "Edit my post on Lord of the Rings season 2 cast announcement with the lowest vote count by adding a line to the body that says \"The cast is amazing!\"",
+      "eval_types": [
+        "program_html"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [],
+      "page_anchors": [
+        {
+          "page": "/f/television/70886/the-lord-of-the-rings-the-rings-of-power-adds-8-to-season-2",
+          "locator": "document.querySelector('.submission__body').outerText",
+          "required": [
+            {
+              "value": "The cast is amazing!",
+              "kind": "exact_match"
+            }
+          ]
+        }
+      ],
+      "also_needs_sites": []
+    },
+    {
+      "id": "webarena-791",
+      "question": "Make a folder named car on the gimmiethat.space repo and include a file called urls.txt that consists of the links to the 5 most recent posts from the cars forum.",
+      "eval_types": [
+        "string_match"
+      ],
+      "start_urls": [
+        "/"
+      ],
+      "url_anchors": [],
+      "string_anchors": [],
+      "soft_anchors": [
+        {
+          "value": "N/A",
+          "kind": "fuzzy_match"
+        }
+      ],
+      "page_anchors": [],
+      "also_needs_sites": [
+        "gitlab"
+      ]
+    }
+  ]
+}

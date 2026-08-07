@@ -1,0 +1,1526 @@
+/* ==========================================================================
+   webarena_reddit_mock — design system
+   Every value here is transcribed from DESIGN.md, which was extracted from
+   Postmill's own LESS sources in the running container. Do not eyeball values;
+   change them only against DESIGN.md.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   0. Roboto — vendored locally, NO network fetch
+   The source's `_global.less` imports `~typeface-roboto` / `~typeface-roboto-mono`
+   and serves the latin subsets out of `public/build/fonts/`. These seven woff2
+   files are byte-copies of the container's (hash suffix stripped), so every
+   `ch`- and `em`-derived width on the site — `.vote { width: 6ch }`,
+   `.dropdown__menu` shrink-to-fit, `.icon svg { 1em }`, nav item widths — now
+   resolves against the same metrics the source measures.
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/roboto-latin-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/roboto-latin-400italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/roboto-latin-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/roboto-latin-700.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/roboto-latin-700italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('/fonts/roboto-latin-900.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/roboto-mono-latin-400.woff2') format('woff2');
+}
+
+/* --------------------------------------------------------------------------
+   1. Palette — themes/_modern.less .modern-light() + themes/postmill/_light.less
+   -------------------------------------------------------------------------- */
+
+:root,
+:root[data-night-mode="light"] {
+  --primary: #c00;
+  --primary-alt: #a00;
+  --primary-bright: #e10;
+  --primary-alpha: #c002;
+  --notification: #f60;
+
+  --bg-page: #fafafa;
+  --bg-content: #fff;
+  --bg-grey: #efefef;
+  --bg-red: #fdd;
+  --bg-orange: #ffe8d0;
+  --bg-yellow: #ffffd0;
+  --bg-green: #dfd;
+  --bg-blue: #def;
+
+  --text: #000;
+  --text-muted: #505050;
+  --text-invert: #fafafa;
+  --fg-broken: #222;
+
+  --fg-red: #f00;
+  --fg-orange: #f80;
+  --fg-yellow: #808000;
+  --fg-green: #080;
+  --fg-blue: #08f;
+  --fg-grey: #888;
+
+  --border: #aaa;
+  --border-light: #ddd;
+
+  --accent: var(--bg-grey);
+  --accent-alt: #dedede;
+  --accent-fg: #000;
+  --primary-fg: #fff;
+
+  --link: var(--primary);
+  --submission-link: var(--text);
+  --submission-link-visited: #800080;
+  --submission-link-sticky: var(--fg-green);
+
+  --card-bg: var(--bg-content);
+  --card-shadow: 1px 1px 2px var(--border);
+  --form-bg: var(--bg-content);
+  --site-nav-bg: linear-gradient(to right, var(--primary-bright), var(--primary));
+
+  --font-family: "Roboto", sans-serif;
+  --font-size: 14px;
+  --line-height: 1.5;
+  --mono-font-family: "Roboto Mono", monospace;
+  --mono-font-size: 14px;
+}
+
+:root[data-night-mode="dark"] {
+  --primary: #c00;
+  --primary-alt: #a00;
+  --primary-bright: #e10;
+  --primary-alpha: #c006;
+  --notification: #f60;
+
+  --bg-page: #000;
+  --bg-content: #161616;
+  --bg-grey: #424242;
+  --bg-red: #660000;
+  --bg-orange: #663500;
+  --bg-yellow: #505000;
+  --bg-green: #004200;
+  --bg-blue: #003666;
+
+  --text: #ccc;
+  --text-muted: #a1a1a1;
+  --text-invert: #1a1a1a;
+  --fg-broken: #cfcfcf;
+
+  --fg-red: #f00;
+  --fg-orange: #fa4;
+  --fg-yellow: #ffff80;
+  --fg-green: #8f8;
+  --fg-blue: #4af;
+  --fg-grey: #777;
+
+  --border: #666;
+  --border-light: rgb(51, 51, 51);
+
+  --accent: var(--bg-grey);
+  --accent-alt: #525252;
+  --accent-fg: #fff;
+  --primary-fg: #fff;
+
+  --link: #faa;
+  --submission-link: #fff;
+  --submission-link-visited: #ffccff;
+  --submission-link-sticky: var(--fg-green);
+
+  --card-bg: var(--bg-content);
+  --card-shadow: 0 0 0 1px var(--border-light);
+  --dropdown-card-bg: #000;
+  --dropdown-card-shadow: 0 0 2px 1px var(--border-light);
+  --form-bg: #000;
+}
+
+/* --------------------------------------------------------------------------
+   2. Global — _global.less
+   -------------------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  color: var(--text);
+  background-color: var(--bg-page);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 100vh;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* _global.less:66 is `h1, h2, h3, h4, h5, h6, p, dl, ol, ul, blockquote, pre
+   { margin: 0 }` — MARGIN ONLY. Postmill never resets heading font-size, so
+   every bare heading keeps the UA's em-relative default (h1 2em, h2 1.5em,
+   h3 1.17em ... of the inherited size). Declaring `font-size: 1.15rem` here
+   rendered the submission page's `<h2>Comments</h2>` and /search's
+   `<h2>N results for x:</h2>` at 16.1px where the source is 21px, and shrank
+   the markdown-preview `<h3>` and /forums/all's letter headings too. Do not
+   re-add a font-size to this group. The list/quote/pre half of the selector
+   matters too: without it the `* List item` / `1. List item` rows of the
+   /submit formatting-help table kept the UA's `ul { margin: 1em 0 }` and came
+   out 63.5px tall against the source's 47.7px. */
+h1, h2, h3, h4, h5, h6, p, dl, ol, ul, blockquote, pre { margin: 0; }
+
+/* _global.less `button, input, optgroup, option, select, textarea { font: inherit }`
+   — the shorthand carries LINE-HEIGHT, which is why every source button is
+   21 + 2*7 + 2 = 37px tall. The mock only inherited font-family, so buttons
+   laid out at the UA's `normal` line-height and came out 32px. */
+button, input, optgroup, option, select, textarea { font: inherit; }
+
+pre, code, kbd {
+  font-family: var(--mono-font-family);
+  font-size: var(--mono-font-size);
+}
+
+pre { overflow-x: auto; }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border-light);
+  margin: 0.5rem 0;
+}
+
+blockquote {
+  border-left: 0.25em solid var(--border);
+  margin: 0;
+  padding: 0 0.5em;
+  color: var(--text-muted);
+}
+blockquote a { color: var(--text); }
+
+img { max-width: 100%; }
+
+/* --------------------------------------------------------------------------
+   3. Utilities — from the built core.css
+   -------------------------------------------------------------------------- */
+
+.text-xs { font-size: .75rem; }
+.text-sm { font-size: .85rem; }
+.text-md { font-size: 1rem; }
+.text-lg { font-size: 1.15rem; }
+.text-xl { font-size: 1.33rem; }
+
+.fg-muted { color: var(--text-muted); }
+.fg-grey  { color: var(--fg-grey); }
+.fg-red   { color: var(--fg-red); }
+.fg-green { color: var(--fg-green); }
+.fg-blue  { color: var(--fg-blue); }
+.fg-orange { color: var(--fg-orange); }
+.fg-text  { color: var(--text); }
+.fg-inherit { color: inherit; }
+
+.bg-blue { background-color: var(--bg-blue); }
+.bg-red { background-color: var(--bg-red); }
+.bg-green { background-color: var(--bg-green); }
+.bg-yellow { background-color: var(--bg-yellow); }
+.bg-orange { background-color: var(--bg-orange); }
+
+.unlistify { list-style: none; margin: 0; padding: 0; }
+
+.unbuttonize {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  text-align: inherit;
+}
+
+.unheaderize { font-size: inherit; font-weight: inherit; }
+
+.no-wrap { white-space: nowrap; }
+.inline { display: inline; }
+/* _utilities/hidden.less, transcribed verbatim. NOT `display: none`: the source
+   keeps the element in the box tree (opacity 0, out of flow, behind everything)
+   and Chrome's innerText therefore breaks lines around it. The /submit media
+   radios carry this class between the URL and Image labels, so removing the box
+   made those two labels extract as `URLImage` instead of `URL` + `Image`
+   (PARITY-015 / AUDIT-R03). `position: absolute` also blockifies the radio, which
+   is why the source computes `display: block` on it. */
+.hidden { opacity: 0 !important; position: absolute !important; z-index: -1 !important; }
+.no-visibility { visibility: hidden; }
+.break-text { overflow-wrap: break-word; word-wrap: break-word; }
+
+/* _things/flex.less #flex() transcribed in full. The gutters are negative
+   margins on the container plus a margin on EVERY child (not `> * + *`), which
+   is where `h1.page-heading`'s 14px margin-bottom on /forums comes from
+   (DIFF-D14) and why the source's nav rows wrap the way they do. */
+.flex { display: flex; flex-wrap: wrap; }
+.flex--align-center { align-items: center; }
+.flex--no-wrap { flex-wrap: nowrap; }
+.flex--column { flex-direction: column; }
+.flex--row { flex-direction: row; }
+.flex--inline { display: inline-flex; }
+.flex--guttered { margin-left: -1rem; margin-bottom: -1rem; }
+.flex--guttered > * { margin-left: 1rem; margin-bottom: 1rem; }
+.flex--slim-gutters { margin-left: -0.5rem; margin-bottom: -0.5rem; }
+.flex--slim-gutters > * { margin-left: 0.5rem; margin-bottom: 0.5rem; }
+.flex__grow { flex-grow: 1; }
+.flex__shrink { flex-shrink: 1; }
+/* `.flex-desktop { #flex }` generates its own BEM namespace — the modifiers are
+   `.flex-desktop--row`, not `.flex-desktop.flex--row`. `/forums` and the forum
+   rows use `flex-desktop--row` / `--align-center` / `--slim-gutters`. */
+@media screen and (min-width: 768px) {
+  .flex-desktop { display: flex; flex-wrap: wrap; }
+  .flex-desktop--align-center { align-items: center; }
+  .flex-desktop--no-wrap { flex-wrap: nowrap; }
+  .flex-desktop--column { flex-direction: column; }
+  .flex-desktop--row { flex-direction: row; }
+  .flex-desktop--inline { display: inline-flex; }
+  .flex-desktop--guttered { margin-left: -1rem; margin-bottom: -1rem; }
+  .flex-desktop--guttered > * { margin-left: 1rem; margin-bottom: 1rem; }
+  .flex-desktop--slim-gutters { margin-left: -0.5rem; margin-bottom: -0.5rem; }
+  .flex-desktop--slim-gutters > * { margin-left: 0.5rem; margin-bottom: 0.5rem; }
+  .flex-desktop__grow { flex-grow: 1; }
+  .flex-desktop__shrink { flex-shrink: 1; }
+}
+
+.flow > * + * { margin-top: 1rem; }
+.flow-slim > * + * { margin-top: 0.5rem; }
+.text-flow > * + * { margin-top: 1em; }
+.text-flow-slim > * + * { margin-top: 0.5em; }
+
+.no-underline { text-decoration: none; }
+.no-underline:hover { text-decoration: none; }
+.no-underline:hover .no-underline__exempt { text-decoration: underline; }
+
+
+/* Postmill declares NOTHING for `.page-heading`, `.forum-name-heading__prefix`
+   or `.forum-name-heading__name` — grep for them across
+   /var/www/html/assets/css returns zero hits. Every `.page-heading` in the
+   source templates is an <h1>, so its size is normalize.css's `h1{font-size:2em}`
+   and its colour is the inherited `--text`. Measured on the container at
+   1920x1080, /f/books:
+     h1.page-heading             28px / rgb(0,0,0) / 700
+     .forum-name-heading__prefix 28px / rgb(0,0,0) / 700
+     .forum-name-heading__name   28px / rgb(0,0,0) / 900  (<strong> => bolder)
+   A previous round declared 1.75rem (24.5px at the site's 14px root) and painted
+   the two spans red/grey; both were invented. Only the weight is ours to keep,
+   because this sheet resets headings. */
+.page-heading { font-size: 2em; font-weight: bold; }
+
+/* --------------------------------------------------------------------------
+   4. Icons — SVG sprite, default 16x16
+   -------------------------------------------------------------------------- */
+
+/* _things/icon.less, transcribed literally. `height/width: 1em` is what keeps
+   every glyph at 14x14; without it the sprite's own width="16" height="16"
+   attributes win and every icon on the site renders 16x16 (DIFF-D02).
+   Alignment is the source's mechanism too — `position:relative; top:.125em` on
+   the svg, NOT a vertical-align on the .icon span — and `.icon` itself carries
+   no display rule, so it stays inline like the source's. */
+.icon svg {
+  fill: currentColor;
+  height: 1em;
+  width: 1em;
+}
+.icon:not(.icon--no-align):not(.icon--circled) svg {
+  position: relative;
+  top: 0.125em;
+}
+.icon--circled {
+  border: solid 1px;
+  border-radius: 99999px;
+  display: inline-block;
+  line-height: 0;
+  padding: 0.25em;
+}
+.icon--spin svg { animation: icon-spin 2s linear infinite; }
+.icon--pulse svg { animation: icon-spin 1s steps(8) infinite; }
+@keyframes icon-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* --------------------------------------------------------------------------
+   5. Layout — _layout/*.less
+   -------------------------------------------------------------------------- */
+
+/* _layout/content-container.less has NO padding — margin-left/right auto and
+   width:100% only. The 1rem gutter belongs to `.site-nav__container` (desktop
+   media query in _layout/site-nav.less), not to the shared container: putting
+   it here narrowed every content column by 28px and shifted it 14px right on
+   all 39 routes (DIFF-D01). */
+.content-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+:root:not(.full-width) .content-container { max-width: 1100px; }
+
+/* _layout/site-accessibility-nav.less — the LINKS are `position: fixed` and
+   pushed off-screen while unfocused; the <nav> itself carries no styling. The
+   mock's old `position:absolute` on the nav left both links inline, so
+   innerText read `Jump to main contentJump to sidebar` on one line instead of
+   the source's two (DIFF-D15). */
+.site-accessibility-nav__link {
+  background-color: var(--card-bg);
+  color: var(--text);
+  display: inline-block;
+  padding: 1rem;
+  position: fixed;
+  z-index: 10000;
+}
+.site-accessibility-nav__link:not(:focus) { left: -9999px; }
+
+.site-nav {
+  background: var(--site-nav-bg);
+  color: var(--primary-fg);
+  /* _layout/site-nav.less:3-7 — "overlap box-shadows from main content/sidebar" */
+  z-index: 5;
+}
+.site-nav__container {
+  display: flex;
+  width: 100%;
+}
+/* desktop gutter — _layout/site-nav.less @media screen and (min-width: 768px) */
+@media screen and (min-width: 768px) {
+  .site-nav__container { padding: 0 1rem; }
+}
+.site-nav a, .site-nav button { color: var(--primary-fg); }
+.site-nav__header { font-size: 16px; }
+.site-nav__link {
+  display: inline-block;
+  font-size: 16px;
+  padding: 0.875em 1em;
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+}
+.site-nav__link:hover { text-decoration: none; }
+.site-nav__link:hover::after,
+.site-nav__link--active::after {
+  background-color: var(--primary-fg);
+  bottom: 1px;
+  content: '';
+  height: 2px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+.site-nav__menu { display: flex; align-items: center; }
+.site-nav__main-menu-container { display: flex; }
+/* NO `margin-left: auto` here — _layout/site-nav.less puts auto margins only on
+   `&__search`. A third auto margin made flexbox split the row's free space
+   three ways instead of two and pulled #site-nav-search 37.7px left of the
+   source's x=782. */
+/* _layout/site-nav.less, desktop block:
+     &__search { align-items: center; display: flex;
+                 margin-left: auto; margin-right: auto; padding: 0 0.5rem; }
+   There is NO flex-basis — the form is `flex: 0 1 auto`, so the row (and the
+   `width:100%` input inside it) size to the input's intrinsic width. The
+   `flex: 0 1 400px` that used to be here stretched #site-nav-search to 393px
+   against the source's 222px. */
+.site-nav__search {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 0.5rem;
+  position: relative;
+}
+.site-nav__search-row { position: relative; }
+.site-nav__search-label {
+  left: 0.9rem;
+  line-height: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary-fg);
+  pointer-events: none;
+}
+/* _layout/site-nav.less, verbatim — the `!important`s are the source's own, and
+   they are what let these four declarations beat `.form-control`:
+     &__search-input {
+       border-color: transparent !important;
+       border-radius: 8rem !important;
+       padding-left: 2.5rem !important;
+       width: 100% !important;
+       &:not(:focus) {
+         background-color: transparent !important;
+         border-color: var(--primary-fg) !important;
+         color: var(--primary-fg) !important;
+       }
+     }
+   Measured on the container: border-radius 112px (8rem @ 14px root), width
+   222px, background rgba(0,0,0,0) (transparent), border 1px solid rgb(255,255,255),
+   padding-left 35px, height 37px. The previous rules painted a square
+   rgba(255,255,255,.15) block and killed the form-control min-height. */
+.site-nav__search-input {
+  border-color: transparent !important;
+  border-radius: 8rem !important;
+  padding-left: 2.5rem !important;
+  width: 100% !important;
+}
+.site-nav__search-input:not(:focus) {
+  background-color: transparent !important;
+  border-color: var(--primary-fg) !important;
+  color: var(--primary-fg) !important;
+}
+.site-nav__search-input::placeholder { color: rgba(255, 255, 255, 0.7); }
+.site-nav__search-input:focus + .site-nav__search-label,
+.site-nav__search-row:focus-within .site-nav__search-label { color: var(--text); }
+.site-nav__has-notifications { background-color: var(--notification); }
+
+.dropdown { position: relative; }
+.dropdown__arrow {
+  border-left: 0.3em solid transparent;
+  border-right: 0.3em solid transparent;
+  border-top: 0.3em solid currentColor;
+  display: inline-block;
+  margin-left: 0.25em;
+  vertical-align: middle;
+}
+/* _widgets/dropdown.less `.dropdown-menu()` = position/left/right/z-index only.
+   `width: 100%` exists ONLY inside `@media not screen and (min-width: 768px)`;
+   hoisting it out as `min-width: 100%` made the desktop user menu 258px instead
+   of the source's shrink-to-fit 126px, covering the sidebar card (DIFF-D04). */
+.dropdown__menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: auto;
+  z-index: 100;
+}
+@media not screen and (min-width: 768px) {
+  .dropdown__menu { width: 100%; }
+}
+.dropdown--right .dropdown__menu { left: auto; right: 0; }
+.dropdown--expanded > .dropdown__menu,
+.dropdown:hover > .dropdown__menu { display: block; }
+.dropdown-card {
+  background: var(--dropdown-card-bg, var(--card-bg));
+  box-shadow: var(--dropdown-card-shadow, var(--card-shadow));
+  color: var(--text);
+}
+.dropdown-card a, .dropdown-card button { color: var(--text); }
+
+/* _widgets/menu-item.less, verbatim. `color: var(--text)` was missing, so the
+   sidebar Toolbox links fell through to the global `a { color: var(--link) }`
+   and rendered rgb(204,0,0) where the container renders rgb(0,0,0)/400/14px
+   (measured on /f/books `Bans`, `Moderation log` and on
+   /user/smita16/compose_message `Block user`, `Send message`). `--active` is a
+   leading bullet in the gutter, NOT a bold weight — the source's active
+   `Send message` still computes font-weight 400. */
+.menu-item {
+  color: var(--text);
+  display: block;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  cursor: pointer;
+}
+.menu-item:hover {
+  background-color: var(--accent);
+  color: var(--accent-fg);
+  text-decoration: none;
+}
+.menu-item:focus { background-color: var(--accent-alt); outline: none; }
+.menu-item--active { position: relative; }
+.menu-item--active::before {
+  content: '\2022';
+  left: 0;
+  position: absolute;
+  text-align: center;
+  width: 1rem;
+}
+
+.site-content {
+  align-items: flex-start;
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.site-content__body {
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  flex: 1 1 auto;
+  margin-top: 1rem;
+  min-width: 0;
+  padding: 1rem;
+}
+
+/* _layout/site-content.less `&__sidebar { flex: 0 0 auto; min-width: 0 }` plus
+   _layout/sidebar.less. The flex column (not the mock's old `display:block`)
+   is what stacks `.sidebar__section` cards the way the source does. */
+.site-content__sidebar { flex: 0 0 auto; min-width: 0; }
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+@media screen and (min-width: 768px) {
+  .sidebar { margin-left: 1rem; width: 20rem; }
+}
+.sidebar:empty { display: none; }
+.sidebar__section {
+  background: var(--sidebar-card-bg, var(--card-bg));
+  box-shadow: var(--sidebar-card-shadow, var(--card-shadow));
+  display: block;
+  padding: 1rem;
+}
+.sidebar__title { font-size: 1.25rem; font-weight: bold; }
+/* _layout/sidebar.less: `&__no-padding { margin: 0 -1rem -1rem }` — the list
+   bleeds into the card's 1rem padding so `.menu-item`'s own 1rem padding lines
+   its text up with the card edge (and its hover band spans the full width).
+   Zeroing the menu-item padding instead left no gutter for
+   `.menu-item--active::before` to put its bullet in. */
+.sidebar__no-padding {
+  margin-left: -1rem;
+  margin-right: -1rem;
+  margin-bottom: -1rem;
+  padding: 0;
+}
+.forum-title a { color: var(--primary); }
+
+@media not screen and (min-width: 768px) {
+  .site-content { align-items: stretch; flex-direction: column; }
+}
+
+.site-footer {
+  margin-top: auto;
+  padding: 1rem;
+  text-align: center;
+}
+.page-shadow { color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   6. Buttons — _widgets/_mixins.less
+   -------------------------------------------------------------------------- */
+
+.button {
+  --bg: var(--primary);
+  --bg-active: var(--primary-bright);
+  --border-width: 1px;
+  --fg: var(--primary-fg);
+  --fg-active: var(--fg);
+  --fg-border: transparent;
+  --fg-border-active: var(--fg-border);
+  --btn-font-size: 1rem;
+  --btn-font-weight: 500;
+  --padding-v: 0.5em;
+  --padding-h: 1em;
+
+  background-color: var(--bg);
+  border: solid var(--border-width);
+  border-color: var(--fg-border);
+  border-radius: 0;
+  color: var(--fg);
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  padding: var(--padding-v) var(--padding-h);
+  text-align: center;
+  transition: background-color .3s;
+}
+.button:hover, .button:focus, .button:active {
+  background-color: var(--bg-active);
+  border-color: var(--fg-border-active);
+  color: var(--fg-active);
+  outline: none;
+  text-decoration: none;
+}
+.button--small {
+  --btn-font-weight: 400;
+  --padding-v: calc(0.25rem - var(--border-width));
+  --padding-h: calc(0.5rem - var(--border-width));
+}
+.button--secondary {
+  --bg: var(--accent);
+  --bg-active: var(--accent-alt);
+  --fg: var(--accent-fg);
+  --fg-border: var(--accent-alt);
+}
+.button--transparent {
+  --bg: transparent;
+  --bg-active: transparent;
+  --fg: currentColor;
+  --fg-border: transparent;
+}
+.button--flex { display: inline-flex; align-items: center; }
+.button--flex > * + * { margin-left: 0.5em; }
+.button:disabled {
+  --bg-active: var(--bg);
+  --fg-active: var(--fg);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* --------------------------------------------------------------------------
+   7. Form controls — _form/_mixins.less
+   -------------------------------------------------------------------------- */
+
+.form-control {
+  --fc-border-width: 1px;
+  background-color: var(--form-bg);
+  border: solid var(--fc-border-width) var(--border);
+  border-radius: 0;
+  color: var(--text);
+  font-family: inherit;
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  min-height: calc(var(--font-size) * var(--line-height) + 1rem + 2 * var(--fc-border-width));
+  padding: 0.5rem;
+  transition: background-color .1s, box-shadow .1s, border-color .1s, color .1s;
+}
+input.form-control:not([size]),
+textarea.form-control:not([cols]),
+select.form-control { width: 100%; }
+textarea.form-control { resize: vertical; }
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 2px 2px var(--primary-alpha);
+  outline: none;
+}
+.form-control:disabled { background-color: var(--bg-grey); color: var(--fg-grey); cursor: default; }
+.form-control[readonly] { border-color: var(--border); }
+.form-control[type="radio"], .form-control[type="checkbox"] {
+  min-height: 0;
+  width: auto;
+}
+.form-control[type="radio"] { border-radius: 9999px; }
+.form__row + .form__row { margin-top: 1rem; }
+.form__button-row { margin-top: 1rem; }
+.form-flex { display: flex; flex-direction: column; }
+.form-flex--stretch { align-items: stretch; }
+
+/* --------------------------------------------------------------------------
+   8. Tabs — _widgets/tab.less
+   -------------------------------------------------------------------------- */
+
+.tab {
+  background-color: var(--accent);
+  border: none;
+  border-bottom: solid 3px var(--accent-alt);
+  color: var(--text);
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  font-size: var(--font-size);
+  padding: 0.5rem 0.75rem calc(0.5rem - 3px);
+}
+.tab:hover { text-decoration: none; }
+.tab--active,
+.dropdown--expanded > .tab,
+.dropdown:hover > .tab {
+  border-bottom-color: var(--primary);
+}
+
+/* --------------------------------------------------------------------------
+   9. Vote widget — _things/vote.less  (LOAD-BEARING, see DESIGN.md §5c)
+   The <form> class attribute must be exactly one of:
+     "vote" | "vote vote--user-upvoted" | "vote vote--user-downvoted"
+   -------------------------------------------------------------------------- */
+
+.vote {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.5rem;
+  width: 6ch;
+}
+.vote--loading .vote__net-score,
+.vote:not(.vote--loading) .vote__spinner { display: none; }
+.vote__button {
+  color: var(--fg-grey);
+  cursor: pointer;
+  line-height: 1;
+  height: 1em;
+  transition: opacity .1s;
+  white-space: nowrap;
+}
+.vote--loading .vote__button { cursor: default; opacity: 0.5; }
+.vote--user-upvoted .vote__up { color: var(--fg-orange); }
+.vote--user-downvoted .vote__down { color: var(--fg-blue); }
+/* _things/vote.less declares ONLY font-weight here; the score inherits the
+   21px line-height from .vote. `line-height:1` shrank the score box to 14px and
+   made the arrows collide with the digits (DIFF-D03). */
+.vote__net-score { font-weight: bold; }
+.vote--failed .vote__net-score { color: var(--fg-red); }
+
+/* --------------------------------------------------------------------------
+   10. Submission — _things/submission.less
+   -------------------------------------------------------------------------- */
+
+.submission__row { display: flex; flex-direction: row-reverse; }
+.submission__inner { flex-grow: 1; min-width: 0; }
+.submission__title-row {
+  display: inline;
+  font-size: 1.33rem;
+  font-weight: normal;
+  line-height: 0;
+}
+.submission__title-row > * { line-height: var(--line-height); }
+.submission__title { display: inline; font-size: inherit; font-weight: inherit; }
+.submission__link { color: var(--submission-link); }
+.submission__link:visited { color: var(--submission-link-visited); }
+.submission--sticky .submission__link { color: var(--submission-link-sticky); }
+.submission__host { color: var(--submission-link); }
+.submission__info { margin-top: 0; }
+.submission__content { margin: 0.5rem 0; }
+.submission__body { }
+/* No `&__nav` rule in _things/submission.less — the invented 0.25rem
+   margin-top pushed the whole nav row 3.5px below the source's. */
+/* Action links use the plain --link colour; only elements carrying .fg-inherit
+   (Permalink / Parent in the comment nav) fall back to the muted list colour. */
+.submission__image-link {
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  display: table;
+  padding: 0.5rem;
+  transition: box-shadow .25s, border .25s;
+}
+.submission__image-link:hover, .submission__image-link:focus {
+  box-shadow: 0 0 2px 2px var(--primary-alpha);
+  border-color: var(--primary);
+  outline: none;
+}
+.submission__image { display: table; height: auto; max-width: 100%; max-height: 500px; }
+.submission__image:not([width]) {
+  object-fit: cover;
+  height: 375px;
+  width: 500px;
+  max-height: 375px;
+}
+.submission__flairs { margin-right: 0.5em; }
+/* _things/submission.less — the thumbnail's containing block is the INNER, not
+   the article. `.submission { position: relative }` is NOT in the source: it
+   makes .submission the containing block, which drags the absolutely-positioned
+   thumb over the vote column (row-reverse paints the vote column first, i.e.
+   leftmost) and makes every thumbnailed submission unvotable by a real click.
+   Both the `position: relative` and the `padding-left` live on
+   `.submission--has-thumbnail .submission__inner`, inside the same media query. */
+@media screen and (max-width: 480px) {
+  .submission__thumb { display: none; }
+}
+@media not screen and (max-width: 480px) {
+  .submission--has-thumbnail .submission__inner {
+    padding-left: calc(1rem + 70px);
+    position: relative;
+  }
+  .submission__thumb {
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+}
+.submission__submitter { color: inherit; }
+.submission__forum { color: inherit; }
+.submission-meta__score { font-size: 1rem; }
+.submission-meta__short-url {
+  background-color: var(--fg-broken);
+  color: var(--text-invert);
+  display: block;
+  user-select: all;
+  margin-bottom: 1rem;
+  padding: 0.25rem 1rem;
+}
+.submission-listing > * + * { margin-top: 1rem; }
+
+/* user-flag: the square brackets are CSS, never markup */
+.user-flag::before { content: '['; }
+.user-flag::after { content: ']'; }
+
+/* --------------------------------------------------------------------------
+   11. Comment — _things/comment.less
+   -------------------------------------------------------------------------- */
+
+.comment {
+  border-bottom: solid 1px var(--border-light);
+  display: flex;
+  flex-direction: column;
+}
+.comment:target { outline: solid var(--primary); }
+.comment__row {
+  border: solid 1px var(--border-light);
+  border-bottom: none;
+  border-left-width: 3px;
+  display: flex;
+  flex-direction: row-reverse;
+}
+/* _things/comment.less has `&__vote { padding: 0.5rem 0 }` and nothing else —
+   the nested `.vote` keeps its own `padding-top: 0.5rem` (DIFF-D03). */
+.comment__vote { padding: 0.5rem 0; }
+.comment__main { flex-grow: 1; min-width: 0; }
+.comment__replies {
+  border-left: solid 3px var(--border-light);
+  display: flex;
+  flex-direction: column;
+  padding-left: 1rem;
+}
+.comment__header { display: flex; padding: 0.5rem 0; width: 100%; }
+.comment__info { flex-grow: 1; }
+.comment__info-link { padding: 0.5rem; }
+.comment__content { margin-bottom: 0.5rem; padding-right: 0.5rem; }
+.comment__body { min-height: 1rem; }
+.comment__nav { margin-bottom: 0.5rem; }
+.comment--nested:last-child { border-bottom: none; margin-bottom: 0; }
+.comment__reply-link-disabled { opacity: 0.5; pointer-events: none; }
+.comment-listing > * + * { margin-top: 1rem; }
+
+.hideable__checkbox { display: none; }
+.hideable__indicator::after { content: attr(data-hide-text) ' −'; }
+.hideable__checkbox:not(:checked) ~ .comment__row .hideable__indicator::after {
+  content: attr(data-unhide-text) ' +';
+}
+.hideable__checkbox:not(:checked) ~ .comment__row .hideable__hide,
+.hideable__checkbox:not(:checked) ~ .comment__replies { display: none; }
+.hideable__checkbox:not(:checked) ~ .comment__row .comment__header {
+  background-image: repeating-linear-gradient(-45deg,
+    var(--bg-grey), var(--bg-grey) 0.5rem, transparent 0.5rem, transparent 1rem);
+}
+.hideable__checkbox:not(:checked) ~ .comment__row .comment__info { padding-left: 6ch; }
+.comment__hide-toggle { cursor: pointer; }
+/* MarkdownHelp's disclosure — the label is a DIRECT sibling of the checkbox
+   there (the comment collapse nests its indicator inside .comment__row, so
+   these two rules never reach it). Glyph is `' +'` / `' \2212'` exactly as
+   _things/hideable.less emits it, and must stay in CSS: a literal text node
+   would show up in every document.body.outerText extraction. */
+.hideable__checkbox ~ .hideable__toggle .hideable__indicator::after { content: ' \2212'; }
+.hideable__checkbox:not(:checked) ~ .hideable__toggle .hideable__indicator::after { content: ' +'; }
+.hideable__checkbox ~ .hideable__toggle { color: var(--link); cursor: pointer; }
+.hideable__checkbox ~ .hideable__toggle:hover { text-decoration: underline; }
+
+@media (max-width: 479px) {
+  .comment__replies { padding-left: 0.25rem; }
+}
+
+/* --------------------------------------------------------------------------
+   12. Alerts, empty states, pagination — _things/*.less
+   -------------------------------------------------------------------------- */
+
+.alert { align-items: center; display: flex; padding: 0.5rem 1rem; }
+/* _things/alert.less declares no line-height — the icon inherits 1.5, so the
+   alert box is 31.5 + 14 = 45.5px tall. `line-height: 1` shrank it to 39. */
+.alert__icon { font-size: 1.5rem; margin-right: 1rem; }
+
+.empty {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 20rem;
+  justify-content: center;
+  max-height: 50vh;
+}
+.empty__emoji { color: var(--fg-grey); font-size: 4em; }
+.empty__text { color: var(--text-muted); line-height: 2; }
+
+.pagination { margin-top: 1rem; }
+
+.site-alerts { }
+.site-alerts__alert { position: relative; }
+.site-alerts__dismiss {
+  cursor: pointer;
+  margin-left: auto;
+  padding: 0 0.5rem;
+}
+.site-alerts__dismiss::after { content: '×'; font-size: 1.25rem; }
+
+/* --------------------------------------------------------------------------
+   13. Subscribe button — _widgets/subscribe-button.less, transcribed
+   --------------------------------------------------------------------------
+   The LESS is:
+
+     .subscribe-button {
+       background: transparent; border: none; border-radius: 0;
+       display: flex; padding: 0;
+       &__label, &__subscriber-count      { .button-common() }
+       &:focus, &:hover { outline: none; > * { .button-active() } }
+       &:disabled                         { .button-disabled() }
+       &__label                           { margin-right: 2px }
+       &__subscriber-count                { --padding-h: 0; min-width: 8ch }
+       &--subscribe &__label,
+       &--subscribe &__subscriber-count   { .button-secondary() }
+       &__dummy-label { display: block; height: 0; visibility: hidden }
+     }
+
+   Both halves are `.button-common()` buttons — that is where font-weight 500
+   comes from (the count is a `<b>`, so without it the UA renders it 700), and
+   where the count's `--padding-h: 0` override lands. The 8ch min-width is
+   exactly the source's 64px count box at 14px Roboto; with the two aria-hidden
+   `__dummy-label` spans from templates/forum/_macros.html.twig reserving the
+   wider of Subscribe/Unsubscribe, the control measures 175x37 and does not
+   resize when toggled. A hand-rolled version measured 136px and jumped to 152
+   on subscribe. `--btn-font-size` / `--btn-font-weight` are named that way to
+   match `.button` above and to avoid colliding with the form controls'
+   `--font-size`. */
+
+.subscribe-button {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  display: flex;
+  padding: 0;
+}
+.subscribe-button__label,
+.subscribe-button__subscriber-count {
+  --bg: var(--primary);
+  --bg-active: var(--primary-bright);
+  --border-width: 1px;
+  --fg: var(--primary-fg);
+  --fg-active: var(--fg);
+  --fg-border: transparent;
+  --fg-border-active: var(--fg-border);
+  --btn-font-size: 1rem;
+  --btn-font-weight: 500;
+  --padding-v: 0.5em;
+  --padding-h: 1em;
+
+  background-color: var(--bg);
+  border: solid var(--border-width);
+  border-color: var(--fg-border);
+  color: var(--fg);
+  cursor: pointer;
+  display: inline-block;
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  padding: var(--padding-v) var(--padding-h);
+  text-align: center;
+  transition: background-color .3s;
+}
+.subscribe-button:focus,
+.subscribe-button:hover { outline: none; }
+.subscribe-button:focus > *,
+.subscribe-button:hover > * {
+  background-color: var(--bg-active);
+  border-color: var(--fg-border-active);
+  color: var(--fg-active);
+  outline: none;
+  text-decoration: none;
+}
+.subscribe-button:disabled {
+  --bg-active: var(--bg);
+  --fg-active: var(--fg);
+  --fg-border-active: var(--fg-border);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.subscribe-button__label { margin-right: 2px; }
+.subscribe-button__subscriber-count { --padding-h: 0; min-width: 8ch; }
+.subscribe-button--subscribe .subscribe-button__label,
+.subscribe-button--subscribe .subscribe-button__subscriber-count {
+  --bg: var(--accent);
+  --bg-active: var(--accent-alt);
+  --fg: var(--accent-fg);
+  --fg-border: var(--accent-alt);
+}
+.subscribe-button__dummy-label {
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+.forum-sidebar-content { }
+
+/* --------------------------------------------------------------------------
+   14. Markdown output inside bodies
+   -------------------------------------------------------------------------- */
+
+/* No `.text-flow ul, .text-flow ol` rule — `_layout/text-flow.less` has none,
+   and declaring one here beat `.text-flow > * + *` on specificity, so a list in
+   a submission body lost its 14px top margin and got `padding-left: 2em` (28px)
+   where the source shows the UA's 40px. Measured on
+   /f/deeplearning/82411/gpt-4-will-be-500x-smaller-…, source vs mock:
+   `OL m=14px/0px pl=40px` vs `OL m=0px/0px pl=28px`. */
+.text-flow pre {
+  background-color: var(--bg-grey);
+  padding: 0.5rem;
+}
+.text-flow code { background-color: var(--bg-grey); padding: 0 0.25em; }
+.text-flow pre code { background: none; padding: 0; }
+/* `_layout/text-flow.less` declares MARGIN only (`.text-flow-mixin(1em)`); it
+   sets no font-size and no font-weight on headings. The 1.4/1.25/1.1rem trio
+   that used to live here only existed to undo the old `h1..h6 {font-size}`
+   reset. Measured on the container, a heading inside a `.text-sm` (11.9px)
+   cell renders 23.8 / 17.85 / 13.923px — exactly UA 2em / 1.5em / 1.17em. */
+
+/* --------------------------------------------------------------------------
+   15. Placeholder pages (routes whose real component lands in a later shard)
+   -------------------------------------------------------------------------- */
+
+.mock-placeholder {
+  border: 1px dashed var(--border);
+  padding: 1rem;
+}
+.mock-placeholder__title { font-size: 1.25rem; font-weight: bold; }
+
+/* --------------------------------------------------------------------------
+   16. Responsive visibility — _utilities/no-desktop.less + no-mobile.less
+   Both source rules live INSIDE a media query and set nothing outside it;
+   `.icon` no longer carries a display rule, so no ordering hack is needed.
+   -------------------------------------------------------------------------- */
+
+@media screen and (min-width: 768px) {
+  .no-desktop { display: none; }
+}
+@media not screen and (min-width: 768px) {
+  .no-mobile { display: none; }
+}
+
+/* Formatting-help disclosure under a markdown textarea */
+/* _form/formatting-help.less, verbatim — no `width`, no `vertical-align`, and
+   the border is `--border` (not `--border-light`) at `0.125em 0.25em`. */
+.formatting-help { border-collapse: collapse; margin-top: 0.5rem; }
+.formatting-help td { border: solid 1px var(--border); padding: 0.125em 0.25em; }
+
+/* --------------------------------------------------------------------------
+   17. Form widgets — was src/components/forms/forms.css
+   --------------------------------------------------------------------------
+   Values lifted verbatim from the source's compiled `core.css`
+   (/tmp/recon/reddit/css/core.css). Folded in here from the old per-shard
+   sheet: forms.css and user.css both declared `.table`, `.table__shrink` and
+   `.unstylable-widget*` at identical specificity with DIFFERENT values, so
+   which one applied depended on Vite's module-graph emission order. The
+   `_things/table.less` / `_form/unstylable-widget.less` transcriptions in
+   section 18 are the faithful ones and are now the only copies.
+   -------------------------------------------------------------------------- */
+
+/* `.form__row{max-width:40rem}` and `.form-flex{align-items:flex-start}` are
+   both in the source's core.css and are what keeps the Title/Body controls at
+   560px (40rem × the 14px root) instead of filling the card — see
+   assets/screenshots/reference/14-submit-form.png.
+   Kept inside :where() so they carry ZERO specificity and `.form-flex--stretch`
+   (§9 above, 0-1-0) still wins, exactly as it does in the source's cascade. */
+:where(.form-flex) { align-items: flex-start; }
+:where(.form__row) { max-width: 40rem; }
+/* Postmill hides the "Post as" row for a user with no role; `display:flex`
+   would otherwise defeat the [hidden] attribute. */
+.form-flex[hidden] { display: none; }
+/* checkbox_row in the aligned theme — widget and label on one line */
+.form-flex.form-flex--single-line { align-items: center; flex-direction: row; }
+/* `input.form-control:not([size]){width:100%}` (0-2-1) otherwise out-ranks its
+   own `.form-control[type=checkbox]{width:auto}` (0-2-0) and stretches every
+   checkbox across the row. */
+input.form-control[type="checkbox"]:not([size]),
+input.form-control[type="radio"]:not([size]) { width: auto; min-height: 0; }
+
+/* --- form_errors (_forms/standard_form_theme.html.twig) ------------------ */
+.form-error-list { padding-left: 0; margin: 0; }
+.form-error-list > li {
+  color: var(--fg-red);
+  font-weight: 700;
+  list-style-position: inside;
+}
+
+/* --- URL / Image tabs on /submit (submission/_form.html.twig) ------------ */
+/* No `.form-tabs__checkbox` display rule here on purpose — `_form/form-tabs.less`
+   declares none either. The radios are hidden only by the `.hidden` utility (§4),
+   which keeps them rendered. */
+.discreet-tab {
+  color: var(--fg-grey);
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.5em 0.75em;
+}
+.discreet-tab:hover { text-decoration: underline; }
+.discreet-tab--active { color: var(--text); }
+.form-tabs__content { display: none; }
+.form-tabs__content--active { display: initial; }
+
+/* --- the `/f/` prefix on the create-forum Name field --------------------- */
+.decorated-form-control {
+  --border-width: 1px;
+  align-items: center;
+  background-color: var(--form-bg);
+  border: solid var(--border-width) var(--border);
+  color: var(--text);
+  display: flex;
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  min-height: calc(var(--font-size) * var(--line-height) + 1rem + 2 * var(--border-width));
+  padding: 0 0.5rem;
+  transition: background-color .1s, box-shadow .1s, border-color .1s, color .1s;
+  width: 100%;
+}
+.decorated-form-control:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 2px 2px var(--primary-alpha);
+}
+.decorated-form-control--text { cursor: text; }
+.decorated-form-control__widget { flex-grow: 1; }
+/* `.form-control--no-decoration` is `.form-control-undecorated()`: it does NOT
+   zero the height or the vertical padding — it only sets `--border-width: 0`
+   (which re-resolves `--height` to 35px), a transparent background and
+   `padding-left/right: 0`. Zeroing min-height + all padding collapsed
+   `#forum_name` to 21px against the source's 35px / `7px 0` (DIFF-D08). */
+.form-control--no-decoration {
+  --fc-border-width: 0;
+  --form-bg: transparent;
+  --text: currentColor;
+  cursor: inherit;
+  padding-left: 0;
+  padding-right: 0;
+}
+.form-control--no-decoration:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* --- native <select> sizing inside `.unstylable-widget` ------------------ */
+.form-flex > .unstylable-widget { align-self: flex-start; }
+.unstylable-widget select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: auto;
+  min-width: 10rem;
+  padding-right: 2ch;
+}
+
+/* (The `.forum-selector` typeahead that used to sit above #submission_forum was
+   invented UI — the container renders the <select> directly under the label —
+   so the markup and these rules are gone. DIFF-A2.) */
+
+/* --- 403 — the bare Symfony error document ------------------------------ *
+   The source serves ONE document for every forbidden route:
+   assets/html/f_news_edit-auth.html and assets/html/users-auth.html are
+   byte-identical, and their inline <style> block is reproduced verbatim below.
+   `.error-page` and `.http-error` are two mock names for that same document,
+   so they carry identical declarations — previously `.error-page` was missing
+   background/color/font-family and rendered the 403 on the site background in
+   the site font on the forum edit/appearance/delete/add_moderator routes and
+   the comment-delete pages.
+   NB: never write a route glob like the one that used to be on this line here —
+   the slash-star in it closes the comment early and swallows the next rule. */
+.error-page,
+.http-error {
+  background: #f8f8f8;
+  color: #444;
+  font-family: sans-serif;
+  /* the bare document has no font-size rule, so it renders at the browser
+     default 16px, not the site's 14px — measured on assets/html/*-auth.html */
+  font-size: 16px;
+  margin: 2em;
+  text-align: center;
+}
+.error-page h1,
+.http-error h1 { font-size: 2em; font-weight: bold; margin: 0.67em 0; }
+.error-page a,
+.http-error a { color: #d00; text-decoration: none; }
+.error-page a:hover,
+.http-error a:hover { text-decoration: underline; }
+
+/* --------------------------------------------------------------------------
+   18. User pages, settings, notifications and messages — was
+       src/components/user/user.css
+   --------------------------------------------------------------------------
+   Transcribed from the running container's LESS sources
+   (`/var/www/html/assets/css/`), file by file:
+     _form/fieldset.less             .fieldset / legend
+     _form/form-flex.less            .form-flex--single-line / __align / --no-collapse
+     _form/unstylable-widget.less    .unstylable-widget + __caret / __check
+     _form/compound-form-widget.less .compound-form-widget
+     _things/table.less              .table / .table__shrink
+     _things/message.less            .message / .message__body
+     _things/definition-list.less    .definition-list
+     _widgets/clear-notification-button.less
+     _utilities/text-align.less      .text-align-right
+   -------------------------------------------------------------------------- */
+
+/* --- _utilities/night-mode.less ------------------------------------------
+   The user menu renders BOTH night-mode buttons and lets these rules hide the
+   one that does not apply, which is why the source's menu has a `Dark mode`
+   and a `Light mode` .menu-item and only one is visible (DIFF-D10). */
+:root[data-night-mode="light"] .dark-mode-only,
+:root[data-night-mode="dark"] .light-mode-only { display: none; }
+:root[data-night-mode="auto"] .dark-mode-only { display: none; }
+@media screen and (prefers-color-scheme: dark) {
+  :root[data-night-mode="auto"] .dark-mode-only { display: unset; }
+  :root[data-night-mode="auto"] .light-mode-only { display: none; }
+}
+
+/* --- night mode: `auto` follows the OS ------------------------------------
+   Postmill's `auto` renders the dark palette under prefers-color-scheme: dark.
+   §1 only defines [data-night-mode="light"|"dark"], so `auto` is wired up here
+   by re-declaring the dark tokens under the media query. */
+@media (prefers-color-scheme: dark) {
+  :root[data-night-mode="auto"] {
+    --primary-alpha: #c006;
+    --bg-page: #000;
+    --bg-content: #161616;
+    --bg-grey: #424242;
+    --bg-red: #660000;
+    --bg-orange: #663500;
+    --bg-yellow: #505000;
+    --bg-green: #004200;
+    --bg-blue: #003666;
+    --text: #ccc;
+    --text-muted: #a1a1a1;
+    --text-invert: #1a1a1a;
+    --fg-broken: #cfcfcf;
+    --fg-orange: #fa4;
+    --fg-yellow: #ffff80;
+    --fg-green: #8f8;
+    --fg-blue: #4af;
+    --fg-grey: #777;
+    --border: #666;
+    --border-light: rgb(51, 51, 51);
+    --accent-alt: #525252;
+    --accent-fg: #fff;
+    --link: #faa;
+    --submission-link: #fff;
+    --submission-link-visited: #ffccff;
+    --card-shadow: 0 0 0 1px var(--border-light);
+    --dropdown-card-bg: #000;
+    --dropdown-card-shadow: 0 0 2px 1px var(--border-light);
+    --form-bg: #000;
+  }
+}
+
+/* --- fieldset — _form/fieldset.less --------------------------------------- */
+.fieldset {
+  border: none;
+  border-top: solid 1px var(--border);
+  padding: 0.5rem 0 0;
+}
+/* `margin: 0` only resets the UA default — in the source's compiled core.css
+   `_utilities/flow.less` is emitted after `_form/fieldset.less`, so
+   `.flow > * + *` still spaces the fieldsets on /preferences (measured live:
+   every fieldset but the first has margin-top 14px). Kept at ZERO specificity
+   so folding this sheet in last cannot flip that. */
+:where(.fieldset) { margin: 0; }
+.fieldset > legend {
+  color: var(--text-muted);
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+  padding: 0 1rem 0 0;
+}
+
+/* --- form-flex — _form/form-flex.less -------------------------------------
+   Selectors are doubled up (`.form-flex.form-flex--single-line`) so they beat
+   `.form-flex { flex-direction: column }` in §9 on specificity rather than on
+   source order. */
+.form-flex.form-flex--no-collapse {
+  align-items: center;
+  flex-direction: row;
+}
+.form-flex.form-flex--no-collapse > :not(:first-child) { margin-left: 1rem; }
+.form-flex.form-flex--no-collapse > .form-flex__align + * { margin-left: 0; }
+
+@media screen and (min-width: 768px) {
+  .form-flex.form-flex--single-line {
+    align-items: center;
+    flex-direction: row;
+  }
+  .form-flex.form-flex--single-line > :not(:first-child) { margin-left: 1rem; }
+  .form-flex__align {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 10rem;
+  }
+  .form-flex.form-flex--no-collapse {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .form-flex.form-flex--no-collapse > :not(:first-child) { margin-left: 0; }
+  .form-flex.form-flex--single-line.form-flex--no-collapse {
+    align-items: center;
+    flex-direction: row;
+  }
+  .form-flex.form-flex--single-line.form-flex--no-collapse > :not(:first-child) { margin-left: 1rem; }
+}
+
+/* --- unstylable widgets — _form/unstylable-widget.less -------------------- */
+.unstylable-widget {
+  display: inline-block;
+  line-height: 1;
+  position: relative;
+  white-space: nowrap;
+}
+.unstylable-widget select:not([multiple]) {
+  appearance: none;
+  padding-right: 2ch;
+}
+.unstylable-widget__caret,
+.unstylable-widget__check {
+  pointer-events: none;
+  position: absolute;
+}
+.unstylable-widget__caret {
+  border-left: 0.5ch solid transparent;
+  border-right: 0.5ch solid transparent;
+  border-top: 0.5ch solid;
+  top: calc(50% - 0.25ch);
+  right: calc(1px + 0.5ch);
+}
+.unstylable-widget__check {
+  --shrink: 2px;
+  font-size: calc(var(--font-size) - var(--shrink));
+  left: calc(var(--shrink) / 2 + 1px);
+  top: calc(var(--shrink) / 2 + 1px);
+}
+.unstylable-widget input:not(:checked) + .unstylable-widget__check { display: none; }
+/* _form/form-control.less resets the native checkbox so the sprite tick shows
+   through; §9 omits the `appearance` reset, so scope it to this wrapper. */
+.unstylable-widget input.form-control[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: default;
+  height: var(--font-size);
+  width: var(--font-size);
+}
+
+.compound-form-widget {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 1px;
+  padding-top: 1px;
+  width: 100%;
+}
+.compound-form-widget > * {
+  display: inline-block !important;
+  margin-left: -1px;
+  margin-top: -1px;
+  position: relative;
+  z-index: 0;
+}
+.compound-form-widget > :focus,
+.compound-form-widget > :focus-within { z-index: 1; }
+
+/* --- tables — _things/table.less ------------------------------------------ */
+.table { border-collapse: collapse; width: 100%; }
+.table__shrink { white-space: nowrap; width: 0.1px; }
+.table > thead > tr:last-child > th,
+.table > thead > tr:last-child > td { border-bottom: solid 1px var(--accent-alt); }
+.table > tbody > tr:not(:last-child) > td,
+.table > tbody > tr:not(:last-child) > th { border-bottom: solid 1px var(--border-light); }
+.table > thead > tr > th,
+.table > tbody > tr > th {
+  background-color: var(--accent);
+  color: var(--accent-fg);
+  text-align: left;
+}
+.table > thead > tr > th, .table > thead > tr > td,
+.table > tbody > tr > th, .table > tbody > tr > td { padding: 0.5rem; }
+@media screen and (min-width: 768px) {
+  .table > thead > tr > th, .table > thead > tr > td,
+  .table > tbody > tr > th, .table > tbody > tr > td { padding: 0.5rem 1rem; }
+}
+
+/* --- messages — _things/message.less -------------------------------------- */
+.message {
+  border: solid 1px var(--border-light);
+  border-left-width: 3px;
+  padding: 0.5rem 1rem 0;
+}
+.message__body { padding: 0.5rem 0; }
+.message__buttons { padding-bottom: 0.5rem; }
+.message-listing > * + * { margin-top: 1rem; }
+
+/* --- definition list — _things/definition-list.less ----------------------- */
+.definition-list {
+  align-items: baseline;
+  display: grid;
+  grid-column-gap: 1rem;
+  grid-row-gap: 0.5rem;
+  grid-template-columns: auto 1fr;
+}
+.definition-list > dt { font-size: 0.875rem; font-weight: 500; }
+.definition-list > dd { margin-left: 0; }
+
+/* --- markdown preview — _form/markdown-preview.less ----------------------- */
+.markdown-preview:empty { display: none; }
+.markdown-preview__title { margin-bottom: 0.5rem; }
+.markdown-preview__inner {
+  background: var(--accent);
+  max-height: 20rem;
+  overflow: auto;
+  padding: 1rem 1rem 0;
+  scrollbar-color: var(--primary) var(--accent);
+  scrollbar-width: thin;
+}
+.markdown-preview__inner > :last-child { margin-bottom: 1rem; }
+@media screen and (min-width: 768px) {
+  .markdown-preview { max-width: 40rem; }
+}
+
+/* --- misc utilities used by these views ----------------------------------- */
+.clear-notification-button { --font-size: 0.9rem; float: right; }
+.text-align-right { text-align: right; }
+/* Compound so it beats `.flex { flex-wrap: wrap }` (§4) on specificity, which
+   is what _things/flex.less's source order does. */
+.flex.flex--no-wrap { flex-wrap: nowrap; }
+/* NOTE: `.no-entries` deliberately has NO rule. The source ships the class on
+   every empty state but styles it nowhere, so it inherits `.flow > * + *`'s
+   14px margin-top — measured live on /notifications. The old user.css carried
+   a `margin: 0` that only ever lost the cascade; folding this sheet in last
+   would have silently activated it. */
+
+/* user_nav is a bare <nav> in the source; the tabs carry the styling. */
+.user-nav > ul { margin: 0; padding: 0; }
+
+/* edit_biography.html.twig uses a bare <h1>, not `.page-heading`, and Postmill
+   renders it at page-heading size — but that is just the UA's `h1 { font-size:
+   2em }`, i.e. 28px at the site's 14px root, NOT a Postmill declaration.
+   Measured on the container: `#main > h1` on /user/<name>/edit_biography is
+   28px/700, identical to `h1.page-heading`. The 1.75rem this rule used to
+   declare rendered 24.5px. Nothing to declare — the UA default is correct once
+   the `h1..h6` group above stops resetting font-size. */
+
+/* The comment context line on /user/<name> and /user/<name>/comments. */
+.comment__context > p { margin: 0; }
+.comment__context .icon { flex-shrink: 0; }
+
+/* `.user-bio__biography` is a WebArena evaluator locator (webarena-399..403).
+   Keep the selector; it only needs to exist and hold the rendered bio. */
+.user-bio__biography > * + * { margin-top: 0.5rem; }
+
+/* Postmill's 403 page (/users is admin-only) — assets/html/users-auth.html.
+   Styled together with `.error-page` in §16 above; they are the same document. */
