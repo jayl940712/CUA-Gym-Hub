@@ -1111,7 +1111,6 @@ export function ProductAttributeEdit() {
                     <input type="file" name="datafile" className="admin__control-file" aria-label="Import Options" />
                   </fieldset>
                 </div>
-              ) : null}
 
               {/* Collapsed on cold load, exactly as the source's
                 * `#advanced_fieldset-wrapper` is — present in the DOM, hidden. */}
