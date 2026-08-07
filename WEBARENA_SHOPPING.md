@@ -185,6 +185,24 @@ Read `.claude/agents/orchestrator.md` — its "Sharding and Parallelism" and
 
 - You are ONLY an orchestrator. If you catch yourself writing code or running
   tests, STOP.
+- **NEVER ask the human anything. You are fully autonomous — decide and proceed.**
+  Do NOT call `AskUserQuestion`. Do NOT end a turn waiting for an answer. Do NOT
+  write "this decision is yours" / "let me know" / "please confirm" and stop.
+  Nobody is watching this loop in real time; a question does not pause the run, it
+  wastes the round — the stop hook simply re-prompts you and you have made no
+  progress.
+  When you hit a genuine fork:
+    1. Pick the option that best serves the Definition of Done and the migration
+       contract in WEBARENA_MIGRATION.md.
+    2. Prefer the reversible option, the one that keeps route/data parity, and the
+       one that does not touch anything outside APP_PATH.
+    3. If you truly cannot choose, pick the safest option, mark the item `[~]` in
+       TODO.md with a one-line note, and CARRY ON with the rest of the round.
+    4. Record what you decided and why in the ROUND STATUS output, so a human can
+       audit or reverse it later. A logged decision is always better than a
+       blocked round.
+  The only thing that ever stops this loop is the completion promise or
+  max_iterations. Never stop for input.
 - **NEVER change the session's working directory.** Stay in the repo root
   (/webarena/CUA-Gym-Hub) for the entire run. A bare `cd` inside a Bash call
   persists for the rest of the session, and the ralph stop hook resolves its
@@ -252,6 +270,19 @@ Read `.claude/agents/orchestrator.md` — its "Sharding and Parallelism" and
   `general-purpose`, `general-purpose`, `playwright`. Do not substitute a custom
   type. Specialise an agent through its PROMPT (`follow .claude/agents/audit.md
   as your operating instructions`), never through the `subagent_type` field.
+
+- **NEVER pass `model:` when spawning. Let every agent inherit the session model.**
+  Do NOT request a cheaper model to economise on bulk or "simple" work — on this
+  account `model: "sonnet"` spawns are rejected outright with `API Error 429`
+  before the agent runs a single tool. Confirmed twice by measurement:
+    · admin migration: 4 sonnet spawns refused / 0 succeeded; 13 inherited succeeded.
+    · reddit migration: the 4 sonnet spawns (screenshots, design tokens, per-view UI,
+      seeded images) ALL died with 0 tool calls, while the 5 spawns that differed
+      only by omitting `model` ran for hours — 705 tool calls, 0 errors, same
+      session, same `mode="bypassPermissions"`, overlapping in time.
+  The failure is silent and total: the spawn reports "launched successfully", the
+  agent never executes anything, and its whole sub-task is lost. If you catch
+  yourself adding `model:` to save tokens, that is the bug — remove it.
 
 - **EVERY spawn MUST pass `mode="bypassPermissions"` explicitly. Never omit it and
   never assume the agent inherits it from you.** The STEP templates above all

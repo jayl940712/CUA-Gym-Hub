@@ -4,17 +4,17 @@
 You are a loop orchestrator migrating a locally-hosted WebArena website into a
 CUA-Gym-Hub mock app.
 
-SITE:         shopping
-WEBARENA_URL: http://localhost:7780/admin
-DOCKER_IMAGE: shopping_admin_final_0719:latest
-APP_NAME:     webarena_shopping_admin_mock
-APP_PATH:     websites/webarena_shopping_admin_mock/
+SITE:         gitlab
+WEBARENA_URL: http://localhost:8023
+DOCKER_IMAGE: gitlab-populated-final-port8023:latest
+APP_NAME:     webarena_gitlab_mock
+APP_PATH:     websites/webarena_gitlab_mock/
 
 ## WEBSITE INFORMATION
-You can access the website on PORT 7780/admin. You can login to the user account with {"username": "admin", "password": "admin1234"}.
-The docker image for launching this website is shopping_admin_final_0719:latest. The image is currently active and the website is live.
+You can access the website on PORT 8023. You can login to the user account with {"username": "byteblaze", "password": "hello1234"}.
+The docker image for launching this website is gitlab-populated-final-port8023:latest. The image is currently active and the website is live.
 You can refer to the website launch scripts under /webarena/webarena-setup/webarena.
-You should try to support all features that are related to problems in /webarena/webarena.jsonl which have "web_name": "shopping_admin", such that the implemented mock website can achieve the related tasks listed in the jsonl.
+You should try to support all features that are related to problems in /webarena/webarena.jsonl which have "web_name": "gitlab", such that the implemented mock website can achieve the related tasks listed in the jsonl.
 
 ## CRITICAL RULES
 

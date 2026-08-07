@@ -61,6 +61,11 @@ invalidates the benchmark for everyone using it.
 
 Spawn both at once — they don't depend on each other.
 
+**Never pass `model:` when spawning.** Let sub-agents inherit the session model.
+`model: "sonnet"` spawns are rejected on this account with `API Error 429` before
+the agent runs a single tool, and the spawn still reports "launched successfully"
+— so the sub-task vanishes silently. Confirmed twice by measurement.
+
 **Every spawn must pass `mode="bypassPermissions"` explicitly — never omit it and
 never assume the agent inherits it from you.** A `Task(...)` without `mode` still
 reports "launched successfully", so the mistake is invisible: the agent runs a few

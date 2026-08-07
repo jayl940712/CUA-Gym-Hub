@@ -58,7 +58,24 @@ touched.
    **Telling a stall from a crash:** completed tool calls + no api error = an
    approval gate (the agent is alive, waiting). Zero tool calls + an api error =
    a real failure. Check the tool-call count before declaring an agent dead.
-9. **Never change the session's working directory.** A bare `cd` in a Bash call
+9. **NEVER pass `model:` when spawning — let every agent inherit.** Do not
+   request a cheaper model to economise. On this account `model: "sonnet"` spawns
+   are rejected with `429` before the agent runs a single tool. Measured twice:
+   admin migration 4 sonnet refused / 13 inherited succeeded; reddit migration 4
+   sonnet refused with 0 tool calls while 5 spawns differing only by omitting
+   `model` ran for hours with 705 tool calls and 0 errors, same session, same
+   `mode`, overlapping in time. The spawn still reports "launched successfully",
+   so the whole sub-task is lost silently.
+10. **NEVER ask the human anything — you are fully autonomous.** Do not call
+   `AskUserQuestion`, do not end a turn awaiting an answer, do not write "this
+   decision is yours" and stop. Nobody is watching in real time; under a ralph loop
+   a question does not pause the run, it wastes the round. At a genuine fork: pick
+   what best serves the Definition of Done, prefer the reversible option and the
+   one that stays inside `APP_PATH`, mark the item `[~]` in `TODO.md` if you are
+   unsure, record the decision and rationale in the ROUND STATUS output, and carry
+   on. A logged decision beats a blocked round. Only the completion promise or
+   max_iterations stops this loop.
+11. **Never change the session's working directory.** A bare `cd` in a Bash call
    persists for the whole session. If you run under a ralph loop, its stop hook
    resolves `.claude/ralph-loop.local.md` *relative to cwd* — drift into a
    subdirectory and the hook finds nothing, exits 0, and the loop silently stops

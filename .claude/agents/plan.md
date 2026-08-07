@@ -75,6 +75,17 @@ SPLIT REQUESTED: routing spec complete, extraction remaining
 The orchestrator can spawn extraction-only shards against a finished `ROUTES.md` —
 that part *is* parallelisable, because the decisions are already made.
 
+**And NEVER pass `model:` when you spawn.** Let every sub-agent inherit the
+session model. Do NOT request a cheaper model to economise on bulk extraction —
+on this account `model: "sonnet"` spawns are rejected with `API Error 429` before
+the agent runs a single tool. This has already cost this project real work: a
+recon pass spawned four sub-agents with `model: "sonnet"` for screenshots, design
+tokens, per-view UI descriptions and seeded images. All four died with **0 tool
+calls**, while five sibling spawns that differed only by omitting `model` ran for
+hours with zero errors. The failure is silent — the spawn reports "launched
+successfully" and the sub-task simply never happens. If you catch yourself adding
+`model:` to save tokens, that is the bug; remove it.
+
 **If you spawn anything yourself, every `Task(...)` must pass
 `mode="bypassPermissions"` explicitly.** Never omit it and never assume the agent
 inherits it from you. A spawn without `mode` still reports "launched
