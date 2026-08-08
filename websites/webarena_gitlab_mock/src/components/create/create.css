@@ -1,0 +1,363 @@
+/* ==========================================================================
+   Creation flows — /projects/new, /groups/new, /-/forks/new, /-/new, /-/edit,
+   the Web IDE and the group listings.
+
+   Scoped to this shard so it can be added without touching styles/global.css,
+   which the other shards are editing concurrently. Measurements come from
+   assets/README.md §19a / §19b and the captured DOM in assets/html/.
+   ========================================================================== */
+
+/* --- /groups/new has no left sidebar and no breadcrumb bar ----------------
+   `resolveRouteContext()` in components/layout/routeContext.js matches
+   `/groups/:group/...` on `/groups/new` too, so Layout renders the group
+   sidebar for a group literally called "new". The source shows neither a
+   sidebar nor breadcrumbs on this route (assets/README.md §19b). Suppressing
+   it here keeps the fix inside this shard; routeContext.js belongs to the
+   foundation and should exclude the `new` segment properly — see
+   DEV.part-create.md. */
+body.page-new-group .nav-sidebar { display: none; }
+body.page-new-group .breadcrumbs { display: none; }
+body.page-new-group .layout-page.page-with-contextual-sidebar .content-wrapper { margin-left: 0; }
+
+/* --- bootstrap grid bits the source forms rely on ------------------------- */
+.create-flow .row { display: flex; flex-wrap: wrap; margin: 0 -15px; }
+.create-flow .row > [class^="col-"] { padding: 0 15px; }
+.create-flow .col-lg-3 { flex: 0 0 25%; max-width: 25%; }
+.create-flow .col-lg-9 { flex: 0 0 75%; max-width: 75%; }
+.create-flow .col-sm-4 { flex: 0 0 33.333%; max-width: 33.333%; }
+.create-flow .col-sm-6 { flex: 0 0 50%; max-width: 50%; }
+.create-flow .col-sm-12 { flex: 0 0 100%; max-width: 100%; }
+.create-flow .col-sm-2 { flex: 0 0 16.666%; max-width: 16.666%; }
+.create-flow .col-sm-10 { flex: 0 0 83.333%; max-width: 83.333%; }
+
+@media (max-width: 992px) {
+  .create-flow .col-lg-3, .create-flow .col-lg-9 { flex: 0 0 100%; max-width: 100%; }
+}
+
+.create-flow .container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+/* `.container.gl-display-flex.gl-flex-direction-column` in the source — only
+   the first of those two utilities exists in styles/global.css, so without this
+   the heading and the card grid lay out side by side. */
+.create-flow .container.gl-display-flex { flex-direction: column; }
+
+.create-flow h2.gl-font-size-h1 {
+  font-size: 23px;
+  font-weight: 600;
+  margin: 40px 0;
+  color: var(--gray-900);
+}
+.create-flow .gl-text-center { text-align: center; }
+.create-flow .gl-pt-5 { padding-top: 16px; }
+.create-flow .gl-pl-4 { padding-left: 12px; }
+
+/* --- option cards (§19a landing screen) ----------------------------------- */
+.new-namespace-panel-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -12px;
+}
+.new-namespace-panel-wrapper {
+  width: 50%;
+  padding: 0 12px 24px;
+}
+@media (max-width: 768px) { .new-namespace-panel-wrapper { width: 100%; } }
+
+.new-namespace-panel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  min-height: 245px;
+  padding: 32px 24px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px var(--border-default);
+  background: #fff;
+  color: var(--gray-900);
+  text-align: left;
+  cursor: pointer;
+}
+.new-namespace-panel:hover {
+  box-shadow: inset 0 0 0 1px var(--blue-400);
+  text-decoration: none;
+}
+.new-namespace-panel:focus { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.new-namespace-panel-illustration {
+  flex: 0 0 128px;
+  width: 128px;
+  height: 128px;
+  color: var(--purple-600);
+}
+/* `.gl-reset-color` on the card title resolves to the anchor colour, which the
+   source renders indigo — see assets/screenshots/reference/new-project.png. */
+.new-namespace-panel h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--theme-accent);
+}
+.new-namespace-panel p { margin: 0; color: var(--gray-900); font-size: 14px; }
+
+/* --- pane chrome ---------------------------------------------------------- */
+.gl-breadcrumbs { margin-bottom: 16px; }
+.gl-breadcrumb-list {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
+.gl-breadcrumb-item a { color: var(--gray-500); }
+.gl-breadcrumb-item a[aria-current="page"] { color: var(--gray-900); }
+.gl-breadcrumb-separator { color: var(--gray-400); display: inline-flex; }
+
+.create-flow .form-group { margin-bottom: 16px; }
+.create-flow label.label-bold,
+.create-flow .col-form-label { display: block; font-weight: 600; margin-bottom: 4px; color: var(--gray-900); }
+.create-flow .form-group.row { display: flex; flex-wrap: wrap; margin: 0 -15px 16px; }
+.create-flow .form-group.row > * { padding: 0 15px; }
+
+.create-flow textarea.form-control { min-height: 64px; padding: 6px 10px; font-family: inherit; }
+.create-flow .form-control.input-lg { height: 40px; font-size: 16px; }
+
+/* Project URL / Group URL prefix boxes */
+.input-group { display: flex; align-items: stretch; }
+.input-group .form-control { border-radius: 0 4px 4px 0; flex: 1; min-width: 0; }
+.input-group-text,
+.static-namespace .input-group-text,
+.group-root-path {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  height: 32px;
+  border-radius: 4px 0 0 4px;
+  background: var(--gray-10);
+  color: var(--gray-700);
+  font-size: 14px;
+  box-shadow: inset 0 0 0 1px var(--border-input);
+  white-space: nowrap;
+}
+/* Project URL | / | Project slug — the two halves share the row and the literal
+   separator sits between them, level with the inputs (§19a). */
+.create-flow .row > .form-group.project-path { flex: 1 1 0; max-width: none; }
+.path-separator { flex: 0 0 auto; display: flex; align-items: flex-end; padding: 0 4px 8px; color: var(--gray-700); }
+
+/* The Visibility Level label carries an inline documentation "?" link. */
+.create-flow .visibility-level-setting { margin-top: 8px; }
+.create-flow label.label-bold + a { display: inline-flex; vertical-align: middle; color: var(--link); }
+.create-flow .form-group > label.label-bold { display: inline-block; margin-right: 4px; }
+
+/* --- radio / checkbox groups --------------------------------------------- */
+.visibility-level-setting { display: flex; flex-direction: column; gap: 12px; }
+.gl-form-radio.custom-control,
+.gl-form-checkbox.custom-control,
+.form-check {
+  position: relative;
+  display: block;
+  padding-left: 24px;
+}
+.custom-control-input, .form-check-input {
+  position: absolute;
+  left: 0;
+  top: 3px;
+  margin: 0;
+  width: 14px;
+  height: 14px;
+}
+.custom-control-label, .form-check-label {
+  display: block;
+  font-weight: 400;
+  color: var(--gray-900);
+  cursor: pointer;
+}
+.custom-control-label > svg { margin-right: 4px; color: var(--gray-700); }
+.help-text, .option-description {
+  display: block;
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--gray-500);
+}
+
+/* --- template gallery (§19a create-from-template) ------------------------- */
+.project-templates-buttons { border: 1px solid var(--border-default); border-radius: 4px; }
+.template-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+.template-option:last-child { border-bottom: 0; }
+.template-option .logo {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  background: var(--gray-10);
+  color: var(--gray-600);
+  font-size: 11px;
+  font-weight: 600;
+}
+.template-option .description { font-weight: 600; color: var(--gray-900); }
+.template-option .text-muted { font-size: 12px; }
+.template-option .controls { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.template-selected-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  background: var(--gray-10);
+  box-shadow: inset 0 0 0 1px var(--border-default);
+}
+
+/* --- import provider tiles ------------------------------------------------ */
+.import-buttons-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.import-buttons-grid .js-import-project-btn { min-width: 168px; justify-content: center; }
+
+/* --- file editor (§10b / assets/html/proj-newfile-dotfiles.html) ---------- */
+.file-editor .file-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--gray-10);
+  border: 1px solid var(--border-default);
+  border-radius: 4px 4px 0 0;
+}
+.file-editor .editor-ref {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--border-default);
+  font-size: 12px;
+}
+.file-editor input.new-file-name { flex: 0 1 260px; min-width: 120px; }
+.file-editor .template-selectors-menu { display: flex; align-items: center; gap: 8px; }
+.file-editor .editor-options { margin-left: auto; }
+
+/* `Commit message` / `Target Branch` sit right-aligned against their controls
+   (`col-form-label.col-sm-2`) — see reference/proj-newfile-dotfiles.png. */
+.create-flow .form-group.row > .col-form-label {
+  flex: 0 0 200px;
+  max-width: 200px;
+  text-align: right;
+  white-space: nowrap;
+}
+.file-editor .editor-shell {
+  border: 1px solid var(--border-default);
+  border-top: 0;
+  border-radius: 0 0 4px 4px;
+  overflow: hidden;
+}
+.file-editor textarea.editor-textarea {
+  display: block;
+  width: 100%;
+  min-height: 500px;
+  padding: 12px;
+  border: 0;
+  border-radius: 0;
+  resize: vertical;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 19px;
+  tab-size: 4;
+}
+.file-editor .editor-tabs { display: flex; border-bottom: 1px solid var(--border-default); background: var(--gray-10); }
+.file-editor .editor-tabs button {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--gray-600);
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+.file-editor .editor-tabs button.active { color: var(--gray-900); border-bottom-color: var(--gray-900); font-weight: 600; }
+.commit-message-container textarea { min-height: 64px; }
+.form-actions { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+
+/* --- Web IDE -------------------------------------------------------------- */
+.ide-shell { display: flex; min-height: 560px; border: 1px solid var(--border-default); border-radius: 4px; overflow: hidden; }
+.ide-sidebar { flex: 0 0 280px; border-right: 1px solid var(--border-default); background: var(--gray-10); overflow-y: auto; max-height: 640px; }
+.ide-sidebar-header { padding: 8px 12px; font-weight: 600; font-size: 12px; color: var(--gray-600); border-bottom: 1px solid var(--border-default); }
+.ide-file-list { list-style: none; margin: 0; padding: 0; }
+.ide-file-list button {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  font-size: 13px;
+  color: var(--gray-900);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ide-file-list button:hover { background: rgba(31, 30, 36, .08); }
+.ide-file-list li.active button { background: rgba(31, 30, 36, .08); font-weight: 600; }
+.ide-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.ide-main textarea {
+  flex: 1;
+  min-height: 420px;
+  padding: 12px;
+  border: 0;
+  border-radius: 0;
+  resize: vertical;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 19px;
+}
+.ide-commit-panel { border-top: 1px solid var(--border-default); padding: 12px; background: var(--gray-10); }
+
+/* --- /explore/groups landing banner (§6c.1) ------------------------------- */
+.explore-groups.landing {
+  position: relative;
+  padding: 16px 40px 16px 16px;
+  margin: 16px 0;
+  border-radius: 4px;
+  background: var(--blue-50);
+}
+.explore-groups.landing p { margin: 0 0 4px; }
+.explore-groups.landing p:last-child { margin-bottom: 0; }
+.explore-groups.landing .dismiss-button { position: absolute; top: 8px; right: 8px; }
+.explore-groups.landing.hide { display: none; }
+
+/* --- group / project listing rows ---------------------------------------- */
+.groups-list { list-style: none; margin: 0; padding: 0; }
+.groups-list > li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.group-row-body { flex: 1; min-width: 0; }
+.group-name { font-weight: 600; color: var(--gray-900); font-size: 16px; }
+.group-row-stats { display: flex; align-items: center; gap: 16px; color: var(--gray-500); font-size: 12px; }
+
+/* --- settings pages ------------------------------------------------------- */
+.settings-section { padding: 16px 0; border-bottom: 1px solid var(--border-default); }
+.settings-section:last-child { border-bottom: 0; }
+.settings-section > h4 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+.settings-section > .settings-sub { color: var(--gray-500); font-size: 14px; margin: 0 0 16px; }
+
+/* --- inline validation ---------------------------------------------------- */
+.gl-field-error, .invalid-feedback { display: block; margin-top: 4px; font-size: 12px; color: var(--red-500); }
+.form-control.is-invalid { box-shadow: inset 0 0 0 1px var(--red-500); }

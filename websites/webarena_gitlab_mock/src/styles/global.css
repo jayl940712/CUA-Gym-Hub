@@ -1,0 +1,1053 @@
+@import './tokens.css';
+
+/* ==========================================================================
+   Reset / base — assets/README.md §0.2
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--body-text);
+  background: var(--page-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--link); text-decoration: none; background-color: transparent; }
+a:hover { text-decoration: underline; }
+a:active { color: var(--blue-700); }
+a.gl-link { font-size: 0.875rem; color: var(--link); }
+
+h1, h2, h3, h4, h5, h6 { margin: 0 0 8px; font-weight: 600; color: var(--body-text); line-height: 1.3; }
+h1 { font-size: 28px; }
+h2 { font-size: 23px; }
+h3 { font-size: 18.2px; }
+h4 { font-size: 16.1px; }
+h5 { font-size: 14px; }
+p { margin: 0 0 16px; }
+ul, ol { margin: 0 0 16px; padding-left: 24px; }
+hr { border: 0; border-top: 1px solid var(--border-default); margin: 16px 0; }
+code, pre { font-family: var(--font-mono); font-size: 12px; color: var(--gray-950); }
+pre { margin: 0; }
+table { border-collapse: collapse; width: 100%; }
+
+button { font-family: inherit; font-size: inherit; }
+
+:focus-visible { outline: none; box-shadow: 0 0 0 1px #fff, 0 0 0 3px var(--focus-ring); }
+
+/* ==========================================================================
+   Page shell — assets/README.md §0.1
+   ========================================================================== */
+
+.layout-page { display: block; padding-top: var(--navbar-height); }
+.content-wrapper { width: 100%; min-height: calc(100vh - var(--navbar-height)); }
+
+/* The gutter rules are the source's own, transcribed from the container's
+   `application-1e8c169a….css`. The reserve is put on `.layout-page` as
+   padding, NOT on `.content-wrapper` as a margin, because the source does it
+   that way and because a flat reserve is what makes the layout correct at
+   EVERY width — the previous `margin-left` had no breakpoints but the
+   `/-/profile*` family never carried the class, so those pages relied on the
+   container happening to centre clear of the fixed nav, which only holds
+   above ~1900px (TEST.md BUG-701).
+
+     .page-with-contextual-sidebar{transition:padding-left 0.2s}
+     @media (min-width:768px){.page-with-contextual-sidebar{padding-left:56px}}
+     @media (min-width:1200px){.page-with-contextual-sidebar{padding-left:256px}}
+     @media (min-width:768px){.page-with-icon-sidebar{padding-left:56px}}
+
+   GitLab hard-floors the desktop layout at `body{min-width:992px!important}`,
+   and swaps `page-with-contextual-sidebar` → `page-with-icon-sidebar` when the
+   nav is collapsed, which is why the 56px rule covers both classes. */
+.layout-page.page-with-contextual-sidebar { transition: padding-left 0.2s; }
+@media (min-width: 768px) {
+  .layout-page.page-with-contextual-sidebar { padding-left: var(--sidebar-width-collapsed); }
+}
+@media (min-width: 1200px) {
+  .layout-page.page-with-contextual-sidebar { padding-left: var(--sidebar-width); }
+}
+/* Declared LAST, exactly as in the source: a collapsed sidebar keeps BOTH
+   classes, and this equal-specificity rule wins on source order — which is how
+   the source gets a 56px reserve at 1920 despite the 1200px rule above. */
+@media (min-width: 768px) {
+  .layout-page.page-with-icon-sidebar { padding-left: var(--sidebar-width-collapsed); }
+}
+
+/* Right-sidebar gutter — same stylesheet:
+     @media (min-width:576px){.right-sidebar-collapsed:not(…) .content-wrapper{padding-right:62px}}
+     @media (min-width:576px) and (max-width:767.98px){.right-sidebar-expanded:not(…) .content-wrapper{padding-right:62px}}
+     @media (min-width:768px){.right-sidebar-expanded:not(.is-merge-request) .content-wrapper{padding-right:290px}}
+   Scoped to `.layout-page.…` here: in the mock the `<aside>` also carries
+   `right-sidebar-expanded` and lives INSIDE `.content-wrapper`, so an
+   unscoped descendant selector would be ambiguous to read even though it
+   cannot actually match. */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .layout-page.right-sidebar-expanded .content-wrapper { padding-right: var(--right-sidebar-width-collapsed); }
+}
+@media (min-width: 768px) {
+  .layout-page.right-sidebar-expanded .content-wrapper { padding-right: var(--right-sidebar-width); }
+}
+@media (min-width: 576px) {
+  .layout-page.right-sidebar-collapsed .content-wrapper { padding-right: var(--right-sidebar-width-collapsed); }
+}
+
+.container-fluid { width: 100%; padding: 0 16px; margin: 0 auto; }
+.container-fluid.container-limited { max-width: 1280px; }
+.container-fluid.container-limited.limit-container-width { max-width: 990px; }
+
+main.content, #content-body { display: block; }
+
+.mobile-overlay { display: none; }
+.alert-wrapper { display: block; }
+
+.page-title-holder { display: flex; align-items: center; margin: 16px 0; }
+.page-title-holder .page-title { flex: 1; margin: 0; }
+h1.page-title { font-size: 28px; font-weight: 600; }
+h1.page-title.gl-font-size-h-display { font-size: 32px; font-weight: 600; }
+.page-title-controls { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+.top-area {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border-default); flex-wrap: wrap;
+}
+.top-area .nav-controls { display: flex; align-items: center; gap: 8px; margin-left: auto; padding: 8px 0; }
+
+/* ==========================================================================
+   Navbar — assets/README.md §1
+   ========================================================================== */
+
+.navbar-gitlab {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: var(--navbar-height); min-height: var(--navbar-height);
+  background: var(--theme-indigo-900);
+  display: flex; align-items: center; padding: 0;
+  border: 0;
+}
+.navbar-gitlab .container-fluid { display: flex; align-items: center; height: 100%; }
+.navbar-gitlab .header-content { display: flex; align-items: center; width: 100%; height: 100%; }
+.navbar-gitlab a { color: var(--theme-indigo-navbar-text); }
+.navbar-gitlab a:hover { text-decoration: none; }
+
+.gl-sr-only, .sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+.navbar-gitlab .title-container { display: flex; align-items: center; height: 100%; }
+.navbar-gitlab #logo { display: flex; align-items: center; padding: 4px 8px; border-radius: 4px; }
+.navbar-gitlab #logo:hover { background: rgba(209, 209, 240, 0.2); }
+.tanuki-logo { display: block; }
+.tanuki-logo .tanuki { fill: #e24329; }
+.tanuki-logo .left-cheek, .tanuki-logo .right-cheek { fill: #fc6d26; }
+.tanuki-logo .chin { fill: #fca326; }
+
+.navbar-sub-nav, .navbar-nav { display: flex; align-items: center; list-style: none; margin: 0; padding: 0; }
+.navbar-gitlab .nav-item { position: relative; display: flex; align-items: center; }
+.navbar-gitlab .nav-item > a,
+.navbar-gitlab .user-counter > a,
+.navbar-gitlab .header-new > a,
+.navbar-gitlab .header-help > a {
+  display: flex; align-items: center; gap: 2px;
+  color: var(--theme-indigo-navbar-text);
+  padding: 6px 8px; border-radius: 4px; height: 32px;
+}
+.navbar-gitlab .nav-item > a:hover,
+.navbar-gitlab .user-counter > a:hover,
+.navbar-gitlab .header-new > a:hover,
+.navbar-gitlab .header-help > a:hover { background: rgba(209, 209, 240, 0.2); }
+.navbar-gitlab .nav-item.show > a { background: #fff; color: var(--theme-indigo-900); }
+
+.header-search {
+  position: relative; width: 320px; height: 32px;
+  background: rgba(209, 209, 240, 0.2); border-radius: 4px;
+  margin-left: 10px;
+}
+.header-search form { display: flex; align-items: center; height: 100%; }
+.header-search .gl-search-box-by-type { display: flex; align-items: center; width: 100%; padding: 0 8px; }
+.header-search input.gl-search-box-by-type-input {
+  flex: 1; background: transparent; border: 0; outline: none;
+  color: #fff; font-size: 14px; height: 30px; padding: 0 6px;
+}
+.header-search input::placeholder { color: var(--theme-indigo-navbar-text); opacity: 1; }
+.header-search kbd.keyboard-shortcut-helper {
+  background: rgba(209, 209, 240, 0.2); color: var(--theme-indigo-navbar-text);
+  border-radius: 3px; padding: 0 6px; font-size: 12px; font-family: var(--font-mono);
+}
+.header-search.is-focused { background: #fff; }
+.header-search.is-focused input { color: var(--gray-900); }
+.header-search.is-focused input::placeholder { color: var(--gray-400); }
+
+.navbar-collapse { display: flex; align-items: center; flex: 1; }
+.navbar-gitlab .navbar-nav.gl-w-full { width: 100%; justify-content: flex-end; gap: 2px; }
+
+.header-user-avatar { border-radius: 50%; border: 1px solid rgba(31, 30, 36, 0.08); }
+
+.header-search-dropdown-menu {
+  position: absolute; top: 100%; left: 0; width: 100%; margin-top: 8px; z-index: 1001;
+  background: #fff; border: 1px solid var(--gray-200); border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1); overflow-y: auto; max-height: 400px;
+}
+.header-search-dropdown-content { list-style: none; margin: 0; padding: 8px 0; }
+
+/* ==========================================================================
+   Left contextual sidebar — assets/README.md §1b
+   ========================================================================== */
+
+.nav-sidebar {
+  position: fixed; top: var(--navbar-height); left: 0; bottom: 0;
+  width: var(--sidebar-width); z-index: 600;
+  background: var(--sidebar-bg); border-right: 1px solid var(--sidebar-border);
+}
+.nav-sidebar.sidebar-collapsed-desktop { width: var(--sidebar-width-collapsed); }
+.nav-sidebar-inner-scroll { height: 100%; overflow-y: auto; padding-bottom: 60px; }
+
+.sidebar-top-level-items { list-style: none; margin: 0; padding: 8px 0 0; }
+.sidebar-top-level-items > li > a {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0 8px; padding: 8px 12px; border-radius: 4px;
+  font-size: 14px; color: var(--gray-900); min-height: 32px;
+}
+.sidebar-top-level-items > li > a:hover { background: rgba(31, 30, 36, 0.08); text-decoration: none; }
+.sidebar-top-level-items > li.active > a { font-weight: 600; }
+.sidebar-top-level-items > li.active > a:not(.has-sub-items) { background: rgba(31, 30, 36, 0.08); }
+.nav-icon-container { display: inline-flex; width: 16px; height: 16px; align-items: center; justify-content: center; flex: 0 0 16px; }
+.nav-item-name { flex: 1; }
+
+.sidebar-sub-level-items { list-style: none; margin: 0; padding: 0; }
+.sidebar-sub-level-items.is-fly-out-only { display: none; }
+.sidebar-sub-level-items > li > a {
+  display: block; margin: 0 8px; padding: 8px 12px 8px 36px;
+  border-radius: 4px; font-size: 14px; color: var(--gray-900);
+}
+.sidebar-sub-level-items > li > a:hover { background: rgba(31, 30, 36, 0.08); text-decoration: none; }
+.sidebar-sub-level-items > li.active > a { font-weight: 600; background: rgba(31, 30, 36, 0.08); }
+.fly-out-top-item, li.divider.fly-out-top-item { display: none; }
+
+/* The `/-/profile*` sidebar's header is a `div`, not the project/group `li`
+   (assets/html/profile-preferences.html):
+     .nav-sidebar-inner-scroll>div.context-header{margin-top:0.25rem}
+     .nav-sidebar-inner-scroll>div.context-header a{display:flex;align-items:center;
+       border-radius:0.25rem;width:auto;line-height:1rem;margin:1px 8px;padding:0.25rem;
+       margin-bottom:0.25rem;margin-top:0.125rem}
+     .nav-sidebar-inner-scroll>div.context-header a:hover{background-color:rgba(31,30,36,0.08)} */
+.nav-sidebar-inner-scroll > div.context-header { margin-top: 4px; }
+.nav-sidebar-inner-scroll > div.context-header > a {
+  display: flex; align-items: center; width: auto; line-height: 16px;
+  margin: 2px 8px 4px; padding: 4px; border-radius: 4px;
+  font-weight: 600; color: var(--gray-900);
+}
+.nav-sidebar-inner-scroll > div.context-header > a:hover {
+  background: rgba(31, 30, 36, 0.08); text-decoration: none;
+}
+
+li.context-header { padding: 4px 8px; }
+li.context-header > a { display: flex; align-items: center; gap: 8px; padding: 4px; font-weight: 600; color: var(--gray-900); }
+li.context-header > a:hover { background: rgba(31, 30, 36, 0.08); border-radius: 4px; text-decoration: none; }
+.sidebar-context-title { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.toggle-sidebar-button {
+  position: fixed; bottom: 0; left: 0; width: 255px; height: 48px;
+  display: flex; align-items: center; gap: 8px; padding: 0 16px;
+  background: var(--sidebar-bg); border-top: 1px solid var(--sidebar-border);
+  color: var(--gray-900); cursor: pointer; font-size: 14px;
+}
+.toggle-sidebar-button:hover { background: rgba(31, 30, 36, 0.08); text-decoration: none; }
+.sidebar-collapsed-desktop .toggle-sidebar-button { width: 55px; padding: 0 18px; }
+.sidebar-collapsed-desktop .collapse-text,
+.sidebar-collapsed-desktop .nav-item-name,
+.sidebar-collapsed-desktop .sidebar-context-title,
+.sidebar-collapsed-desktop .sidebar-sub-level-items,
+.sidebar-collapsed-desktop .count { display: none; }
+.close-nav-button { display: none; }
+
+/* ==========================================================================
+   Breadcrumbs — assets/README.md §1d.1
+   ========================================================================== */
+
+.breadcrumbs { display: block; }
+.breadcrumbs-container {
+  display: flex; align-items: center; height: 48px;
+  border-bottom: 1px solid var(--border-default); position: relative;
+}
+.toggle-mobile-nav { display: none; }
+.breadcrumbs-links { flex: 1; }
+.breadcrumbs-list {
+  display: flex; align-items: center; flex-wrap: wrap;
+  list-style: none; margin: 0; padding: 0; font-size: 12px; line-height: 20px;
+}
+.breadcrumbs-list > li { display: flex; align-items: center; }
+.breadcrumbs-list > li a { color: var(--gray-500); }
+.breadcrumbs-list > li + li::before {
+  content: '/'; color: var(--gray-500); padding: 0 6px; display: inline-block;
+}
+.breadcrumbs-container.border-bottom-0 { border-bottom: 0; }
+
+/* ==========================================================================
+   Buttons — assets/README.md §1d.4 / DESIGN.md §2.2
+   Borders are inset box-shadows (border-width is 0) — recon correction.
+   ========================================================================== */
+
+.btn, .gl-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  border: 0; border-radius: 4px; cursor: pointer;
+  font-size: 14px; font-weight: 400; line-height: 1;
+  padding: 8px 12px; height: 32px; white-space: nowrap;
+  background: transparent; color: var(--gray-900); text-decoration: none;
+  font-family: inherit;
+}
+.btn:hover, .gl-button:hover { text-decoration: none; }
+.btn:disabled, .gl-button:disabled, .btn.disabled { opacity: .65; cursor: default; pointer-events: none; }
+.btn-md { height: 32px; padding: 8px 12px; }
+.btn-sm { height: 24px; padding: 4px 8px; font-size: 12px; }
+.btn-block { width: 100%; }
+
+.gl-button.btn-default { background: #fff; color: var(--gray-900); box-shadow: inset 0 0 0 1px var(--gray-200); }
+.gl-button.btn-default:hover { background: var(--gray-50); box-shadow: inset 0 0 0 2px var(--gray-400); }
+.gl-button.btn-default:active { background: var(--gray-100); }
+.gl-button.btn-confirm { background: var(--blue-500); color: #fff; box-shadow: inset 0 0 0 1px var(--blue-600); }
+.gl-button.btn-confirm:hover { background: var(--blue-600); }
+.gl-button.btn-confirm:active { background: var(--blue-700); }
+.gl-button.btn-danger { background: var(--red-500); color: #fff; box-shadow: inset 0 0 0 1px var(--red-600); }
+.gl-button.btn-danger:hover { background: var(--red-600); }
+.gl-button.btn-success { background: var(--green-500); color: #fff; box-shadow: inset 0 0 0 1px var(--green-600); }
+.gl-button.btn-dashed { background: #fff; color: var(--gray-900); box-shadow: inset 0 0 0 1px var(--gray-200); border-style: dashed; }
+.gl-button.btn-link { background: transparent; box-shadow: none; color: var(--link); padding: 0; height: auto; }
+.gl-button.btn-default-tertiary,
+.gl-button.btn-confirm-tertiary,
+.gl-button.btn-danger-tertiary { background: transparent; box-shadow: none; }
+.gl-button.btn-default-tertiary { color: var(--gray-900); }
+.gl-button.btn-confirm-tertiary { color: var(--blue-500); }
+.gl-button.btn-danger-tertiary { color: var(--red-500); }
+.gl-button.btn-default-tertiary:hover { background: var(--gray-50); box-shadow: none; }
+.gl-button.btn-icon { width: 32px; padding: 8px; color: var(--gray-700); }
+.gl-button.btn-icon.btn-sm { width: 24px; padding: 4px; }
+.gl-button-text { display: inline-block; }
+
+/* ==========================================================================
+   Badges — assets/README.md §1d.4
+   ========================================================================== */
+
+.gl-badge, .badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 400; line-height: 1;
+  padding: 0 8px; height: 16px; border-radius: 160px; white-space: nowrap;
+}
+.gl-badge.md, .badge.md { height: 24px; padding: 4px 8px; }
+.badge-info { background: var(--blue-100); color: var(--blue-700); }
+.badge-success { background: var(--green-100); color: var(--green-700); }
+.badge-warning { background: var(--orange-100); color: var(--orange-700); }
+.badge-danger { background: var(--red-100); color: var(--red-700); }
+.badge-muted { background: var(--gray-50); color: var(--gray-600); }
+.badge-neutral { background: var(--gray-100); color: var(--gray-700); }
+.badge-tier { background: #e1d8f9; color: var(--purple-700); }
+
+/* ==========================================================================
+   Tabs — assets/README.md §1d.4
+   ========================================================================== */
+
+.nav-links, .gl-tabs-nav, ul.nav.nav-tabs {
+  display: flex; align-items: center; list-style: none; margin: 0; padding: 0;
+  border-bottom: 1px solid var(--border-default);
+}
+.gl-tabs-nav .nav-item, .nav-links .nav-item, .nav-links > li { display: flex; }
+.nav-link, .gl-tab-nav-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 16px 12px; height: 48px;
+  color: var(--gray-700); font-size: 14px; border-bottom: 2px solid transparent;
+}
+.nav-link:hover, .gl-tab-nav-item:hover { text-decoration: none; color: var(--gray-900); border-bottom-color: var(--gray-200); }
+.nav-link.active, .gl-tab-nav-item-active, .nav-links > li.active > a {
+  color: var(--gray-900); font-weight: 600; border-bottom-color: var(--theme-accent);
+}
+.gl-tab-counter-badge { background: var(--gray-50); color: var(--gray-600); }
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+.form-control, .gl-form-input, input[type="text"], input[type="search"],
+input[type="date"], input[type="email"], input[type="url"], textarea, select {
+  display: block; width: 100%; padding: 6px 10px; font-size: 14px; line-height: 20px;
+  color: var(--gray-900); background: #fff; font-family: inherit;
+  border: 1px solid var(--border-input); border-radius: 4px;
+}
+.form-control:focus, textarea:focus, select:focus, input:focus {
+  outline: none; border-color: var(--blue-400);
+  box-shadow: 0 0 0 1px #fff, 0 0 0 3px var(--focus-ring);
+}
+.form-control::placeholder { color: var(--gray-400); }
+.form-group { margin-bottom: 16px; }
+label { display: inline-block; margin-bottom: 4px; font-weight: 600; font-size: 14px; }
+.form-text, .gl-form-text { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.gl-search-box-by-type { position: relative; display: flex; align-items: center; }
+
+/* ==========================================================================
+   Dropdowns — assets/README.md §1d.4
+   ========================================================================== */
+
+.dropdown { position: relative; }
+.dropdown-menu {
+  position: absolute; top: 100%; left: 0; z-index: 1002; display: none;
+  min-width: 240px; max-height: 400px; overflow-y: auto;
+  padding: 8px 0; margin-top: 4px;
+  background: #fff; border: 1px solid var(--gray-200); border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); list-style: none;
+}
+.dropdown-menu.show, .dropdown.show > .dropdown-menu { display: block; }
+.dropdown-menu-right { left: auto; right: 0; }
+.dropdown-menu ul { list-style: none; margin: 0; padding: 0; }
+.dropdown-item, .dropdown-menu li > a, .dropdown-menu li > button {
+  display: flex; align-items: center; gap: 8px; width: 100%;
+  padding: 6px 12px; font-size: 14px; color: var(--gray-900);
+  background: transparent; border: 0; text-align: left; cursor: pointer;
+}
+.dropdown-item:hover, .dropdown-menu li > a:hover, .dropdown-menu li > button:hover {
+  background: var(--gray-50); text-decoration: none;
+}
+.dropdown-header { padding: 6px 12px; font-size: 12px; color: var(--gray-600); font-weight: 600; }
+.dropdown-bold-header { padding: 6px 12px; font-size: 14px; font-weight: 600; color: var(--gray-900); }
+.dropdown-menu li.divider, .divider { height: 1px; margin: 8px 0; background: var(--border-default); }
+.gl-dropdown-item.is-active > .dropdown-item { font-weight: 600; }
+.gl-dropdown-item-text-primary { margin: 0; font-size: 14px; }
+.gl-dropdown-item-text-secondary { margin: 0; font-size: 12px; color: var(--text-muted); }
+
+/* ==========================================================================
+   Modals — assets/README.md §1d.4
+   ========================================================================== */
+
+.modal { position: fixed; inset: 0; z-index: 1050; overflow-y: auto; }
+.modal-backdrop { position: fixed; inset: 0; z-index: 1040; background: rgba(0, 0, 0, .4); }
+.modal-dialog { position: relative; margin: 64px auto; max-width: 500px; z-index: 1051; }
+.modal-dialog.modal-lg { max-width: 800px; }
+.modal-dialog.modal-sm { max-width: 380px; }
+.modal-content { background: #fff; border-radius: 4px; box-shadow: 0 4px 12px rgba(0, 0, 0, .2); }
+.modal-header {
+  display: flex; align-items: center; padding: 16px;
+  border-bottom: 1px solid var(--border-strong);
+}
+.modal-title { flex: 1; margin: 0; font-size: 16.1px; font-weight: 600; }
+.modal-body { padding: 16px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 16px; border-top: 1px solid var(--border-strong); }
+
+/* ==========================================================================
+   Alerts / flash — assets/README.md §1d.2
+   ========================================================================== */
+
+.gl-alert { position: relative; display: flex; gap: 8px; padding: 12px 16px; border-radius: 4px; margin-bottom: 16px; }
+.gl-alert-info, .flash-notice { background: var(--blue-50); }
+.gl-alert-warning, .flash-warning { background: var(--orange-50); }
+.gl-alert-success, .flash-success { background: var(--green-50); }
+.gl-alert-danger, .flash-alert { background: var(--red-50); }
+.gl-alert-tip { background: var(--gray-50); }
+.gl-alert-content { flex: 1; }
+.gl-alert-actions { display: flex; gap: 8px; margin-top: 12px; }
+.gl-dismiss-btn { position: absolute; top: 8px; right: 8px; }
+.flash-container { display: block; }
+.flash-container:empty { display: none; }
+
+/* ==========================================================================
+   Avatars — assets/README.md §0.4
+   ========================================================================== */
+
+.avatar-container { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.gl-avatar, .avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  overflow: hidden; flex-shrink: 0; object-fit: cover;
+  font-weight: 400; color: var(--gray-900); background: var(--gray-50);
+  border: 1px solid rgba(31, 30, 36, .08);
+}
+.gl-avatar-circle, .avatar-circle, .avatar:not(.rect-avatar .avatar) { border-radius: 50%; }
+.rect-avatar, .rect-avatar .avatar, .avatar-tile, .gl-avatar-identicon { border-radius: 0; }
+.gl-avatar-s16, .avatar.s16, .s16.avatar-container { width: 16px; height: 16px; font-size: 10px; }
+.gl-avatar-s24, .avatar.s24, .s24.avatar-container { width: 24px; height: 24px; font-size: 12px; }
+.gl-avatar-s26, .avatar.s26, .s26.avatar-container { width: 26px; height: 26px; font-size: 12px; }
+.gl-avatar-s32, .avatar.s32, .s32.avatar-container { width: 32px; height: 32px; font-size: 14px; }
+.gl-avatar-s40, .avatar.s40, .s40.avatar-container { width: 40px; height: 40px; font-size: 16px; }
+.gl-avatar-s48, .avatar.s48, .s48.avatar-container { width: 48px; height: 48px; font-size: 18px; }
+.gl-avatar-s64, .avatar.s64, .s64.avatar-container { width: 64px; height: 64px; font-size: 24px; }
+.gl-avatar-s96, .avatar.s96, .s96.avatar-container { width: 96px; height: 96px; font-size: 36px; }
+.identicon.bg1 { background: #f0f0f7; } .identicon.bg2 { background: #eef6f5; }
+.identicon.bg3 { background: #f6f0f5; } .identicon.bg4 { background: #f5f3ee; }
+.identicon.bg5 { background: #ecf4ee; } .identicon.bg6 { background: #eef2f8; }
+.identicon.bg7 { background: #ececef; }
+
+/* ==========================================================================
+   Lists / tables shared by many views
+   ========================================================================== */
+
+.content-list, .projects-list { list-style: none; margin: 0; padding: 0; }
+.content-list > li, .projects-list > li { padding: 12px 0; border-bottom: 1px solid var(--border-light); }
+.gl-table th { text-align: left; font-size: 12px; color: var(--gray-900); padding: 8px 12px; border-bottom: 1px solid var(--border-default); }
+.gl-table td { padding: 12px; color: var(--gray-700); border-bottom: 1px solid var(--border-light); vertical-align: top; }
+
+.gl-pagination { margin-top: 16px; }
+.pagination { display: flex; justify-content: center; list-style: none; gap: 4px; padding: 0; }
+.page-item .page-link {
+  display: inline-flex; align-items: center; padding: 6px 12px;
+  border: 1px solid var(--border-default); border-radius: 4px; color: var(--gray-900);
+}
+.page-item.active .page-link, .page-link.active { background: var(--gray-50); font-weight: 600; }
+.page-item.disabled .page-link { color: var(--gray-400); pointer-events: none; }
+
+.gl-keyset-pagination { display: flex; justify-content: center; gap: 4px; margin-top: 16px; }
+
+.empty-state, .gl-empty-state { text-align: center; padding: 48px 16px; }
+.gl-empty-state-content { max-width: 640px; margin: 0 auto; }
+
+/* ==========================================================================
+   Utility subset of gl-* used in the captured DOM (assets/README.md §0.2)
+   ========================================================================== */
+
+.gl-font-monospace { font-family: var(--font-mono); }
+.gl-text-gray-500, .gl-text-secondary, .text-secondary { color: var(--gray-500); }
+.gl-text-gray-600 { color: var(--gray-600); }
+.gl-text-gray-900 { color: var(--gray-900); }
+.text-muted { color: var(--gray-600); }
+.gl-font-sm { font-size: 12px; }
+.gl-font-base { font-size: 14px; }
+.gl-font-lg { font-size: 16px; }
+.gl-font-weight-bold { font-weight: 600; }
+.gl-display-flex { display: flex; }
+.gl-display-none { display: none; }
+.gl-display-block { display: block; }
+.gl-align-items-center { align-items: center; }
+.gl-justify-content-space-between { justify-content: space-between; }
+.gl-flex-grow-1 { flex-grow: 1; }
+.gl-flex-shrink-0 { flex-shrink: 0; }
+.gl-relative { position: relative; }
+.gl-w-full { width: 100%; }
+.gl-mt-0 { margin-top: 0; } .gl-mt-1 { margin-top: 2px; } .gl-mt-2 { margin-top: 4px; }
+.gl-mt-3 { margin-top: 8px; } .gl-mt-5 { margin-top: 16px; }
+.gl-mb-0 { margin-bottom: 0; } .gl-mb-2 { margin-bottom: 4px; }
+.gl-mb-3 { margin-bottom: 8px; } .gl-mb-5 { margin-bottom: 16px; }
+.gl-mr-2 { margin-right: 4px; } .gl-mr-3 { margin-right: 8px; }
+.gl-ml-2 { margin-left: 4px; } .gl-ml-3 { margin-left: 8px; } .gl-ml-auto { margin-left: auto; }
+.gl-ml-n2 { margin-left: -4px; }
+.gl-p-0 { padding: 0; } .gl-py-2 { padding-top: 4px; padding-bottom: 4px; }
+.gl-pl-0 { padding-left: 0; }
+.gl-white-space-nowrap { white-space: nowrap; }
+.gl-text-right { text-align: right; }
+.gl-vertical-align-baseline { vertical-align: baseline; }
+.d-flex { display: flex; }
+.align-items-center { align-items: center; }
+.list-unstyled { list-style: none; padding-left: 0; }
+.hidden, .d-none { display: none !important; }
+
+.gl-icon, svg.s8, svg.s16, svg.s18, svg.s24 { display: inline-block; vertical-align: middle; fill: currentColor; }
+svg.s8 { width: 8px; height: 8px; }
+svg.s16, .gl-icon.s16 { width: 16px; height: 16px; }
+svg.s18 { width: 18px; height: 18px; }
+svg.s24 { width: 24px; height: 24px; }
+
+gl-emoji { font-style: normal; }
+
+time { color: inherit; }
+
+/* Markdown body */
+.md { font-size: 14px; line-height: 1.6; color: var(--gray-900); word-wrap: break-word; }
+.md h1, .md h2 { border-bottom: 1px solid var(--border-default); padding-bottom: 8px; }
+.md pre { background: var(--gray-10); border: 1px solid var(--border-default); border-radius: 4px; padding: 12px; overflow-x: auto; }
+.md code { background: var(--gray-50); border-radius: 3px; padding: 1px 4px; }
+.md pre code { background: transparent; padding: 0; }
+.md table { margin-bottom: 16px; }
+.md table th, .md table td { border: 1px solid var(--border-default); padding: 6px 12px; }
+.md img { max-width: 100%; }
+.md blockquote { margin: 0 0 16px; padding-left: 12px; border-left: 3px solid var(--border-default); color: var(--gray-600); }
+
+/* Placeholder view — routes registered this round but not yet built out.
+   Marked so the next shard can grep for `route-placeholder`. */
+.route-placeholder { padding: 24px 0; color: var(--gray-600); }
+.route-placeholder h2 { font-size: 18.2px; color: var(--gray-900); }
+
+/* ==========================================================================
+   Issue / MR detail — Shell B+ right sidebar (assets/README.md §0.1, §14b)
+   ========================================================================== */
+
+.issuable-details { position: relative; padding-right: 0; }
+.right-sidebar {
+  position: fixed; top: var(--navbar-height); right: 0; bottom: 0;
+  width: var(--right-sidebar-width); z-index: 300;
+  background: #fff; border-left: 1px solid var(--border-default);
+  overflow-y: auto; padding: 8px 16px 32px;
+}
+.right-sidebar .block {
+  padding: 16px 0; border-bottom: 1px solid var(--border-light);
+}
+.right-sidebar .block:last-child { border-bottom: 0; }
+.right-sidebar .block > .title {
+  display: flex; align-items: center; justify-content: space-between;
+  font-weight: 600; color: var(--gray-900); margin-bottom: 8px;
+}
+.right-sidebar .block .value { color: var(--gray-700); }
+.right-sidebar .no-value { color: var(--gray-500); }
+.right-sidebar .author-link { display: inline-flex; align-items: center; gap: 8px; }
+.right-sidebar .float-right { margin-left: auto; }
+.sidebar-collapsed-icon { display: none; }
+
+/* Milestone detail sidebar reuses .block but sits in normal flow. */
+.milestone-sidebar .block { padding: 12px 0; border-bottom: 1px solid var(--border-light); }
+.milestone-sidebar .block > .title { font-weight: 600; margin-bottom: 4px; }
+
+.detail-page-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 16px 0; border-bottom: 1px solid var(--border-default);
+}
+.detail-page-header-body { display: flex; align-items: center; gap: 8px; flex: 1; }
+.detail-page-header-actions { margin-left: auto; }
+.detail-page-description { padding: 16px 0; }
+.detail-page-description .title-container { display: flex; align-items: flex-start; gap: 8px; }
+h1.title.gl-font-size-h-display { font-size: 28px; font-weight: 600; margin: 0; flex: 1; }
+
+/* Notes timeline (§14.8) */
+#notes-list { list-style: none; margin: 0; padding: 0; }
+#notes-list > li.timeline-entry { padding: 12px 0; border-bottom: 1px solid var(--border-light); }
+#notes-list .timeline-entry-inner { display: flex; gap: 12px; }
+#notes-list .timeline-icon { flex: 0 0 32px; }
+#notes-list .timeline-content { flex: 1; min-width: 0; }
+#notes-list .note-header-info { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+#notes-list .note-headline-light { color: var(--gray-500); font-size: 12px; }
+#notes-list .system-note .timeline-icon { flex: 0 0 16px; }
+.timeline-discussion-body { margin-top: 4px; }
+.notes-form { padding: 16px 0; }
+
+/* Project overview (§9) */
+.project-home-panel .home-panel-title { align-items: center; gap: 8px; }
+/* TEST.md DIFF-907 — the stats row is ONE inline row on the source. The markup
+   already matched; what was missing is that `.project-stats .nav` never picked
+   up a flex/list-style rule, so it fell back to a stacked bulleted <ul>.
+   `gl-gap-5` is GitLab's 16px gap utility. */
+.project-stats .nav { display: flex; align-items: center; list-style: none; margin: 0; padding: 0; }
+.project-stats .nav.gl-gap-5 { gap: 16px; }
+.project-stats .nav-link, .project-stats .stat-text { padding: 12px 0; border-bottom: 2px solid transparent; height: auto; }
+.project-stats strong { margin-right: 4px; }
+
+/* The language shares strip under the stats row. Widths and colours are the
+   source's own (`repository_languages` × `programming_languages.color`). */
+.repository-languages-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 8px 0 16px; }
+.repository-languages-bar .progress-bar { height: 100%; }
+.visibility-icon { display: inline-flex; align-items: center; color: var(--gray-500); }
+/* TEST.md DIFF-1104 — the file tree. Every value is a `getComputedStyle`
+   reading off `/byteblaze/a11y-webring.club` at 1280 AND 1920: three equal
+   319px columns from `table-layout:fixed`, 42px rows, 10px/16px cells, and
+   both links clipped with an ellipsis instead of wrapping to 2-3 lines. */
+/* GitLab's `.bordered-box` — `1px solid $border-color` + `$border-radius-default`.
+   Measured on the source: the holder is 958 wide with a 1px border, so the table
+   inside it is 956. The mock had no border at all, which left the table 958 wide
+   and shifted every column of the `table-layout: auto` subdirectory view. */
+.bordered-box { border: 1px solid var(--border-default, #dcdcde); border-radius: 4px; }
+.tree-table.gl-table-layout-fixed { table-layout: fixed; }
+.tree-table th, .tree-table td {
+  padding: 10px 16px; font-size: 14px; line-height: 21px;
+  border-bottom: 1px solid var(--border-light);
+}
+.tree-table th { text-align: left; color: var(--gray-900); vertical-align: top; }
+.tree-table th.text-right, .tree-table td.text-right { text-align: right; }
+.tree-table td.tree-item-file-name { vertical-align: middle; }
+.tree-table td.tree-commit, .tree-table td.tree-time-ago { vertical-align: top; color: var(--gray-500); }
+/* `.str-truncated` is GitLab's 82% clip; `.str-truncated-100` is the 100% one. */
+.tree-item-link.str-truncated {
+  display: inline-block; max-width: 82%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  vertical-align: top; color: var(--gray-900);
+}
+.tree-item-link .mr-1 { margin-right: 4px; }
+.tree-item-link svg { vertical-align: text-bottom; }
+.tree-commit-link.str-truncated-100 {
+  display: inline-block; max-width: 100%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  vertical-align: top;
+}
+.tree-commit-link.gl-text-secondary { color: var(--gray-500); }
+
+/* TEST.md DIFF-1701 / AUDIT.md P2-A — the README block beneath the file table,
+   on the project overview and on `/-/tree/:ref[/*path]`. Every value below is a
+   `getComputedStyle` reading taken off the live source at 1280 on
+   `/byteblaze/dotfiles/-/tree/main` (DEV.r19-polish.md §1):
+
+     article.readme-holder     margin 16px 0 · radius 4px · border 1px #dcdcde
+                               on LEFT/RIGHT/BOTTOM ONLY (border-top is `0 none`;
+                               the title bar supplies the top edge) · width 958
+     .js-file-title            flex · padding 8px 16px · bg #fbfafd
+                               · border-top AND border-bottom 1px #dcdcde
+                               · radius 4px 4px 0 0 · width 956 · height 39
+     .file-header-content      block · padding-right 30px
+     .file-header-content a    inherits #333238 — NOT link blue
+     .file-content.md          padding 32px · bg #fff · max-width 990px */
+.readme-holder {
+  margin: 16px 0; border-radius: 4px;
+  border-left: 1px solid var(--border-default);
+  border-right: 1px solid var(--border-default);
+  border-bottom: 1px solid var(--border-default);
+}
+.readme-holder .js-file-title {
+  display: flex; align-items: center; padding: 8px 16px;
+  background: var(--gray-10);
+  border-top: 1px solid var(--border-default);
+  border-bottom: 1px solid var(--border-default);
+  border-radius: 4px 4px 0 0;
+}
+.readme-holder .file-header-content { padding-right: 30px; }
+.readme-holder .file-header-content a { color: var(--gray-900); }
+.readme-holder .file-header-content svg { vertical-align: -3px; }
+.readme-holder .file-content.md { padding: 32px; background: #fff; max-width: 990px; }
+
+/* Profile (§7) */
+.user-profile .cover-block { border-bottom: 1px solid var(--border-default); }
+.cover-title { font-size: 28px; margin: 0; }
+.cover-status { font-size: 14px; color: var(--gray-700); }
+.profile-user-bio { max-width: 720px; margin: 0 auto; }
+
+/* Issuable lists (§5a / §13) */
+.issuable-list > li { padding: 12px 0; border-bottom: 1px solid var(--border-light); }
+.issue-title-text a { color: var(--gray-900); font-weight: 600; }
+.issuable-info { margin-top: 4px; }
+.gl-label { display: inline-flex; margin-right: 4px; }
+.gl-label-text { display: inline-block; font-size: 12px; line-height: 16px; }
+
+/* Members table (§17) */
+.members-table td { vertical-align: middle; }
+
+/* Avatar letter is painted by a pseudo-element so it stays out of outerText
+   (evaluators read `.block.assignee`, the members table and `.user-profile`). */
+.avatar-initial::before { content: attr(data-initial); }
+
+/* ==========================================================================
+   CI/CD — pipelines list, pipeline detail, jobs, job detail (DIFF-1105)
+
+   Every value below is a `getComputedStyle` reading taken off the live source
+   at 1920x1080 on `/byteblaze/a11y-webring.club/-/{pipelines,pipelines/1823,
+   jobs,jobs/16323}` and `/OpenAPITools/openapi-generator/-/pipelines`
+   (DEV.r12-cicd.md §3). None of it is eyeballed.
+   ========================================================================== */
+
+/* Status pill: 1px outline in the status colour, and the glyph inherits it. */
+.ci-status {
+  display: inline; padding: 2px 7px 4px; border-radius: 4px;
+  border: 1px solid currentColor; line-height: 16px; text-decoration: none;
+  white-space: nowrap;
+}
+.ci-status.ci-failed, .ci-status-icon-failed { color: var(--red-500); }
+.ci-status.ci-skipped, .ci-status-icon-skipped { color: var(--gray-500); }
+.ci-status.ci-success, .ci-status-icon-success { color: var(--green-500); }
+.ci-status.ci-canceled, .ci-status-icon-canceled { color: var(--gray-700); }
+.ci-status.ci-failed-with-warnings,
+.ci-status-icon-failed-with-warnings { color: var(--orange-500); }
+.ci-status-icon { display: inline-flex; align-items: center; vertical-align: middle; }
+.ci-status-icon svg { fill: currentColor; }
+/* The mini-graph bubble and the graph node glyph are ringed 24px discs. */
+.ci-status-icon.borderless {
+  border: 1px solid currentColor; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* Pipelines table. `b-table-fixed` + the colgroup percentages are what give
+   the source its 15 / 30 / 10 / 25 / 15 columns. */
+.ci-table .b-table-fixed, [data-testid="jobs-table"].b-table-fixed { table-layout: fixed; }
+:is(.ci-table, [data-testid="jobs-table"]) :is(col, th) {
+  &.gl-w-10p { width: 10%; } &.gl-w-15p { width: 15%; } &.gl-w-20p { width: 20%; }
+  &.gl-w-30p { width: 30%; } &.gl-w-quarter { width: 25%; }
+}
+.ci-table table { width: 100%; }
+.ci-table th { font-size: 12px; font-weight: 600; padding: 16px; border-bottom: 1px solid var(--gray-100); }
+/* Every element inside a pipelines-table cell is `line-height:16px` on the
+   source (status link, commit title, ref, sha, badges, finished-at); the row
+   itself keeps 21px. Inheriting the body's 21px made each row 125px against
+   the source's 111. */
+.ci-table td { padding: 16px; vertical-align: top; line-height: 16px; }
+.pipelines-container .finished-at { color: var(--gray-500); margin: 0; }
+.pipelines-container .finished-at svg { margin-right: 4px; }
+.ci-table .commit-row-message { color: var(--gray-900); }
+.pipeline-tags .ref-name, .js-pipeline-container .info-well .ref-name { font-size: 13.3px; }
+.pipeline-tags .commit-sha, [data-testid="job-sha"] { font-size: 13.3px; color: var(--blue-600); }
+/* The source's badge strip is a plain block with inline-flex badges in a
+   normal line box (20px tall), not a flex row (which collapses to the 16px
+   badge height and loses 2px off the row). */
+.pipeline-tags .label-container { display: block; line-height: 20px; }
+.pipeline-tags .label-container > * { margin-right: 4px; }
+.pipeline-mini-graph-stage-container .gl-button { padding: 0; border: 0; background: none; }
+.pipeline-triggerer { display: flex; }
+
+/* Jobs table — 10 / 20 / 10 / 10 / 15 / 15 / 10 / 10, th 14px/600. */
+[data-testid="jobs-table"] th { font-size: 14px; font-weight: 600; padding: 16px; }
+[data-testid="jobs-table"] td { padding: 16px; vertical-align: top; }
+[data-testid="job-name"], [data-testid="job-stage-name"] { color: var(--gray-700); }
+
+/* Pipeline detail. */
+:is(.js-pipeline-container, .build-page) .page-content-header { display: flex; align-items: center; padding: 10px 0; line-height: 34px; }
+:is(.js-pipeline-container, .build-page) .page-content-header .header-main-content { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+[data-testid="ci-header-item-text"] { font-weight: 700; }
+.js-pipeline-container .commit-box { padding: 16px 0; }
+.js-pipeline-container .commit-box .commit-title { font-size: 24.5px; font-weight: 600; line-height: 29.4px; margin: 0; }
+.js-pipeline-container .info-well {
+  background: var(--gray-10); border: 1px solid var(--gray-100);
+  border-radius: 4px; margin-bottom: 16px;
+}
+.js-pipeline-container .info-well .well-segment { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; padding: 16px; }
+.js-pipeline-container .info-well .well-segment + .well-segment { border-top: 1px solid var(--gray-100); }
+.js-pipeline-container .info-well .icon-container { width: 16px; margin-right: 8px; color: var(--gray-900); flex: 0 0 16px; }
+.js-pipeline-container .info-well .label-container { display: flex; gap: 4px; margin: 0; }
+
+/* The stage-column pipeline graph. */
+.js-pipeline-graph > div { background: var(--gray-10); padding: 16px 0; }
+[data-testid="stage-column"] { padding: 0 24px; }
+[data-testid="stage-column-title"] { font-weight: 600; line-height: 36px; padding-left: 8px; }
+.gl-pipeline-job-width { width: 240px; }
+[data-testid="job-with-link"] {
+  display: block; padding: 8px; border: 1px solid var(--gray-100);
+  border-radius: 32px; background: #fff; color: var(--gray-900); text-decoration: none;
+}
+[data-testid="job-with-link"]:hover { background: var(--gray-50); border-color: var(--gray-200); }
+[data-testid="job-with-link"].job-failed { background: var(--red-50); }
+[data-testid="job-with-link"] .gl-text-truncate { padding-right: 48px; }
+
+/* Job detail — the right sidebar GitLab shows next to the (absent) trace. */
+.build-page { min-height: 200px; }
+.build-sidebar {
+  border-left: 1px solid var(--border-default); padding: 0 16px;
+  width: var(--right-sidebar-width);
+}
+.build-sidebar [data-testid="job-name"] { font-size: 21px; font-weight: 600; line-height: 25.2px; color: var(--gray-900); }
+.build-sidebar .build-job { line-height: 21px; padding: 4px 0; }
+.build-sidebar .build-job.gl-font-weight-bold { font-weight: 600; }
+.build-page .gl-alert-danger { border: 1px solid var(--red-100); border-radius: 4px; }
+.js-pipeline-container .bs-callout-danger { border-left: 3px solid var(--red-500); background: var(--red-50); padding: 12px 16px; }
+
+/* Utilities the CI/CD pages need that earlier rounds never had a use for.
+   Values are GitLab's own (`gl-*` on a 4px scale; `gl-px-6` = 24px).
+
+   SCOPED to the CI/CD subtree on purpose. `gl-p-5`, `gl-p-3`,
+   `gl-text-truncate` and `gl-line-height-36` already sit on 60+ elements built
+   by earlier rounds, where they have always been inert. Defining them globally
+   changed the page HEIGHT of 8 measured routes (project overviews, blob, tree,
+   issue and MR detail) — no text, no width, no sidebar box, but round 8's
+   responsive geometry is a protected contract, so the new rules stop at the
+   CI/CD containers and the measured blast radius outside them is zero. */
+.pipelines-container, .js-pipeline-container, .build-page, .build-sidebar,
+.pipeline-charts, .jobs-container, .ci-table { }
+
+:is(.pipelines-container, .js-pipeline-container, .build-page, .build-sidebar,
+    .pipeline-charts, .jobs-container, .ci-table) {
+  .gl-flex-wrap { flex-wrap: wrap; }
+  .gl-flex-direction-column { flex-direction: column; }
+  .gl-overflow-auto { overflow: auto; }
+  .gl-min-w-0 { min-width: 0; }
+  .gl-text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gl-px-6 { padding-left: 24px; padding-right: 24px; }
+  .gl-py-5 { padding-top: 16px; padding-bottom: 16px; }
+  .gl-p-3 { padding: 8px; }
+  .gl-p-5 { padding: 16px; }
+  .gl-pl-3 { padding-left: 8px; }
+  .gl-pr-3 { padding-right: 8px; }
+  .gl-my-4 { margin-top: 12px; margin-bottom: 12px; }
+  .gl-mx-4 { margin-left: 12px; margin-right: 12px; }
+  .gl-mr-4 { margin-right: 12px; }
+  .gl-line-height-36 { line-height: 36px; }
+  .gl-w-max-content { width: max-content; }
+  .position-relative { position: relative; }
+}
+
+/* Inline-flow utilities the pipelines table relies on. Undefined, these three
+   fell back to `display:block`, which stacked the mini-graph's stage bubbles
+   vertically and broke `#789 <branch> <ref> <sha>` onto three lines — visible
+   only in a screenshot, since the text content is identical either way.
+   `.ref-name` / `.commit-sha` are monospace on the source (Menlo, 13.3px), and
+   the `Actions` header label is `gl-lg-display-none!` — hidden from 992px up. */
+:is(.pipelines-container, .js-pipeline-container, .build-page, .build-sidebar,
+    .pipeline-charts, .jobs-container, .ci-table) {
+  .gl-display-inline { display: inline; }
+  .gl-display-inline-block { display: inline-block; }
+  .gl-display-inline-flex { display: inline-flex; }
+  .gl-vertical-align-middle { vertical-align: middle; }
+  .gl-vertical-align-baseline\! { vertical-align: baseline; }
+  .gl-my-2 { margin-top: 4px; margin-bottom: 4px; }
+  .gl-mr-1 { margin-right: 2px; }
+  .gl-ml-1 { margin-left: 2px; }
+  .ref-name, .commit-sha, [data-testid="job-sha"], [data-testid="job-ref"] {
+    font-family: var(--font-mono);
+  }
+  .commit-icon { vertical-align: -3px; }
+  .user-avatar-link { display: inline-block; }
+  /* Inline-blocks that hold nothing but a glyph collapse to the glyph on the
+     source (16px / 24px boxes, not the 21px line-height of the row). */
+  .icon-container, .user-avatar-link, .pipeline-mini-graph-stage-container { line-height: 0; }
+}
+@media (min-width: 992px) {
+  .ci-table [data-testid="actions-th"] .gl-lg-display-none\! { display: none !important; }
+}
+
+/* The pipeline graph scrolls INSIDE its own box on the source — a 14-job
+   pipeline is 3 456px wide and must not push the page sideways. Round 8's
+   contract is zero horizontal scroll on <html> at 1280; this is what keeps it. */
+.js-pipeline-graph { max-width: 100%; }
+.js-pipeline-graph > .gl-overflow-auto { overflow-x: auto; max-width: 100%; }
+[data-testid="stage-column"] { flex: 0 0 auto; }
+
+/* Bootstrap's two-column row. Scoped with `:has()` to rows that actually hold
+   `.col-md-6` — CI/CD Analytics is the only such page — so the bare `.row`
+   wrappers on EditIssue, NewProject, ExploreTopics and the ProjectOps empty
+   states keep the block layout round 8 measured them in. */
+.row:has(> .col-md-6) { display: flex; flex-wrap: wrap; margin: 0 -12px; }
+.row:has(> .col-md-6) > .col-md-6 { flex: 1 1 50%; min-width: 0; padding: 0 12px; }
+
+/* ==========================================================================
+   TEST.md DIFF-1101 / DIFF-1102 — commit-list chrome and role chips.
+   Values measured on the live source at 1280 and 1920 (DEV.r12-cicd.md §6).
+   ========================================================================== */
+
+/* DIFF-1101 · the day header above a commit group, and the rows under it. */
+.commit-header {
+  padding: 5px 10px; background: var(--gray-10);
+  line-height: 21px; color: var(--gray-900);
+  border-top: 1px solid var(--border-light);
+}
+li.commit { padding: 10px 0; }
+li.commit .commit-row-message,
+li.commit .commit-title a {
+  font-weight: 600; color: var(--gray-900);
+}
+
+/* DIFF-1102 · the two role chips.
+   The issuable header uses GitLab's legacy `.user-access-role` outline pill;
+   a note's author uses the `gl-badge md` chip with a transparent fill and an
+   inset 1px border. Both are 12px, both keep their tooltip text. */
+.detail-page-header .user-access-role {
+  display: inline-block; font-size: 12px; line-height: 16px;
+  padding: 0 8px; border: 1px solid var(--gray-100); border-radius: 100px;
+  color: var(--gray-500);
+}
+.gl-bg-transparent\! { background: transparent !important; }
+.gl-inset-border-1-gray-100\! { box-shadow: inset 0 0 0 1px var(--gray-100) !important; }
+
+/* Bootstrap's `xl` breakpoint (1200px). The mock has had `.d-none` as an
+   unconditional `display:none !important` and no way to re-show at a width,
+   which is why `d-xl-inline-block` could not be carried before. */
+@media (min-width: 1200px) {
+  .d-xl-inline-block { display: inline-block !important; }
+}
+
+/* `#notes-list`'s own 14px/gray-900 note-body typography out-specifies the
+   generic `.badge` rule for this chip, so the source's 12px / gray-600 is
+   restated where it lands. */
+.note-header-info .gl-badge.md { font-size: 12px; color: var(--gray-600); }
+
+/* Bootstrap's `sm` breakpoint (576px), scoped to the commit list. The source
+   shows the 40px author avatar and the `2bae5ade` sha chip there and hides the
+   mobile-only `· <sha>` line; the mock had `.d-none` as an unconditional
+   `display:none !important` with nothing to re-show it, so it did the exact
+   opposite on all three. Scoped rather than global because `.d-none` is on 100+
+   elements built by earlier rounds and round 8's geometry is a contract. */
+@media (min-width: 576px) {
+  .commit-list .commit .avatar-cell.d-sm-block { display: block !important; }
+  .commit-list .commit .commit-sha-group.d-sm-flex { display: flex !important; }
+  .commit-list .commit .commit-row-message.d-sm-none { display: none !important; }
+}
+
+/* DIFF-1101 · the commit row itself. The source lays `li.commit.flex-row` out
+   as `display:flex; align-items:center`, so the 40px avatar sits BESIDE the
+   title/committer block; the mock left it `list-item`, which stacked the two
+   and made every row 103px against the source's 62. `.avatar-cell` keeps the
+   source's 8px gutter and `.commit-content` its 10px right padding. */
+.commit-list li.commit.flex-row { display: flex; flex-direction: row; align-items: center; }
+.commit-list li.commit .avatar-cell { flex: 0 0 auto; margin-right: 8px; }
+.commit-list li.commit .commit-content { padding-right: 10px; }
+
+/* The `triggered … by <Administrator>` byline. The source ships BOTH forms and
+   swaps them at Bootstrap's `sm`: `.gl-avatar-labeled` is
+   `gl-display-none gl-sm-display-inline-flex` and the `@root` fallback is
+   `gl-sm-display-none!`. With neither class defined the mock hid the name and
+   showed `@root`, so the header read `… by @root` against the source's
+   `… by Administrator`. Scoped to the CI/CD headers. */
+:is(.js-pipeline-container, .build-page) .gl-avatar-labeled.gl-display-none { display: none; }
+@media (min-width: 576px) {
+  :is(.js-pipeline-container, .build-page) .gl-avatar-labeled.gl-sm-display-inline-flex {
+    display: inline-flex !important; align-items: center; gap: 4px; vertical-align: middle;
+  }
+  :is(.js-pipeline-container, .build-page) .author.gl-sm-display-none\! { display: none !important; }
+}
+:is(.js-pipeline-container, .build-page) .gl-avatar-labeled-labels { display: inline-block; }
+:is(.js-pipeline-container, .build-page) .gl-avatar-labeled-label { font-weight: 600; }
+
+/* ==========================================================================
+   Filtered-search token bar — TEST.md DIFF-1501
+   Class names and every dimension below are the source's own, measured with
+   getComputedStyle on 8023 (DEV.r16-tokenbar.md §1.8).
+   ========================================================================== */
+
+/* The suggestion list is absolutely positioned under the whole search box. */
+.gl-search-box-by-click { position: relative; }
+.gl-filtered-search-suggestion-list {
+  top: calc(100% + 2px); left: 0; right: auto;
+  min-width: 240px; max-height: 312px; overflow-y: auto;
+  padding: 8px 0; border: 1px solid var(--gray-100); border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); z-index: 300;
+}
+.gl-filtered-search-suggestion > .dropdown-item { min-height: 32px; align-items: center; }
+.gl-filtered-search-suggestion .gl-dropdown-item-icon { flex: 0 0 16px; }
+.gl-dropdown-item-text-wrapper { display: flex; flex-direction: column; min-width: 0; }
+.gl-filtered-search-token-operator-description { margin-left: 8px; color: var(--text-muted); }
+.gl-dropdown-divider { list-style: none; }
+.gl-dropdown-divider > .dropdown-divider {
+  height: 1px; margin: 8px 0; border: 0; background: var(--border-default);
+}
+.gl-dropdown-text { padding: 6px 12px; }
+.gl-dropdown-text > .b-dropdown-text { margin: 0; font-size: 14px; color: var(--gray-900); }
+.gl-text-gray-700 { color: var(--gray-700); }
+/* The label swatch in a `Label` value row. */
+.gl-display-inline-block { display: inline-block; }
+.gl-mr-3 { margin-right: 8px; }
+.gl-p-3 { padding: 8px; }
+
+/* The bar. `box-shadow: inset 0 0 0 1px #89888d` is the source's border. */
+.gl-filtered-search { background: #fff; border-radius: 4px; }
+.gl-filtered-search-scrollable {
+  padding: 4px 4px 4px 12px; min-height: 32px; cursor: text;
+  box-shadow: inset 0 0 0 1px var(--gray-400); border-radius: 4px 0 0 4px;
+}
+/* The bar is 32px on the source: 4px padding + a 24px content row + 4px. The
+   input's default form-control height pushed it to 40, so it is pinned to the
+   same 24px row the tokens use. */
+.gl-filtered-search .gl-filtered-search-term-input {
+  background: transparent; height: 24px; padding: 0; line-height: 24px; font-size: 14px;
+}
+.gl-filtered-search .gl-filtered-search-item { min-height: 24px; }
+.gl-filtered-search .gl-filtered-search-term-input:focus { box-shadow: none; outline: none; }
+.gl-filtered-search .btn.gl-search-box-by-click-search-button,
+.gl-filtered-search .btn.gl-search-box-by-click-clear-button {
+  border: 1px solid var(--gray-400); border-left: 0; border-radius: 0;
+  background: #fff; padding: 0 8px; color: var(--gray-600);
+}
+.gl-filtered-search .btn.gl-search-box-by-click-search-button { border-radius: 0 4px 4px 0; }
+.gl-filtered-search .btn.gl-search-box-by-click-search-button:hover,
+.gl-filtered-search .btn.gl-search-box-by-click-clear-button:hover { background: var(--gray-50); }
+
+/* Applied tokens. */
+.gl-filtered-search-token { display: inline-flex; align-items: stretch; }
+.gl-filtered-search-token-segment { display: inline-flex; }
+.gl-token {
+  display: inline-flex; align-items: center; height: 24px; padding: 4px 8px;
+  font-size: 12px; line-height: 16px; white-space: nowrap;
+}
+.gl-token-default-variant { background: var(--gray-50); color: var(--gray-900); }
+.gl-token-search-value-variant { background: var(--gray-100); color: var(--gray-900); }
+.gl-filtered-search-token-type { border-radius: 2px 0 0 2px; margin-right: 2px; }
+.gl-filtered-search-token-operator { border-radius: 0; margin-right: 2px; }
+.gl-filtered-search-token-data { border-radius: 0 2px 2px 0; padding: 0 0 0 8px; }
+.gl-token-content { display: inline-flex; align-items: center; }
+.gl-filtered-search-token-data-content { display: inline-flex; align-items: center; }
+.gl-token-close.btn {
+  width: 24px; height: 24px; padding: 4px; margin-left: 4px; border: 0; border-radius: 4px;
+  background: transparent; color: inherit; display: inline-flex; align-items: center;
+  justify-content: center; cursor: pointer;
+}
+.gl-token-close.btn:hover { background: rgba(0, 0, 0, 0.08); }
+.gl-token-close .gl-icon { width: 12px; height: 12px; }
+
+/* A free-text search term renders as its own chip, as on the source. */
+.gl-filtered-search-term-token {
+  padding: 4px; font-size: 12px; line-height: 16px; color: var(--gray-900);
+}
