@@ -3,6 +3,11 @@
  * in assets/html/dashboard.html — labels and hrefs verbatim, in source order.
  * Rail order: Dashboard, Sales, Catalog, Customers, Marketing, Content, Reports,
  * Stores, System, Find Partners & Extensions (DESIGN.md §5).
+ *
+ * `column` is the 0-based flyout column a group sits in. The source wraps its
+ * level-1 groups in `<li class="column">` table-cells, so Reports fans out over
+ * four columns rather than one tall list; transcribed from the `li.column`
+ * partition in assets/html/dashboard.html. Groups without it fall in column 0.
  */
 
 export const ADMIN_MENU = [
@@ -85,7 +90,7 @@ export const ADMIN_MENU = [
         ],
       },
       {
-        title: 'SEO & Search', items: [
+        title: 'SEO & Search', column: 1, items: [
           {
             label: 'URL Rewrites', href: '/admin/admin/url_rewrite/index/',
             match: ['/admin/admin/url_rewrite'],
@@ -108,7 +113,7 @@ export const ADMIN_MENU = [
         // Source <title> for every page under this group carries an extra
         // "Customer Reviews" level that the rail itself does not render —
         // e.g. "Reviews / Customer Reviews / User Content / Marketing".
-        title: 'User Content', titlePath: ['Customer Reviews', 'User Content', 'Marketing'],
+        title: 'User Content', column: 1, titlePath: ['Customer Reviews', 'User Content', 'Marketing'],
         items: [
           { label: 'All Reviews', href: '/admin/review/product/index/', match: ['/admin/review/product'] },
           { label: 'Pending Reviews', href: '/admin/review/product/pending/' },
@@ -167,7 +172,7 @@ export const ADMIN_MENU = [
         ],
       },
       {
-        title: 'Sales', items: [
+        title: 'Sales', column: 1, items: [
           { label: 'Orders', href: '/admin/reports/report_sales/sales/' },
           { label: 'Tax', href: '/admin/reports/report_sales/tax/' },
           { label: 'Invoiced', href: '/admin/reports/report_sales/invoiced/' },
@@ -179,14 +184,14 @@ export const ADMIN_MENU = [
         ],
       },
       {
-        title: 'Customers', items: [
+        title: 'Customers', column: 2, items: [
           { label: 'Order Total', href: '/admin/reports/report_customer/totals/' },
           { label: 'Order Count', href: '/admin/reports/report_customer/orders/' },
           { label: 'New', href: '/admin/reports/report_customer/accounts/' },
         ],
       },
       {
-        title: 'Products', items: [
+        title: 'Products', column: 2, items: [
           { label: 'Views', href: '/admin/reports/report_product/viewed/' },
           { label: 'Bestsellers', href: '/admin/reports/report_sales/bestsellers/' },
           { label: 'Low Stock', href: '/admin/reports/report_product/lowstock/' },
@@ -195,12 +200,12 @@ export const ADMIN_MENU = [
         ],
       },
       {
-        title: 'Statistics', items: [
+        title: 'Statistics', column: 2, items: [
           { label: 'Refresh Statistics', href: '/admin/reports/report_statistics/' },
         ],
       },
       {
-        title: 'Business Intelligence', items: [
+        title: 'Business Intelligence', column: 3, items: [
           { label: 'Advanced Reporting', href: '/admin/analytics/reports/show/' },
           { label: 'BI Essentials', href: '/admin/analytics/biessentials/signup/' },
         ],
@@ -235,13 +240,13 @@ export const ADMIN_MENU = [
         ],
       },
       {
-        title: 'Currency', items: [
+        title: 'Currency', column: 1, items: [
           { label: 'Currency Rates', href: '/admin/admin/system_currency/' },
           { label: 'Currency Symbols', href: '/admin/admin/system_currencysymbol/' },
         ],
       },
       {
-        title: 'Attributes', items: [
+        title: 'Attributes', column: 1, items: [
           { label: 'Product', href: '/admin/catalog/product_attribute/' },
           { label: 'Attribute Set', href: '/admin/catalog/product_set/' },
           { label: 'Rating', href: '/admin/review/rating/' },
@@ -283,19 +288,19 @@ export const ADMIN_MENU = [
         ],
       },
       {
-        title: 'Permissions', items: [
+        title: 'Permissions', column: 1, items: [
           { label: 'All Users', href: '/admin/admin/user/' },
           { label: 'Locked Users', href: '/admin/admin/locks/' },
           { label: 'User Roles', href: '/admin/admin/user_role/' },
         ],
       },
       {
-        title: 'Action Logs', items: [
+        title: 'Action Logs', column: 1, items: [
           { label: 'Bulk Actions', href: '/admin/bulk/index/' },
         ],
       },
       {
-        title: 'Other Settings', items: [
+        title: 'Other Settings', column: 1, items: [
           { label: 'Notifications', href: '/admin/admin/notification/' },
           { label: 'Custom Variables', href: '/admin/admin/system_variable/' },
           { label: 'Manage Encryption Key', href: '/admin/admin/crypt_key/' },

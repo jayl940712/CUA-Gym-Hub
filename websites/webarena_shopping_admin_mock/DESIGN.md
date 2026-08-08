@@ -141,6 +141,8 @@ them with inline SVG or a local icon set in the mock.)
 | Rail logo block | height `7.5rem`, padding `1.7rem 0`, logo img `3.5rem × 4.1rem` | `.menu-wrapper .logo`, `.menu-wrapper .logo .logo-img` |
 | Rail item box | `min-height: 6.2rem`, padding `1.2rem .5rem .5rem`, centered text | `.admin__menu .level-0>a` |
 | Rail flyout | `left:100%; top:0; transform:translateX(-100%); padding:2rem 0 0;` 0.3s ease-in-out | `.admin__menu .level-0>.submenu` |
+| Rail flyout columns | level-1 groups sit in `<li class="column">` table-cells — Reports fans out over 4, Marketing/Stores/System over 2, the rest 1 | `.submenu>ul>li.column`, partition transcribed from `assets/html/dashboard.html` |
+| Rail flyout open/close | a parent rail anchor is `<a href="#" onclick="return false;">` — clicking never navigates, it pins the panel open; dismiss via `.action-close`, Escape, an outside click, or following a link | `li.level-0.parent>a[href="#"]`, `a.action-close[data-role=close-submenu]` |
 | Page header | padding `1.5rem 3rem`, `margin-bottom:1.2rem` | `.page-header` |
 | Page header actions | `padding-top:1.1rem` | `.page-header-actions` |
 | Page title wrapper | `margin-top:1.6rem` | `.page-title-wrapper` |

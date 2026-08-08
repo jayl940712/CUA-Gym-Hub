@@ -127,7 +127,9 @@ button { font-family: inherit; }
   visibility: hidden;
   z-index: 698;
 }
-.admin__menu .level-0:hover > .submenu,
+/* Opening is driven by React state (`._hover`), not by `:hover` — a pinned
+   flyout must survive the pointer leaving the rail, and the close X must be
+   able to dismiss a panel the pointer is still sitting on. */
 .admin__menu .level-0._hover > .submenu { transform: translateX(0); visibility: visible; }
 
 .submenu-title {
@@ -135,10 +137,37 @@ button { font-family: inherit; }
   display: block;
   font-size: 1.8rem;
   font-weight: 400;
-  padding: 0 3rem 1.5rem;
+  padding: 0 5rem 1.5rem 3rem;
 }
-.submenu-groups { display: flex; flex-wrap: wrap; gap: 0 3rem; padding: 0 3rem; }
-.submenu-group { min-width: 17rem; }
+
+/* Close X — only meaningful once the flyout is pinned open by a click. */
+.admin__menu .level-0 > .submenu > .action-close {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  display: none;
+  height: 3.4rem;
+  padding: 0;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  width: 3.4rem;
+}
+.admin__menu .level-0._show > .submenu > .action-close { display: block; }
+.admin__menu .level-0 > .submenu > .action-close::before {
+  color: #a79d95;
+  content: '\2715';
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.admin__menu .level-0 > .submenu > .action-close:hover::before { color: #ff9800; }
+
+/* The source lays its level-1 groups out as `<li class="column">` table-cells,
+   so a wide menu like Reports fans out sideways instead of stacking. */
+.submenu-columns { display: table; list-style: none; margin: 0; padding: 0 3rem; }
+.submenu-columns > .column { display: table-cell; min-width: 17rem; vertical-align: top; }
+.submenu-columns > .column + .column { padding-left: 3rem; }
+.submenu-columns > .column > ul { list-style: none; margin: 0; padding: 0; }
 .submenu-group-title {
   color: #a79d95;
   display: block;
@@ -146,9 +175,10 @@ button { font-family: inherit; }
   font-weight: 600;
   padding: .8rem 0;
   text-transform: uppercase;
+  white-space: nowrap;
 }
-.submenu-group ul { list-style: none; margin: 0 0 1.5rem; padding: 0; }
-.submenu-group ul a {
+.submenu-group > ul { list-style: none; margin: 0 0 1.5rem; padding: 0; }
+.submenu-group > ul a {
   color: #fcfcfc;
   display: block;
   font-size: 1.3rem;
@@ -156,7 +186,7 @@ button { font-family: inherit; }
   text-decoration: none;
   white-space: nowrap;
 }
-.submenu-group ul a:hover { color: #ff9800; text-decoration: none; }
+.submenu-group > ul a:hover { color: #ff9800; text-decoration: none; }
 
 .page-wrapper {
   display: flex;
