@@ -1,0 +1,45 @@
+/*
+ * mock-shell.css — shell-level corrections that exist only because the mock is a
+ * React SPA and the source is a PHP page. Nothing here restyles the site; every
+ * rule closes a measured geometry delta against the live source.
+ *
+ * Loaded LAST, after style.css / responsive.css / mock.css.
+ *
+ * ---------------------------------------------------------------------------
+ * TEST DIFF-008 — the doctype delta, neutralised in CSS
+ * ---------------------------------------------------------------------------
+ * The source ships `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" …>`,
+ * which puts Chrome in ALMOST-STANDARDS mode: a line box whose only content is an
+ * atomic inline (an <img>, or an inline-block) ignores the strut, so the box is
+ * exactly as tall as its content. The mock cannot ship that doctype — vite parses
+ * index.html with parse5, which rejects it outright (`non-conforming-doctype`) and
+ * fails the build. So the mock runs in full standards mode, where the strut's
+ * descender adds ~5px under every such box.
+ *
+ * `vertical-align: bottom` reproduces the almost-standards result exactly: the
+ * atomic inline's bottom margin edge is pinned to the line box bottom, so the
+ * strut can no longer stick out below it and the line box collapses to the
+ * content height. Measured on the live source at 1280 and 1920:
+ *
+ *   #logo > a                 70px -> 65px   (its <img> is 55px + 5px margins)
+ *   a.listing-thumb  (list)   85px -> 79px
+ *   a.listing-thumb (gallery) 196px -> 190px
+ *   div.breadcrumb            23px -> 18px   (ul.breadcrumb is an inline-block)
+ *
+ * Scoped to the three boxes that actually measured differently rather than a blanket
+ * `img { vertical-align: bottom }`, which would also move images that sit inline
+ * WITH text — those align on the baseline on the source too, and are already correct.
+ */
+
+header #logo a img { vertical-align: bottom; }
+
+.listing-card .listing-thumb img { vertical-align: bottom; }
+
+div.breadcrumb > ul.breadcrumb { vertical-align: bottom; }
+
+/* Same cause again: `style.css:431` makes the gallery card's title an
+   `display:inline-block` that is alone in its line box, so standards mode hangs a
+   descender under it. Measured: li.listing-card 269px -> 263px in gallery view and
+   270px -> 264px on the home page, matching the source. */
+.listing-grid .listing-basicinfo a,
+.listing-card-list.latestItems .listing-basicinfo a { vertical-align: bottom; }

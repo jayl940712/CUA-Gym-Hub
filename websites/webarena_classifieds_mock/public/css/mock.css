@@ -1,0 +1,106 @@
+/*
+ * Mock-only additions on top of the source theme's style.css / responsive.css,
+ * which are copied verbatim out of the container and must not be edited.
+ *
+ * Keep this file tiny. Anything here is a deviation from the source and should
+ * be justified by the React shell, not by taste.
+ */
+
+/* React mounts into #root, which the theme's CSS does not know about. It must be
+   layout-transparent so `header`, `section` and `footer` behave as body children. */
+#root { display: block; width: 100%; }
+
+/* Three theme rules use the CHILD combinator `body.<class> > section`, which
+   assumes <section> is a direct child of <body>. Under React it is a grandchild
+   (body > #root > section), so those selectors never match and the page wash is
+   lost. Re-stated here verbatim from style.css lines 362-366, with `> #root`
+   inserted. Nothing else is changed. */
+body.login > #root > section, body.register > #root > section,
+body.recover > #root > section, body.contact > #root > section
+  { background: #f6f6f4; min-height: 520px; }
+body.item-post > #root > section { background: #f6f6f4; }
+body.user > #root > section { min-height: 520px; }
+
+/* TEST BUG-A — the validation-error reveal.
+ *
+ * `style.css:267` ships `#error_list, .error_list, #comment_error_list
+ * { … display:none; }` and that rule is byte-identical to the source. On the
+ * source the container is un-hidden imperatively: every one of those forms is
+ * wired to jquery.validate with `errorLabelContainer: "#error_list"` /
+ * `"#comment_error_list"` (item-post.html:335, contact.html:160,
+ * item-10727-comment.html:255, Item.form.class.php:1077,
+ * User.form.class.php:217/325), and the plugin calls `.show()` on the container
+ * the moment it holds an error label and `.hide()` again when it does not.
+ *
+ * The mock ports the markup and the CSS but has no jquery.validate, so the
+ * `<li>`s were being written into a box that stayed 0 px high. Expressing the
+ * plugin's show/hide declaratively is one rule for all of them: the container
+ * is `:empty` exactly when there are no errors to show, and React renders it
+ * with zero child nodes in that case. Higher specificity than line 267 AND
+ * later in the cascade (index.html loads mock.css last), so it wins on both
+ * counts; the source rule is left untouched.
+ *
+ * Applies to every form that owns one of these containers — item_add,
+ * item_edit, the comment form, contact, send_friend, and any user form that
+ * still renders an inline list — so there is a single mechanism, not seven. */
+#error_list:not(:empty),
+.error_list:not(:empty),
+#comment_error_list:not(:empty) { display: block; }
+
+/* TEST DIFF-005 — the item form's image uploader.
+ *
+ * `item-post` / `item-edit` are the only two routes where the source loads TWO
+ * stylesheets beyond the theme pair the mock copies (see the <link> list in
+ * assets/html/item-edit-84144.html):
+ *
+ *   oc-includes/osclass/assets/js/fineuploader/fineuploader.css
+ *   oc-content/themes/sigma/css/ajax-uploader.css
+ *
+ * Neither was ported, so the uploader was being held together with inline
+ * styles in ItemForm.jsx that guessed at the result — which is where the
+ * "shorter image tile" half of DIFF-005's 63 px page-height delta came from
+ * (the tile is a fixed 200 px on the source; the guess produced ~152 px).
+ *
+ * Below is the subset of those two sheets that actually paints the rendered
+ * uploader, copied verbatim and in source order (fineuploader first, then
+ * ajax-uploader, which is why the `!important`s and the second `.qq-uploader`
+ * width are here). Rules for states the mock has no markup for — progress bars,
+ * drop areas, retry/cancel/spinner, RTL — are omitted rather than copied dead.
+ *
+ * The three theme overrides that outrank both sheets on the source
+ * (`body #restricted-fine-uploader` style.css:249, `body .qq-upload-button`
+ * :251, `body .ajax_preview_img` :571) win here by specificity too — `body X`
+ * beats `X` regardless of file order — so loading this after style.css instead
+ * of before it produces the same cascade. */
+.qq-uploader { position: relative; width: 275px; }
+.qq-upload-button {
+  display: block; padding: 7px 0; text-align: center;
+  background: #880000; border-bottom: 1px solid #DDD; color: #FFF;
+}
+.qq-upload-list { margin: 0; padding: 0; list-style: none; }
+.qq-upload-list li {
+  padding: 9px; line-height: 15px; font-size: 16px; background-color: #FFF0BD;
+}
+.qq-upload-file, .qq-upload-delete { margin-right: 12px; }
+.qq-upload-delete { display: none; color: #000000; font-size: 12px; font-weight: normal; }
+.qq-upload-list li.qq-upload-success { background-color: #5DA30C; color: #FFFFFF; }
+
+/* --- sigma/css/ajax-uploader.css --- */
+.ajax_preview_img img {
+  max-width: 120px; max-height: 120px; display: block;
+  margin-left: auto; margin-right: auto;
+}
+#restricted-fine-uploader { padding-top: 1em; padding-left: 30px; margin-bottom: 20px; }
+.ajax_preview_img {
+  margin-right: 15px; padding: 10px; border: 1px black solid;
+  width: 125px; height: 125px; background: white; margin-top: 10px;
+}
+.qq-upload-success div.ajax_preview_img img { width: initial; }
+.qq-upload-list li {
+  background-color: #dff0d8 !important; color: #333333 !important;
+  display: inline-block; min-height: 200px; margin-right: 10px;
+  margin-bottom: 10px; height: 200px; overflow: hidden;
+}
+.qq-upload-button { background-color: #f2dede; color: #333333; margin-bottom: 10px; }
+.qq-upload-file { width: 145px; height: 1em; display: block; overflow: hidden; }
+.qq-uploader { width: 100%; }

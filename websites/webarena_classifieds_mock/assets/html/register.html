@@ -1,0 +1,660 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+  <head>
+    
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+<title>Classifieds</title>
+<meta name="title" content="Classifieds" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<meta http-equiv="Expires" content="Fri, Jan 01 1970 00:00:00 GMT" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="http://10.186.197.203:9980/oc-content/themes/sigma/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://10.186.197.203:9980/oc-content/themes/sigma/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="http://10.186.197.203:9980/oc-content/themes/sigma/favicon/favicon-16x16.png">
+<!-- /favicon -->
+
+<script type="text/javascript">
+  var sigma = window.sigma || {};
+  sigma.base_url = 'http://10.186.197.203:9980/index.php';
+  sigma.langs = {"delete":"Delete","cancel":"Cancel"};
+  sigma.fancybox_prev = 'Previous image';
+  sigma.fancybox_next = 'Next image';
+  sigma.fancybox_closeBtn = 'Close';
+  var jqueryVersion = '1';
+</script>
+<meta name="generator" content="Osclass 8.1.2" />
+<meta name="robots" content="index, follow" />
+<meta name="googlebot" content="index, follow" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" rel="stylesheet" type="text/css" />
+<link href="http://10.186.197.203:9980/oc-includes/osclass/assets/js/fineuploader/fineuploader.css" rel="stylesheet" type="text/css" />
+<link href="http://10.186.197.203:9980/oc-content/themes/sigma/css/ajax-uploader.css" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400&family=Nunito:wght@400;700&display=swap" rel="stylesheet" type="text/css" />
+<link href="http://10.186.197.203:9980/oc-content/themes/sigma/css/style.css?v=20260808184731" rel="stylesheet" type="text/css" />
+<link href="http://10.186.197.203:9980/oc-content/themes/sigma/css/responsive.css?v=20260808184731" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://10.186.197.203:9980/oc-includes/osclass/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="http://10.186.197.203:9980/oc-includes/osclass/assets/js/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript" src="http://10.186.197.203:9980/oc-includes/osclass/assets/js/date.js"></script>
+<script type="text/javascript" src="http://10.186.197.203:9980/oc-includes/osclass/assets/js/fineuploader/jquery.fineuploader.min.js"></script>
+<script type="text/javascript" src="http://10.186.197.203:9980/oc-includes/osclass/assets/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://10.186.197.203:9980/oc-content/themes/sigma/js/global.js?v=20260808184731"></script>
+  </head>
+<body class="has-searchbox home">
+<header>
+  <div class="wrapper">
+    <div class="box">
+      <div id="logo">
+        <a href="http://10.186.197.203:9980/"><img border="0" alt="Classifieds" src="http://10.186.197.203:9980/oc-content/uploads/sigma_logo.png"></a>      </div>
+      
+      <div class="menu-icon isTablet isMobile">
+        <div>
+          <span class="l1"></span>
+          <span class="l2"></span>
+          <span class="l3"></span>
+        </div>
+      </div>
+      
+      <div class="nav">
+    
+        <a href="http://10.186.197.203:9980/" class="isMobile">Home</a>
+        <a class="isMobile" href="http://10.186.197.203:9980/index.php?page=item&action=item_add">Publish Ad</a>
+        <a href="http://10.186.197.203:9980/index.php?page=contact" class="isMobile">Contact</a>
+
+                              <a href="http://10.186.197.203:9980/index.php?page=user&action=dashboard">My account</a>
+            <a href="http://10.186.197.203:9980/index.php?page=main&action=logout">Logout</a>
+                  
+                  <a class="publish isTablet isDesktop" href="http://10.186.197.203:9980/index.php?page=item&action=item_add">Publish Ad</a>
+              </div>
+    </div>
+  </div>
+</header>
+
+
+  <section class="home-search">
+    <div class="wrapper">
+      <form action="http://10.186.197.203:9980/index.php" method="get" class="search nocsrf box">
+        <input type="hidden" name="page" value="search"/>
+        
+                  <h1>What are you looking for today?</h1>
+        
+        <div class="main-search">
+          <div class="cell c1">
+            <label>Keyword</label>
+            <input type="text" name="sPattern" id="query" class="input-text" value="" placeholder="e.g., a blue used car" />
+          </div>
+
+          <div class="cell c2">
+            <label>Category</label>
+            <select name="sCategory" id="sCategory"><option value="">Select a category</option><option value="2">Antiques</option><option value="3">Appliances</option><option value="4">Arts + crafts</option><option value="5">Auto parts</option><option value="6">Beauty + health</option><option value="7">Bikes</option><option value="8">Boats</option><option value="9">Books</option><option value="10">Cars + trucks</option><option value="11">Cell phones</option><option value="12">Collectibles</option><option value="13">Computer parts</option><option value="14">Computers</option><option value="15">Electronics</option><option value="16">Farm + garden</option><option value="17">Furniture</option><option value="18">Household</option><option value="19">Jewelry</option><option value="20">Motorcycles</option><option value="21">Music instruments</option><option value="22">Photo + video</option><option value="23">Rvs + campers</option><option value="24">Video gaming</option></select>          </div>
+
+          <div class="cell c3">
+            <label>&nbsp;</label>
+            <button class="btn btn-primary"><i class="fa fa-search"></i> <span>Search</span></button>
+          </div>
+        </div>
+        <div id="message-seach"></div>
+      </form>
+    </div>
+  </section>
+
+
+<section>
+  
+  
+  <div class="wrapper wrapper-flash flash2"></div>
+
+  
+  <div class="wrapper" id="content">
+          <div class="home-latest">
+        <h2>Latest Listings</h2>
+        
+<ul class="listing-card-list listing-grid latestItems" id="listing-card-list">
+    
+<li class="listing-card first">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=65955" title="JBL Powered PA Speaker w/ Stand"><img src="http://10.186.197.203:9980/oc-content/uploads/65955/65955_thumbnail.png" title="" alt="JBL Powered PA Speaker w/ Stand" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=65955" class="title" title="JBL Powered PA Speaker w/ Stand">JBL Powered PA Speaker w/ Stand</a>
+          <div class="listing-attributes">
+            <span class="currency-value">150.00 $</span>
+            <div class="listing-details">
+              <span class="category">Music instruments</span>
+              <span class="location">Borough of Red Lion  (Pennsylvania)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">This unit is in good condition with mostly cosmetic blemishes. Works fine! Used for vocals in a small jam room, which Im switching up and no longer need this. Did fine for me hope it can for you! I also have two mic stands, mic and cables which I can...</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card ">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=50169" title="xbox series x / with extras"><img src="http://10.186.197.203:9980/oc-content/uploads/50169/50169_thumbnail.png" title="" alt="xbox series x / with extras" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=50169" class="title" title="xbox series x / with extras">xbox series x / with extras</a>
+          <div class="listing-attributes">
+            <span class="currency-value">350.00 $</span>
+            <div class="listing-details">
+              <span class="category">Video gaming</span>
+              <span class="location">Pennwyn  (Pennsylvania)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">Used xbox series x in great working condition ,comes with 2 controllers with rechargeable battery packs,docking station and headset. Headset not the best but works</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card ">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=10542" title="Canon EF 100-400mm f/4.5-5.6L IS II USM with extender EF 1.4X III"><img src="http://10.186.197.203:9980/oc-content/uploads/10542/10542_thumbnail.png" title="" alt="Canon EF 100-400mm f/4.5-5.6L IS II USM with extender EF 1.4X III" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=10542" class="title" title="Canon EF 100-400mm f/4.5-5.6L IS II USM with extender EF 1.4X III">Canon EF 100-400mm f/4.5-5.6L IS II USM with extender EF 1.4X III</a>
+          <div class="listing-attributes">
+            <span class="currency-value">1645.00 $</span>
+            <div class="listing-details">
+              <span class="category">Photo + video</span>
+              <span class="location">College Park  (Maryland)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">This is a great lens / extender combination, it is just becoming a little too heavy for me. Seldom used, pristine, always stored in dehumidified cabinet, complete with all original items plus UV filter installed on day one. I am adding two images tak...</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card first">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=71405" title="Engagement Ring"><img src="http://10.186.197.203:9980/oc-content/uploads/71405/71405_thumbnail.png" title="" alt="Engagement Ring" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=71405" class="title" title="Engagement Ring">Engagement Ring</a>
+          <div class="listing-attributes">
+            <span class="currency-value">2200.00 $</span>
+            <div class="listing-details">
+              <span class="category">Jewelry</span>
+              <span class="location">Washington  (Washington, D.C.)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">I bought this engagement ring for my ex fiance She left me and left the ring on the floor. It is truly a good ring but I cannot stay with the ring. It is from diamond direct and is a 1.88 carat lab grown diamond OVAL BRILLIANT Color grade H Clarity g...</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card ">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=7883" title="1997 FORD AIRSTREAM RV MODEL 190"><img src="http://10.186.197.203:9980/oc-content/uploads/7883/7883_thumbnail.png" title="" alt="1997 FORD AIRSTREAM RV MODEL 190" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=7883" class="title" title="1997 FORD AIRSTREAM RV MODEL 190">1997 FORD AIRSTREAM RV MODEL 190</a>
+          <div class="listing-attributes">
+            <span class="currency-value">28995.00 $</span>
+            <div class="listing-details">
+              <span class="category">Rvs + campers</span>
+              <span class="location">Green Tree  (Pennsylvania)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">63k miles Just winterized 11 MPG AVERAGE PA Inspection 11/24 Triton v10 35 GALLON TANK 3 BURNER STOVE REFRIGERATOR (electric, gas, and 12v) 9.9L PROPANE TANK STAND UP SHOWER NEW AIR RIDE SUSPENSION IN FRONT NEW FRONT BRAKES AND ROTORS REBUILT CALIPER...</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card ">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=15342" title="Complete Guitar Rig Full Stack w/ Perks!!!"><img src="http://10.186.197.203:9980/oc-content/uploads/15342/15342_thumbnail.png" title="" alt="Complete Guitar Rig Full Stack w/ Perks!!!" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=15342" class="title" title="Complete Guitar Rig Full Stack w/ Perks!!!">Complete Guitar Rig Full Stack w/ Perks!!!</a>
+          <div class="listing-attributes">
+            <span class="currency-value">900.00 $</span>
+            <div class="listing-details">
+              <span class="category">Music instruments</span>
+              <span class="location">Borough of Gettysburg  (Pennsylvania)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">Complete Guitar Rig Full Stack w/ Perks!!! Package deal includes: Marshall JCM2000 TSL100 head unit w/ foot switch and printed manual Two Hartke GH412 4x12" speaker cabinets (top and bottom) These cabs are the same configuration as the popular Marsha...</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card first">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=10727" title="Tennis bracelet"><img src="http://10.186.197.203:9980/oc-content/uploads/10727/10727_thumbnail.png" title="" alt="Tennis bracelet" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=10727" class="title" title="Tennis bracelet">Tennis bracelet</a>
+          <div class="listing-attributes">
+            <span class="currency-value">2000.00 $</span>
+            <div class="listing-details">
+              <span class="category">Jewelry</span>
+              <span class="location">Stow  (Ohio)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">14k gold bracelet with 50 small diamonds about 3 karat . Weight 41 grams, that's over an ounce.$ 2,000</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card ">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=76469" title="2021 Martin GPC 16e Rosewood"><img src="http://10.186.197.203:9980/oc-content/uploads/76469/76469_thumbnail.png" title="" alt="2021 Martin GPC 16e Rosewood" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=76469" class="title" title="2021 Martin GPC 16e Rosewood">2021 Martin GPC 16e Rosewood</a>
+          <div class="listing-attributes">
+            <span class="currency-value">1395.00 $</span>
+            <div class="listing-details">
+              <span class="category">Music instruments</span>
+              <span class="location">Canonsburg  (Pennsylvania)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">American made in Nazareth, PA - Martin Acoustic Electric Guitar. Solid East Indian Rosewood back and sides with a solid Spruce top and ebony fingerboard. Onboard Fishman Matrix VT Enhance NT2 pickup system for stage readiness. Great condition and rec...</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card ">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=54140" title="Century Furniture English Roll Arm Sofa  (Was 5000)"><img src="http://10.186.197.203:9980/oc-content/uploads/54140/54140_thumbnail.png" title="" alt="Century Furniture English Roll Arm Sofa  (Was 5000)" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=54140" class="title" title="Century Furniture English Roll Arm Sofa  (Was 5000)">Century Furniture English Roll Arm Sofa  (Was 5000)</a>
+          <div class="listing-attributes">
+            <span class="currency-value">605.00 $</span>
+            <div class="listing-details">
+              <span class="category">Furniture</span>
+              <span class="location">Arlington  (Virginia)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">============================================= ==== SAVE UP TO 90%! PRICES UPDATED DAILY! ==== ============================================= Learn more at: CENTURY FURNITURE ENGLISH ROLL ARM SOFA ORIGINAL PRICE: 5000 BRAND: Century Furniture PRODUCT L...</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card first">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=65205" title="2 Zebra Pillows"><img src="http://10.186.197.203:9980/oc-content/uploads/65205/65205_thumbnail.png" title="" alt="2 Zebra Pillows" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=65205" class="title" title="2 Zebra Pillows">2 Zebra Pillows</a>
+          <div class="listing-attributes">
+            <span class="currency-value">6.00 $</span>
+            <div class="listing-details">
+              <span class="category">Household</span>
+              <span class="location">West Milton  (Pennsylvania)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">2 nice zebra pillows. 18 inches square pillows. Reversible.</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card ">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=43887" title="Highland House Furniture Tufted Back Accent Chair  (Was 4500)"><img src="http://10.186.197.203:9980/oc-content/uploads/43887/43887_thumbnail.png" title="" alt="Highland House Furniture Tufted Back Accent Chair  (Was 4500)" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=43887" class="title" title="Highland House Furniture Tufted Back Accent Chair  (Was 4500)">Highland House Furniture Tufted Back Accent Chair  (Was 4500)</a>
+          <div class="listing-attributes">
+            <span class="currency-value">220.00 $</span>
+            <div class="listing-details">
+              <span class="category">Furniture</span>
+              <span class="location">Dale City  (Virginia)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">============================================= ==== SAVE UP TO 90%! PRICES UPDATED DAILY! ==== ============================================= Learn more at: HIGHLAND HOUSE FURNITURE TUFTED BACK ACCENT CHAIR ORIGINAL PRICE: 4500 BRAND: Highland House Fu...</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li>
+<li class="listing-card ">
+            <a class="listing-thumb" href="http://10.186.197.203:9980/index.php?page=item&id=78917" title="Complete Guitar Rig Full Stack w/ Perks!!!"><img src="http://10.186.197.203:9980/oc-content/uploads/78917/78917_thumbnail.png" title="" alt="Complete Guitar Rig Full Stack w/ Perks!!!" width="240" height="200"></a>
+        
+    
+  <div class="listing-detail">
+    <div class="listing-cell">
+      <div class="listing-data">
+        <div class="listing-basicinfo">
+          <a href="http://10.186.197.203:9980/index.php?page=item&id=78917" class="title" title="Complete Guitar Rig Full Stack w/ Perks!!!">Complete Guitar Rig Full Stack w/ Perks!!!</a>
+          <div class="listing-attributes">
+            <span class="currency-value">900.00 $</span>
+            <div class="listing-details">
+              <span class="category">Music instruments</span>
+              <span class="location">Borough of Gettysburg  (Pennsylvania)</span> 
+              <span class="date">2023/11/16</span>
+            </div>
+          </div>
+
+          <div class="desc">Complete Guitar Rig Full Stack w/ Perks!!! Package deal includes: Marshall JCM2000 TSL100 head unit w/ foot switch and printed manual Two Hartke GH412 4x12" speaker cabinets (top and bottom) These cabs are the same configuration as the popular Marsha...</div>
+        </div>
+        
+              </div>
+    </div>
+  </div>
+</li></ul>      </div>
+          <div id="main">
+      
+<div class="clear"></div>
+
+<div id="home-cats">
+  <h2>All categories</h2>
+
+  <div class="wrap">
+          <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=2">
+        <div class="icon" >
+          <i class="fas fa-pen-fancy"></i>
+        </div>
+
+        <strong>Antiques</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=3">
+        <div class="icon" >
+          <i class="fas fa-sink"></i>
+        </div>
+
+        <strong>Appliances</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=4">
+        <div class="icon" >
+          <i class="fas fa-palette"></i>
+        </div>
+
+        <strong>Arts + crafts</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=5">
+        <div class="icon" >
+          <i class="fas fa-car-battery"></i>
+        </div>
+
+        <strong>Auto parts</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=6">
+        <div class="icon" >
+          <i class="fas fa-heart"></i>
+        </div>
+
+        <strong>Beauty + health</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=7">
+        <div class="icon" >
+          <i class="fas fa-bicycle"></i>
+        </div>
+
+        <strong>Bikes</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=8">
+        <div class="icon" >
+          <i class="fas fa-ship"></i>
+        </div>
+
+        <strong>Boats</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=9">
+        <div class="icon" >
+          <i class="fas fa-book"></i>
+        </div>
+
+        <strong>Books</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=10">
+        <div class="icon" >
+          <i class="fas fa-car"></i>
+        </div>
+
+        <strong>Cars + trucks</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=11">
+        <div class="icon" >
+          <i class="fas fa-mobile"></i>
+        </div>
+
+        <strong>Cell phones</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=12">
+        <div class="icon" >
+          <i class="fas fa-star"></i>
+        </div>
+
+        <strong>Collectibles</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=13">
+        <div class="icon" >
+          <i class="fas fa-server"></i>
+        </div>
+
+        <strong>Computer parts</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=14">
+        <div class="icon" >
+          <i class="fas fa-laptop"></i>
+        </div>
+
+        <strong>Computers</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=15">
+        <div class="icon" >
+          <i class="fas fa-plug"></i>
+        </div>
+
+        <strong>Electronics</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=16">
+        <div class="icon" >
+          <i class="fas fa-seedling"></i>
+        </div>
+
+        <strong>Farm + garden</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=17">
+        <div class="icon" >
+          <i class="fas fa-couch"></i>
+        </div>
+
+        <strong>Furniture</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=18">
+        <div class="icon" >
+          <i class="fas fa-tape"></i>
+        </div>
+
+        <strong>Household</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=19">
+        <div class="icon" >
+          <i class="fas fa-ring"></i>
+        </div>
+
+        <strong>Jewelry</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=20">
+        <div class="icon" >
+          <i class="fas fa-motorcycle"></i>
+        </div>
+
+        <strong>Motorcycles</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=21">
+        <div class="icon" >
+          <i class="fas fa-guitar"></i>
+        </div>
+
+        <strong>Music instruments</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=22">
+        <div class="icon" >
+          <i class="fas fa-camera"></i>
+        </div>
+
+        <strong>Photo + video</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=23">
+        <div class="icon" >
+          <i class="fas fa-caravan"></i>
+        </div>
+
+        <strong>Rvs + campers</strong>
+      </a>
+    
+                <a href="http://10.186.197.203:9980/index.php?page=search&sCategory=24">
+        <div class="icon" >
+          <i class="fas fa-gamepad"></i>
+        </div>
+
+        <strong>Video gaming</strong>
+      </a>
+    
+            </div>
+</div>
+
+</div><!-- main -->
+<div id="sidebar">
+  
+  <div id="home-regs">
+    <h2>All locations</h2>
+
+    <div class="wrap">
+      
+                              <div><a href="http://10.186.197.203:9980/index.php?page=search&sRegion=9254928"><i class="fas fa-location-arrow"></i> <span>Virginia</span> <em>(31126)</em></a></div>
+                                          <div><a href="http://10.186.197.203:9980/index.php?page=search&sRegion=9254927"><i class="fas fa-location-arrow"></i> <span>Pennsylvania</span> <em>(22180)</em></a></div>
+                                          <div><a href="http://10.186.197.203:9980/index.php?page=search&sRegion=7361885"><i class="fas fa-location-arrow"></i> <span>Maryland</span> <em>(21674)</em></a></div>
+                                          <div><a href="http://10.186.197.203:9980/index.php?page=search&sRegion=8165418"><i class="fas fa-location-arrow"></i> <span>Ohio</span> <em>(5626)</em></a></div>
+                                          <div><a href="http://10.186.197.203:9980/index.php?page=search&sRegion=7138106"><i class="fas fa-location-arrow"></i> <span>Washington, D.C.</span> <em>(1567)</em></a></div>
+                                          <div><a href="http://10.186.197.203:9980/index.php?page=search&sRegion=7826850"><i class="fas fa-location-arrow"></i> <span>West Virginia</span> <em>(1110)</em></a></div>
+                                          <div><a href="http://10.186.197.203:9980/index.php?page=search&sRegion=7142224"><i class="fas fa-location-arrow"></i> <span>Delaware</span> <em>(870)</em></a></div>
+                        
+    </div>
+  </div>
+</div>
+
+<div class="clear"><!-- do not close, use main clossing tag for this case -->
+
+</div>
+</div>
+</section>
+
+
+<footer>
+  <div class="wrapper">
+    <div class="box">
+      <a href="http://10.186.197.203:9980/index.php?page=contact">Contact</a>
+
+      
+      <div class="clear"></div>
+      
+      
+      <div class="clear"></div>
+
+
+      <div class="copy">Powered by <a title="Osclass classifieds script" href="https://osclass-classifieds.com">best classifieds scripts</a> osclass</div>
+          </div>
+  </div>
+
+  </footer>
+
+<link href="http://10.186.197.203:9980/oc-includes/osclass/assets/css/jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css" />
+
+</body>
+</html>

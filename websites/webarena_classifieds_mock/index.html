@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+  <head>
+    <!-- The doctype above MUST stay `<!DOCTYPE html>`. The source ships XHTML 1.0
+         Transitional, but vite parses this file with parse5, which rejects a legacy
+         doctype outright (`non-conforming-doctype`) and fails the build. The visual
+         consequence — almost-standards vs standards mode, i.e. ~5px of baseline
+         descender under every inline <img> — is neutralised in css/mock-shell.css
+         instead. See TEST DIFF-008. -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="generator" content="Osclass 8.1.2" />
+    <title>Classifieds</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
+    <!-- Self-hosted: EB Garamond 400 + Nunito 400/700. No CDN, no runtime network calls. -->
+    <link href="/css/fonts.css" rel="stylesheet" type="text/css" />
+    <!-- Self-hosted Font Awesome 5 (the source loads this from cdnjs). -->
+    <link href="/fa/css/all.min.css" rel="stylesheet" type="text/css" />
+    <!-- The sigma theme's own stylesheets, copied verbatim out of the container. -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/css/responsive.css" rel="stylesheet" type="text/css" />
+    <link href="/css/mock.css" rel="stylesheet" type="text/css" />
+    <!-- Shell-level geometry corrections; see the file header (TEST DIFF-008). -->
+    <link href="/css/mock-shell.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body class="has-searchbox">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

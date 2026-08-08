@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.mock-states/
+.mock-files/
+.mock-state.json
+.mock-state.initial.json
+
+# Raw DB dumps — working area for assets/build-seed.py, ~96 MB.
+# Regenerate with the scripts in assets/ against the `classifieds` container.
+assets/dumps/
+
+# Extracted listing images. These MUST exist on disk for the mock to work
+# offline (all 234 tasks are visual) but they are 809 MB of binary and are not
+# committed. Regenerate with `python3 assets/extract-images.py` — idempotent,
+# ~8 min, needs the `classifieds` docker container running.
+public/img/t/
+public/img/m/
