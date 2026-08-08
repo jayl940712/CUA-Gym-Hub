@@ -387,9 +387,11 @@ the `secret` param.
 
 ## Regenerating images
 
-`public/img/t/` (84,149 thumbnails, 761 MB) and `public/img/m/` (1,530 detail
-photos, 48 MB) are **gitignored**. They must exist on disk — every one of the 234
-tasks is visual and the mock has to work offline — but they are not committed.
+`public/img/t/` (84,149 thumbnails, **61.8 MB**) and `public/img/m/` (1,530 detail
+photos, **8.5 MB**) are **gitignored** — **70.4 MB** of actual bytes in total
+(~343 MB of allocated disk, because 85,679 files under 4 KB each round up to a
+block). They must exist on disk — every one of the 234 tasks is visual and the
+mock has to work offline — but they are not committed.
 
 ```bash
 python3 assets/extract-images.py          # idempotent: skips files already present
@@ -399,9 +401,14 @@ python3 assets/extract-images.py          # idempotent: skips files already pres
 - **Requires the `classifieds` docker container to be running** — it reads the
   original PNG/JPG uploads out of it and re-encodes them to WebP.
 - Output paths are fixed by `assets/data_model.md` §7:
-  `public/img/t/<id//1000>/<id>.webp` (240×200) and
-  `public/img/m/<id//1000>/<id>.webp` (640×480).
-- `assets/tier_b_ids.txt` is the derived 1,530-id list for the 640×480 tier; it
+  `public/img/t/<id//1000>/<id>.webp` (**144×120**, WebP q6, `method=6`, 0.6 px
+  Gaussian blur before encode — avg **734 B**) and
+  `public/img/m/<id//1000>/<id>.webp` (**550×413**, WebP q8, `method=6`, 0.8 px
+  blur — avg **5.6 KB**).
+- The pre-encode blur is deliberate. At these bitrates most of the budget goes to
+  sensor noise in the source photos; low-passing first is worth ~20% of the file
+  and looks better than reaching the same size by dropping `quality` alone.
+- `assets/tier_b_ids.txt` is the derived 1,530-id list for the 550×413 tier; it
   covers all 180 anchor items. Regenerate it with `assets/compute-tier-b.py`.
 
 If the images are missing, listing cards fall back to `public/img/no_photo.gif`

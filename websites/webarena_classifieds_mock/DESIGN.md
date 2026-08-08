@@ -385,13 +385,27 @@ Re-encoding measured on real samples:
 | 640×480 WebP q75 | 34.9 KB | 3.01 GB |
 | 640×480 JPEG q82 | 59.0 KB | 5.08 GB |
 
-**Adopted plan** (already executed by `assets/extract-images.py`):
+That first pass shipped 668.8 MB. A second calibration pass (300-thumb / 50-photo
+random sample) cut it ~9.5× to **70.4 MB**. Quality alone could not do it: even
+q2 at 226 px only reaches 5.2×, because at very low bitrates WebP is spending its
+budget on sensor noise and JPEG-era ringing in the source photos. Two levers
+mattered — a Gaussian low-pass *before* encoding (worth ~20% of the file at
+visibly better quality than the equivalent `quality` drop), and pixel dimensions.
+Below ~128 px wide the curve flattens, so 144×120 is the knee.
+
+**Adopted plan** (executed by `assets/extract-images.py`; `method=6` throughout):
 
 | Tier | Content | Output | Size |
 |---|---|---|---|
-| **A** | All 84,149 thumbnails → 240×200 WebP q75 | `public/img/t/<id//1000>/<id>.webp` | **622 MB** measured, 85 dirs × ~1,000 files |
-| **B** | 1,530 items → 640×480 WebP q75 | `public/img/m/<id//1000>/<id>.webp` | **47 MB** measured |
+| **A** | All 84,149 thumbnails → **144×120** WebP **q6**, 0.6 px pre-blur | `public/img/t/<id//1000>/<id>.webp` | **61.8 MB** measured (avg 734 B), 85 dirs × ~1,000 files |
+| **B** | 1,530 items → **550×413** WebP **q8**, 0.8 px pre-blur | `public/img/m/<id//1000>/<id>.webp` | **8.5 MB** measured (avg 5.6 KB) |
 | **C** | Everything else | item detail falls back to the Tier A image, upscaled | 0 |
+
+Tier A is sized for its two common renders — the 95 px list-view thumb and the
+75 px item strip — where 144 px is still oversampled. The 226 px gallery tile
+upscales it ~1.6× and reads soft but unambiguous; colour, which is what the tasks
+actually key on, survives intact. Tier B is cut to exactly the 550 px the main
+photo is displayed at, so it is never resampled.
 
 Tier B is not a guess — `assets/compute-tier-b.py` derives it from the anchors: the 180
 anchor item ids, every item on all 52 anchor search-result pages, the home page's latest
@@ -406,10 +420,12 @@ Serving rules for the mock:
 - Never reference `10.186.197.203:9980` or any external host. Missing file → the theme's
   own `images/no_photo.gif`, which is also extracted.
 
-**Repo size:** Tier A is 622 MB of binary, so `.gitignore` excludes `public/img/t/` and
+**Repo size:** 70.4 MB of actual bytes across 85,679 files (≈343 MB of allocated
+disk — 4 KB blocks for sub-KB files), so `.gitignore` still excludes `public/img/t/` and
 `public/img/m/`. The files exist in this working tree and the mock needs them to run
 offline; a fresh clone must run `assets/extract-images.py` (idempotent, skips what already
-exists, ~8 min, needs the container up). If it must shrink further: q60 ≈ 520 MB, or
-160×133 ≈ 290 MB but visibly soft at the 240 px size the CSS renders at.
+exists, ~8 min, needs the container up). There is little headroom left below this:
+tier A is already past the knee of the size/quality curve, and further cuts trade
+directly against the colour and shape cues the tasks are graded on.
 **Do not resolve this by shrinking the item count** — that is option B above, and it
 breaks the anchors.

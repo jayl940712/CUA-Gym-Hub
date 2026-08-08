@@ -8,9 +8,15 @@ Run with the PIL-enabled interpreter:
     /tmp/pwvenv/bin/python assets/extract-images.py --tier b  # anchors only (fast)
 
 Source (measured): 84,149 items, one photo each, 73 GB on disk as PNG.
-Output:
-  Tier A  public/img/t/<id//1000>/<id>.webp   240x200 q75   ~7.5 KB  -> ~0.64 GB total
-  Tier B  public/img/m/<id//1000>/<id>.webp   640x480 q75   ~35  KB  -> ~53 MB for 1,530 items
+Output (measured over the full tree):
+  Tier A  public/img/t/<id//1000>/<id>.webp   144x120 q6  blur 0.6  ~734 B  -> 61.8 MB total
+  Tier B  public/img/m/<id//1000>/<id>.webp   550x413 q8  blur 0.8  ~5.6 KB -> 8.5 MB for 1,530 items
+
+The pre-encode Gaussian blur is load-bearing, not cosmetic: at these bitrates WebP
+spends most of its budget on sensor noise and JPEG-era ringing in the source photos.
+Low-passing first buys ~20% off the file at visibly *better* quality than reaching
+the same size by dropping `quality` alone. Tier A is sized for the 95 px list-view
+thumb and the 75 px item strip; the 226 px gallery tile upscales it ~1.6x.
 
 Tier A backs every listing card, gallery tile and related-listing thumb.
 Tier B backs the item-detail main photo for anchor-reachable items; item pages
@@ -19,7 +25,7 @@ outside Tier B fall back to the Tier A image upscaled (see DESIGN.md).
 import argparse, io, os, subprocess, sys, tarfile, time
 from concurrent.futures import ProcessPoolExecutor
 
-from PIL import Image
+from PIL import Image, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTAINER = "classifieds"
@@ -54,20 +60,22 @@ def fetch(members):
 
 
 def encode(job):
-    name, blob, dest, size, quality = job
+    name, blob, dest, size, quality, blur = job
     try:
         im = Image.open(io.BytesIO(blob)).convert("RGB")
         if im.size != size:
             im = im.resize(size, Image.LANCZOS)
+        if blur:
+            im = im.filter(ImageFilter.GaussianBlur(blur))
         os.makedirs(os.path.dirname(dest), exist_ok=True)
-        im.save(dest, "WEBP", quality=quality, method=4)
+        im.save(dest, "WEBP", quality=quality, method=6)
         return 1
     except Exception as e:  # noqa: BLE001 - a corrupt source image must not kill the run
         print("  !! %s: %s" % (name, e), file=sys.stderr)
         return 0
 
 
-def run(ids, paths, suffix, out_sub, size, quality, label):
+def run(ids, paths, suffix, out_sub, size, quality, blur, label):
     outdir = os.path.join(ROOT, "public", "img", out_sub)
     todo = [i for i in ids if not os.path.exists(
         os.path.join(outdir, str(i // 1000), "%d.webp" % i))]
@@ -82,7 +90,7 @@ def run(ids, paths, suffix, out_sub, size, quality, label):
                 m = "%s/%d%s.%s" % (d, i, suffix, ext)
                 members.append(m)
                 dests[m] = os.path.join(outdir, str(i // 1000), "%d.webp" % i)
-            jobs = [(n, b, dests[n], size, quality) for n, b in fetch(members) if n in dests]
+            jobs = [(n, b, dests[n], size, quality, blur) for n, b in fetch(members) if n in dests]
             done += sum(pool.map(encode, jobs, chunksize=32))
             el = time.time() - t0
             print("  %6d/%d  %.0fs elapsed, ~%.0fs left"
@@ -101,11 +109,11 @@ def main():
 
     if args.tier in ("b", "both"):
         ids = [int(x) for x in open(args.tier_b_ids).read().split() if int(x) in paths]
-        run(ids, paths, "", "m", (640, 480), 75, "TIER B (item-detail main photo)")
+        run(ids, paths, "", "m", (550, 413), 8, 0.8, "TIER B (item-detail main photo)")
 
     if args.tier in ("a", "both"):
         ids = sorted(paths)
-        run(ids, paths, "_thumbnail", "t", (240, 200), 75, "TIER A (all thumbnails)")
+        run(ids, paths, "_thumbnail", "t", (144, 120), 6, 0.6, "TIER A (all thumbnails)")
 
 
 if __name__ == "__main__":
