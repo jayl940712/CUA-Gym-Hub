@@ -3,7 +3,9 @@
 //
 // Seed split (assets/data_model.md §12, TODO.md P0):
 //
-//   MUTABLE (12 modules) -> live inside `state`, POSTed to /post, diffed by /go
+//   FROZEN + OVERLAY (12 modules) -> `src/data/frozen.js`, merged on read by
+//   `src/utils/overlay.js`. The React tree still sees `state.issues` and the
+//   rest as fully merged arrays; what is PERSISTED is only the delta.
 //     projects users groups issues merge_requests notes labels milestones
 //     members stars follows todos
 //
@@ -19,18 +21,21 @@
 // ---------------------------------------------------------------------------
 
 import { accessLabel } from './format.js'
-import projectsSeed from '../data/projects.json'
-import usersSeed from '../data/users.json'
-import groupsSeed from '../data/groups.json'
-import issuesSeed from '../data/issues.json'
-import mergeRequestsSeed from '../data/merge_requests.json'
-import notesSeed from '../data/notes.json'
-import labelsSeed from '../data/labels.json'
-import milestonesSeed from '../data/milestones.json'
-import membersSeed from '../data/members.json'
-import starsSeed from '../data/stars.json'
-import followsSeed from '../data/follows.json'
-import todosSeed from '../data/todos.json'
+import {
+  createInitialData, SEED_NEXT_IDS, ID_KIND_COLLECTION,
+  CURRENT_USER_ID, CURRENT_USERNAME,
+} from './initialState.js'
+import { toCore } from './overlayShape.js'
+
+// The 12 mutable seed modules are deliberately NOT imported here. They are the
+// frozen corpus, they live in `src/data/frozen.js`, and only
+// `src/utils/overlay.js` pulls them in. `createInitialData()` moved to
+// `./initialState.js` for the same reason and is re-exported below, so nothing
+// that imports it from here had to change.
+export {
+  createInitialData, SEED_NEXT_IDS, ID_KIND_COLLECTION,
+  CURRENT_USER_ID, CURRENT_USERNAME,
+}
 
 // --- STATIC git reference data (not part of state) --------------------------
 import repoFilesStatic from '../data/repo_files.json'
@@ -55,56 +60,24 @@ const BASE_KEY = 'webarena_gitlab_mock_state'
 const BASE_INITIAL_KEY = 'webarena_gitlab_mock_initial_state'
 
 // ---------------------------------------------------------------------------
-// Id allocation floors — DERIVED, never hard-coded.
+// Id allocation floors moved to src/utils/overlayShape.js (SEED_NEXT_IDS,
+// ID_KIND_COLLECTION) and are re-exported at the top of this file.
 //
-// The counters used to be literals (`label: 1800`, `note: 310000`) chosen by
-// eyeballing the seed. Both started *inside* the real id range: 104 seeded
-// labels sit at id >= 1800 and 111 seeded notes at id >= 310000. The 6th label
-// a task created was allocated 1805 — already taken — so stateTracker's
+// They used to be DERIVED here as max(seed id)+1, which needed all twelve seed
+// arrays imported into this module — and this module is imported by
+// vite.config.js. With the corpus frozen behind src/data/frozen.js they are
+// literals instead, and `overlay.checkSeedNextIds()` re-derives them from the
+// frozen corpus in DEV and logs a loud error if any literal has drifted below
+// the real maximum. `AppContext.allocateId` keeps its `taken` scan as the
+// runtime backstop.
+//
+// The defect this guards against, verbatim from the original comment: the
+// counters were once literals (`label: 1800`, `note: 310000`) chosen by
+// eyeballing the seed, and both started *inside* the real id range. The 6th
+// label a task created was allocated 1805 — already taken — so stateTracker's
 // indexBy() collapsed the pair and /go reported the creation as an EDIT to a
-// seeded record. Every evaluator reading that diff saw the wrong thing.
-//
-// Deriving max(existing)+1 at module load means the counters cannot drift out
-// of range again when the seed is resampled.
+// seeded record.
 // ---------------------------------------------------------------------------
-
-function maxId(rows, key = 'id') {
-  let max = 0
-  if (!Array.isArray(rows)) return max
-  for (const r of rows) {
-    const v = r && r[key]
-    if (typeof v === 'number' && Number.isFinite(v) && v > max) max = v
-  }
-  return max
-}
-
-/** One counter per creatable entity. Keys match `allocateId(kind)` in AppContext. */
-export const SEED_NEXT_IDS = Object.freeze({
-  project: maxId(projectsSeed) + 1,
-  group: maxId(groupsSeed) + 1,
-  issue: maxId(issuesSeed) + 1,
-  mr: maxId(mergeRequestsSeed) + 1,
-  note: maxId(notesSeed) + 1,
-  label: maxId(labelsSeed) + 1,
-  milestone: maxId(milestonesSeed) + 1,
-  member: maxId(membersSeed) + 1,
-})
-
-/** The state collection each `allocateId(kind)` writes into — collision guard. */
-export const ID_KIND_COLLECTION = Object.freeze({
-  project: 'projects',
-  group: 'groups',
-  issue: 'issues',
-  mr: 'mergeRequests',
-  note: 'notes',
-  label: 'labels',
-  milestone: 'milestones',
-  member: 'members',
-})
-
-/** WebArena default user for this site. */
-export const CURRENT_USER_ID = 2330
-export const CURRENT_USERNAME = 'byteblaze'
 
 /**
  * Slug for a NAMESPACE (group) path — lower-cased.
@@ -169,11 +142,17 @@ export async function fetchCustomState(sid) {
 // ---------------------------------------------------------------------------
 // localStorage with quota tolerance
 //
-// The mutable seed is ~2.2 MB of JSON. Chrome bills localStorage in UTF-16,
-// so two copies can exceed the 5 MB origin quota. When a write fails we drop
-// BOTH keys and let the next load rehydrate from the dev server's
-// .mock-states/<sid>.json via fetchCustomState(). /go's diff stays correct
-// either way because the server writes <sid>.initial.json exactly once.
+// With the corpus frozen out of state a session's two keys are ~2 KB cold, well
+// inside Chrome's ~5 MB per-origin quota (which it bills in UTF-16). Before the
+// overlay refactor they were 2 × 2 068 670 = 4 137 340 units — 79 % of quota
+// with nothing done yet — and a handful of the site's 49 "create" tasks pushed
+// a session over, at which point persistence died silently.
+//
+// The guard stays because a harness may still inject a full `issues` / `notes`
+// array as the base (see src/utils/overlay.js) and reach the quota again. When
+// a write fails we drop BOTH keys and let the next load rehydrate from the dev
+// server's .mock-states/<sid>.json via fetchCustomState(). /go's diff stays
+// correct either way because the server writes <sid>.initial.json exactly once.
 // ---------------------------------------------------------------------------
 
 function lsSet(key, value) {
@@ -201,98 +180,29 @@ function persist(sid, state, alsoInitial) {
 }
 
 // ---------------------------------------------------------------------------
-// createInitialData
-// ---------------------------------------------------------------------------
-
-export function createInitialData() {
-  const currentUser = usersSeed.find(u => u.id === CURRENT_USER_ID) || usersSeed[0]
-
-  return {
-    // who the app is booted as (no auth — migration contract §4)
-    currentUser: { ...currentUser },
-
-    // --- the 12 mutable modules ---------------------------------------------
-    users: usersSeed,
-    projects: projectsSeed,
-    groups: groupsSeed,
-    issues: issuesSeed,
-    mergeRequests: mergeRequestsSeed,
-    notes: notesSeed,
-    labels: labelsSeed,
-    milestones: milestonesSeed,
-    members: membersSeed,
-    stars: starsSeed,
-    follows: followsSeed,
-    todos: todosSeed,
-
-    // The source instance has no snippets. The key still needs a baseline, or
-    // a created snippet lands in the /go diff as `{"new": […]}` with no `old`
-    // and falls out of the keyed-collection shape every other list uses.
-    snippets: [],
-
-    // --- git overlays --------------------------------------------------------
-    // The 6 git modules stay static. Anything a task writes lands here and
-    // shadows the static module. Keys are documented in SCHEMA.md.
-    repo: {
-      // "<full_path>:<ref>:<path>" -> file body (string), or null = deleted
-      fileOverlay: {},
-      // "<full_path>:<ref>" -> [ {path,type,mode,size,sha}, ... ] extra tree entries
-      treeOverlay: {},
-      // "<full_path>:<ref>" -> [ commit, ... ] newest-first, prepended to static
-      commitOverlay: {},
-      // "<full_path>" -> [ {name,sha,committed_date,subject}, ... ] extra branches
-      branchOverlay: {},
-      // "<full_path>" -> [ {name,sha,date,message}, ... ] extra tags
-      tagOverlay: {},
-      // "<full_path>" -> [ "<branch name>", ... ] branches deleted by a task.
-      // The overlays above are purely ADDITIVE, so `Delete branch` had nowhere
-      // to write and the three delete controls were inert (AUDIT P2-1). These
-      // two are the subtractive channel: getBranches/getTags filter through
-      // them, and a name listed here disappears from the static module as well
-      // as from the additive overlay.
-      branchDeletions: {},
-      // "<full_path>" -> [ "<tag name>", ... ] tags deleted by a task
-      tagDeletions: {},
-      // "<fork full_path>" -> "<source full_path>".  A fork is an ALIAS, not a
-      // copy: the accessors below resolve a forked project's git data through
-      // the origin's STATIC entry, so forking does not drag 57 KB of blob
-      // bodies into the POSTed payload. Only blobs edited *after* the fork
-      // land in fileOverlay.
-      forkOrigin: {},
-    },
-
-    // --- UI / preference state ------------------------------------------------
-    // NOTE: there is deliberately no `starredProjectIds` here. `state.stars` is
-    // the single source of truth for starring and is what every reader uses
-    // (ProjectOverview, DashboardProjects, UserProfile, Starrers). The derived
-    // copy that used to live here had no consumer and emitted a second signal
-    // for the same action into every /go diff.
-    ui: {
-      notificationLevels: {},
-      sidebarCollapsed: false,
-      dismissedAlerts: [],
-      preferences: { colorScheme: 'light', syntaxTheme: 'white' },
-      // ROUTES #99–#105 — protected branches/tags, deploy keys/tokens, mirrors,
-      // webhooks, CI variables, triggers and the merge/CI/monitor/package
-      // setting forms, keyed by project full_path. Empty until an agent submits
-      // one of those forms; see src/pages/projectSettingsStore.js.
-      projectSettings: {},
-    },
-
-    // Created records must never collide with real ids (assets/data_model.md §12).
-    // Derived from the seed — see SEED_NEXT_IDS above.
-    nextIds: { ...SEED_NEXT_IDS },
-  }
-}
-
-// ---------------------------------------------------------------------------
 // initializeData / saveState
 // ---------------------------------------------------------------------------
 
+/**
+ * Returns a CORE — the persisted, overlay-shaped state. `AppProvider` runs it
+ * through `overlay.materialize()` before any component sees it.
+ *
+ * Injection is unchanged and stays backward compatible in both directions:
+ *
+ *   legacy      `{"issues": [ …613 rows… ]}` — the shallow merge puts the array
+ *               on the core, `overlay.baseArray()` prefers it over the frozen
+ *               corpus, and the app renders exactly what it rendered before this
+ *               refactor.
+ *   lightweight `{"newIssues": [ …1 row… ]}` — the frozen corpus stands and the
+ *               delta rides on top. This is what task setup should use now.
+ *
+ * `toCore()` fills any overlay key the injected object omitted, so a task
+ * fixture never has to spell out all 36.
+ */
 export function initializeData(sid = null, customState = null) {
   if (customState) {
     const defaults = createInitialData()
-    const merged = { ...defaults, ...customState }
+    const merged = toCore({ ...defaults, ...customState })
     // keep nested defaults alive when a task injects only part of a subtree
     merged.repo = { ...defaults.repo, ...(customState.repo || {}) }
     merged.ui = { ...defaults.ui, ...(customState.ui || {}) }
@@ -306,7 +216,7 @@ export function initializeData(sid = null, customState = null) {
   })()
   if (stored) {
     try {
-      const parsed = JSON.parse(stored)
+      const parsed = toCore(JSON.parse(stored))
       try {
         if (!localStorage.getItem(initialKey(sid))) lsSet(initialKey(sid), stored)
       } catch (e) { /* ignore */ }
@@ -362,11 +272,14 @@ let writeChain = Promise.resolve()
 /**
  * Encode a /post payload, gzipping it when the browser can (PIPELINE-005).
  *
- * The state is ~2.2 MB and every mutation ships all of it; gzip takes that to
- * ~0.55 MB. The server inflates on `Content-Encoding: gzip` (vite.config.js
- * readBody) and still accepts a plain body, so an environment without
- * CompressionStream — or a failure inside it — falls back transparently rather
- * than losing the write.
+ * The state was ~2.1 MB before the overlay refactor and every mutation shipped
+ * all of it; gzip took that to ~0.55 MB. A post now carries the delta — a few
+ * KB — so the compression barely matters, but it is kept: a harness that
+ * injects a full `issues` / `notes` array as the base (src/utils/overlay.js)
+ * puts the old payload back, and the code path is free when the body is small.
+ * The server inflates on `Content-Encoding: gzip` (vite.config.js readBody) and
+ * still accepts a plain body, so an environment without CompressionStream — or
+ * a failure inside it — falls back transparently rather than losing the write.
  */
 async function encodePost(payload) {
   const json = JSON.stringify(payload)

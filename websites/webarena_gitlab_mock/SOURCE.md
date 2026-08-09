@@ -89,8 +89,51 @@ Counts come from `SELECT count(*)` against `gitlabhq_production`. They are the
 Only **2 groups** exist (`gitlab-instance-58545a48`, `robert1003`). The five
 groups the anchors name are created by tasks 799–803.
 
-Seed footprint: **2.13 MB mutable state** (12 modules) + **2.38 MB static
-reference** (6 git-derived modules). See `assets/data_model.md §0` and `§12`.
+Seed footprint: **2.07 MB frozen corpus** (12 modules) + **2.9 MB static
+reference** (7 git-derived modules) + ~1.6 MB of other static modules
+(`ci_pipelines`, `tree_last_commits`, `resource_events`, `repo_languages`).
+See `assets/data_model.md §0` and `§12`.
+
+### Design decision: the corpus is frozen, mutations are an overlay
+
+Those 12 modules used to be **copied into app state** by `createInitialData()`,
+which made the cold state 2 072 728 B. That is a defect, not a size preference:
+
+* Chrome bills `localStorage` in UTF-16 and a session needs **two** keys
+  (`…_state` and `…_initial_state`), so a cold session claimed
+  2 × 2 068 670 = **4 137 340 of the ~5 242 880-unit origin quota — 79 %, before
+  the agent did anything.**
+* GitLab's task set is overwhelmingly creative: **49 "create", 22 "star",
+  20 "assign", 18 "merge", 15 "invite", 13 "close"**. A handful of mutations
+  crossed the quota, `dataManager.persist()` swallowed the `QuotaExceededError`
+  and dropped both keys, and persistence died **silently** — the mock fell back
+  to the server-side state files with no warning at all.
+* Every mutation POSTed all 2.07 MB and every `/go` returned 4.15 MB.
+
+Since the corpus is never *replaced*, only *added to and patched*, it is now
+read-only base data in `src/data/frozen.js`, and what is persisted is the
+**delta**: `src/utils/overlay.js` merges the two on read at a single point.
+Cold state is **1 473 B**; the two localStorage keys are 0.06 % of quota.
+
+Two things follow, and both are deliberate:
+
+1. **A stale `.mock-state.json` snapshot can no longer pin an old corpus.** A
+   pre-refactor snapshot carries the full arrays; `overlay.baseArray()` still
+   honours them as the base, so it renders — but it renders *that snapshot's*
+   corpus, not `src/data/`. Delete stale snapshots when the seed changes.
+2. **Task setup should inject the overlay keys, not full arrays.** Adding one
+   issue costs one record instead of 613. Full-array injection keeps working
+   unchanged; see `SCHEMA.md` § *Injecting task state*.
+
+The write side is a **reconciler** rather than a set of overlay verbs, which is
+where this diverges from `webarena_reddit_mock`. Reddit had three mutation
+shapes and could give each an explicit verb. GitLab has 79 write sites across
+33 direct `setState(prev => …)` reducers, four generic helpers in `AppContext`
+and six reducers in `src/components/create/mutations.js`; rewriting all of them
+would have been 79 chances to miss one, and a missed one is invisible — the UI
+still renders and only persistence and `/go` are wrong. So the reducers were
+left exactly as they were and `overlay.dematerialize()` derives the delta from
+what they return. The full argument is in the header of `src/utils/overlay.js`.
 
 ## Task contract
 

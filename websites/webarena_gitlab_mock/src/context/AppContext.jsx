@@ -4,13 +4,28 @@ import {
   initialKey, storageKey, createInitialData, publishInitialState,
   CURRENT_USER_ID, SEED_NEXT_IDS, ID_KIND_COLLECTION,
 } from '../utils/dataManager.js'
+import { materialize, dematerialize, toCore } from '../utils/overlay.js'
 
 const AppContext = createContext(null)
 
 export function AppProvider({ children }) {
+  // -------------------------------------------------------------------------
+  // TWO objects, one materialization point (src/utils/overlay.js).
+  //
+  //   core   the PERSISTED state — small, overlay-shaped, and the only thing
+  //          that reaches localStorage, `POST set_current` and `/go`.
+  //   state  `materialize(core)` — the same object with the twelve frozen
+  //          collections merged in. This is what every component reads and what
+  //          every reducer is handed; it is NEVER persisted.
+  //
+  // `commit()` is the only writer of either, so they can never disagree.
+  // -------------------------------------------------------------------------
+  const [core, setCoreInternal] = useState(null)
   const [state, setStateInternal] = useState(null)
   const [loading, setLoading] = useState(true)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+
+  const coreRef = useRef(null)
 
   // -------------------------------------------------------------------------
   // stateRef mirrors `state` SYNCHRONOUSLY.
@@ -30,9 +45,18 @@ export function AppProvider({ children }) {
   // `nextIds` by the caller's own setState. See allocateId below.
   const reservedIds = useRef({})
 
-  const setStateRaw = useCallback((next) => {
-    stateRef.current = next
-    setStateInternal(next)
+  /**
+   * Adopt `nextCore` as the session's state. Materializes ONCE, so `state` and
+   * `stateRef` are always exactly `materialize(core)` and no component can see
+   * a core that has not been merged.
+   */
+  const commit = useCallback((nextCore) => {
+    const mat = materialize(nextCore)
+    coreRef.current = nextCore
+    stateRef.current = mat
+    setCoreInternal(nextCore)
+    setStateInternal(mat)
+    return mat
   }, [])
 
   useEffect(() => {
@@ -44,12 +68,12 @@ export function AppProvider({ children }) {
     const isRefresh = localStorage.getItem(initialKey(sid)) !== null
 
     if (isRefresh) {
-      setStateRaw(initializeData(sid))
+      commit(initializeData(sid))
       setLoading(false)
     } else {
       fetchCustomState(sid).then(custom => {
         const data = initializeData(sid, custom)
-        setStateRaw(data)
+        commit(data)
         setLoading(false)
         // Cold session with no injected state: hand the server a pristine
         // baseline now, so the first mutation shows up in /go's state_diff.
@@ -77,14 +101,25 @@ export function AppProvider({ children }) {
     return { ...next, nextIds }
   }, [])
 
-  /** Every mutation goes through here -> localStorage + POST set_current. */
+  /**
+   * Every mutation goes through here -> localStorage + POST set_current.
+   *
+   * The updater is handed the MATERIALIZED state and returns a materialized
+   * state, exactly as before the overlay refactor — all 79 write sites were
+   * left untouched. `dematerialize()` then derives the delta against the frozen
+   * corpus, and only that delta is persisted. An untouched collection comes
+   * back reference-identical from an immutable reducer and is skipped in O(1);
+   * see the header of src/utils/overlay.js for why this is a reconciler rather
+   * than a set of overlay verbs.
+   */
   const setState = useCallback((updater) => {
     const prev = stateRef.current
     if (!prev) return
     const next = withReservedIds(typeof updater === 'function' ? updater(prev) : updater)
-    setStateRaw(next)
-    saveState(next, getSessionId())
-  }, [setStateRaw, withReservedIds])
+    const nextCore = dematerialize(coreRef.current, prev, next)
+    commit(nextCore)
+    saveState(nextCore, getSessionId())
+  }, [commit, withReservedIds])
 
   const resetState = useCallback(() => {
     const sid = getSessionId()
@@ -92,17 +127,20 @@ export function AppProvider({ children }) {
     const stored = localStorage.getItem(initialKey(sid))
     if (stored) {
       try {
-        const initial = JSON.parse(stored)
-        localStorage.setItem(storageKey(sid), stored)
-        setStateRaw(initial)
+        // The baseline key holds a CORE (or, for an injected task state, a core
+        // carrying full base arrays). Either way it goes back through toCore()
+        // so a fixture that omitted overlay keys still restores cleanly.
+        const initial = toCore(JSON.parse(stored))
+        localStorage.setItem(storageKey(sid), JSON.stringify(initial))
+        commit(initial)
         saveState(initial, sid)
         return
       } catch (e) { /* fall through */ }
     }
     const fresh = createInitialData()
-    setStateRaw(fresh)
+    commit(fresh)
     saveState(fresh, sid)
-  }, [setStateRaw])
+  }, [commit])
 
   // -------------------------------------------------------------------------
   // Id allocation. Created records must not collide with real container ids.
@@ -227,7 +265,10 @@ export function AppProvider({ children }) {
   }, [state])
 
   const value = useMemo(() => ({
+    // `state` is materialized (frozen corpus merged in) — read it everywhere.
+    // `coreState` is the persisted delta; only /go-style inspection wants it.
     state,
+    coreState: core,
     loading,
     setState,
     resetState,
@@ -244,7 +285,7 @@ export function AppProvider({ children }) {
     indexes,
     currentUser: state ? state.currentUser : null,
     currentUserId: CURRENT_USER_ID,
-  }), [state, loading, setState, resetState, allocateId, appendTo, updateIn, removeFrom,
+  }), [state, core, loading, setState, resetState, allocateId, appendTo, updateIn, removeFrom,
     setFileOverlay, pushRepoOverlay, prependRepoOverlay, setUi, sidebarCollapsed, indexes])
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>

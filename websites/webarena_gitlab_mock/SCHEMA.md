@@ -22,48 +22,118 @@ lives at `.mock-states/<sid>.json` with a frozen baseline at
 
 ---
 
-## Mutable vs static seed
+## Frozen corpus, overlay, and static seed
 
-`src/data/` holds **23 JSON modules, ~6.4 MB**, split in two tiers:
+`src/data/` holds **24 JSON modules, ~6.4 MB**, in three tiers:
 
 | Tier | State key / module | Where they live |
 |---|---|---|
-| **Mutable (12)** | `projects` `users` `groups` `issues` `mergeRequests` `notes` `labels` `milestones` `members` `stars` `follows` `todos` | copied into `state` — POSTed to `/post`, diffed by `/go` |
+| **Frozen corpus (12)** | `projects` `users` `groups` `issues` `mergeRequests` `notes` `labels` `milestones` `members` `stars` `follows` `todos` | `src/data/frozen.js` — read-only base data. **Not copied into state.** `overlay.materialize()` merges them with the session's delta on read, so `state.issues` is still a complete array to every component. |
+| **Overlay (36 keys)** | `new<X>` / `<x>Edits` / `deleted<X>` for each of the 12 above | **this is what is persisted** — POSTed to `/post`, diffed by `/go`, written to localStorage |
 | **Static (11)** | `repo_files` `repo_trees` `commits` `contributors` `branches` `tags` `merge_request_diffs` `tree_last_commits` `resource_events` `repo_languages` `ci_pipelines` | reference data — imported at module scope, **never** copied into state |
 
-The mutable names above are the **state keys** — the names `/go` returns and the
-rest of this document uses. One differs from its file name: `mergeRequests` is
+(The 24th module is `current_user.json`, 382 B — byteblaze's row extracted
+verbatim from `users.json` so that `createInitialData()` can seed `currentUser`
+without importing the 256 KB user corpus.)
+
+The corpus names above are the **state keys** — the names components read and
+the names this document uses. One differs from its file name: `mergeRequests` is
 loaded from `src/data/merge_requests.json`. The static names are file names;
 they have no state key, by definition.
 
-**Cold state size: 2 072 728 bytes (1.976 MiB) minified** — re-measured off
-`GET /go` in round 16 (`json.dumps(..., separators=(',',':'), ensure_ascii=False)`,
-the same method TEST.md §1 uses, and the same figure it reports). It moved by
-**+2 970 bytes** from round 14's `2 069 758`, and the delta is fully accounted
-for: round 16 added `auto_devops_quick_link:true` to the 99 seeded projects that
-render the quick link on the source (TEST.md **DIFF-1308**), which is
-99 × 30 bytes exactly. No other mutable field or row changed. Round 12 added
-no mutable field and no mutable row: its 1 037 KB of CI/CD data is a STATIC
-module (see the table below), so the POSTed/diffed state is unmoved. Two earlier
-figures stood here and were wrong for different reasons (TEST.md **DOC-1302**).
-2 043 078 (1.948 MiB) was the round-4 number and simply went stale. 2 076 882 was
-measured with **non-ASCII escaped** (`ensure_ascii=True`, every `é` and 🐞 as
-`\uXXXX`); the seed is served and POSTed as UTF-8, so that overcounts by exactly
-7 124 bytes. For reference the same state is 2 065 872 JS `String.length` units,
-which is a third number again — always state the encoding when you re-measure.
-**Remaining headroom to 2 MiB is ~27 KB**, so the next round that wants to add a
-field to a mutable seed should measure first.
-Round 10's own additions went the other way: `merge_request_diffs.json` (478 KB)
-and `repo_languages.json` (12 KB) are STATIC modules outside `state`, and the
-only mutable change was repointing `projects[].repo_size` at
-`project_statistics.storage_size` — **+27 bytes** across all 175 projects.
+### Why the corpus is frozen
 
-That is inside `WEBARENA_MIGRATION.md §4.4`'s ~1–2 MB budget. It got there in
-round 4 by dropping five fields that had no reader in `src/` and no anchor in any
-value — `notes.discussion_id`, `notes.type`, `notes.resolved_at`,
-`notes.resolved_by_id`, `users.admin` (206.7 KB). Sampling `notes` down is
-**unsafe** and was not done: 36 of the 252 anchor strings occur verbatim inside
-note bodies. See `assets/data_model.md §12.1` for the evidence table.
+Those 12 modules used to be copied into `createInitialData()`, which made the
+cold state **2 072 728 bytes**. Chrome bills `localStorage` in UTF-16 and a
+session needs two keys (`webarena_gitlab_mock_state_<sid>` and
+`…_initial_state_<sid>`), so a cold session claimed
+2 × 2 068 670 = **4 137 340 of the ~5 242 880-unit origin quota — 79 %, before
+the agent did anything.** GitLab's task set is overwhelmingly creative (49
+"create", 22 "star", 20 "assign", 18 "merge", 15 "invite", 13 "close"), so a
+handful of mutations crossed the quota; `persist()` swallowed the
+`QuotaExceededError`, dropped both keys, and persistence died **silently**.
+Every mutation also POSTed all 2.07 MB, and every `/go` returned 4.15 MB.
+
+Measured after the refactor:
+
+| | before | after |
+|---|---|---|
+| cold state (`createInitialData()`, minified UTF-8) | 2 072 728 B | **1 473 B** |
+| two localStorage keys | 4 137 340 UTF-16 units = **78.9 % of quota** | **2 946 units = 0.06 %** |
+| `GET /go` cold, whole payload | 4 145 507 B | **2 997 B** |
+| `GET /go` after one star | 4 146 855 B | **4 315 B** (961×) |
+| `POST /post` body per mutation | 2 072 797 B | **~2–5 KB** |
+| first contentful paint (`npm run preview`) | 448 ms | **372 ms** |
+
+There is no longer a meaningful state budget to blow: the ~1-2 MB ceiling in
+`WEBARENA_MIGRATION.md §4.4` now constrains only what a *task* injects, not the
+seed. **`assets/data_model.md §12.1` still governs the corpus itself** — notes
+may not be sampled down, because 36 of the 252 anchor strings occur verbatim
+inside note bodies.
+
+⚠️ **A stale `.mock-states/<sid>.json` can no longer pin an old corpus.** A
+snapshot taken before this refactor carries the full arrays;
+`overlay.baseArray()` honours them as the base, so it renders — but it renders
+*that snapshot's* corpus rather than `src/data/`. Delete stale snapshots
+whenever the seed changes.
+
+### The overlay keys
+
+For each frozen collection `X` (state key), three flat top-level keys:
+
+| Key | Type | Holds |
+|---|---|---|
+| `new<X>` | array | records the agent CREATED, in insertion order, carrying their current value. An edit to a created record is applied in place here. |
+| `<x>Edits` | object | `{ "<key>": fullRecord }` — the replacement value for a FROZEN record the agent edited. Wins over the frozen row at materialization. |
+| `deleted<X>` | array | keys of FROZEN records the agent removed (tombstones). A created record that is deleted simply leaves `new<X>`. |
+
+Exact names: `newUsers`/`userEdits`/`deletedUsers`,
+`newProjects`/`projectEdits`/`deletedProjects`,
+`newGroups`/`groupEdits`/`deletedGroups`,
+`newIssues`/`issueEdits`/`deletedIssues`,
+`newMergeRequests`/`mergeRequestEdits`/`deletedMergeRequests`,
+`newNotes`/`noteEdits`/`deletedNotes`,
+`newLabels`/`labelEdits`/`deletedLabels`,
+`newMilestones`/`milestoneEdits`/`deletedMilestones`,
+`newMembers`/`memberEdits`/`deletedMembers`,
+`newTodos`/`todoEdits`/`deletedTodos`,
+`newStars`/`starEdits`/`deletedStars`,
+`newFollows`/`followEdits`/`deletedFollows`.
+
+The record `key` is `String(id)` for the ten id-keyed collections. `stars` and
+`follows` have no id in the source either — they are join rows — so their key is
+the composite `"<project_id>:<user_id>"` and `"<follower_id>:<followee_id>"`,
+which is also how `stateTracker.js` already set-diffs them.
+
+`snippets`, `groupLinks`, `repo`, `ui`, `nextIds` and `currentUser` are NOT
+overlaid: nothing about them is frozen, so they stay plain state keys and their
+diff shape is unchanged.
+
+### Reading and writing it
+
+There is exactly **one** materialization point, `overlay.materialize(core)`,
+called only by `AppProvider.commit()`. `AppProvider` holds two objects:
+
+```
+core    the persisted state — overlay keys + currentUser/repo/ui/nextIds/snippets
+state   materialize(core) — core plus the twelve fully merged arrays
+```
+
+Every component reads `useApp().state`, so the project issue list, the issue
+detail page, `/dashboard/issues`, `/dashboard/merge_requests`,
+`/dashboard/todos`, the user profile, `/search`, the activity feeds, the boards
+and the milestone pages cannot disagree about whether a record exists.
+`useApp().coreState` exposes the delta for inspection.
+
+The write side is a **reconciler**, not a set of overlay verbs. All 79 write
+sites were left untouched: a reducer is still handed the merged `state` and
+still returns a merged `state`, and `overlay.dematerialize()` derives the delta
+from what it returned. Immutable reducers return untouched collections
+reference-identically, so 11 of 12 are skipped in O(1) per write and only the one
+that changed is scanned. The reasoning is in the header of
+`src/utils/overlay.js`; `assets/dumps/test_overlay.py` is the regression suite.
+
+---
 
 Seven of the eleven static modules are git-derived and reached through the
 `dataManager.js` accessors, so the `state.repo` overlays always apply:
@@ -95,16 +165,20 @@ and the pipeline row its Pipelines tab shows (TEST.md DIFF-901). Round 12's
 `ci_pipelines.json` is the project-level counterpart, and is why the MR
 Pipelines tab and the project pipelines list no longer contradict each other.
 
-**None of them may enter `createInitialData()`.** They are historical, nothing
-mutates them, and ~1 MB of dead weight in every POSTed state would put the budget
-back over. `assets/data_model.md §11` and `§11a` describe their shapes.
+**None of them may enter `createInitialData()`.** They are historical and
+nothing mutates them, so they would be pure dead weight in every POSTed state —
+the same reason the twelve mutable modules are now frozen too.
+`assets/data_model.md §11` and `§11a` describe their shapes.
 
-A cold session payload is ~2.7 MB pretty-printed. `dataManager.persist()` writes
+A cold session payload is now ~2 KB. `dataManager.persist()` writes
 the current-state key to localStorage first and only then the baseline key, so
 `initialKey present ⇒ storageKey present`. If a write exceeds the browser quota
 both keys are dropped and the next load rehydrates from
-`.mock-states/<sid>.json` via `fetchCustomState()`; `/go`'s diff stays correct
-because the server writes `<sid>.initial.json` exactly once. `AppContext` also
+`.mock-states/<sid>.json` via `fetchCustomState()`. That guard is now only
+reachable through a legacy full-array injection — an overlay-sized session is
+0.06 % of quota — but it is kept for exactly that case. `/go`'s diff stays
+correct either way, because the server writes `<sid>.initial.json` exactly once
+and **only** on `{action:'set'}`. `AppContext` also
 calls `publishInitialState()` (`{action:'set'}`) at boot on a cold session with
 no injected state, so the baseline is pristine and the first mutation is visible
 in `state_diff`. `POST /post` bodies are gzipped by the client when
@@ -113,23 +187,60 @@ fallback.
 
 ---
 
+## Injecting task state
+
+`POST /post?sid=<sid>` `{"action":"set","state":{…}}`. Both shapes work, and
+`assets/dumps/test_overlay.py §2` proves they render identically:
+
+**Lightweight (preferred).** Inject only the delta and let the frozen corpus
+stand — one record instead of 613:
+
+```json
+{"action": "set", "state": {
+  "newIssues": [{"id": 900001, "iid": 1600, "project_id": 174, "title": "…", "…": "…"}],
+  "issueEdits": {"83395": {"id": 83395, "title": "edited", "…": "…"}},
+  "deletedIssues": ["83396"]
+}}
+```
+
+**Legacy (still supported).** Inject a full array and it becomes the BASE —
+`overlay.baseArray()` prefers `core.issues` over the frozen corpus, so the app
+renders exactly what it rendered before this refactor, with the overlay applying
+on top:
+
+```json
+{"action": "set", "state": {"issues": [ /* …613 rows… */ ]}}
+```
+
+`initializeData()` merges shallowly and runs the result through
+`overlay.toCore()`, so a fixture never has to spell out all 36 overlay keys.
+
+---
+
 ## State Schema
+
+This is the **materialized** state — `overlay.materialize(core)`, what every
+component reads as `useApp().state`. The twelve rows marked 🧊 are frozen corpus
+merged with the session's overlay and are **not** persisted under these names;
+what `/go` returns for them is the `new<X>` / `<x>Edits` / `deleted<X>` keys
+described above. The record shapes below are what a reader sees either way, and
+are what an injected record must match.
 
 | Key | Type | Description |
 |-----|------|-------------|
 | `currentUser` | object | byteblaze, id `2330`. Same shape as a `users` row. Mirrors `users[2330]` — profile edits write **both**. Also carries `two_factor_enabled` once `/-/profile/account` toggles it. |
-| `users` | array | 1 133 real users. Always `{id, username, name, email, state, created_at, followers, following}`; optionally `bio`, `location`, `organization`, `feed_token` (byteblaze only), `status`, `website_url`, `job_title`, `pronouns`. `status` is `{emoji, message, availability}` or `null`. |
-| `projects` | array | 175 real projects. `{id, full_path, path, name, namespace{id,path,name,kind}, description, visibility, star_count, forks_count, archived, created_at, last_activity_at, default_branch, commit_count, repo_size, open_issues_count, closed_issues_count, open_mrs_count, merged_mrs_count, closed_mrs_count}`. Written by tasks: `topics`, `forked_from` (`{id, full_path, name, name_with_namespace}` on forks), `feature_settings`, `request_access_enabled`, `default_branch` (Branch defaults on `/-/settings/repository`). Four optional container-derived flags are present **only where they deviate from GitLab's default**, and drive the Auto DevOps banner predicate (`Layout.jsx`): `auto_devops_enabled:false` (67 projects with an explicit `project_auto_devops` row — absent means the project inherits the instance default, which is ON), `has_ci_config:true` (2), `builds_enabled:false` (1), `empty_repo:true` (2). A fifth, `auto_devops_quick_link:true` (99 projects, +2 970 bytes of cold state), is separate and drives only the `Auto DevOps enabled` **quick link** on the project overview (TEST.md **DIFF-1308**, round 16). It is measured off the source per project rather than derived from `auto_devops_enabled`: all 67 explicit opt-outs hide the link, but 9 of the 108 that inherit ON also hide it and only 4 of those are explained by the other three flags. |
-| `groups` | array | 2 real groups (`{id, path, name, description, visibility}`). Group creation appends here. |
-| `issues` | array | 613 issues. `{id, iid, project_id, title, description, author_id, state:'opened'\|'closed', confidential, due_date, milestone_id, assignee_ids[], label_ids[], created_at, updated_at, closed_at, closed_by_id, upvotes, user_notes_count}`. `closed_at`/`closed_by_id` are **null on all 613 rows, matching the source** — the snapshot populated `issues.closed_at` on 1 row in 80 962 (`assets/data_model.md §4.1`); they are written when a task closes an issue. Written by tasks: `downvotes`, `awards[]`, `time_estimate`, `total_time_spent`, `discussion_locked`, `moved_from`. |
-| `mergeRequests` | array | 729 MRs. `{id, iid, project_id, source_project_id, title, description, author_id, state:'opened'\|'closed'\|'merged', draft, source_branch, target_branch, milestone_id, merge_status, assignee_ids[], reviewer_ids[], label_ids[], created_at, updated_at, merged_at, merged_by_id, user_notes_count, squash}`. `merged_at`/`merged_by_id` are the round-5 backfill off `merge_request_metrics` — populated on 286 / 210 rows, null elsewhere (`assets/data_model.md §5.1`); they back `?sort=merged_at`. There is deliberately **no seeded `closed_at`**: the source's `merge_request_metrics.latest_closed_at` is set on 1 row in 134 338 (§5.2). Written by tasks: `upvotes`, `downvotes`, `awards[]`, `discussion_locked`, `merge_commit_message`, `closed_at`, `closed_by_id`. |
-| `notes` | array | 1 599 notes. `{id, noteable_type:'Issue'\|'MergeRequest', noteable_id, project_id, author_id, body, system, created_at, updated_at}`. `system:true` rows are the grey activity lines and are excluded from `user_notes_count`. **`discussion_id`, `type`, `resolved_at` and `resolved_by_id` were removed from the seed** (see above); `NotesTimeline.jsx` still writes the first three on notes it creates. |
-| `labels` | array | 630 labels. `{id, project_id, title, color, description, created_at}` (+ `updated_at` once edited). |
-| `milestones` | array | 202 milestones. `{id, iid, project_id, title, description, state:'active'\|'closed', start_date, due_date, created_at, updated_at}` |
-| `members` | array | 183 memberships. `{id, source_type:'project'\|'namespace', source_id, user_id, access_level, access_label, created_at, expires_at, created_by_id}`. **Request Access** (ROUTES #97) appends a row carrying an extra `requested_at`; such a row is an access *request*, not a membership, and `MembersTable` excludes it — which is what GitLab does (requests live behind a Maintainer-only tab). **Leave project** (ROUTES #96) removes the row. |
-| `stars` | array | 569 stars. `{project_id, user_id, created_at}` — set-diffed, no id. |
-| `follows` | array | 5 follows. `{follower_id, followee_id}` — set-diffed, no id. |
-| `todos` | array | 7 todos. `{id, user_id, project_id, target_id, target_type, author_id, action, state:'pending'\|'done', created_at, group_id}` |
+| 🧊 `users` | array | 1 133 real users. Always `{id, username, name, email, state, created_at, followers, following}`; optionally `bio`, `location`, `organization`, `feed_token` (byteblaze only), `status`, `website_url`, `job_title`, `pronouns`. `status` is `{emoji, message, availability}` or `null`. |
+| 🧊 `projects` | array | 175 real projects. `{id, full_path, path, name, namespace{id,path,name,kind}, description, visibility, star_count, forks_count, archived, created_at, last_activity_at, default_branch, commit_count, repo_size, open_issues_count, closed_issues_count, open_mrs_count, merged_mrs_count, closed_mrs_count}`. Written by tasks: `topics`, `forked_from` (`{id, full_path, name, name_with_namespace}` on forks), `feature_settings`, `request_access_enabled`, `default_branch` (Branch defaults on `/-/settings/repository`). Four optional container-derived flags are present **only where they deviate from GitLab's default**, and drive the Auto DevOps banner predicate (`Layout.jsx`): `auto_devops_enabled:false` (67 projects with an explicit `project_auto_devops` row — absent means the project inherits the instance default, which is ON), `has_ci_config:true` (2), `builds_enabled:false` (1), `empty_repo:true` (2). A fifth, `auto_devops_quick_link:true` (99 projects, +2 970 bytes of cold state), is separate and drives only the `Auto DevOps enabled` **quick link** on the project overview (TEST.md **DIFF-1308**, round 16). It is measured off the source per project rather than derived from `auto_devops_enabled`: all 67 explicit opt-outs hide the link, but 9 of the 108 that inherit ON also hide it and only 4 of those are explained by the other three flags. |
+| 🧊 `groups` | array | 2 real groups (`{id, path, name, description, visibility}`). Group creation appends here. |
+| 🧊 `issues` | array | 613 issues. `{id, iid, project_id, title, description, author_id, state:'opened'\|'closed', confidential, due_date, milestone_id, assignee_ids[], label_ids[], created_at, updated_at, closed_at, closed_by_id, upvotes, user_notes_count}`. `closed_at`/`closed_by_id` are **null on all 613 rows, matching the source** — the snapshot populated `issues.closed_at` on 1 row in 80 962 (`assets/data_model.md §4.1`); they are written when a task closes an issue. Written by tasks: `downvotes`, `awards[]`, `time_estimate`, `total_time_spent`, `discussion_locked`, `moved_from`. |
+| 🧊 `mergeRequests` | array | 729 MRs. `{id, iid, project_id, source_project_id, title, description, author_id, state:'opened'\|'closed'\|'merged', draft, source_branch, target_branch, milestone_id, merge_status, assignee_ids[], reviewer_ids[], label_ids[], created_at, updated_at, merged_at, merged_by_id, user_notes_count, squash}`. `merged_at`/`merged_by_id` are the round-5 backfill off `merge_request_metrics` — populated on 286 / 210 rows, null elsewhere (`assets/data_model.md §5.1`); they back `?sort=merged_at`. There is deliberately **no seeded `closed_at`**: the source's `merge_request_metrics.latest_closed_at` is set on 1 row in 134 338 (§5.2). Written by tasks: `upvotes`, `downvotes`, `awards[]`, `discussion_locked`, `merge_commit_message`, `closed_at`, `closed_by_id`. |
+| 🧊 `notes` | array | 1 599 notes. `{id, noteable_type:'Issue'\|'MergeRequest', noteable_id, project_id, author_id, body, system, created_at, updated_at}`. `system:true` rows are the grey activity lines and are excluded from `user_notes_count`. **`discussion_id`, `type`, `resolved_at` and `resolved_by_id` were removed from the seed** (see above); `NotesTimeline.jsx` still writes the first three on notes it creates. |
+| 🧊 `labels` | array | 630 labels. `{id, project_id, title, color, description, created_at}` (+ `updated_at` once edited). |
+| 🧊 `milestones` | array | 202 milestones. `{id, iid, project_id, title, description, state:'active'\|'closed', start_date, due_date, created_at, updated_at}` |
+| 🧊 `members` | array | 183 memberships. `{id, source_type:'project'\|'namespace', source_id, user_id, access_level, access_label, created_at, expires_at, created_by_id}`. **Request Access** (ROUTES #97) appends a row carrying an extra `requested_at`; such a row is an access *request*, not a membership, and `MembersTable` excludes it — which is what GitLab does (requests live behind a Maintainer-only tab). **Leave project** (ROUTES #96) removes the row. |
+| 🧊 `stars` | array | 569 stars. `{project_id, user_id, created_at}` — set-diffed, no id. |
+| 🧊 `follows` | array | 5 follows. `{follower_id, followee_id}` — set-diffed, no id. |
+| 🧊 `todos` | array | 7 todos. `{id, user_id, project_id, target_id, target_type, author_id, action, state:'pending'\|'done', created_at, group_id}` |
 | `snippets` | array | `[]` in the seed — the source instance has no snippets. The key still needs a baseline, or a created snippet lands in the diff as `{"new": […]}` with no `old`. `{id, title, description, file_name, content, visibility, author_id, created_at}`. Ids are `1 + max(existing)`, **not** from `nextIds`. |
 | `groupLinks` | array | **Absent from the seed; created on first use** by *Invite a group* on a members page. `{id, source_type:'project'\|'namespace', source_id, group_id, group_name, group_path, access_level, access_label, expires_at}`. Ids are `1 + max(existing)`, not from `nextIds`. The members page's **Groups** tab only renders when this is non-empty — which is what the source does. |
 | `repo` | object | git overlays — see below |
@@ -250,9 +361,57 @@ from its own collection (`1 + max(existing)`).
 
 ## Minimal Inject Example
 
-A task only has to supply the collections it cares about — `initializeData()`
-merges the injected object over `createInitialData()`, and `repo`, `ui` and
-`nextIds` are merged key-by-key so partial subtrees keep their defaults.
+A task only has to supply what it cares about — `initializeData()` merges the
+injected object over `createInitialData()`, runs it through `overlay.toCore()`
+so the 35 overlay keys it omitted are filled in, and merges `repo`, `ui` and
+`nextIds` key-by-key so partial subtrees keep their defaults.
+
+**Preferred — inject the delta.** The frozen corpus stands; this adds one issue,
+retitles a frozen one, removes another, stars a project and gives byteblaze an
+Owner membership. Nine records, not 3 500:
+
+```json
+{
+  "action": "set",
+  "state": {
+    "newIssues": [
+      {
+        "id": 83821, "iid": 1600, "project_id": 174, "title": "Add a dark mode",
+        "description": "", "author_id": 2330, "state": "opened",
+        "confidential": false, "due_date": null, "milestone_id": null,
+        "assignee_ids": [2330], "label_ids": [], "created_at": "2023-05-01 10:00:00",
+        "updated_at": "2023-05-01 10:00:00", "closed_at": null, "closed_by_id": null,
+        "upvotes": 0, "user_notes_count": 0
+      }
+    ],
+    "issueEdits": {
+      "83395": { "id": 83395, "iid": 1408, "project_id": 174, "title": "Retitled by the task", "…": "…" }
+    },
+    "deletedIssues": ["83396"],
+    "newStars": [ { "project_id": 193, "user_id": 2330, "created_at": "2023-05-01 10:00:00" } ],
+    "newMembers": [
+      { "id": 206, "source_type": "project", "source_id": 193, "user_id": 2330,
+        "access_level": 50, "access_label": "Owner", "created_at": "2023-05-01 10:00:00",
+        "expires_at": null, "created_by_id": 2330 }
+    ],
+    "nextIds": { "issue": 83822, "member": 207 },
+    "ui": { "preferences": { "colorScheme": "dark" } }
+  }
+}
+```
+
+An entry in `issueEdits` / `deletedIssues` must carry the **full** record and the
+**id** as its key (`"<project_id>:<user_id>"` for `stars`,
+`"<follower_id>:<followee_id>"` for `follows`). A record put in `newIssues`
+should use an id at or above `nextIds.issue`, and `nextIds` should be advanced
+past it, or `allocateId`'s collision scan will skip over the injected id and the
+counter will look stale.
+
+**Legacy — inject a full array.** Still supported and still renders exactly what
+it rendered before the overlay refactor: an array under a corpus name becomes the
+BASE, replacing the frozen module wholesale, and the overlay keys apply on top.
+Use this only when a task genuinely needs a different corpus; it costs the full
+payload and can reach the localStorage quota again.
 
 ```json
 {
@@ -275,42 +434,54 @@ merges the injected object over `createInitialData()`, and `repo`, `ui` and
         "open_issues_count": 0
       }
     ],
-    "groups": [],
-    "issues": [],
-    "mergeRequests": [],
-    "notes": [],
-    "labels": [],
-    "milestones": [],
+    "issues": [], "mergeRequests": [], "notes": [], "labels": [],
+    "milestones": [], "groups": [], "stars": [], "follows": [], "todos": [],
     "members": [
       {"id": 202, "source_type": "project", "source_id": 193, "user_id": 2330, "access_level": 50, "access_label": "Owner", "created_at": "2023-03-27 20:37:47", "expires_at": null, "created_by_id": 2330}
-    ],
-    "stars": [],
-    "follows": [],
-    "todos": [],
-    "snippets": [],
-    "repo": {
-      "fileOverlay": {}, "treeOverlay": {}, "commitOverlay": {},
-      "branchOverlay": {}, "tagOverlay": {}, "forkOrigin": {},
-      "branchDeletions": {}, "tagDeletions": {}
-    },
-    "ui": {
-      "notificationLevels": {}, "sidebarCollapsed": false, "dismissedAlerts": [],
-      "preferences": {"colorScheme": "light", "syntaxTheme": "white"}
-    },
-    "nextIds": {"project": 194, "group": 7, "issue": 83821, "mr": 139278, "note": 310827, "label": 1927, "milestone": 590, "member": 206}
+    ]
   }
 }
 ```
 
+⚠️ An empty array is **not** "leave the corpus alone" — it is "the corpus is
+empty". Omit the key to keep the frozen module.
+
 ## Observable State Changes (for LLM evaluation)
 
-Every row flows through `AppContext.setState()` → `saveState()` →
-`POST /post?sid=<sid>` `{action:'set_current'}` → `.mock-states/<sid>.json` →
-`/go` `state_diff`.
+Every row flows through `AppContext.setState()` → `overlay.dematerialize()` →
+`saveState()` → `POST /post?sid=<sid>` `{action:'set_current'}` →
+`.mock-states/<sid>.json` → `/go` `state_diff`.
 
 **Legend.** ✅ = driven in chromium during the round-4 schema pass and the listed
 keys are the captured diff. ⚠ = the control is reachable and its handler is
 known, but the drive did not complete the flow, so the keys come from the handler.
+
+### ⚠️ Reading this table after the overlay refactor
+
+The **User Action** and **Route** columns are unchanged, and so is which *record
+field* moves. What changed is the **key that field's change appears under**,
+because a frozen collection is no longer in state. Every row below translates
+mechanically — `X` is the state key, `<key>` is `String(id)` (or the composite
+for `stars`/`follows`):
+
+| the table says | `/go` `state_diff` now contains |
+|---|---|
+| `X.added` (a created record) | `newX` → `{"old": [], "new": [ …the record… ]}` |
+| `X.changed` → `X[].field` on a **frozen** record | `xEdits.<key>` → `{"new": { …the whole record, field updated… }}` |
+| `X.changed` → `X[].field` on a record the agent **created** earlier | `newX` → `{"old": [ …before… ], "new": [ …after… ]}` |
+| `X.removed` on a **frozen** record | `deletedX` → `{"old": [], "new": ["<key>"]}` |
+| `X.removed` on a record the agent **created** | the record leaves `newX`; `newX` shows the shorter array |
+
+Rows naming `repo.*`, `ui.*`, `nextIds.*`, `currentUser`, `snippets` or
+`groupLinks` are **unaffected** — those keys are still plain state and their diff
+shape is exactly as documented.
+
+`xEdits.<key>` carries only `new`, never `old`, because the pre-edit value is not
+in state to compare against. It is not lost: the frozen record is in
+`src/data/<module>.json`, checked in and deterministic, so a consumer that wants
+the before-value looks it up by id there. (`users.json` `projects.json`
+`groups.json` `issues.json` `merge_requests.json` `notes.json` `labels.json`
+`milestones.json` `members.json` `todos.json` `stars.json` `follows.json`.)
 
 ### Projects & repository
 
@@ -422,13 +593,21 @@ known, but the drive did not complete the flow, so the keys come from the handle
 
 ## Diff shape
 
-`src/utils/stateTracker.js` diffs id-keyed collections as sets rather than by
-array index, so inserting one issue does not emit 613 changed entries:
+`src/utils/stateTracker.js` is **unchanged by the overlay refactor** — 89 mocks
+share its convention, and shrinking what is persisted made the diff small without
+touching the differ. What changed is that the frozen collections are no longer
+top-level state keys, so its `KEYED_COLLECTIONS` branch no longer fires for them
+and the delta keys fall through to the recursive value diff. A real diff now
+looks like this (one created issue, one comment on it, one star, one edit to a
+frozen label):
 
 ```json
 {
-  "issues":  { "added": [ … ], "removed": [ … ], "changed": [ { "id": 83395, "old": {…}, "new": {…} } ] },
-  "stars":   { "added": [ { "project_id": 193, "user_id": 2330 } ], "removed": [] },
+  "newIssues":  { "old": [], "new": [ { "id": 83821, "iid": 1600, "title": "…" } ] },
+  "newNotes":   { "old": [], "new": [ { "id": 310827, "noteable_type": "Issue", "body": "…" } ] },
+  "newStars":   { "old": [], "new": [ { "project_id": 193, "user_id": 2330, "created_at": "…" } ] },
+  "labelEdits.1805": { "new": { "id": 1805, "title": "renamed", "color": "#428BCA", "…": "…" } },
+  "projectEdits.193": { "new": { "id": 193, "full_path": "byteblaze/dotfiles", "star_count": 1, "…": "…" } },
   "repo.fileOverlay.byteblaze/dotfiles:main:README.md": { "old": null, "new": "…" },
   "repo.forkOrigin.byteblaze/2019-nCov": { "old": null, "new": "yjlou/2019-nCov" },
   "ui.preferences.themeId": { "old": null, "new": "2" },
@@ -436,13 +615,16 @@ array index, so inserting one issue does not emit 613 changed entries:
 }
 ```
 
-Keyed collections (`added`/`removed`/`changed` by `id`): `users projects groups
-issues mergeRequests notes labels milestones members todos`.
-Set-diffed (`added`/`removed` by value): `stars follows`.
+The `KEYED_COLLECTIONS` (`added`/`removed`/`changed` by `id`) and set-diff
+(`stars`, `follows`) branches of `stateTracker.js` are still live and still
+correct — they fire when a task **injects a full array** as the base and then
+mutates it, which is the legacy path `overlay.baseArray()` supports. On a
+lightweight (overlay-only) session they simply never see those keys.
+
 Everything else — `repo.*`, `ui.*`, `nextIds.*`, `currentUser`, `snippets`,
-`groupLinks` — falls back to a recursive value diff keyed by dotted path. That is
-why a `repo.*` or `ui.*` row above names the **full dotted key**: it is what the
-diff literally contains.
+`groupLinks` — falls back to a recursive value diff keyed by dotted path, exactly
+as before. That is why a `repo.*` or `ui.*` row above names the **full dotted
+key**: it is what the diff literally contains.
 
 ---
 
@@ -450,7 +632,7 @@ diff literally contains.
 
 | Endpoint | Method | Purpose |
 |---|---|---|
-| `/post?sid=` | POST | `{action:'set'\|'set_current'\|'reset', state, merge?}` |
+| `/post?sid=` | POST | `{action:'set'\|'set_current'\|'reset', state, merge?}`. `set` writes `<sid>.json` **and** `<sid>.initial.json`; `set_current` writes `<sid>.json` **only**; `reset` restores `<sid>.json` from the baseline. |
 | `/state?sid=` | GET | `{stored_state, has_custom_state, sid}` |
 | `/go?sid=` | GET | `{initial_state, current_state, state_diff}` |
 | `/upload?sid=` | POST | multipart upload → `.mock-files/<sid>/` |
@@ -462,5 +644,24 @@ path-forming site (verified: `POST /post?sid=../../pwn` writes
 registered under **both** `configureServer` and `configurePreviewServer`, so the
 state API works identically under `npm run dev` and `npm run preview` — both were
 driven with a real browser. `secureMockApiPlugin()` is first in `plugins[]`.
-Responses are gzipped on the wire (`/go` 4.47 MB → 1.10 MB, `POST /post`
-2.23 MB → 0.49 MB); the state itself is unchanged by that.
+Responses are gzipped on the wire; with the corpus frozen there is little left to
+compress — a cold `/go` is 2 997 B and a `POST /post` after a mutation is a few
+KB. (Before the overlay refactor those were 4.47 MB → 1.10 MB and
+2.23 MB → 0.49 MB respectively.)
+
+**State-contract compliance.** `shared/check-state-contract.py` reported both of
+its defects against this mock and now reports it **clean**:
+
+* **A — `set_current` must not seed the baseline.** It used to call
+  `writeInitialStateIfMissing()`, so on a fresh session the first mutation became
+  the baseline and `state_diff` was `{}` forever. Removed; the baseline is seeded
+  by `set`, which `AppContext.publishInitialState()` posts once at boot on a cold
+  session, and by the eval harness when it injects task state.
+* **B — `/go` must not fall back to the current state.** It read
+  `initialState || currentState || defaultState`, which turns a missing baseline
+  into a self-comparison — the same empty diff by another route. It now reads
+  `initialState || defaultState`, so a never-seeded sid baselines against
+  `createInitialData()`. That is only sound if the server's `createInitialData()`
+  matches what the client boots from, which it does:
+  `GET /go?sid=<untouched>` returns `state_diff == {}` (asserted by
+  `assets/dumps/test_overlay.py §1`).

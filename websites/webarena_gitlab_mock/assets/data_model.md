@@ -29,9 +29,16 @@ fields, so the page is internally consistent; keep the real fields for the
 project-overview panel where GitLab shows a headline number. No evaluator reads
 either number.
 
-Total seed: **5.0 MB across 20 JSON modules**, of which only the 12 mutable ones
-(**1.97 MB minified**) go into `createInitialData()`; the 8 git/reference modules
-stay static. See §11 and §12 — and §12.1 for the round-4 field trim that took the
+Total seed: **5.0 MB across 20 JSON modules**, of which 12 are mutable
+(**1.97 MB minified**) and the 8 git/reference modules stay static.
+
+> ⚠️ **Superseded for the mutable tier.** Those 12 modules no longer go into
+> `createInitialData()`. They are the FROZEN corpus (`src/data/frozen.js`),
+> merged on read by `src/utils/overlay.js`, and what is persisted is the delta —
+> cold state is **1 473 B**, not 1.97 MB. Components still read `state.issues`
+> and the rest as complete arrays, so every field description below is unchanged
+> and still authoritative. See `SCHEMA.md` § *Frozen corpus, overlay, and static
+> seed* and §12 below. See §11 and §12 — and §12.1 for the round-4 field trim that took the
 mutable tier from 2.14 MB to 1.95 MB, before round 5's `merged_at` backfill
 (§5.1) put 0.03 MB of it back.
 
@@ -643,6 +650,17 @@ taken before the timeline shard landed.
 
 ## 12. `createInitialData()` shape
 
+> ⚠️ **This section describes the shape BEFORE the overlay refactor.** The twelve
+> mutable collections were moved out of `createInitialData()` into
+> `src/data/frozen.js` and are merged on read by `src/utils/overlay.js`; what is
+> persisted is a 36-key delta (`newIssues` / `issueEdits` / `deletedIssues` and
+> the equivalents for the other eleven). Cold state measured off `GET /go` is now
+> **1 473 bytes**, and the budget discussion below — including §12.1's field trim
+> and the "~33 KB of headroom" — no longer binds the seed. It still binds what a
+> *task* injects. **§12.1's finding that `notes` may not be sampled down (36 of
+> the 252 anchor strings occur verbatim inside note bodies) still stands and
+> still governs the corpus.** `SCHEMA.md` is authoritative for the current shape.
+
 Measured off `GET /go` on a cold session: **2 063 847 bytes minified (1.968 MB)**.
 `SCHEMA.md` is the authoritative field-by-field description; this is the shape.
 
@@ -668,7 +686,10 @@ Measured off `GET /go` on a cold session: **2 063 847 bytes minified (1.968 MB)*
           branchDeletions: {}, tagDeletions: {} },
   ui: { notificationLevels: {}, sidebarCollapsed: false,
         dismissedAlerts: [], preferences: { colorScheme, syntaxTheme } },
-  // DERIVED at module load as max(seed id)+1 — never literals (PIPELINE-001)
+  // Was DERIVED at module load as max(seed id)+1 (PIPELINE-001); deriving it is
+  // what dragged the corpus into vite.config.js, so it is now a literal in
+  // src/utils/overlayShape.js guarded by overlay.checkSeedNextIds() in DEV and
+  // by assets/dumps/check_next_ids.py. Same values.
   nextIds: { project: 194, group: 7, issue: 83821, mr: 139278,
              note: 310827, label: 1927, milestone: 590, member: 206 }
 }

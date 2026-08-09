@@ -5,7 +5,11 @@ import fs from 'fs'
 import path from 'path'
 import zlib from 'zlib'
 import { createHash } from 'crypto'
-import { createInitialData } from './src/utils/dataManager.js'
+// createInitialData comes from ./src/utils/initialState.js, NOT dataManager.js.
+// dataManager imports 2.9 MB of static git data for its accessors and this
+// module is evaluated in the node process that answers every /go; initialState
+// imports only overlayShape.js and one 382-byte JSON file.
+import { createInitialData } from './src/utils/initialState.js'
 import { computeStateDiff } from './src/utils/stateTracker.js'
 
 const STATE_DIR = path.join(process.cwd(), '.mock-states')
@@ -280,11 +284,17 @@ function setupMiddlewares(server) {
         res.end(JSON.stringify({ success: true, sid, message: 'State set.' }))
         return
       }
+      // `set_current` writes <sid>.json ONLY. It must NEVER seed
+      // <sid>.initial.json: on a fresh session the first mutation would become
+      // the baseline, so initial == current and /go would report an empty
+      // state_diff forever. That is defect A in shared/check-state-contract.py.
+      // The baseline is seeded by `set` — which AppContext's
+      // publishInitialState() posts once at boot on a cold session — or by the
+      // eval harness injecting task state.
       if (action === 'set_current') {
         const currentState = readState(sid) || {}
         const newState = data.merge ? deepMerge(currentState, data.state) : data.state
         writeState(sid, newState)
-        writeInitialStateIfMissing(sid, newState)
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify({ success: true, sid, message: 'Current state updated.' }))
         return
@@ -312,7 +322,12 @@ function setupMiddlewares(server) {
     const currentState = readState(sid)
     const initialState = readInitialState(sid)
     const defaultState = createInitialData()
-    const initial = initialState || currentState || defaultState
+    // NEVER `initialState || currentState || defaultState` — that turns a
+    // missing baseline into a self-comparison and the diff is empty by another
+    // route (defect B in shared/check-state-contract.py). A never-seeded sid
+    // baselines against createInitialData(), which is exactly what the client
+    // boots from, so GET /go?sid=<untouched> reports state_diff == {}.
+    const initial = initialState || defaultState
     const current = currentState || initial
     const stateDiff = calculateStateDiff(initial, current)
     sendJson(req, res, { initial_state: initial, current_state: current, state_diff: stateDiff },
@@ -330,6 +345,20 @@ export default defineConfig({
       configurePreviewServer(server) { setupMiddlewares(server) }
     }
   ],
+  // NO `json: { stringify: true }` here — it was tried and MEASURED, and it is a
+  // regression for this mock. `webarena_reddit_mock` sets it (one 14.6 MB corpus
+  // in three modules, where the JSON.parse win dominates); gitlab's ~6.4 MB is
+  // spread over 24 modules and behaves differently. Medians of 5 interleaved
+  // cold loads of /byteblaze/dotfiles, FCP:
+  //
+  //   npm run preview   stringify:false  372 ms · bundle 7 480 108 B
+  //                     stringify:true   380 ms · bundle 7 891 691 B
+  //   npm run dev       stringify:false  440 ms
+  //                     stringify:true  1564 ms   <- +1.1 s, DCL 307 -> 1428 ms
+  //
+  // i.e. no production win, +411 KB of bundle, and a 3.5x slower dev server —
+  // dev is what every agent round and every playwright run actually loads.
+  // Vite 5's default is `stringify: false`, so this is simply left unset.
   esbuild: { loader: 'jsx', include: /src\/.*\.jsx?$/, exclude: [] },
   optimizeDeps: { esbuildOptions: { loader: { '.js': 'jsx' } } },
   server: {

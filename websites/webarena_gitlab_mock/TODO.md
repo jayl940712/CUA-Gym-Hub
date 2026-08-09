@@ -555,7 +555,20 @@ Seeds live in `src/data/`; the contract is `assets/data_model.md`.
         **answer formatting** — webarena-317's anchor is a `string_match`
         `must_include` scoped to `(answer)`. The page correctly renders
         `Susan Zhang 70 commits` / `Stephen Roller 51` / `Peter Albert 12`.
-- [ ] **Seed size is at the top of budget.** Re-measured round 6 from a live
+- [x] **Seed size is at the top of budget.** — **CLOSED by the overlay refactor.**
+      The 12 mutable modules are now the FROZEN corpus (`src/data/frozen.js`),
+      merged on read by `src/utils/overlay.js`, and only the delta is persisted.
+      Cold state measured off a live `/go`: **2 072 728 B -> 1 473 B**, and the
+      two localStorage keys went from 4 137 340 UTF-16 units (78.9 % of Chrome's
+      quota, which is why persistence was dying silently on creative tasks) to
+      **2 946 units, 0.06 %**. The seed itself did **not** change: no field was
+      trimmed and no row sampled, so the unsafe notes trim below was not needed
+      and its finding still stands (**36 of the 252 anchor strings occur verbatim
+      inside note bodies**, across 33 notes — never sample `notes`). Kept below
+      for the measurement history. See `SCHEMA.md` § *Frozen corpus, overlay, and
+      static seed* and `DEV.part-state.md`.
+
+      Re-measured round 6 from a live
       `/go`: `JSON.stringify(initial_state)` is **2 076 855 bytes = 1.981 MiB**
       against `WEBARENA_MIGRATION.md §4`'s ~1–2 MB — ~19 KB of headroom, down from
       round 5's ~33 KB. Round 6 added **+2 001 bytes** (1 977 for the four
