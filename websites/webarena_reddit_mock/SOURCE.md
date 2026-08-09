@@ -328,34 +328,124 @@ the algorithm — seed `ranking` as its own field, do not alias it to `net_score
 
 ---
 
+## Seed scale and selection (rewritten 2026-08-09 — the expansion round)
+
+| | before | after | source |
+|---|---|---|---|
+| submissions | 2,359 | **8,012** | 127,391 |
+| comments | 2,593 | **23,667** | 2,551,513 |
+| posts carrying >=1 comment | 427 (18%) | **5,180 (65%)** | 64% |
+| `userDirectory` | 3,899 | **20,749** | 661,782 |
+| submission images | 770 files | **2,748 files** | 31,467 |
+
+The pipeline that produces all of this is committed in `assets/dumps/*.py` and is
+re-runnable from a clean checkout: `anchor_ids.py` (contract → primary keys),
+`extract_expansion.py` (selection + SELECT-only extraction),
+`fetch_images.py`, `compress_images.py`, `merge_seed.py`, `verify_expansion.py`.
+The `.json` dumps stay gitignored; the scripts deliberately do not.
+
+**Selection is sort-coverage driven, not "N per forum".** A partial seed
+reproduces page *N* of a listing sort if and only if it holds the source's top
+25·*N* rows under that sort. So the seed takes, per forum, `hot`<=50 and
+`top`/`new`/`most_commented`<=25, plus depth-25 coverage for the 13 (forum, sort)
+pairs the anchor contract navigates to. Measured against the container:
+
+| page-1 exact, of 95 forums | before | after |
+|---|---|---|
+| `hot` / `top` / `new` / `most_commented` | 5 / 5 / 5 / 5 | **95 / 95 / 95 / 95** |
+| `active` | — | 18 (incl. the anchored `/f/Art/active`) |
+| `controversial` | — | 9 (incl. the anchored `/f/springfieldMO/controversial`) |
+
+`active` and `controversial` are covered only where an anchor names them:
+`controversial` is `net_score ASC`, so blanket coverage would drag in ~2,400
+lowest-scored rows for one anchor route.
+
+---
+
+## `commentCount` carries the SOURCE value, not the seeded count — do not "fix" this
+
+A submission's `commentCount` is the container's `comment_count`. It sums to
+**140,363** across the seed while only 23,667 comments are seeded, so a listing
+can advertise "45 comments" over a thread that renders fewer. **That is
+deliberate.** It was decided against the anchor contract, and re-deciding it
+breaks tasks:
+
+1. **Evaluator answers *are* the count.** VWA "How many comments did the post
+   with this image receive?" ships `must_include: ["146"]`, `["23"]`, `["29"]`;
+   "Tell me how many comments this post has" ships `["121"]`, and `["28"]` for
+   `/f/food/82940`. Renumbering to the seeded count fails every one.
+2. **A pagination cursor embeds it.** The anchor route
+   `/f/EarthPorn/most_commented?t=all&next[commentCount]=89&next[id]=76289`
+   requires submission 76289 to carry `commentCount = 89` exactly.
+3. **`most_commented` ordering is anchored** on `/f/aww`,
+   `/f/MechanicalKeyboards`, `/f/EarthPorn`, and webarena's "subscribe from the
+   all-time most commented post in f/pittsburgh". Sorting by a seeded count
+   changes which post leads.
+
+The divergence is mitigated rather than removed: seeded comments went up 9.1x,
+every anchored post carries up to 40 real comments, and 65% of posts now have a
+thread at all (was 18%). Do not file "listing count > rendered comments" as a
+defect; do not renumber `commentCount`.
+
+`forums.json` `submissionCount` and `users.json` `submissionCount`/`commentCount`
+follow the same rule and were re-verified against the container this round:
+**0 mismatches on all 95 forums and all 70 user records.**
+
+---
+
 ## Accepted deviations from the source
 
 ### Submission images are recompressed — do NOT "restore" them from the container
 
-`public/submission_images/` holds all 765 files the seed references, but they are
-**not byte-identical to the container**. They were deliberately recompressed on
-2026-08-06 to bring the directory from **877 MB to 77 MB (11.1x)**.
+`public/submission_images/` holds all **2,748** files the seed references, but
+they are **not byte-identical to the container**. They were recompressed on
+2026-08-06 and again, harder, on 2026-08-09 when the seed tripled. The
+2026-08-09 brief was explicit: keep the ~1000px long edge, do **not** try to
+preserve perceptual detail.
 
-| bucket | before | after | method |
+| | files | bytes | mean |
 |---|---|---|---|
-| JPEG (632) | 494.1 MB | 63.2 MB | longest edge -> 1000px, q75 progressive, 4:2:0 |
-| PNG (104)  | 143.9 MB |  6.4 MB | longest edge -> 1000px, re-encoded as JPEG q65 |
-| GIF (29)   | 239.0 MB |  9.4 MB | 4 frames evenly sampled, 1000px, 64 colors |
+| container originals for this set | 2,748 | ~3.4 GB | ~1.3 MB |
+| **before 2026-08-09** (770-file seed) | 770 | 80.7 MB | 102.3 KB |
+| **after 2026-08-09** (2,748-file seed) | 2,748 | **143.4 MB** | **51.0 KB** |
 
-19 files kept their originals because the rebuild came out larger.
+3.6x more images for 1.8x the bytes; mean file size **halved**. Per format after:
 
-**Preserved:** filenames byte-identical (every URL still resolves) · aspect ratio ·
-animation on all 22 animated GIFs · rendered `<img>` box within 1px on all 765
-(`imageBox()` in `src/components/Submission.jsx` caps at 500px, so the box maths is
-scale-invariant above that).
+| bucket | files | bytes | mean | method |
+|---|---|---|---|---|
+| JPEG | 2,602 | 131.7 MB | 49.4 KB | long edge -> 1000px, **q30** progressive, 4:2:0 |
+| GIF  |   128 |  10.1 MB | 77.2 KB | 4 frames evenly sampled, 1000px, 64 colours |
+| PNG  |    18 |   1.6 MB | 85.5 KB | 1000px, adaptive-palette PNG8 (real alpha only) |
+
+Thumbnails (`media/cache/submission_thumbnail_{1x,2x}`, 70px / 140px `outbound`
+crop, quality 45) are 2,748 each: **4.5 MB** and **11.6 MB**. LiipImagine builds
+these lazily, so the container's cache holds only 5 files — `fetch_images.py`
+generates them locally from `config/packages/liip_imagine.yaml`, verified against
+the previously shipped thumbnails at 4-12/255 mean absolute difference.
+
+**The encoder is chosen by decoded content, not by file extension.** A `.png`
+holding a photo is written back as JPEG bytes under its original `.png` name;
+browsers sniff image content and ignore the declared type. 45 files already
+shipped this way from the 2026-08-06 pass. Only PNGs with genuinely non-opaque
+alpha stay PNG.
+
+**Preserved:** filenames byte-identical (every URL still resolves, including the
+two anchor routes `/submission_images/361ec602….jpg` and `…73199932….gif`) ·
+aspect ratio · animation on every animated GIF · rendered `<img>` box
+(`imageBox()` in `src/components/Submission.jsx` caps at 500px, so the box maths
+is scale-invariant above that).
 
 **Why 1000px:** `.submission__image { max-height: 500px }` in `src/styles/index.css`,
 so nothing above ~1000px is ever displayed, even at 2x retina.
 
-**Seed updated to match:** `images.json` `w`/`h` and `submissions.json`
-`imageWidth`/`imageHeight` were rewritten to the shipped dimensions (605 records),
-and `images.json` `full` was corrected to `true` for 701 stale entries. The
-manifests describe the SHIPPED files, not the container's originals.
+**Seed updated to match:** `images.json` is **regenerated from what is on disk**
+by `compress_images.py` at the end of every run, so `w`/`h`/`full`/`thumb1x`/
+`thumb2x` cannot drift from the files. Verified after this round: 2,748 manifest
+entries, 2,748 referenced by a submission, **0 referenced-but-missing, 0 orphaned
+entries, 0 entries above 1000px, 0 missing a thumbnail**. `compress_images.py
+--prune` deletes files no submission references (601 orphans, 28.1 MB, were left
+behind when the selection rule changed mid-round). The manifests describe the
+SHIPPED files, not the container's originals.
 
 **DO NOT re-copy from `/var/www/html/public/submission_images/` to restore parity,
 and do not file image byte-size or pixel-dimension drift as a defect.** An audit

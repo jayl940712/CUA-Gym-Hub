@@ -46,32 +46,44 @@ the seed grew, on run-unique sids each time. None of the five changed.
 | **The client does not POST on boot** | Cold load posts **nothing** (`AppContext.jsx:114-119` — the post-commit persist effect skips the first committed state via `bootSeatedRef`). So until the first mutation: `.mock-states/<sid>.json` does not exist, and `GET /state?sid=<sid>` returns `{"stored_state":null,"has_custom_state":false}`. `GET /go?sid=<sid>` still works — it falls back to the pristine seed on both sides and returns an empty `state_diff`. | `/state` on an unused sid → `{"stored_state":null,"has_custom_state":false,"sid":"…"}`; `.mock-states/` had no file for it |
 | **`set_current` replaces, it does not merge** | `const newState = data.merge ? deepMerge(currentState, data.state) : data.state`. The client always POSTs the *whole* state, so this is safe in normal use — but a hand-written `set_current` carrying two keys will truncate the session to those two keys unless it also sends `"merge": true`. | `set_current` with `{"hiddenForums":["books"]}` left `.mock-states/<sid>.json` at 39 bytes |
 
-**localStorage is single-sid.** `initializeData()` calls
-`evictForeignSessions(sid)` (`dataManager.js:98-115`), dropping every
-`webarena_reddit_mock_*` key that does not belong to the current sid before
-writing. One sid's two keys are **4,499,762 chars** (2 × 2,249,832 plus the two
-key names) against a measured Chrome per-origin quota of **5,242,880 chars**
-(exactly 5 MiB, counted in UTF-16 code units over key + value), so without
-eviction a browser context reused across rollouts could not boot a second sid at
-all. Eviction makes sequential sids work indefinitely, and **the
-server mirror at `.mock-states/<sid>.json` remains authoritative** — an evicted
-sid re-hydrates from `GET /state` on reload, losing nothing. Every
-`localStorage.setItem` in `initializeData()` additionally goes through
-`safeSetItem` (`dataManager.js:84-87`), so a quota error degrades persistence
-instead of leaving the page stuck on `Loading…`.
+**localStorage no longer holds the state at all — the server mirror is the only
+persistence.** `initializeData()` calls `evictForeignSessions(sid)`
+(`dataManager.js:98-115`) and then writes the state under two keys, but as of the
+2026-08-09 seed expansion one sid's serialized state is **~13,799,610 chars**,
+so `_state_` + `_initial_state_` want **~27.6 M chars** against Chrome's
+per-origin quota of **5,242,880 chars** (exactly 5 MiB, counted in UTF-16 code
+units over key + value). Both writes fail. Measured in a booted page at 1920 and
+1280: **0 `webarena_reddit_mock_*` keys held** (was 2 before the expansion).
 
-> **Quota headroom — read this before growing the seed.** Measured 2026-08-07 by
-> binary-searching a filler key in a booted page: **743,103 chars free**
-> (~14.2% of the quota) with one sid seated. Because `initializeData()` writes
-> the seed **twice** (`_state_` and `_initial_state_`), every character added to
-> `createInitialData()` costs two, so the seed can grow by at most **~371,500
-> chars (~16.5%)** before the second `setItem` starts failing. The seed round
-> that added 88 comments / 14 submissions / 38 directory entries cost 31,766
-> chars (+1.43%) and burned ~63,500 chars of headroom — roughly 8% of what was
-> left. Failure is graceful (`safeSetItem` swallows it, the server mirror at
-> `.mock-states/<sid>.json` stays authoritative, the page still boots), but a
-> sid that exceeds it stops persisting across reloads on the client side.
-> Re-measure this number after any seed growth.
+**This is a degradation, not a break, and it is verified end to end.** Every
+`localStorage.setItem` in `initializeData()` goes through `safeSetItem`
+(`dataManager.js:84-87`), so the quota error is swallowed instead of leaving the
+page stuck on `Loading…`; `saveState()` still POSTs `set_current`, and
+`AppContext` falls through to `fetchCustomState(sid)` → `GET /state` when
+`initialKey(sid)` is absent. Confirmed on the built preview: upvote 108576
+(8928 → 8929) and post a comment, **reload**, and both survive — netScore stays
+8929 and the comment is still rendered, purely off `.mock-states/<sid>.json`.
+
+> **Read this before growing the seed further.** The old headroom budget
+> (743,103 chars free, seed may grow ~16.5%) is **spent and obsolete** — the
+> expansion took the seed from 2.25 M to 13.8 M chars, 2.6x past the quota. Two
+> consequences follow, and neither is fixed by trimming a few thousand
+> characters:
+>
+> 1. Client-side persistence is off for every sid. Correctness is preserved only
+>    because the server mirror is authoritative. Do not add a code path that
+>    assumes `localStorage.getItem(storageKey(sid))` is populated.
+> 2. `saveState()` now POSTs ~13.8 MB per mutation and `GET /go` returns
+>    **27.7 MB** cold and **54.2 MB** after one vote (`calculateStateDiff` is
+>    per-top-level-key, so changing one submission emits both the whole old and
+>    the whole new `submissions` array).
+>
+> The real fix is to stop putting the frozen corpus in state: keep `submissions`
+> and `comments` as imported modules and hold only an id-keyed mutation overlay
+> in `state`, or — smaller and shape-preserving — make `calculateStateDiff`
+> element-wise for arrays whose members carry `id`, so `state_diff.submissions`
+> reports the one changed record instead of 8,012. Either is out of scope for a
+> seed round and is filed for the next one.
 
 **Hardened mode (`CUA_GYM_HARDENED=1`) does not inject.** See the fleet-wide
 note in `AUDIT.md`: `shared/secureMockApiPlugin.mjs` `handleState` returns the
@@ -86,19 +98,23 @@ returns the correct envelope.
 ## State Schema
 
 16 top-level keys. `createInitialData()` (`dataManager.js:45-72`) serializes to
-**2,249,832 JS characters / 2,255,246 UTF-8 bytes** (re-measured 2026-08-07 off
-a live `GET /go` on a never-seeded sid, after the data-only seed round; the
-pre-seed figure was 2,218,066 chars / 2,223,403 bytes, so the seed grew by
-31,766 chars / +1.43%). `GET /go` returns **4,510,543 bytes**.
+**~13,799,610 JS characters / ~13.85 MB UTF-8** after the 2026-08-09 seed
+expansion (was 2,249,832 chars / 2,255,246 bytes). Re-measured 2026-08-09 off a
+live `GET /go` on a never-seeded sid against the built preview. **`GET /go`
+returns ~27.98 MB cold** (was 4,510,543) and **54.17 MB after a single
+vote plus a comment** — `calculateStateDiff` diffs whole top-level keys, so one
+changed submission emits the entire old and new `submissions` array. The shape
+is unchanged: `{initial_state, current_state, state_diff}`, diff keys after that
+mutation `submissions, comments, votes, nextCommentId`.
 
 | Key | Type | Description |
 |-----|------|-------------|
 | `currentUser` | object | The logged-in user's row, all 24 real preference fields: `{id, username, email, created, admin, biography, locale, nightMode, timezone, frontPage, frontPageSortMode, showCustomStylesheets, trusted, openExternalLinksInNewTab, autoFetchSubmissionTitles, enablePostPreviews, showThumbnails, notifyOnReply, notifyOnMentions, preferredFonts, allowPrivateMessages, poppersEnabled, fullWidthDisplayEnabled, submissionLinkDestination}`. Mutable: `biography`, `username`, every preference, `nightMode`. |
 | `forums` | array | 95 real forums. Each: `{id, name, title, sidebar, description, created, featured, submissionCount, subscriberCount, moderationLogPublic}` plus optional, **written only by mock UI actions**: `{tags[], moderators[], suggestedTheme, backgroundImageMode, lightBackgroundImage, darkBackgroundImage}`. `name` is the `/f/<name>` path segment and is **case-preserved**; lookup is case-insensitive against `name.toLowerCase()` (`AppContext.jsx:148-152`). Mutable: `title`/`description`/`sidebar`/`tags`/`moderationLogPublic` (forum edit), `name` (rename — carries `submissions[].forum`, `subscriptions`, `moderatorOf`, `hiddenForums` with it), `suggestedTheme`/`backgroundImageMode`/background images (appearance), `moderators`, `subscriberCount`, `submissionCount`; appended by `/create_forum`; removed by `/f/<name>/delete`. |
-| `submissions` | array | 2,359 real submissions. Each: `{id, forum, author, title, timestamp, lastActive, ranking, netScore, commentCount, slug}` plus optional `{url, body, bodyTruncated, image, imageWidth, imageHeight, userFlag, editedAt, sticky, locked}`. `ranking` drives `hot` and is **not** an alias of `netScore`. `title` is stored HTML-escaped and rendered as a text node (never through `renderMarkdown`). Mutable: `title`/`url`/`body` + `editedAt` (edit), `netScore` (vote), `commentCount`, `lastActive`; appended by `/submit`; removed on delete. |
-| `comments` | array | 2,593 real comments. Each: `{id, submission, author, body, netScore, timestamp}` plus optional `{parent, userFlag, editedAt, bodyTruncated, visibility}` and, on a moderator trash, `{trashReason, trashedBy, trashedAt}`. `visibility` is absent/`"visible"`, `"soft-deleted"` (own delete with replies) or `"trashed"` (moderator delete — the only thing that can fill `/trash`). Absent `parent` ⇒ top-level; arbitrary nesting depth. Mutable: `body` + `editedAt` (edit), `netScore` (vote), `visibility` (+ trash fields); appended by reply. |
+| `submissions` | array | 8,012 real submissions. Each: `{id, forum, author, title, timestamp, lastActive, ranking, netScore, commentCount, slug}` plus optional `{url, body, bodyTruncated, image, imageWidth, imageHeight, userFlag, editedAt, sticky, locked}`. `ranking` drives `hot` and is **not** an alias of `netScore`. `title` is stored HTML-escaped and rendered as a text node (never through `renderMarkdown`). Mutable: `title`/`url`/`body` + `editedAt` (edit), `netScore` (vote), `commentCount`, `lastActive`; appended by `/submit`; removed on delete. |
+| `comments` | array | 24,149 real comments. Each: `{id, submission, author, body, netScore, timestamp}` plus optional `{parent, userFlag, editedAt, bodyTruncated, visibility}` and, on a moderator trash, `{trashReason, trashedBy, trashedAt}`. `visibility` is absent/`"visible"`, `"soft-deleted"` (own delete with replies) or `"trashed"` (moderator delete — the only thing that can fill `/trash`). Absent `parent` ⇒ top-level; arbitrary nesting depth. Mutable: `body` + `editedAt` (edit), `netScore` (vote), `visibility` (+ trash fields); appended by reply. |
 | `users` | array | 70 "rich" users. Each: `{id, username, created, biography?, admin?, submissionCount, commentCount, negativeCommentCount}` — counts are **real site-wide** numbers, not seed counts. Mutable: `biography` for the current user; `username` on an `/account` rename. |
-| `userDirectory` | object | `{ "<username>": "YYYY-MM-DD" }` join dates for all 3,899 authors in the seed, so every author link resolves. Mutable: the current user's key is re-keyed by an `/account` rename. |
+| `userDirectory` | object | `{ "<username>": "YYYY-MM-DD" }` join dates for all 21,038 authors in the seed, so every author link resolves. Mutable: the current user's key is re-keyed by an `/account` rename. |
 | `votes` | object | `{submissions: {"<id>": 1 \| -1}, comments: {…}}` — the current user's vote map. Seeded with the single real pre-existing vote, `submissions: {"1": 1}`. Scores are stored on the entity, **not** derived from this map. |
 | `subscriptions` | array | Forum **names** the user is subscribed to. Starts empty (the source has 0 rows in `forum_subscriptions`). Drives `/subscribed`, the front page, and the `#sidebar > section` on `/`. |
 | `moderatorOf` | array | Forum names the user moderates. Starts empty; grows when the user creates a forum, which is what unlocks `/f/<name>/edit`. |
@@ -110,7 +126,7 @@ pre-seed figure was 2,218,066 chars / 2,223,403 bytes, so the seed grew by
 | `nextCommentId` | number | `3000000` — above every real comment id (max real is `2557260`). |
 | `nextForumId` | number | `20000` — above every real forum id (real range `10000`–`10094`). |
 
-**Not in state:** `src/data/images.json` is a static asset manifest of **769
+**Not in state:** `src/data/images.json` is a static asset manifest of **2,748
 entries** (`{filename: {w, h, full, thumb1x, thumb2x}}`), one per image-bearing
 submission, imported directly by components. Putting it in state would inflate
 every `/go` diff for no reason — and would push localStorage past its quota.
