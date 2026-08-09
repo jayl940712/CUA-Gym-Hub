@@ -6,8 +6,13 @@ dist/
 .mock-state.json
 .mock-state.initial.json
 
-# Recon working area — raw psql dumps, curated into src/data/ (WEBARENA_MIGRATION.md §3.2)
-assets/dumps/
+# Recon working area — raw psql dumps, curated into src/data/ (WEBARENA_MIGRATION.md §3.2).
+# The *dumps* stay out of git; the **scripts that produce them do not**. Shipping
+# 400 MB of seed with no way to regenerate or audit it was a real defect on the
+# shopping mock, so `assets/dumps/*.py` is tracked deliberately — ignore the
+# directory's contents, not the directory, or the negation below cannot apply.
+assets/dumps/*
+!assets/dumps/*.py
 
 # Test artifacts: differential screenshot pairs and task-replay captures (~65 MB).
 # assets/screenshots/reference/ IS tracked — it is the design ground truth.
