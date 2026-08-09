@@ -38,7 +38,7 @@ export default function ForumDeletePage() {
 
 function ForumDeleteForm({ forum }) {
   const navigate = useSidNavigate()
-  const { setState, addFlash } = useApp()
+  const { deleteForum, addFlash } = useApp()
   const [name, setName] = useState('')
   const [confirm, setConfirm] = useState(false)
   const [errors, setErrors] = useState({})
@@ -55,20 +55,10 @@ function ForumDeleteForm({ forum }) {
     if (Object.keys(next).length > 0) { setErrors(next); return }
     setErrors({})
 
-    const target = forum.name
-    setState(prev => {
-      const doomed = new Set(prev.submissions
-        .filter(s => s.forum === target).map(s => String(s.id)))
-      return {
-        ...prev,
-        forums: prev.forums.filter(f => f.id !== forum.id),
-        submissions: prev.submissions.filter(s => s.forum !== target),
-        comments: prev.comments.filter(c => !doomed.has(String(c.submission))),
-        subscriptions: prev.subscriptions.filter(f => f !== target),
-        moderatorOf: prev.moderatorOf.filter(f => f !== target),
-        hiddenForums: prev.hiddenForums.filter(f => f !== target)
-      }
-    })
+    // The forum's submissions (and their comments) are dropped by
+    // overlay.materialize(), not by filtering the frozen corpus — see
+    // AppContext.deleteForum.
+    deleteForum(forum.name)
     addFlash('The forum and all its contents have been deleted.')
     navigate('/')
   }

@@ -10,7 +10,10 @@ container `forum`, image `postmill-populated-exposed-withimg:latest`.
 > `EditBiographyPage.jsx`, `Comment.jsx` and added `MarkdownPreview.jsx` —
 > none of which writes state), and **re-measured a third time after the
 > data-only seed round** (which added 14 submissions, 88 comments, 38
-> `userDirectory` entries and 4 images to `src/data/` and changed no code).
+> `userDirectory` entries and 4 images to `src/data/` and changed no code), and
+> **re-measured a fourth time after the 2026-08-09 overlay refactor**, which
+> moved the frozen corpus out of state entirely — every size figure below is
+> from that measurement.
 > Every size, count and contract statement below was reproduced with a live
 > `curl` / chromium call on a fresh sid, not transcribed from a previous
 > revision of this file.
@@ -27,7 +30,8 @@ The app boots pre-logged-in as `MarvelsGrantMan136` (user id `13915`). There is
 no login, logout or registration surface.
 
 Implementation: `vite.config.js:173-260` (`/post`, `/state`, `/go`),
-`src/utils/dataManager.js`, `src/context/AppContext.jsx`.
+`src/utils/dataManager.js`, `src/utils/overlay.js`, `src/data/frozen.js`,
+`src/context/AppContext.jsx`.
 
 ---
 
@@ -41,49 +45,70 @@ the seed grew, on run-unique sids each time. None of the five changed.
 | Behaviour | Contract | Measured |
 |---|---|---|
 | **`set_current` never writes the baseline** | `{"action":"set_current"}` writes **`.mock-states/<sid>.json` only** and never `<sid>.initial.json` (`vite.config.js:212-227`). Only `{"action":"set"}` establishes a baseline, and only the first time (`writeInitialStateIfMissing`). A harness that wants a custom baseline **must** seed with `{"action":"set", "state":{…}}`; seeding with `set_current` leaves the baseline at `createInitialData()`. | `POST set_current` on a never-seeded sid produced `<sid>.json` and **no** `<sid>.initial.json` on disk |
-| **`/go` on a never-seeded sid baselines against the pristine seed** | `initial_state` is `createInitialData()` (`vite.config.js:255`, `const initial = initialState \|\| defaultState`; the template's `\|\| currentState` fallback is deliberately absent). That is byte-for-byte what the client boots from, so the two agree by construction and the **first** mutation on a fresh sid appears in `state_diff`. | fresh sid + one `set_current` writing `hiddenForums:["books"]` → `initial_state.hiddenForums` `[]`, 16 top-level keys, `state_diff` keys `["hiddenForums"]` |
+| **`/go` on a never-seeded sid baselines against the pristine seed** | `initial_state` is `createInitialData()` (`vite.config.js:255`, `const initial = initialState \|\| defaultState`; the template's `\|\| currentState` fallback is deliberately absent). That is byte-for-byte what the client boots from, so the two agree by construction and the **first** mutation on a fresh sid appears in `state_diff`. | fresh sid + one `set_current` writing `hiddenForums:["books"]` → `initial_state.hiddenForums` `[]`, 22 top-level keys, `state_diff` keys `["hiddenForums"]` |
 | **`reset` on a never-seeded sid** | Returns `{"success":true,"sid":…,"message":"State cleared."}` — there is no `.initial.json` to restore from, so it deletes whatever exists. On a **seeded** sid it returns `"State reset to initial."` and restores `<sid>.json` from `<sid>.initial.json`. Both are correct; only the message differs. | `{"success":true,"sid":"freshaud…","message":"State cleared."}` |
 | **The client does not POST on boot** | Cold load posts **nothing** (`AppContext.jsx:114-119` — the post-commit persist effect skips the first committed state via `bootSeatedRef`). So until the first mutation: `.mock-states/<sid>.json` does not exist, and `GET /state?sid=<sid>` returns `{"stored_state":null,"has_custom_state":false}`. `GET /go?sid=<sid>` still works — it falls back to the pristine seed on both sides and returns an empty `state_diff`. | `/state` on an unused sid → `{"stored_state":null,"has_custom_state":false,"sid":"…"}`; `.mock-states/` had no file for it |
 | **`set_current` replaces, it does not merge** | `const newState = data.merge ? deepMerge(currentState, data.state) : data.state`. The client always POSTs the *whole* state, so this is safe in normal use — but a hand-written `set_current` carrying two keys will truncate the session to those two keys unless it also sends `"merge": true`. | `set_current` with `{"hiddenForums":["books"]}` left `.mock-states/<sid>.json` at 39 bytes |
 
-**localStorage no longer holds the state at all — the server mirror is the only
-persistence.** `initializeData()` calls `evictForeignSessions(sid)`
-(`dataManager.js:98-115`) and then writes the state under two keys, but as of the
-2026-08-09 seed expansion one sid's serialized state is **~13,799,610 chars**,
-so `_state_` + `_initial_state_` want **~27.6 M chars** against Chrome's
-per-origin quota of **5,242,880 chars** (exactly 5 MiB, counted in UTF-16 code
-units over key + value). Both writes fail. Measured in a booted page at 1920 and
-1280: **0 `webarena_reddit_mock_*` keys held** (was 2 before the expansion).
+**localStorage persistence works again.** `initializeData()` calls
+`evictForeignSessions(sid)` (`dataManager.js`) and writes the state under two
+keys. Since the corpus left state (2026-08-09, overlay refactor) a cold session
+serializes to **33,902 chars per key / 67,804 total**, against Chrome's
+per-origin quota of **5,242,880 chars** (5 MiB, counted in UTF-16 code units
+over key + value) — **1.3 % of the budget**. Measured in a booted page:
+**2 `webarena_reddit_mock_*` keys held** (was 0 while the corpus was in state).
 
-**This is a degradation, not a break, and it is verified end to end.** Every
-`localStorage.setItem` in `initializeData()` goes through `safeSetItem`
-(`dataManager.js:84-87`), so the quota error is swallowed instead of leaving the
-page stuck on `Loading…`; `saveState()` still POSTs `set_current`, and
-`AppContext` falls through to `fetchCustomState(sid)` → `GET /state` when
-`initialKey(sid)` is absent. Confirmed on the built preview: upvote 108576
-(8928 → 8929) and post a comment, **reload**, and both survive — netScore stays
-8929 and the comment is still rendered, purely off `.mock-states/<sid>.json`.
+The `safeSetItem` guard (`dataManager.js`) stays anyway: a task harness may
+still inject a full `submissions` array as the base (see *Frozen corpus vs
+overlay* below), which puts the session back over quota. When that happens the
+write fails silently rather than leaving the page stuck on `Loading…`,
+`saveState()` still POSTs `set_current`, and `AppContext` falls through to
+`fetchCustomState(sid)` → `GET /state` when `initialKey(sid)` is absent.
 
-> **Read this before growing the seed further.** The old headroom budget
-> (743,103 chars free, seed may grow ~16.5%) is **spent and obsolete** — the
-> expansion took the seed from 2.25 M to 13.8 M chars, 2.6x past the quota. Two
-> consequences follow, and neither is fixed by trimming a few thousand
-> characters:
->
-> 1. Client-side persistence is off for every sid. Correctness is preserved only
->    because the server mirror is authoritative. Do not add a code path that
->    assumes `localStorage.getItem(storageKey(sid))` is populated.
-> 2. `saveState()` now POSTs ~13.8 MB per mutation and `GET /go` returns
->    **27.7 MB** cold and **54.2 MB** after one vote (`calculateStateDiff` is
->    per-top-level-key, so changing one submission emits both the whole old and
->    the whole new `submissions` array).
->
-> The real fix is to stop putting the frozen corpus in state: keep `submissions`
-> and `comments` as imported modules and hold only an id-keyed mutation overlay
-> in `state`, or — smaller and shape-preserving — make `calculateStateDiff`
-> element-wise for arrays whose members carry `id`, so `state_diff.submissions`
-> reports the one changed record instead of 8,012. Either is out of scope for a
-> seed round and is filed for the next one.
+> **The old localStorage quota budget is obsolete and so is the seed-size
+> ceiling that came with it.** Growing `submissions.json` / `comments.json` no
+> longer costs state, `/go` payload, or persistence — those files are imported,
+> not copied into state. What a bigger corpus still costs is JS bundle size and
+> parse time at first paint. Budget against that, not against the 5 MiB quota.
+
+### Frozen corpus vs overlay
+
+`src/data/submissions.json` (8,012), `src/data/comments.json` (24,149) and
+`src/data/userDirectory.json` (21,038) are **not in state**. They are imported by
+`src/data/frozen.js` and merged on read by `src/utils/overlay.js`. Agents cannot
+create a seeded submission or comment, so those records are read-only base data —
+the same split `webarena_shopping_mock` makes between its 37 mutable `orders` and
+its 22,721 frozen products.
+
+`AppProvider` holds two objects:
+
+| | what it is | who sees it |
+|---|---|---|
+| `core` | the persisted state: overlay keys + forums/users/votes/session keys | localStorage, `POST set_current`, `/go`, `state_diff` |
+| `state` | `materialize(core)` — `core` plus merged `submissions`, `comments`, `userDirectory` | the whole React tree |
+
+There is exactly **one** materialization point, so no view can disagree with
+another about whether a record exists: forum listing, permalink, `/user/<n>`,
+search, comment tree and `/go` all read the same merged arrays.
+
+Measured before → after the refactor, same script (`assets/dumps/measure_state.py`):
+
+| | before | after |
+|---|---|---|
+| state POSTed per mutation | 14,674,815 B | 37,335 B |
+| `GET /go` cold | 27,981,597 B | 67,855 B |
+| `GET /go` after one vote | 39,577,722 B | 68,852 B |
+| `state_diff` after one vote | 12,095,914 B | 615 B |
+| localStorage keys held | 0 | 2 |
+
+**A stale `.mock-state.json` can no longer pin an old corpus.** Before the
+refactor a snapshot written before a seed expansion carried a full `submissions`
+array, and `{...defaults, ...customState}` let it replace the new seed wholesale
+— that shipped a 2,345-post site from an 8,012-post seed. Snapshots now contain
+only the delta, so the corpus always comes from `src/data/`. A file that
+predates the refactor and still carries a `submissions` array is honoured as an
+explicit base, by design (see the injection contract below) — delete it if that
+is not what you want.
 
 **Hardened mode (`CUA_GYM_HARDENED=1`) does not inject.** See the fleet-wide
 note in `AUDIT.md`: `shared/secureMockApiPlugin.mjs` `handleState` returns the
@@ -97,24 +122,22 @@ returns the correct envelope.
 
 ## State Schema
 
-16 top-level keys. `createInitialData()` (`dataManager.js:45-72`) serializes to
-**~13,799,610 JS characters / ~13.85 MB UTF-8** after the 2026-08-09 seed
-expansion (was 2,249,832 chars / 2,255,246 bytes). Re-measured 2026-08-09 off a
-live `GET /go` on a never-seeded sid against the built preview. **`GET /go`
-returns ~27.98 MB cold** (was 4,510,543) and **54.17 MB after a single
-vote plus a comment** — `calculateStateDiff` diffs whole top-level keys, so one
-changed submission emits the entire old and new `submissions` array. The shape
-is unchanged: `{initial_state, current_state, state_diff}`, diff keys after that
-mutation `submissions, comments, votes, nextCommentId`.
+22 top-level keys — 13 state keys plus the 9 overlay keys. `createInitialData()`
+(`dataManager.js`) serializes to **~33,902 JS characters / ~34 KB** (was
+13,799,610 chars while the corpus lived in state). Re-measured 2026-08-09 off a
+live `GET /go` on a never-seeded sid. **`GET /go` returns ~66 KB cold** and
+**~67 KB after a vote**. `calculateStateDiff` still diffs whole top-level keys —
+unchanged, 89 mocks share that convention — but the keys are now small, so one
+changed submission emits a 615-byte `submissionEdits` entry instead of the
+entire 8,012-record array twice. Shape unchanged:
+`{initial_state, current_state, state_diff}`, diff keys after a vote
+`submissionEdits, votes`.
 
 | Key | Type | Description |
 |-----|------|-------------|
 | `currentUser` | object | The logged-in user's row, all 24 real preference fields: `{id, username, email, created, admin, biography, locale, nightMode, timezone, frontPage, frontPageSortMode, showCustomStylesheets, trusted, openExternalLinksInNewTab, autoFetchSubmissionTitles, enablePostPreviews, showThumbnails, notifyOnReply, notifyOnMentions, preferredFonts, allowPrivateMessages, poppersEnabled, fullWidthDisplayEnabled, submissionLinkDestination}`. Mutable: `biography`, `username`, every preference, `nightMode`. |
 | `forums` | array | 95 real forums. Each: `{id, name, title, sidebar, description, created, featured, submissionCount, subscriberCount, moderationLogPublic}` plus optional, **written only by mock UI actions**: `{tags[], moderators[], suggestedTheme, backgroundImageMode, lightBackgroundImage, darkBackgroundImage}`. `name` is the `/f/<name>` path segment and is **case-preserved**; lookup is case-insensitive against `name.toLowerCase()` (`AppContext.jsx:148-152`). Mutable: `title`/`description`/`sidebar`/`tags`/`moderationLogPublic` (forum edit), `name` (rename — carries `submissions[].forum`, `subscriptions`, `moderatorOf`, `hiddenForums` with it), `suggestedTheme`/`backgroundImageMode`/background images (appearance), `moderators`, `subscriberCount`, `submissionCount`; appended by `/create_forum`; removed by `/f/<name>/delete`. |
-| `submissions` | array | 8,012 real submissions. Each: `{id, forum, author, title, timestamp, lastActive, ranking, netScore, commentCount, slug}` plus optional `{url, body, bodyTruncated, image, imageWidth, imageHeight, userFlag, editedAt, sticky, locked}`. `ranking` drives `hot` and is **not** an alias of `netScore`. `title` is stored HTML-escaped and rendered as a text node (never through `renderMarkdown`). Mutable: `title`/`url`/`body` + `editedAt` (edit), `netScore` (vote), `commentCount`, `lastActive`; appended by `/submit`; removed on delete. |
-| `comments` | array | 24,149 real comments. Each: `{id, submission, author, body, netScore, timestamp}` plus optional `{parent, userFlag, editedAt, bodyTruncated, visibility}` and, on a moderator trash, `{trashReason, trashedBy, trashedAt}`. `visibility` is absent/`"visible"`, `"soft-deleted"` (own delete with replies) or `"trashed"` (moderator delete — the only thing that can fill `/trash`). Absent `parent` ⇒ top-level; arbitrary nesting depth. Mutable: `body` + `editedAt` (edit), `netScore` (vote), `visibility` (+ trash fields); appended by reply. |
 | `users` | array | 70 "rich" users. Each: `{id, username, created, biography?, admin?, submissionCount, commentCount, negativeCommentCount}` — counts are **real site-wide** numbers, not seed counts. Mutable: `biography` for the current user; `username` on an `/account` rename. |
-| `userDirectory` | object | `{ "<username>": "YYYY-MM-DD" }` join dates for all 21,038 authors in the seed, so every author link resolves. Mutable: the current user's key is re-keyed by an `/account` rename. |
 | `votes` | object | `{submissions: {"<id>": 1 \| -1}, comments: {…}}` — the current user's vote map. Seeded with the single real pre-existing vote, `submissions: {"1": 1}`. Scores are stored on the entity, **not** derived from this map. |
 | `subscriptions` | array | Forum **names** the user is subscribed to. Starts empty (the source has 0 rows in `forum_subscriptions`). Drives `/subscribed`, the front page, and the `#sidebar > section` on `/`. |
 | `moderatorOf` | array | Forum names the user moderates. Starts empty; grows when the user creates a forum, which is what unlocks `/f/<name>/edit`. |
@@ -126,10 +149,28 @@ mutation `submissions, comments, votes, nextCommentId`.
 | `nextCommentId` | number | `3000000` — above every real comment id (max real is `2557260`). |
 | `nextForumId` | number | `20000` — above every real forum id (real range `10000`–`10094`). |
 
-**Not in state:** `src/data/images.json` is a static asset manifest of **2,748
-entries** (`{filename: {w, h, full, thumb1x, thumb2x}}`), one per image-bearing
-submission, imported directly by components. Putting it in state would inflate
-every `/go` diff for no reason — and would push localStorage past its quota.
+### Overlay keys (the delta against the frozen corpus)
+
+All nine start empty. `materialize()` applies them in this order: edits, then
+renames, then dead forums, then tombstones; comments whose submission did not
+survive are dropped.
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `newSubmissions` | array | Submissions the agent created, as full records (same field set as the frozen ones). Appended by `/submit`; an edit patches in place; a delete removes the element. |
+| `submissionEdits` | object | `{"<id>": <full record>}` — the replacement for a **frozen** submission. Written by edit, vote (`netScore`), comment create/delete (`commentCount`, `lastActive`). The whole record is stored, not a field patch, so materialization is a map lookup. |
+| `deletedSubmissions` | array | Ids (strings) of frozen submissions the agent deleted. Every read path honours it because they all go through `materialize()`. |
+| `newComments` | array | Comments the agent created, as full records. |
+| `commentEdits` | object | `{"<id>": <full record>}` for frozen comments — edit, vote, soft-delete, moderator trash. |
+| `deletedComments` | array | Ids of frozen comments hard-deleted (leaf `delete_own`). |
+| `deletedForums` | array | Forum names deleted via `/f/<name>/delete`. Drops every submission in that forum, and their comments follow. Costs one string instead of ~110 tombstones. |
+| `forumRenames` | array | Ordered `{from, to}`, applied left to right to `submission.forum`. Composes: `A→B` then `B→A` resolves to `A`. |
+| `userRenames` | array | Ordered `{from, to}`, applied to `submissions[].author`, `comments[].author` and the `userDirectory` key. |
+
+**Not in state:**
+
+- `src/data/submissions.json`, `src/data/comments.json`, `src/data/userDirectory.json` — the frozen corpus, imported by `src/data/frozen.js`. See *Frozen corpus vs overlay* above.
+- `src/data/images.json` — a static asset manifest of **2,748 entries** (`{filename: {w, h, full, thumb1x, thumb2x}}`), one per image-bearing submission, imported directly by components. Putting it in state would inflate every `/go` diff for no reason.
 
 **Derived at render, never stored:** sort orders, the comment tree, search
 results and `<mark>` highlighting, relative timestamps, pagination cursors,
@@ -176,10 +217,44 @@ results and `<mark>` highlighting, relative timestamps, pagination cursors,
 
 Keys omitted from an injected state fall back to the seeded defaults —
 `initializeData()` merges `createInitialData()` underneath
-(`dataManager.js:117-124`) — so a task only needs to send the fields it wants to
+(`dataManager.js`) — so a task only needs to send the fields it wants to
 change. Note this merge happens **client-side**: the server stores exactly what
 you POST, so `/go`'s `initial_state` for a partial `set` is that partial object,
 while the running app sees the merged one.
+
+### Injecting submissions and comments
+
+Two paths, both supported, verified to render identically
+(`assets/dumps/test_overlay.py` §4 compares `#main` innerText across
+`/f/Art`, `/f/Art/new`, `/f/Art/top`, `/user/<n>` and `/search`).
+
+**Lightweight (preferred).** Send only the delta. Adding a post costs one
+record, not 8,012:
+
+```json
+{"action": "set", "state": {
+  "newSubmissions":     [ { "id": 199001, "forum": "Art", "author": "MarvelsGrantMan136",
+                            "title": "…", "timestamp": "2024-01-01T00:00:00+00:00",
+                            "lastActive": "2024-01-01T00:00:00+00:00", "ranking": 9999999999,
+                            "netScore": 1, "commentCount": 0, "slug": "…" } ],
+  "submissionEdits":    { "43558": { "…the whole record, with your changes…" } },
+  "deletedSubmissions": ["43482"],
+  "newComments":        [ { "id": 3000001, "submission": 199001, "author": "…",
+                            "body": "…", "netScore": 1, "timestamp": "…" } ],
+  "commentEdits":       { "1235250": { "…" } },
+  "deletedComments":    ["1042264"]
+}}
+```
+
+A record in `submissionEdits` / `commentEdits` **replaces** the frozen record
+wholesale, so send the complete object, not a field patch.
+
+**Legacy full array.** Injecting `submissions` (or `comments`, or
+`userDirectory`) still works and behaves exactly as it did before the refactor:
+the array becomes the **base**, verbatim, in the order you sent it, and the
+overlay applies on top of it. Nothing about existing task setups had to change.
+The cost is that the session's state is then as large as the array you sent —
+which is why the lightweight path exists.
 
 ---
 
@@ -191,29 +266,29 @@ Every row below reaches `saveState()` → `POST /post {action:'set_current'}` �
 
 | User Action | State Field Changed |
 |-------------|---------------------|
-| Click ▲ on a submission (`div.submission__vote form`) — `vote('submission', id, 1)` | `votes.submissions["<id>"]` set to `1`; `submissions[i].netScore` +1 (or +2 when flipping a downvote). Form class becomes `vote vote--user-upvoted`. |
+| Click ▲ on a submission (`div.submission__vote form`) — `vote('submission', id, 1)` | `votes.submissions["<id>"]` set to `1`; the record's `netScore` +1 (or +2 when flipping a downvote) — on a **frozen** submission that lands as `submissionEdits["<id>"]`, on an agent-created one it patches `newSubmissions` in place. Form class becomes `vote vote--user-upvoted`. |
 | Click ▼ on a submission — `vote('submission', id, -1)` | `votes.submissions["<id>"]` set to `-1`; `netScore` −1 / −2. Form class becomes `vote vote--user-downvoted`. |
 | Click the already-active arrow (retract) | `votes.submissions["<id>"]` **deleted**; `netScore` returns to its previous value. Form class becomes `vote`. |
-| Vote on a comment (`/cv/<id>`) — `vote('comment', …)` | Same, on `votes.comments["<id>"]` and `comments[i].netScore`. |
+| Vote on a comment (`/cv/<id>`) — `vote('comment', …)` | Same, on `votes.comments["<id>"]` and the comment's `netScore` via `commentEdits` / `newComments`. |
 | Subscribe from a forum sidebar — `subscribe(name)` | `subscriptions` grows with the forum name; `forums[i].subscriberCount` +1. A "Subscribed forums" section appears as the **first** `#sidebar > section` on `/`, and `/` stops being empty. |
 | Unsubscribe — `unsubscribe(name)` | `subscriptions` shrinks; `forums[i].subscriberCount` −1. |
-| Create a submission via `/submit` or `/submit/<forum>` — `createSubmission(…)` | `submissions` grows with `{id: nextSubmissionId, author: "MarvelsGrantMan136", netScore: 1, commentCount: 0, ranking: <epoch seconds>, timestamp = lastActive = now, slug: slugify(title)}` (+ `url` / `body` / `image`+`imageWidth`+`imageHeight` / `userFlag` when supplied); `votes.submissions["<newId>"] = 1`; `nextSubmissionId` +1; `forums[i].submissionCount` +1. The browser then navigates to `/f/<forum>/<id>/<slug>` — the URL `func:reddit_get_post_url('__last_url__')` reads. |
-| Edit a submission — `editSubmission(id, updates)` | `submissions[i].{title,url,body}` updated; `submissions[i].editedAt` set to now. |
-| Delete own submission — `deleteSubmission(id)` | `submissions` shrinks; that submission's `comments` removed; `forums[i].submissionCount` −1. |
-| Post a top-level comment — `addComment({submission, body})` | `comments` grows with `{id: nextCommentId, netScore: 1, submission: <id>}` and **no** `parent`; `nextCommentId` +1; `submissions[i].commentCount` +1 and `lastActive` bumped; `votes.comments["<newId>"] = 1`. |
+| Create a submission via `/submit` or `/submit/<forum>` — `createSubmission(…)` | `newSubmissions` grows with `{id: nextSubmissionId, author: "MarvelsGrantMan136", netScore: 1, commentCount: 0, ranking: <epoch seconds>, timestamp = lastActive = now, slug: slugify(title)}` (+ `url` / `body` / `image`+`imageWidth`+`imageHeight` / `userFlag` when supplied); `votes.submissions["<newId>"] = 1`; `nextSubmissionId` +1; `forums[i].submissionCount` +1. The browser then navigates to `/f/<forum>/<id>/<slug>` — the URL `func:reddit_get_post_url('__last_url__')` reads. |
+| Edit a submission — `editSubmission(id, updates)` | `{title,url,body}` and `editedAt` updated — written to `submissionEdits["<id>"]` for a frozen record, in place in `newSubmissions` for a created one. |
+| Delete own submission — `deleteSubmission(id)` | the id is tombstoned in `deletedSubmissions` (or removed from `newSubmissions`); `forums[i].submissionCount` −1. Its comments disappear from every view because `materialize()` drops comments whose submission no longer resolves — no separate comment prune is written. |
+| Post a top-level comment — `addComment({submission, body})` | `newComments` grows with `{id: nextCommentId, netScore: 1, submission: <id>}` and **no** `parent`; `nextCommentId` +1; the parent submission's `commentCount` +1 and `lastActive` bumped (via `submissionEdits` when it is frozen); `votes.comments["<newId>"] = 1`. |
 | Reply to a comment — `addComment({…, parent})` | Same, with `parent: <that comment's id>`. |
-| Edit own comment — `editComment(id, body)` | `comments[i].body` updated; `comments[i].editedAt` set. |
-| Delete own comment (`…/comment/<cid>/delete_own`) — `deleteComment(id)` | Leaf: removed from `comments`, `submissions[i].commentCount` −1. Has replies: `body` and `author` become `[deleted]` and `visibility` becomes `"soft-deleted"`; the node and the count stay. |
-| **Trash a comment as a moderator** (`…/comment/<cid>/delete`) — `trashComment(id, reason)` | `comments[i].visibility` becomes `"trashed"`, plus `trashReason` (the Reason box; empty ⇒ `null`), `trashedBy` (current username) and `trashedAt` (ISO now); `submissions[i].commentCount` −1. The node stays in the array so `/trash` can list it, but `commentsFor()` filters it out of the tree. **Idempotent** — trashing an already-trashed comment is a no-op. `AppContext.jsx:383-403` is the only writer of `visibility: "trashed"`. |
+| Edit own comment — `editComment(id, body)` | `body` and `editedAt` updated, via `commentEdits["<id>"]` or in place in `newComments`. |
+| Delete own comment (`…/comment/<cid>/delete_own`) — `deleteComment(id)` | Leaf: id tombstoned in `deletedComments` (or removed from `newComments`), parent submission's `commentCount` −1. Has replies: `body` and `author` become `[deleted]` and `visibility` becomes `"soft-deleted"`; the node and the count stay. |
+| **Trash a comment as a moderator** (`…/comment/<cid>/delete`) — `trashComment(id, reason)` | the comment's `visibility` becomes `"trashed"` (through `commentEdits`), plus `trashReason` (the Reason box; empty ⇒ `null`), `trashedBy` (current username) and `trashedAt` (ISO now); the parent submission's `commentCount` −1. The node stays in the merged array so `/trash` can list it, but `commentsFor()` filters it out of the tree. **Idempotent** — trashing an already-trashed comment is a no-op. `AppContext.jsx:383-403` is the only writer of `visibility: "trashed"`. |
 | Trash a comment thread (`…/comment/<cid>/delete_thread`) | Same, applied to the comment **and every descendant**, each with the same `trashReason` (`DeleteCommentPage.jsx` recurses into `trashComment`). |
 | Create a forum via `/create_forum` — `createForum(…)` | `forums` grows with `{id: nextForumId, submissionCount: 0, subscriberCount: 1, featured: false, created: now}`; `moderatorOf` and `subscriptions` grow with the name; `nextForumId` +1. A non-empty Tags field triggers a second write setting `forums[i].tags` to the whitespace/comma-split list, which is what makes the forum appear on `/tags` and `/tag/<tag>`. |
-| Edit a forum via `/f/<name>/edit` — `editForum(name, updates)` + a direct `setState` on rename | `forums[i].{title,description,sidebar,tags,moderationLogPublic}` updated. **Renaming** also rewrites `submissions[].forum`, `subscriptions`, `moderatorOf` and `hiddenForums` from the old name to the new one, then redirects to the renamed forum. |
+| Edit a forum via `/f/<name>/edit` — `editForum(name, updates)`, or `renameForum(old, updates)` when the name changes | `forums[i].{title,description,sidebar,tags,moderationLogPublic}` updated. **Renaming** appends `{from, to}` to `forumRenames` — which is what carries `submissions[].forum` — and rewrites `subscriptions`, `moderatorOf` and `hiddenForums`, then redirects to the renamed forum. The corpus itself is never rewritten, so the rename costs ~40 bytes of state. |
 | Save Appearance on `/f/<name>/appearance` | `forums[i].suggestedTheme` (or `null`) and `forums[i].backgroundImageMode` (`"tile"` \| …); an uploaded file goes through `POST /upload` and lands in `forums[i].lightBackgroundImage` / `darkBackgroundImage` as a `/files/<sid>/<name>` URL. |
 | Remove a moderator on `/f/<name>/moderators` | `forums[i].moderators` shrinks (via `editForum`). If the removed user is the current user, `moderatorOf` also drops that forum — which re-locks `/f/<name>/edit`. Flash: "The user was unmodded." |
-| Delete a forum via `/f/<name>/delete` (type the name + confirm) | `forums` loses the row; every submission in it is removed from `submissions`; all their comments are removed from `comments`; the name is dropped from `subscriptions`, `moderatorOf` and `hiddenForums`. Redirects to `/`. The single largest `state_diff` of any control. |
+| Delete a forum via `/f/<name>/delete` (type the name + confirm) | `forums` loses the row; the name is appended to `deletedForums`, which makes `materialize()` drop every submission in that forum and, transitively, all their comments; the name is dropped from `subscriptions`, `moderatorOf` and `hiddenForums`. Redirects to `/`. Used to be the single largest `state_diff` of any control; it is now one of the smallest. |
 | Edit biography via `/user/<name>/edit_biography` — `updateBio(text)` | `currentUser.biography` updated **and** `users[i].biography` mirrored. Immediately visible in `.user-bio__biography` on `/user/MarvelsGrantMan136` — the webarena-399..403 locator. Flash "The biography was updated.", redirect to `/user/<name>?sid=…`. |
 | Change a preference on `/user/<name>/preferences` — `updatePreferences(updates)` | The matching `currentUser.<field>` updated. Changing `frontPage` / `frontPageSortMode` changes what `/` renders; `fullWidthDisplayEnabled` toggles `<html class="full-width">`. |
-| Change the username on `/user/<name>/account` (`renameUser`, a direct `setState`) | `currentUser.username`, the matching `users[i].username`, the `userDirectory` key (re-keyed, old key deleted), and **every** `submissions[].author` and `comments[].author` equal to the old name. Then redirects to `/user/<new>/account`. ⚠️ This rewrites author strings across the entire seed — expect `state_diff` to contain `submissions` and `comments` in full (~2.25 MB). |
+| Change the username on `/user/<name>/account` `renameUser(from, to)` | `currentUser.username` and the matching `users[i].username` are updated, and `{from, to}` is appended to `userRenames` — which re-keys `userDirectory` and rewrites **every** `submissions[].author` and `comments[].author` equal to the old name at materialization. Then redirects to `/user/<new>/account`. The `state_diff` is three small keys; it used to carry `submissions` and `comments` in full (~2.25 MB). |
 | Submit `/user/<name>/account` **at all** — `updateAccount({email})` (an alias of `updatePreferences`) | `currentUser.email` is written on **every** submit of that form, before the rename check, so a submit that changes nothing still puts `currentUser` in `state_diff` (`null` when the field is blank). The password fields are validated client-side (match, ≥8 chars) but **write no state** — the mock stores no password. Flash: "Your password has been updated." when a password was typed, otherwise "User settings have been updated." |
 | Toggle night mode from the user menu, or `GET /night_mode?nightMode=<light\|dark\|auto>` — `setNightMode(mode)` | `currentUser.nightMode` set; `<html data-night-mode>` follows. The query-param route applies the mode and redirects back to the referrer. |
 | **Hide a forum** from its sidebar ("Hide this forum" `<details>` → `Hide`) — `hideForum(name)` | `hiddenForums` grows with the forum name; the forum drops out of `/all` and `/featured`, and a row appears in the `Name \| Title \|` table on `/user/<name>/hidden_forums`. **No flash** — `UserController::hideForum` adds none, it just redirects to the referer. |
@@ -278,16 +353,20 @@ list of second-class writes.
 |---|---|---|
 | `ComposeMessagePage.jsx` | 61 | `messages` (new thread) |
 | `MessageThreadPage.jsx` | 61, 78 | `messages` (reply, delete) |
-| `ForumDeletePage.jsx` | 59 | `forums`, `submissions`, `comments`, `subscriptions`, `moderatorOf`, `hiddenForums` |
-| `ForumEditPage.jsx` | 85 | `forums`, `submissions`, `subscriptions`, `moderatorOf`, `hiddenForums` (rename path only) |
 | `ForumModeratorsPage.jsx` | 69 | `moderatorOf` (self-unmod; the `forums[i].moderators` write goes through `editForum`) |
-| `AccountPage.jsx` | 42 | `currentUser`, `users`, `userDirectory`, `submissions`, `comments` |
 | `NotificationsPage.jsx` | 56 | `notifications` (single-item clear; "Clear all" uses the `clearNotifications` reducer) |
+
+The three writes that used to rewrite the corpus in place — forum delete, forum
+rename, username rename — moved into `AppContext` as `deleteForum`,
+`renameForum` and `renameUser` when the corpus left state. `ForumDeletePage`,
+`ForumEditPage` and `AccountPage` now call those reducers, so overlay knowledge
+lives in exactly one file.
 
 ### Persistence timing
 
-`saveState()` (`dataManager.js:144-154`) is **not debounced** — every committed
-state POSTs the full ~2.25 MB payload immediately. Writes are last-write-wins and
+`saveState()` (`dataManager.js`) is **not debounced** — every committed state
+POSTs immediately. The payload is the ~37 KB overlay state, not the corpus:
+`AppContext`'s persist effect writes `core`, never the materialized `state`. Writes are last-write-wins and
 ordered by the click sequence. Persistence lives in a post-commit `useEffect`
 (`AppContext.jsx:115-119`), **not** inside the state updater, because React
 double-invokes updaters under `<React.StrictMode>` and doing it there produced

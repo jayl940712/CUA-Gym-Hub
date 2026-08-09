@@ -45,7 +45,7 @@ export default function ForumEditPage() {
 }
 
 function ForumEditForm({ forum }) {
-  const { getForum, editForum, addFlash, setState } = useApp()
+  const { getForum, editForum, renameForum, addFlash } = useApp()
   const navigate = useSidNavigate()
 
   const [name, setName] = useState(forum.name)
@@ -81,15 +81,9 @@ function ForumEditForm({ forum }) {
     if (newName !== forum.name) {
       // Submissions, subscriptions and moderatorOf all key off the forum NAME,
       // so a rename has to carry them along or the forum's contents orphan.
-      const old = forum.name
-      setState(prev => ({
-        ...prev,
-        forums: prev.forums.map(f => f.id === forum.id ? { ...f, ...updates } : f),
-        submissions: prev.submissions.map(s => s.forum === old ? { ...s, forum: newName } : s),
-        subscriptions: prev.subscriptions.map(f => f === old ? newName : f),
-        moderatorOf: prev.moderatorOf.map(f => f === old ? newName : f),
-        hiddenForums: prev.hiddenForums.map(f => f === old ? newName : f)
-      }))
+      // AppContext.renameForum records it as an overlay entry applied to
+      // `submission.forum` at materialization.
+      renameForum(forum.name, updates)
       // ForumController::edit redirects to the RENAMED forum. Without this the
       // component re-renders against the stale `:forum` param, getForum(old)
       // returns null, and a successful save dead-ends on "Page not found".

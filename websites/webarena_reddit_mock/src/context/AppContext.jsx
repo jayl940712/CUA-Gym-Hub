@@ -4,6 +4,12 @@ import {
   initialKey, storageKey
 } from '../utils/dataManager.js'
 import { slugify } from '../utils/slug.js'
+import {
+  materialize, groupCommentsBySubmission,
+  resolveSubmission, resolveComment, patchSubmission, patchComment,
+  addSubmission as overlayAddSubmission, addComment as overlayAddComment,
+  removeSubmission, removeComment, hasChildComments
+} from '../utils/overlay.js'
 
 const AppContext = createContext(null)
 
@@ -46,7 +52,17 @@ export function nowIso() {
 }
 
 export function AppProvider({ children }) {
-  const [state, setStateRaw] = useState(null)
+  /**
+   * `core` is the PERSISTED state — small, overlay-shaped, and the only thing
+   * that reaches localStorage, `POST set_current` and `/go`. `state` is
+   * `materialize(core)`: the same object plus fully merged `submissions`,
+   * `comments` and `userDirectory`, which is what the whole component tree
+   * reads. Every mutation writes `core`; nothing ever writes the merged arrays
+   * back, so there is exactly one place where the frozen corpus and the
+   * agent's delta are combined. See src/utils/overlay.js.
+   */
+  const [core, setStateRaw] = useState(null)
+  const state = useMemo(() => materialize(core), [core])
   const [loading, setLoading] = useState(true)
   const [flashes, setFlashes] = useState([])
 
@@ -113,10 +129,13 @@ export function AppProvider({ children }) {
   // POSTing it would be a pointless 2.3 MB upload on every cold load.
   const bootSeatedRef = useRef(false)
   useEffect(() => {
-    if (loading || !state) return
+    if (loading || !core) return
     if (!bootSeatedRef.current) { bootSeatedRef.current = true; return }
-    saveState(state, getSessionId())
-  }, [state, loading])
+    // `core`, never `state`: persisting the materialized arrays would put the
+    // frozen corpus back on the wire — that was the 14.67 MB POST / 40 MB `/go`
+    // this refactor removed.
+    saveState(core, getSessionId())
+  }, [core, loading])
 
   const resetState = useCallback(() => {
     const sid = getSessionId()
@@ -140,6 +159,46 @@ export function AppProvider({ children }) {
    * Selectors                                                           *
    * ------------------------------------------------------------------ */
 
+  /**
+   * Id indexes over the MERGED arrays.
+   *
+   * `getSubmission()` used to be `state.submissions.find(...)` — a linear scan
+   * of 8,012 records on every submission-page render, and `commentsFor()` a
+   * scan of 24,149. Building the maps once per committed state is strictly
+   * cheaper and, because they are built from `state.submissions` /
+   * `state.comments`, they cannot drift from what the listings render.
+   *
+   * Built LAZILY, via getters: a forum listing never calls `getComment()` or
+   * `commentsFor()`, and eagerly indexing 24,149 comments on every committed
+   * state made it pay for them anyway — on the cold-boot render most of all.
+   */
+  const indexes = useMemo(() => {
+    if (!state) return null
+    let subById = null
+    let comById = null
+    let bySubmission = null
+    return {
+      get submissionById() {
+        if (!subById) {
+          subById = new Map()
+          for (const s of state.submissions) subById.set(String(s.id), s)
+        }
+        return subById
+      },
+      get commentById() {
+        if (!comById) {
+          comById = new Map()
+          for (const c of state.comments) comById.set(String(c.id), c)
+        }
+        return comById
+      },
+      get commentsBySubmission() {
+        if (!bySubmission) bySubmission = groupCommentsBySubmission(state.comments)
+        return bySubmission
+      }
+    }
+  }, [state])
+
   const selectors = useMemo(() => {
     if (!state) return {}
     return {
@@ -150,8 +209,8 @@ export function AppProvider({ children }) {
         const n = String(name).toLowerCase()
         return state.forums.find(f => f.name.toLowerCase() === n) || null
       },
-      getSubmission: (id) => state.submissions.find(s => String(s.id) === String(id)) || null,
-      getComment: (id) => state.comments.find(c => String(c.id) === String(id)) || null,
+      getSubmission: (id) => indexes.submissionById.get(String(id)) || null,
+      getComment: (id) => indexes.commentById.get(String(id)) || null,
       getUser: (username) => {
         if (!username) return null
         const u = state.users.find(x => x.username === username)
@@ -166,8 +225,8 @@ export function AppProvider({ children }) {
         }
       },
       commentsFor: (submissionId) =>
-        state.comments.filter(c => String(c.submission) === String(submissionId)
-          && c.visibility !== 'trashed'),
+        (indexes.commentsBySubmission.get(String(submissionId)) || [])
+          .filter(c => c.visibility !== 'trashed'),
       submissionVote: (id) => state.votes.submissions[String(id)] || 0,
       commentVote: (id) => state.votes.comments[String(id)] || 0,
       isSubscribed: (forumName) =>
@@ -176,7 +235,7 @@ export function AppProvider({ children }) {
         state.moderatorOf.some(f => f.toLowerCase() === String(forumName).toLowerCase()),
       visibleSubmissions: () => state.submissions.filter(s => s.visibility !== 'trashed')
     }
-  }, [state])
+  }, [state, indexes])
 
   /* ------------------------------------------------------------------ *
    * Mutations — every one of these flows through setState() so it reaches  *
@@ -192,6 +251,7 @@ export function AppProvider({ children }) {
       const old = prev.votes[bucket][key] || 0
       const next = old === choice ? 0 : choice
       const delta = next - old
+      if (delta === 0) return prev
       const votes = {
         ...prev.votes,
         [bucket]: { ...prev.votes[bucket] }
@@ -199,13 +259,18 @@ export function AppProvider({ children }) {
       if (next === 0) delete votes[bucket][key]
       else votes[bucket][key] = next
 
-      const listKey = kind === 'comment' ? 'comments' : 'submissions'
-      return {
-        ...prev,
-        votes,
-        [listKey]: prev[listKey].map(item =>
-          String(item.id) === key ? { ...item, netScore: (item.netScore || 0) + delta } : item)
-      }
+      const withVotes = { ...prev, votes }
+      // A seeded record can't be mutated in place, so the new netScore lands in
+      // the overlay's edit map and wins at materialization. `patch*` handles
+      // agent-created records by updating them in `newSubmissions`/`newComments`.
+      const current = kind === 'comment'
+        ? resolveComment(withVotes, key)
+        : resolveSubmission(withVotes, key)
+      if (!current) return withVotes
+      const patch = { netScore: (current.netScore || 0) + delta }
+      return kind === 'comment'
+        ? patchComment(withVotes, key, patch)
+        : patchSubmission(withVotes, key, patch)
     })
   }, [setState])
 
@@ -269,9 +334,8 @@ export function AppProvider({ children }) {
       }
       if (userFlag && userFlag !== 'none') created.userFlag = userFlag
 
-      return {
+      return overlayAddSubmission({
         ...prev,
-        submissions: [...prev.submissions, created],
         forums: f
           ? prev.forums.map(x => x.id === f.id
               ? { ...x, submissionCount: (x.submissionCount || 0) + 1 } : x)
@@ -281,33 +345,31 @@ export function AppProvider({ children }) {
           submissions: { ...prev.votes.submissions, [String(id)]: 1 }
         },
         nextSubmissionId: prev.nextSubmissionId + 1
-      }
+      }, created)
     })
     return created
   }, [setState])
 
   const editSubmission = useCallback((id, updates) => {
-    setState(prev => ({
-      ...prev,
-      submissions: prev.submissions.map(s => String(s.id) === String(id)
-        ? { ...s, ...updates, editedAt: nowIso() }
-        : s)
-    }))
+    setState(prev => patchSubmission(prev, id, { ...updates, editedAt: nowIso() }))
   }, [setState])
 
-  /** Soft delete, as Postmill's delete_own does. */
+  /**
+   * Delete. The record is tombstoned in the overlay rather than filtered out of
+   * an array, and `materialize()` drops every comment whose submission no
+   * longer resolves — so the forum listing, the permalink, `/user/<n>`, search
+   * and the firehose all agree, without each maintaining its own prune.
+   */
   const deleteSubmission = useCallback((id) => {
     setState(prev => {
-      const sub = prev.submissions.find(s => String(s.id) === String(id))
-      return {
+      const sub = resolveSubmission(prev, id)
+      return removeSubmission({
         ...prev,
-        submissions: prev.submissions.filter(s => String(s.id) !== String(id)),
-        comments: prev.comments.filter(c => String(c.submission) !== String(id)),
         forums: sub
           ? prev.forums.map(f => f.name === sub.forum
               ? { ...f, submissionCount: Math.max(0, (f.submissionCount || 0) - 1) } : f)
           : prev.forums
-      }
+      }, id)
     })
   }, [setState])
 
@@ -327,46 +389,41 @@ export function AppProvider({ children }) {
       if (userFlag && userFlag !== 'none') created.userFlag = userFlag
 
       const ts = created.timestamp
-      return {
+      const withComment = overlayAddComment({
         ...prev,
-        comments: [...prev.comments, created],
-        submissions: prev.submissions.map(s => String(s.id) === String(submission)
-          ? { ...s, commentCount: (s.commentCount || 0) + 1, lastActive: ts }
-          : s),
         votes: { ...prev.votes, comments: { ...prev.votes.comments, [String(id)]: 1 } },
         nextCommentId: prev.nextCommentId + 1
-      }
+      }, created)
+      const parentSub = resolveSubmission(withComment, submission)
+      if (!parentSub) return withComment
+      return patchSubmission(withComment, submission, {
+        commentCount: (parentSub.commentCount || 0) + 1,
+        lastActive: ts
+      })
     })
     return created
   }, [setState])
 
   const editComment = useCallback((id, body) => {
-    setState(prev => ({
-      ...prev,
-      comments: prev.comments.map(c => String(c.id) === String(id)
-        ? { ...c, body, editedAt: nowIso() } : c)
-    }))
+    setState(prev => patchComment(prev, id, { body, editedAt: nowIso() }))
   }, [setState])
 
   /** Soft delete — Postmill replaces the body and keeps the node in the tree. */
   const deleteComment = useCallback((id) => {
     setState(prev => {
-      const target = prev.comments.find(c => String(c.id) === String(id))
+      const target = resolveComment(prev, id)
       if (!target) return prev
-      const hasChildren = prev.comments.some(c => String(c.parent) === String(id))
-      if (hasChildren) {
-        return {
-          ...prev,
-          comments: prev.comments.map(c => String(c.id) === String(id)
-            ? { ...c, body: '[deleted]', author: '[deleted]', visibility: 'soft-deleted' } : c)
-        }
+      if (hasChildComments(prev, id)) {
+        return patchComment(prev, id, {
+          body: '[deleted]', author: '[deleted]', visibility: 'soft-deleted'
+        })
       }
-      return {
-        ...prev,
-        comments: prev.comments.filter(c => String(c.id) !== String(id)),
-        submissions: prev.submissions.map(s => String(s.id) === String(target.submission)
-          ? { ...s, commentCount: Math.max(0, (s.commentCount || 0) - 1) } : s)
-      }
+      const removed = removeComment(prev, id)
+      const sub = resolveSubmission(removed, target.submission)
+      if (!sub) return removed
+      return patchSubmission(removed, target.submission, {
+        commentCount: Math.max(0, (sub.commentCount || 0) - 1)
+      })
     })
   }, [setState])
 
@@ -382,23 +439,20 @@ export function AppProvider({ children }) {
    */
   const trashComment = useCallback((id, reason) => {
     setState(prev => {
-      const target = prev.comments.find(c => String(c.id) === String(id))
+      const target = resolveComment(prev, id)
       if (!target) return prev
       if (target.visibility === 'trashed') return prev
-      return {
-        ...prev,
-        comments: prev.comments.map(c => String(c.id) === String(id)
-          ? {
-              ...c,
-              visibility: 'trashed',
-              trashReason: reason || null,
-              trashedBy: prev.currentUser.username,
-              trashedAt: nowIso()
-            }
-          : c),
-        submissions: prev.submissions.map(s => String(s.id) === String(target.submission)
-          ? { ...s, commentCount: Math.max(0, (s.commentCount || 0) - 1) } : s)
-      }
+      const trashed = patchComment(prev, id, {
+        visibility: 'trashed',
+        trashReason: reason || null,
+        trashedBy: prev.currentUser.username,
+        trashedAt: nowIso()
+      })
+      const sub = resolveSubmission(trashed, target.submission)
+      if (!sub) return trashed
+      return patchSubmission(trashed, target.submission, {
+        commentCount: Math.max(0, (sub.commentCount || 0) - 1)
+      })
     })
   }, [setState])
 
@@ -435,6 +489,58 @@ export function AppProvider({ children }) {
       ...prev,
       forums: prev.forums.map(f => f.name.toLowerCase() === String(forumName).toLowerCase()
         ? { ...f, ...updates } : f)
+    }))
+  }, [setState])
+
+  /**
+   * `ForumController::edit` with a changed name. Submissions, subscriptions and
+   * moderatorOf all key off the forum NAME, so a rename has to carry them or the
+   * forum's contents orphan — but 8,012 frozen submissions cannot be rewritten.
+   * The rename is recorded as an ordered `{from, to}` entry and applied to
+   * `submission.forum` at materialization, so it costs ~40 bytes of state and
+   * composes correctly across repeated renames (A→B→A resolves to A).
+   */
+  const renameForum = useCallback((oldName, updates) => {
+    const newName = updates.name
+    setState(prev => ({
+      ...prev,
+      forums: prev.forums.map(f => f.name.toLowerCase() === String(oldName).toLowerCase()
+        ? { ...f, ...updates } : f),
+      forumRenames: [...(prev.forumRenames || []), { from: oldName, to: newName }],
+      subscriptions: prev.subscriptions.map(f => f === oldName ? newName : f),
+      moderatorOf: prev.moderatorOf.map(f => f === oldName ? newName : f),
+      hiddenForums: prev.hiddenForums.map(f => f === oldName ? newName : f)
+    }))
+  }, [setState])
+
+  /**
+   * `ForumController::delete` — the forum and all its content. Recorded as a
+   * tombstoned forum name rather than a filter over the corpus: `materialize()`
+   * drops submissions in a dead forum, and their comments follow because their
+   * submission no longer resolves.
+   */
+  const deleteForum = useCallback((forumName) => {
+    setState(prev => ({
+      ...prev,
+      forums: prev.forums.filter(f => f.name.toLowerCase() !== String(forumName).toLowerCase()),
+      deletedForums: [...(prev.deletedForums || []), forumName],
+      subscriptions: prev.subscriptions.filter(f => f !== forumName),
+      moderatorOf: prev.moderatorOf.filter(f => f !== forumName),
+      hiddenForums: prev.hiddenForums.filter(f => f !== forumName)
+    }))
+  }, [setState])
+
+  /**
+   * `/user/<name>` rename. Same shape as `renameForum`: an ordered entry
+   * applied to `submission.author`, `comment.author` and the userDirectory key
+   * at materialization, instead of rewriting every record the user ever wrote.
+   */
+  const renameUser = useCallback((from, to) => {
+    setState(prev => ({
+      ...prev,
+      currentUser: { ...prev.currentUser, username: to },
+      users: prev.users.map(u => u.username === from ? { ...u, username: to } : u),
+      userRenames: [...(prev.userRenames || []), { from, to }]
     }))
   }, [setState])
 
@@ -502,18 +608,21 @@ export function AppProvider({ children }) {
   }, [setState])
 
   const value = useMemo(() => ({
-    state, setState, resetState, loading,
+    // `state` is materialized (corpus merged in) — read it everywhere.
+    // `coreState` is the persisted delta — only /go and diffing want it.
+    state, coreState: core, setState, resetState, loading,
     flashes, addFlash, dismissFlash,
     ...selectors,
     vote, subscribe, unsubscribe,
     createSubmission, editSubmission, deleteSubmission,
     addComment, editComment, deleteComment, trashComment,
-    createForum, editForum,
+    createForum, editForum, renameForum, deleteForum, renameUser,
     updateBio, updatePreferences, updateAccount, setNightMode,
     hideForum, unhideForum, clearNotifications, blockUser, unblockUser
-  }), [state, setState, resetState, loading, flashes, addFlash, dismissFlash, selectors,
+  }), [state, core, setState, resetState, loading, flashes, addFlash, dismissFlash, selectors,
        vote, subscribe, unsubscribe, createSubmission, editSubmission, deleteSubmission,
        addComment, editComment, deleteComment, trashComment, createForum, editForum,
+       renameForum, deleteForum, renameUser,
        updateBio, updatePreferences, updateAccount, setNightMode,
        hideForum, unhideForum, clearNotifications, blockUser, unblockUser])
 

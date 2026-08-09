@@ -27,7 +27,7 @@ import '../components/user/user.css'
 export default function AccountPage() {
   const { username } = useParams()
   const navigate = useSidNavigate()
-  const { state, getUser, updateAccount, setState, addFlash } = useApp()
+  const { state, getUser, updateAccount, renameUser, addFlash } = useApp()
 
   const user = getUser(username)
   const isSelf = user && user.username === state.currentUser.username
@@ -37,24 +37,6 @@ export default function AccountPage() {
   const [pw1, setPw1] = useState('')
   const [pw2, setPw2] = useState('')
   const [error, setError] = useState(null)
-
-  const renameUser = (from, to) => {
-    setState(prev => {
-      const directory = { ...prev.userDirectory }
-      if (directory[from] !== undefined) {
-        directory[to] = directory[from]
-        delete directory[from]
-      }
-      return {
-        ...prev,
-        currentUser: { ...prev.currentUser, username: to },
-        users: prev.users.map(u => u.username === from ? { ...u, username: to } : u),
-        userDirectory: directory,
-        submissions: prev.submissions.map(s => s.author === from ? { ...s, author: to } : s),
-        comments: prev.comments.map(c => c.author === from ? { ...c, author: to } : c)
-      }
-    })
-  }
 
   if (!user) return <NotFound />
   if (!isSelf) return <Forbidden />

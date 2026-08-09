@@ -271,6 +271,13 @@ export default defineConfig({
       configurePreviewServer(server) { setupMiddlewares(server) }
     }
   ],
+  // `stringify: true` emits every JSON module as `JSON.parse("…")` instead of a
+  // JS object literal. V8 parses a JSON string materially faster than the
+  // equivalent literal, and this bundle carries a 14.6 MB corpus
+  // (submissions.json + comments.json + userDirectory.json), so this is the
+  // dominant remaining cost of first paint. Safe here: every JSON import in
+  // src/ is a default import — `stringify: true` only breaks named ones.
+  json: { stringify: true },
   esbuild: { loader: 'jsx', include: /src\/.*\.jsx?$/, exclude: [] },
   optimizeDeps: { esbuildOptions: { loader: { '.js': 'jsx' } } },
   server: {

@@ -393,6 +393,62 @@ follow the same rule and were re-verified against the container this round:
 
 ---
 
+## Design decision: the corpus is frozen base data, not state (2026-08-09)
+
+`createInitialData()` used to copy the whole seed into app state. Measured cost,
+on a fresh sid with `/f/Art` loaded and one upvote:
+
+| | |
+|---|---|
+| app state POSTed per mutation | 14,674,815 B |
+| `GET /go` cold / after one vote | 27,981,597 B / 39,577,722 B |
+| `state_diff` after one vote | 12,095,914 B |
+| localStorage keys held | **0** — two keys wanted ~27.6 M chars against Chrome's 5,242,880 |
+| stale-snapshot hazard | a `.mock-state.json` written before a seed expansion carried a full `submissions` array, and `{...defaults, ...customState}` let it replace the new seed wholesale — this shipped a 2,345-post site from an 8,012-post seed |
+
+**The rule applied: if agents cannot create it, it does not belong in state.**
+`websites/webarena_shopping_mock` is the reference — its state is 65 KB because
+it keeps 37 mutable `orders` in and all 22,721 products out.
+
+An agent on this site can create submissions, comments and forums, and can edit
+its own bio and preferences. It cannot create a *seeded* submission or comment,
+and it cannot create a user at all (there is no registration surface, and
+`userDirectory` is only ever read). So `submissions.json`, `comments.json` and
+`userDirectory.json` became frozen imports (`src/data/frozen.js`), and mutations
+against them became an overlay (`src/utils/overlay.js`): created records, whole-
+record edits keyed by id, deletion tombstones, plus rename lists for the two
+bulk operations (forum rename, username rename) that would otherwise have to
+rewrite thousands of records.
+
+`forums` (95 rows, 21 KB) and `users` (70 rows, 11 KB) stayed **in** state: both
+are genuinely mutable and both are small.
+
+Three consequences worth knowing:
+
+1. **One materialization point.** `AppProvider` keeps `core` (persisted, ~37 KB)
+   and derives `state = materialize(core)` with the merged arrays. Every read
+   site in `src/` was left untouched, which is deliberate: the failure mode this
+   design risks is a record that looks deleted in one view and present in
+   another, and a single merge point makes that unrepresentable. Verified
+   explicitly across forum listing, permalink, `/user/<n>`, search, the comments
+   firehose and `/go` (`assets/dumps/test_overlay.py` §5).
+2. **Injection is backward compatible.** A harness that POSTs a full
+   `submissions` array still gets that array as the base, verbatim and in order.
+   The lightweight path (`newSubmissions` / `submissionEdits` /
+   `deletedSubmissions`) is new and preferred. Both were proved to render
+   identically (§4 of the same script).
+3. **A stale `.mock-state.json` can no longer pin an old corpus**, because a
+   snapshot now contains only the delta. A pre-refactor snapshot that still
+   carries a `submissions` array will still be honoured as an explicit base —
+   delete it if that is not intended.
+
+`calculateStateDiff` (`vite.config.js`) and `computeStateDiff`
+(`src/utils/stateTracker.js`) were deliberately **not** changed: 89 mocks share
+that whole-top-level-key convention, and shrinking the storage makes the diff
+small without touching it.
+
+---
+
 ## Accepted deviations from the source
 
 ### Submission images are recompressed — do NOT "restore" them from the container
