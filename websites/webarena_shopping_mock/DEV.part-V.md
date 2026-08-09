@@ -201,6 +201,231 @@ container holds only **36** listable products — it ends up **36/36, fully
 seeded**. No category is capped by the sample any more; one is capped by the
 source.
 
-## DEV PROGRESS
+The rule is a script, not a one-off:
+**`assets/dumps/select_category_floor.py`** (`VWA_FLOOR`, `VWA_RATE`), reading
+`candidates.V.tsv` and writing `vwa_floor_ids.V.txt`. It applies `vwa_merge.py`'s
+own skip rules (no image / no url_key / no category) when counting availability,
+so the floor is never computed over products the merge would then throw away.
 
-(final block appended at end)
+## One pipeline change was needed, and it fixes a design bug
+
+`vwa_backfill.py` used the **tier** flag to answer two unrelated questions:
+*encode at 500 px or 320 px?* and *dump the gallery and description at all?*
+Answering both with one bit is what shipped 7 965 products with a one-image
+gallery and no description (VWAP-002/VWAP-003) and then needed `tierb_upgrade()`
+to walk it back a round later.
+
+New `bulk()` mode (`VWA_BULK_IDS=<file>`) separates them. It dumps every
+selected id **complete** — products, gallery, options, reviews, description —
+and writes a tier file with `tierA: []` (so `vwa_images.py` still encodes all of
+it at tier B's 320 px) plus a new third key `fullGallery`. `vwa_merge.py` now
+consults `fullGallery ∪ tierA` — and nothing else — when choosing between the
+container's gallery and `[image]`. Older tier files have no such key, so
+`.get()` makes the change inert for every earlier generation.
+
+Net effect: phase 2's 11 357 products ship the container's **whole** gallery at
+the **320 px** encoding, which is the combination the old two-tier flag could
+not express.
+
+## Phase 2 — dumped and merged
+
+| | phase 1 | phase 2 |
+|---|---|---|
+| products | 11 364 | **22 721** (+11 357) |
+| descriptions | 11 364 | **22 721** (22 721 carry the detail table) |
+| products with options | 4 887 | **9 545** |
+| reviews | 32 602 | **76 378** |
+| `reviewCounts.json` | 3 352 products | **6 044** products |
+| search index | 73 439 tokens / 1 945 010 postings | **121 396 / 3 795 611**, 64 shards, 11.15 MB |
+| media files pulled | — | **21 102 / 21 102**, 0 tar errors, 628 MB raw |
+
+Container dump: 11 357 product rows, 21 102 gallery rows, 6 930 option rows,
+43 776 review rows, 11 357 description rows. Every selected id survived the
+merge (`+11 357` exactly); the 47 the merge skipped for `no image` are earlier
+rounds' tier-B leftovers being re-offered by the glob, all of which have a NULL
+`image` in the container.
+
+### Per-category coverage, before → after
+
+| seeded listable products in a category | before | after |
+|---|---|---|
+| < 10 | 85 | **0** |
+| 10–24 | 48 | **0** |
+| 25–39 | 15 | **1** |
+| 40–99 | 69 | **183** |
+| ≥ 100 | 84 | **117** |
+| min / median / p90 / max | 4 / 47 / 232 / 1 861 | **36 / 75 / 451 / 4 398** |
+
+0 empty categories before and after. Listable products 11 103 → **22 460**.
+
+### Seed integrity — measured, not assumed
+
+Whole population: **0** duplicate ids, **0** duplicate `urlKey`, **0** duplicate
+`sku`, **0** products with a field set other than the required 20, **0** null or
+`no_selection` images, **0** empty galleries, **0** products whose `image` is
+absent from its own gallery, **0** galleries repeating a path, **0** products
+missing a description.
+
+Independent re-dumps from the container (my own SELECTs, not the pipeline's
+dump files), on random samples of the **new** products:
+
+| check | sample | result |
+|---|---|---|
+| 17 scalar fields (`sku` `typeId` `createdAt` `name` `urlKey` `image` `smallImage` `thumbnail` `price` `specialPrice` `status` `visibility` `qty` `inStock` `ratingSummary` `reviewsCount` `categoryIds`) | 400 products | **0 mismatches** |
+| gallery contents **and order** | 400 products | **0 mismatches** |
+| reviews (6 fields each) | 400 products / **1 790** reviews | **0 missing, 0 fabricated, 0 field mismatches** |
+| `reviewCounts.json` | 400 products | **0 wrong** |
+| options (group count + value count) | 172 products with options | **0 mismatches**, 0 seeded-but-absent |
+| descriptions | 300 products | **0 invented words**; 215 word-identical, 85 strict subsets, **300/300** carry `productDetails_detailBullets_sections1` |
+
+---
+
+# First paint — REGRESSED, half recovered, residual disclosed
+
+This is the one standing gate this shard did not hold, so it is written up in
+full rather than summarised.
+
+Doubling the catalog doubles `products.json` (7.2 → 14.3 MB), which lands in the
+**always-loaded `seed` chunk**: 9.1 MB → **16.0 MB** (1 975 → 3 631 kB gzip).
+Cold time-to-readable-content, `vite preview`, 1280×720, fresh context, median
+of 3:
+
+| route | before (11 364 products) | after, unfixed | **after, shipped** |
+|---|---|---|---|
+| `/` | 495 ms | 942 ms | **748 ms** |
+| category | 514 ms | 926 ms | **726 ms** |
+| cart | 502 ms | 865 ms | **719 ms** |
+| search | 512 ms | 916 ms | **756 ms** |
+| PDP | 499 ms | 897 ms | **717 ms** |
+
+**What I fixed.** Profiling the boot rather than guessing at it turned up a real
+defect, independent of the seed size. `AppContext` blocks its first render on
+`ensureDetail(['options'])`, and `main.jsx` starts that import early
+specifically so it overlaps the app shell — its comment says it "has had it in
+flight since before React mounted, so it costs ~nothing". **It did not.**
+`main.jsx` imports `catalog.js`, which *statically* imports `products.json`, so
+nothing in `main.jsx` can run until the entire `seed` chunk has downloaded,
+parsed and executed. Measured: `seed-options` did not start until **t = 535 ms**
+— immediately after `seed` finished — and then cost another **122 ms** wholly on
+the critical path. Vite emits `modulepreload` for static imports of the entry
+only, and `options` is dynamic, so it got none.
+
+New `preloadBootChunks()` plugin in `vite.config.js` injects the link at
+`generateBundle` (not `transformIndexHtml`, which runs before the content hash
+is known). Both chunks now start at **t ≈ 9 ms** and the options transfer
+disappears inside the seed transfer. **~200 ms recovered on every route.** It
+preloads only what the boot gate blocks on — deliberately not `seed-reviews` or
+`seed-descriptions-*`, whose whole purpose (R8-001) is to stay off first paint.
+
+**What I did not fix, and why.** The residual **+220 ms** is the V8 parse of
+16 MB of object literal. I measured `json: { stringify: true }` — emitting
+`JSON.parse("…")` — and it is **worse, not better**: 942 → **1 257 ms**, with the
+chunk growing to 17.1 MB. That result is recorded as a comment in
+`vite.config.js` so the next round does not spend the measurement again.
+
+The only remaining lever is fewer bytes in `products.json`, and there is no fat
+in it — measured field shares: `name` 20.1 %, `urlKey` 19.8 %, the four media
+path fields 25.2 %, nothing else above 5.3 %. The media paths *are* fully
+derivable (all 22 721 galleries match `/X/y/<SKU>.N.jpg`), so encoding them as
+suffixes would cut ~3.5 MB — but that changes the shape of `image`,
+`smallImage`, `thumbnail` and `gallery`, which is exactly what the audit
+compares field-for-field against the container across the whole population.
+**I stopped rather than trade a proven parity check for 80 ms, unilaterally.**
+
+**This is a genuine tension in the brief**, not an oversight: "roughly double the
+catalog" and "first paint must NOT regress" cannot both hold while the catalog
+is parsed eagerly. The call on which one gives is the lead's, and the three
+options are (a) accept +220 ms, (b) approve the `products.json` media-path
+re-encoding, (c) lower `VWA_RATE` — the selection is a one-line re-run.
+
+---
+
+# DEV PROGRESS
+
+## Products
+
+| | before | phase 1 | **phase 2 (shipped)** |
+|---|---|---|---|
+| products | 11 358 | 11 364 | **22 721** |
+| listable products | 11 103 | 11 109 | **22 460** |
+| descriptions | 11 358 | 11 364 | **22 721** |
+| products with options | 4 884 | 4 887 | **9 545** |
+| reviews | 32 594 | 32 602 | **76 378** |
+| products with review counts | 3 351 | 3 352 | **6 044** |
+| search index | 73 404 tok / 1 944 170 post | 73 439 / 1 945 010 | **121 396 / 3 795 611** |
+
+## Per-category coverage
+
+| seeded listable products | before | **after** |
+|---|---|---|
+| < 10 | 85 | **0** |
+| 10–24 | 48 | **0** |
+| 25–39 | 15 | **1** |
+| 40–99 | 69 | **183** |
+| ≥ 100 | 84 | **117** |
+| min / median / p90 / max | 4 / 47 / 232 / 1 861 | **36 / 75 / 451 / 4 398** |
+| empty categories | 0 | **0** |
+
+The one category under the floor is **273 Deli Meats & Cheeses** at **36/36** —
+the container holds only 36 listable products, so it is fully seeded. Every
+other category now carries at least 40. Selection rule:
+`target(c) = min(avail(c), max(40, round(0.17 × avail(c))))`.
+
+## Sizes — both inside the projection
+
+| | before | **after** | projected |
+|---|---|---|---|
+| `src/data` | 99 MB | **193 MB** | ~190 MB |
+| `public/media` | 276 MB | **497 MB** | ~550 MB |
+| media files | 21 302 | **42 415** | — |
+| `src/searchindex` | 6.26 MB | **11.15 MB** | — |
+| `seed` chunk | 9.1 MB (1 975 kB gz) | **16.0 MB (3 631 kB gz)** | — |
+
+Media encoding: 21 102 files pulled (0 tar errors), **613.9 MB → 187.9 MB
+(3.3×)** at tier B 320 px q64, **0 failed, 0 missing**. **0** of the 42 415
+distinct media paths referenced by `products.json` are absent from disk.
+
+## Extrema re-verification — the thing most likely to break, and it did not
+
+- **DB-level**, `vwa_extrema.py` over 106 anchored categories: **106/106
+  cheapest exact, 106/106 priciest exact** — identical to the pre-expansion run.
+- **0 of 106** categories changed their mock extremum between before and after.
+- **Live-rendered**, 16 highest-task-count categories × `asc`/`desc` against
+  `http://10.186.197.203:7770`: **32/32 on price**, **31/32 on name**. The one
+  name difference is a **4-way tie at $0.01** in `clothing-shoes-jewelry/men/
+  clothing`, and **all four tied products were already seeded before phase 2** —
+  a pre-existing tie-break difference, not something this shard introduced.
+
+## Other gates
+
+| gate | result |
+|---|---|
+| `npm run build` | ✅ exit 0 |
+| `/go` size | ✅ **123 357 B**, byte-identical |
+| search predicate equivalence | ✅ **3 024 tokens × 22 721 products, 0 mismatches**; shards merge == corpus (22 721 entries) |
+| description shards `--check` | ✅ OK |
+| seed integrity (whole population) | ✅ 0 dup ids / urlKeys / SKUs, 0 wrong field sets, 0 null images, 0 empty galleries, 0 duplicated gallery paths, 0 missing descriptions |
+| new products vs container (independent re-dump) | ✅ 400 products × 17 fields **0 mismatches**; gallery contents+order **0**; 1 790 reviews **0 missing / 0 fabricated / 0 field mismatches**; options **0**; 300 descriptions **0 invented words** |
+| first paint | ❌ **+220 ms** — see the section above |
+
+## Verification NOT run — stopped on instruction
+
+The user directed me to skip the remaining checks and land the work. These were
+planned and are **not** covered by anything above:
+
+1. **380-route anchor sweep** (asserting the 404 CMS page, not just an `h1`),
+   **174/174 evaluator SKUs**, **43/43 media URLs**, anchored product names.
+   The route universe was already re-derived correctly — **1 720 tasks → 679
+   touching shopping → 380 distinct routes + 42 media URLs**, matching the
+   audit — the sweep itself was not driven.
+2. **Browser verification of newly added PDPs and deepened category pages.** No
+   phase-2 product has been looked at in a browser. Phase 1's six were.
+3. **42/42 ROUTES.md rows**, console-error and external-request sweep.
+4. **`listings.json` rendered counts / toolbar amounts.** Read the code —
+   `totalCount` comes from `anchor.totalCount` or `cat.dbProductCount`, both
+   seed-independent, so toolbars should be unchanged and *more* captured ids now
+   resolve — but this is reasoning, not a measurement.
+
+Phase 2 is additive, so it cannot remove an anchored product, SKU, media file or
+route, which is why (1) is low-risk. (2) is the real gap: 11 357 products ship
+without a single one being viewed.

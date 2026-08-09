@@ -244,7 +244,41 @@ def tierb_upgrade():
     json.dump({"tierA": [], "tierB": todo}, open(f"{DUMPS}/vwa_tiers{SUF}.json", "w"))
 
 
+def bulk():
+    """Shard V phase 2: dump an explicit id list COMPLETE — gallery and
+    description included.
+
+    The tier-A / tier-B split exists to keep media affordable, and it does its
+    job: tier B encodes at 320 px instead of 500. But `main()` also uses that
+    same flag to decide whether to dump `GALLERY_SQL` and `DESC_SQL` at all,
+    which is a different question, and answering both with one bit is what left
+    7 965 products with a one-image gallery and no description for two rounds
+    (VWAP-002, VWAP-003) and then needed `tierb_upgrade()` to walk it back.
+
+    So this mode separates them. Everything it selects is dumped complete, and
+    the tier file it writes says `tierA: []` — so `vwa_images.py` still encodes
+    all of it at tier B's 320 px — plus a third key, `fullGallery`, which is
+    the only thing `vwa_merge.py` consults when deciding between the container's
+    gallery and `[image]`.
+
+    Read the ids from VWA_BULK_IDS (one entity_id per line); already-seeded ids
+    are subtracted, so re-running is a no-op.
+    """
+    have = {p["id"] for p in json.load(open(f"{MOCK}/src/data/products.json"))}
+    todo = sorted({int(x) for x in open(os.environ["VWA_BULK_IDS"]) if x.strip()} - have)
+    print(f"bulk: {len(todo)} new products (complete: gallery + description)")
+    for name, sql in (("products", PRODUCT_SQL), ("gallery", GALLERY_SQL),
+                      ("options", OPTIONS_SQL), ("reviews", REVIEWS_SQL),
+                      ("desc", DESC_SQL)):
+        with open(f"{DUMPS}/vwa_{name}{SUF}.jsonl", "w") as f:
+            print(f"  {name} rows:", jrows(sql, todo, f), flush=True)
+    json.dump({"tierA": [], "tierB": todo, "fullGallery": todo},
+              open(f"{DUMPS}/vwa_tiers{SUF}.json", "w"))
+
+
 def main():
+    if os.environ.get("VWA_BULK_IDS"):
+        return bulk()
     if os.environ.get("VWA_REPAIR_IDS"):
         return repair()
     if os.environ.get("VWA_TIERB_UPGRADE"):
