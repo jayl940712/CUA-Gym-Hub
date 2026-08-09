@@ -6,15 +6,9 @@
   "popularity": 7
  },
  {
-  "queryId": 324,
-  "queryText": "laptop",
-  "numResults": 2956,
-  "popularity": 6
- },
- {
-  "queryId": 362,
-  "queryText": "sony bluetooth headphone",
-  "numResults": 5577,
+  "queryId": 67,
+  "queryText": "earphone",
+  "numResults": 702,
   "popularity": 6
  },
  {
@@ -24,9 +18,15 @@
   "popularity": 6
  },
  {
-  "queryId": 67,
-  "queryText": "earphone",
-  "numResults": 702,
+  "queryId": 324,
+  "queryText": "laptop",
+  "numResults": 2956,
+  "popularity": 6
+ },
+ {
+  "queryId": 362,
+  "queryText": "sony bluetooth headphone",
+  "numResults": 5577,
   "popularity": 6
  },
  {
@@ -42,39 +42,21 @@
   "popularity": 5
  },
  {
-  "queryId": 346,
-  "queryText": "microwave oven",
-  "numResults": 521,
-  "popularity": 5
- },
- {
   "queryId": 179,
   "queryText": "desk riser",
   "numResults": 3988,
   "popularity": 5
  },
  {
-  "queryId": 334,
-  "queryText": "MacBook 13",
-  "numResults": 1229,
-  "popularity": 4
+  "queryId": 346,
+  "queryText": "microwave oven",
+  "numResults": 521,
+  "popularity": 5
  },
  {
   "queryId": 11,
   "queryText": "Toothbrush Head Cover",
   "numResults": 4800,
-  "popularity": 4
- },
- {
-  "queryId": 300,
-  "queryText": "apple iphone 11",
-  "numResults": 31581,
-  "popularity": 4
- },
- {
-  "queryId": 392,
-  "queryText": "zara",
-  "numResults": 9,
   "popularity": 4
  },
  {
@@ -90,10 +72,40 @@
   "popularity": 4
  },
  {
-  "queryId": 374,
-  "queryText": "usb wifi",
-  "numResults": 7123,
+  "queryId": 300,
+  "queryText": "apple iphone 11",
+  "numResults": 31581,
   "popularity": 4
+ },
+ {
+  "queryId": 334,
+  "queryText": "MacBook 13",
+  "numResults": 1229,
+  "popularity": 4
+ },
+ {
+  "queryId": 392,
+  "queryText": "zara",
+  "numResults": 9,
+  "popularity": 4
+ },
+ {
+  "queryId": 35,
+  "queryText": "B091BB3B86",
+  "numResults": 1,
+  "popularity": 3
+ },
+ {
+  "queryId": 93,
+  "queryText": "tennis racket",
+  "numResults": 1085,
+  "popularity": 3
+ },
+ {
+  "queryId": 225,
+  "queryText": "iPhone SE 2020 Case",
+  "numResults": 17645,
+  "popularity": 3
  },
  {
   "queryId": 234,
@@ -105,18 +117,6 @@
   "queryId": 242,
   "queryText": "cellphone",
   "numResults": 489,
-  "popularity": 3
- },
- {
-  "queryId": 437,
-  "queryText": "iphone 12 phone case",
-  "numResults": 43033,
-  "popularity": 3
- },
- {
-  "queryId": 93,
-  "queryText": "tennis racket",
-  "numResults": 1085,
   "popularity": 3
  },
  {
@@ -132,124 +132,10 @@
   "popularity": 3
  },
  {
-  "queryId": 225,
-  "queryText": "iPhone SE 2020 Case",
-  "numResults": 17645,
-  "popularity": 3
- },
- {
   "queryId": 326,
   "queryText": "laptop 13",
   "numResults": 30802,
   "popularity": 3
- },
- {
-  "queryId": 425,
-  "queryText": "chairs",
-  "numResults": 3418,
-  "popularity": 3
- },
- {
-  "queryId": 35,
-  "queryText": "B091BB3B86",
-  "numResults": 1,
-  "popularity": 3
- },
- {
-  "queryId": 443,
-  "queryText": "teeth grinding mouth guard",
-  "numResults": 4944,
-  "popularity": 3
- },
- {
-  "queryId": 441,
-  "queryText": "wireless earphone",
-  "numResults": 6209,
-  "popularity": 3
- },
- {
-  "queryId": 439,
-  "queryText": "Canon photo printer",
-  "numResults": 6444,
-  "popularity": 3
- },
- {
-  "queryId": 376,
-  "queryText": "xbox",
-  "numResults": 839,
-  "popularity": 2
- },
- {
-  "queryId": 203,
-  "queryText": "Hugh Industrial Rustic Farmhouse Table Lamp with Nightlight LED 26\" High Bronze Metal",
-  "numResults": 62742,
-  "popularity": 2
- },
- {
-  "queryId": 193,
-  "queryText": "B099NZMF6T",
-  "numResults": 1,
-  "popularity": 2
- },
- {
-  "queryId": 173,
-  "queryText": "VOVIGGOL Cell Phone Ring Holder",
-  "numResults": 33165,
-  "popularity": 2
- },
- {
-  "queryId": 171,
-  "queryText": "candle",
-  "numResults": 973,
-  "popularity": 2
- },
- {
-  "queryId": 496,
-  "queryText": "asdfghjkl",
-  "numResults": 1,
-  "popularity": 2
- },
- {
-  "queryId": 430,
-  "queryText": "batteries for iphone 13",
-  "numResults": 36923,
-  "popularity": 2
- },
- {
-  "queryId": 404,
-  "queryText": "macbook pro",
-  "numResults": 3918,
-  "popularity": 2
- },
- {
-  "queryId": 435,
-  "queryText": "mouth night guard",
-  "numResults": 9819,
-  "popularity": 2
- },
- {
-  "queryId": 400,
-  "queryText": "M1 macbook",
-  "numResults": 536,
-  "popularity": 2
- },
- {
-  "queryId": 135,
-  "queryText": "ugreen",
-  "numResults": 21,
-  "popularity": 2
- },
- {
-  "queryId": 107,
-  "queryText": "toothbrush",
-  "numResults": 1190,
-  "popularity": 2
- },
- {
-  "queryId": 221,
-  "queryText": "benq screenbar",
-  "numResults": 38,
-  "popularity": 2
  },
  {
   "queryId": 5,
@@ -261,18 +147,6 @@
   "queryId": 9,
   "queryText": "nba",
   "numResults": 44,
-  "popularity": 2
- },
- {
-  "queryId": 420,
-  "queryText": "camera",
-  "numResults": 5016,
-  "popularity": 2
- },
- {
-  "queryId": 276,
-  "queryText": "samsung galaxy note 9 screen guard",
-  "numResults": 44023,
   "popularity": 2
  },
  {
@@ -288,27 +162,21 @@
   "popularity": 2
  },
  {
-  "queryId": 230,
-  "queryText": "B087QJN9W1",
-  "numResults": 1,
-  "popularity": 2
- },
- {
   "queryId": 49,
   "queryText": "B092PZXX82",
   "numResults": 1,
   "popularity": 2
  },
  {
-  "queryId": 356,
-  "queryText": "panasonic microwave oven",
-  "numResults": 2270,
-  "popularity": 2
- },
- {
   "queryId": 59,
   "queryText": "energy drink",
   "numResults": 4419,
+  "popularity": 2
+ },
+ {
+  "queryId": 61,
+  "queryText": "lipstick",
+  "numResults": 798,
   "popularity": 2
  },
  {
@@ -324,20 +192,92 @@
   "popularity": 2
  },
  {
-  "queryId": 61,
-  "queryText": "lipstick",
-  "numResults": 798,
+  "queryId": 107,
+  "queryText": "toothbrush",
+  "numResults": 1190,
   "popularity": 2
  },
  {
-  "queryId": 201,
-  "queryText": "Greaton Fully Assembled Split Wood Traditional Box Spring/Foundation For Mattress With Frame Set, 75\" X 44\", 100vF-3/8-3S",
-  "numResults": 99268,
-  "popularity": 1
+  "queryId": 135,
+  "queryText": "ugreen",
+  "numResults": 21,
+  "popularity": 2
  },
  {
-  "queryId": 197,
-  "queryText": "B08NLM81WZ",
+  "queryId": 171,
+  "queryText": "candle",
+  "numResults": 973,
+  "popularity": 2
+ },
+ {
+  "queryId": 173,
+  "queryText": "VOVIGGOL Cell Phone Ring Holder",
+  "numResults": 33165,
+  "popularity": 2
+ },
+ {
+  "queryId": 193,
+  "queryText": "B099NZMF6T",
+  "numResults": 1,
+  "popularity": 2
+ },
+ {
+  "queryId": 203,
+  "queryText": "Hugh Industrial Rustic Farmhouse Table Lamp with Nightlight LED 26\" High Bronze Metal",
+  "numResults": 62742,
+  "popularity": 2
+ },
+ {
+  "queryId": 221,
+  "queryText": "benq screenbar",
+  "numResults": 38,
+  "popularity": 2
+ },
+ {
+  "queryId": 230,
+  "queryText": "B087QJN9W1",
+  "numResults": 1,
+  "popularity": 2
+ },
+ {
+  "queryId": 276,
+  "queryText": "samsung galaxy note 9 screen guard",
+  "numResults": 44023,
+  "popularity": 2
+ },
+ {
+  "queryId": 356,
+  "queryText": "panasonic microwave oven",
+  "numResults": 2270,
+  "popularity": 2
+ },
+ {
+  "queryId": 376,
+  "queryText": "xbox",
+  "numResults": 839,
+  "popularity": 2
+ },
+ {
+  "queryId": 400,
+  "queryText": "M1 macbook",
+  "numResults": 536,
+  "popularity": 2
+ },
+ {
+  "queryId": 404,
+  "queryText": "macbook pro",
+  "numResults": 3918,
+  "popularity": 2
+ },
+ {
+  "queryId": 420,
+  "queryText": "camera",
+  "numResults": 5016,
+  "popularity": 2
+ },
+ {
+  "queryId": 79,
+  "queryText": "B07XV8QS53",
   "numResults": 1,
   "popularity": 1
  },
@@ -348,15 +288,315 @@
   "popularity": 1
  },
  {
-  "queryId": 554,
-  "queryText": "xbox controller",
-  "numResults": 12660,
+  "queryId": 83,
+  "queryText": "B000O6EDJ4",
+  "numResults": 1,
   "popularity": 1
  },
  {
-  "queryId": 39,
-  "queryText": "B07GYZVLL6",
+  "queryId": 85,
+  "queryText": "B07NYNYG84",
   "numResults": 1,
+  "popularity": 1
+ },
+ {
+  "queryId": 87,
+  "queryText": "nike",
+  "numResults": 193,
+  "popularity": 1
+ },
+ {
+  "queryId": 89,
+  "queryText": "tiger",
+  "numResults": 161,
+  "popularity": 1
+ },
+ {
+  "queryId": 91,
+  "queryText": "B07RM6BPT4",
+  "numResults": 1,
+  "popularity": 1
+ },
+ {
+  "queryId": 99,
+  "queryText": "tennis shirt",
+  "numResults": 9021,
+  "popularity": 1
+ },
+ {
+  "queryId": 101,
+  "queryText": "B06XBW6YGZ",
+  "numResults": 1,
+  "popularity": 1
+ },
+ {
+  "queryId": 103,
+  "queryText": "B07ZYBNM4X",
+  "numResults": 1,
+  "popularity": 1
+ },
+ {
+  "queryId": 105,
+  "queryText": "B08MQWVPKV",
+  "numResults": 1,
+  "popularity": 1
+ },
+ {
+  "queryId": 111,
+  "queryText": "night guard teeth",
+  "numResults": 9813,
+  "popularity": 1
+ },
+ {
+  "queryId": 115,
+  "queryText": "B094G2XDYR",
+  "numResults": 1,
+  "popularity": 1
+ },
+ {
+  "queryId": 127,
+  "queryText": "earphone lightening",
+  "numResults": 957,
+  "popularity": 1
+ },
+ {
+  "queryId": 131,
+  "queryText": "earphone iphone",
+  "numResults": 2661,
+  "popularity": 1
+ },
+ {
+  "queryId": 133,
+  "queryText": "card case switch",
+  "numResults": 17663,
+  "popularity": 1
+ },
+ {
+  "queryId": 155,
+  "queryText": "sony",
+  "numResults": 1325,
+  "popularity": 1
+ },
+ {
+  "queryId": 157,
+  "queryText": "logitech",
+  "numResults": 59,
+  "popularity": 1
+ },
+ {
+  "queryId": 159,
+  "queryText": "logitech speakers",
+  "numResults": 3762,
+  "popularity": 1
+ },
+ {
+  "queryId": 177,
+  "queryText": "40 Pieces Snowflake Cupcake Toppers Glitter Winter Th",
+  "numResults": 42655,
+  "popularity": 1
+ },
+ {
+  "queryId": 197,
+  "queryText": "B08NLM81WZ",
+  "numResults": 1,
+  "popularity": 1
+ },
+ {
+  "queryId": 201,
+  "queryText": "Greaton Fully Assembled Split Wood Traditional Box Spring/Foundation For Mattress With Frame Set, 75\" X 44\", 100vF-3/8-3S",
+  "numResults": 99268,
+  "popularity": 1
+ },
+ {
+  "queryId": 207,
+  "queryText": "laundry",
+  "numResults": 1105,
+  "popularity": 1
+ },
+ {
+  "queryId": 219,
+  "queryText": "discount",
+  "numResults": 1063,
+  "popularity": 1
+ },
+ {
+  "queryId": 240,
+  "queryText": "mobile",
+  "numResults": 4057,
+  "popularity": 1
+ },
+ {
+  "queryId": 248,
+  "queryText": "smartphone",
+  "numResults": 2189,
+  "popularity": 1
+ },
+ {
+  "queryId": 262,
+  "queryText": "iphone xs",
+  "numResults": 2927,
+  "popularity": 1
+ },
+ {
+  "queryId": 272,
+  "queryText": "sandals",
+  "numResults": 3087,
+  "popularity": 1
+ },
+ {
+  "queryId": 274,
+  "queryText": "sandals men",
+  "numResults": 17929,
+  "popularity": 1
+ },
+ {
+  "queryId": 278,
+  "queryText": "samsung galaxy note 9 fflip cover",
+  "numResults": 46020,
+  "popularity": 1
+ },
+ {
+  "queryId": 280,
+  "queryText": "samsung galaxy note 9 flip cover",
+  "numResults": 46739,
+  "popularity": 1
+ },
+ {
+  "queryId": 282,
+  "queryText": "samsung galaxy note 9 flip case",
+  "numResults": 45310,
+  "popularity": 1
+ },
+ {
+  "queryId": 284,
+  "queryText": "samsung galaxy note 9 case",
+  "numResults": 44549,
+  "popularity": 1
+ },
+ {
+  "queryId": 288,
+  "queryText": "apple iphone 11 screen guard",
+  "numResults": 36077,
+  "popularity": 1
+ },
+ {
+  "queryId": 290,
+  "queryText": "apple iphone xs screen guard",
+  "numResults": 11545,
+  "popularity": 1
+ },
+ {
+  "queryId": 292,
+  "queryText": "apple iphone 7 screen guard",
+  "numResults": 40486,
+  "popularity": 1
+ },
+ {
+  "queryId": 294,
+  "queryText": "apple iphone 14 screen guard",
+  "numResults": 17611,
+  "popularity": 1
+ },
+ {
+  "queryId": 296,
+  "queryText": "playstation 4",
+  "numResults": 46358,
+  "popularity": 1
+ },
+ {
+  "queryId": 298,
+  "queryText": "apple iphone xs",
+  "numResults": 4759,
+  "popularity": 1
+ },
+ {
+  "queryId": 316,
+  "queryText": "lays cream and onion",
+  "numResults": 6939,
+  "popularity": 1
+ },
+ {
+  "queryId": 318,
+  "queryText": "set of 2 pillow cover 20x40",
+  "numResults": 64782,
+  "popularity": 1
+ },
+ {
+  "queryId": 320,
+  "queryText": "set of 2 pillow cover silver grey 20x40",
+  "numResults": 67216,
+  "popularity": 1
+ },
+ {
+  "queryId": 322,
+  "queryText": "set of 2 pillow cover blue grey 20x20",
+  "numResults": 68184,
+  "popularity": 1
+ },
+ {
+  "queryId": 342,
+  "queryText": "wiper",
+  "numResults": 11,
+  "popularity": 1
+ },
+ {
+  "queryId": 344,
+  "queryText": "oven",
+  "numResults": 1321,
+  "popularity": 1
+ },
+ {
+  "queryId": 360,
+  "queryText": "sony bluetooth",
+  "numResults": 4706,
+  "popularity": 1
+ },
+ {
+  "queryId": 374,
+  "queryText": "usb wifi",
+  "numResults": 7123,
+  "popularity": 1
+ },
+ {
+  "queryId": 380,
+  "queryText": "xbox one console",
+  "numResults": 66861,
+  "popularity": 1
+ },
+ {
+  "queryId": 382,
+  "queryText": "xbox series x",
+  "numResults": 77506,
+  "popularity": 1
+ },
+ {
+  "queryId": 384,
+  "queryText": "xbox one x",
+  "numResults": 90755,
+  "popularity": 1
+ },
+ {
+  "queryId": 386,
+  "queryText": "4090",
+  "numResults": 3,
+  "popularity": 1
+ },
+ {
+  "queryId": 388,
+  "queryText": "iphone 14",
+  "numResults": 9647,
+  "popularity": 1
+ },
+ {
+  "queryId": 408,
+  "queryText": "macbook m1",
+  "numResults": 536,
+  "popularity": 1
+ },
+ {
+  "queryId": 410,
+  "queryText": "ape escape",
+  "numResults": 692,
   "popularity": 1
  }
 ]
