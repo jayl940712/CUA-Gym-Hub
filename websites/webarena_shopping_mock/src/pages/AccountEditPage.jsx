@@ -75,22 +75,37 @@ export default function AccountEditPage({ changePassword = false }) {
               {errors.lastname && <span className="field-error">{errors.lastname}</span>}
             </div>
           </div>
+          {/* Attribute sets transcribed from assets/html/account-edit.html:
+                <input type="checkbox" name="change_email" id="change-email"
+                       data-role="change-email" value="1" title="Change Email" class="checkbox" />
+                <input type="checkbox" name="change_password" id="change-password"
+                       data-role="change-password" value="1" title="Change Password" class="checkbox" />
+                <input type="checkbox" name="assistance_allowed_checkbox"
+                       title="Allow remote shopping assistance" value="1"
+                       id="assistance_allowed_checkbox" class="checkbox">
+                <input type="hidden" name="assistance_allowed" value=""/>
+              The inline width/height are dropped — the global
+              `.field.choice > input[type=checkbox]` rule already covers them. */}
           <div className="field choice">
-            <input type="checkbox" id="change-email" checked={changeEmail}
-              onChange={e => setChangeEmail(e.target.checked)} style={{ width: 'auto', height: 'auto' }} />{' '}
-            <label className="label" htmlFor="change-email" style={{ display: 'inline' }}><span>Change Email</span></label>
+            <input type="checkbox" name="change_email" id="change-email" data-role="change-email"
+              value="1" title="Change Email" className="checkbox"
+              checked={changeEmail} onChange={e => setChangeEmail(e.target.checked)} />{' '}
+            <label className="label" htmlFor="change-email"><span>Change Email</span></label>
           </div>
           <div className="field choice">
-            <input type="checkbox" id="change-password" checked={changePass}
-              onChange={e => setChangePass(e.target.checked)} style={{ width: 'auto', height: 'auto' }} />{' '}
-            <label className="label" htmlFor="change-password" style={{ display: 'inline' }}><span>Change Password</span></label>
+            <input type="checkbox" name="change_password" id="change-password" data-role="change-password"
+              value="1" title="Change Password" className="checkbox"
+              checked={changePass} onChange={e => setChangePass(e.target.checked)} />{' '}
+            <label className="label" htmlFor="change-password"><span>Change Password</span></label>
           </div>
           <div className="field choice">
-            <input type="checkbox" id="remote-assistance" checked={remoteAssist}
-              onChange={e => setRemoteAssist(e.target.checked)} style={{ width: 'auto', height: 'auto' }} />{' '}
-            <label className="label" htmlFor="remote-assistance" style={{ display: 'inline' }}>
+            <input type="checkbox" name="assistance_allowed_checkbox" id="assistance_allowed_checkbox"
+              value="1" title="Allow remote shopping assistance" className="checkbox"
+              checked={remoteAssist} onChange={e => setRemoteAssist(e.target.checked)} />{' '}
+            <label className="label" htmlFor="assistance_allowed_checkbox">
               <span>Allow remote shopping assistance</span>
             </label>
+            <input type="hidden" name="assistance_allowed" value="" readOnly />
             <div className="note">This allows merchants to &quot;see what you see&quot; and take actions on your behalf in order to provide better assistance.</div>
           </div>
         </fieldset>

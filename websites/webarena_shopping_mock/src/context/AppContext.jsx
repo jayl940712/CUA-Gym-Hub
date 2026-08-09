@@ -5,13 +5,37 @@ import {
   readStoredState, readStoredInitial, writeStoredInitial, mergeOverDefaults,
   sameState, createInitialData,
 } from '../utils/dataManager.js'
-import { finalPrice, getOptions, productsById } from '../utils/catalog.js'
+import { finalPrice, getOptions, productsById, ensureDetail } from '../utils/catalog.js'
 import { flatRateShipping } from '../utils/orders.js'
 
 const AppContext = createContext(null)
 
 function nowStamp() {
   return new Date().toISOString().replace('T', ' ').slice(0, 19)
+}
+
+/**
+ * Canonical order for a cart/order line's chosen options — the single source of
+ * truth for it. Magento stores a quote item's options in the PRODUCT's option
+ * order (`sort_order ASC, option_id ASC`), not in the order the PDP paints the
+ * fields; product 10617 proves the two differ (the PDP renders Color above
+ * Size, the cart's `dl.item-options` reads Size then Color).
+ *
+ * Every writer must normalise here rather than at render time, because the
+ * STORED state is what /go diffs and what checkout copies into the order.
+ * Lines reordered from a seeded order carry no `optionId`, so they pass through
+ * untouched.
+ */
+export function sortLineOptions(options, productId) {
+  if (!options || options.length < 2) return options || []
+  if (!options.every(o => typeof o.optionId === 'number')) return options
+  // getOptions() returns the PDP's own order (sort_order, title, option_id);
+  // the STORED order drops the title tiebreak.
+  const sortOrderOf = new Map(
+    (getOptions(productId) || []).map(g => [g.optionId, g.sortOrder || 0]))
+  return options.slice().sort((a, b) =>
+    ((sortOrderOf.get(a.optionId) || 0) - (sortOrderOf.get(b.optionId) || 0))
+    || (a.optionId - b.optionId))
 }
 
 export function AppProvider({ children }) {
@@ -54,7 +78,23 @@ export function AppProvider({ children }) {
     const sid = getSessionId()
 
     ;(async () => {
-      const server = await fetchServerState(sid)
+      // R7-004. Descriptions, options and reviews are code-split
+      // (utils/catalog.js) and read through synchronous accessors. This gate
+      // used to await ALL THREE — 15.4 MB gzip in front of the first paint of
+      // every route, including the home page and the cart, which read none of
+      // it. `descriptions` and `reviews` (13.3 of those 15.4 MB) are now
+      // awaited by the views that read them, via `<Page needs={[...]}>`.
+      //
+      // `options` stays here, and only `options`, because it is the one module
+      // read from SYNCHRONOUS mutators rather than from render: `addToCart`
+      // normalises a line's chosen options on write (sortLineOptions, below)
+      // and `reorder` rebuilds them from a past order. Those cannot suspend
+      // without becoming async, which would take the checkout → latest-order
+      // flow with them. It is also the cheapest of the three by an order of
+      // magnitude — 0.35 MB gzip against 8.44 and 4.82 — and main.jsx has had
+      // it in flight since before React mounted, so it costs ~nothing on top
+      // of the `/state` round-trip it is sharing this gate with.
+      const [server] = await Promise.all([fetchServerState(sid), ensureDetail(['options'])])
       // Read localStorage BEFORE any initializeData() call — initializeData
       // writes defaults, which would make every boot look like a refresh and
       // injected task state would never load.
@@ -140,7 +180,10 @@ export function AppProvider({ children }) {
   /* Cart                                                              */
   /* ---------------------------------------------------------------- */
 
-  const addToCart = useCallback((product, qty = 1, selectedOptions = []) => {
+  const addToCart = useCallback((product, qty = 1, rawOptions = []) => {
+    // Normalise on WRITE, not on render — the stored line is what /go diffs and
+    // what checkout copies into the order.
+    const selectedOptions = sortLineOptions(rawOptions, product.id)
     setState(prev => {
       const items = [...prev.cart.items]
       const key = JSON.stringify(selectedOptions.map(o => o.optionTypeId).sort())
@@ -176,6 +219,21 @@ export function AppProvider({ children }) {
         items: prev.cart.items
           .map(i => (i.itemId === itemId ? { ...i, qty } : i))
           .filter(i => i.qty > 0),
+      },
+    }))
+  }, [setState])
+
+  /** /checkout/cart/configure/ — re-writes one line's chosen options and qty. */
+  const updateCartItem = useCallback((itemId, { qty, options, productId }) => {
+    const sorted = sortLineOptions(options, productId)
+    setState(prev => ({
+      ...prev,
+      cart: {
+        ...prev.cart,
+        items: prev.cart.items.map(i =>
+          String(i.itemId) === String(itemId)
+            ? { ...i, qty: Math.max(1, parseInt(qty, 10) || 1), options: sorted }
+            : i),
       },
     }))
   }, [setState])
@@ -411,6 +469,20 @@ export function AppProvider({ children }) {
         email: null,
       } : null
       const incrementId = String(prev.nextOrderIncrementId).padStart(9, '0')
+      // Order-line ids have to be unique across the whole session, not just
+      // within one order: the order view renders each line as
+      // `id="order-item-row-<itemId>"`, so the old `100000 + idx` gave two
+      // orders placed in the same rollout colliding DOM ids and any
+      // `#order-item-row-100000` locator resolved to the wrong line.
+      //
+      // Derived rather than stored, exactly the way dataManager.js derives
+      // `nextCartItemId` (`max(id) + 1`), so this needs no new state field and
+      // stays correct after an injected state drops in with orders already
+      // present. 100000 stays the floor: the 37 seeded orders carry their real
+      // Magento ids (424..544) and session-created lines sit clearly above them.
+      const nextOrderItemId = prev.orders.reduce(
+        (m, o) => (o.items || []).reduce((n, it) => Math.max(n, (it.itemId || 0) + 1), m),
+        100000)
       const order = {
         entityId: prev.nextOrderEntityId,
         incrementId,
@@ -431,7 +503,7 @@ export function AppProvider({ children }) {
         billingAddress: orderAddress,
         shippingAddress: orderAddress,
         items: items.map((i, idx) => ({
-          itemId: 100000 + idx,
+          itemId: nextOrderItemId + idx,
           productId: i.productId,
           sku: i.sku,
           name: i.name,
@@ -474,7 +546,8 @@ export function AppProvider({ children }) {
             value: o.value,
           }
         })
-        const key = JSON.stringify(options.map(o => o.optionTypeId).sort())
+        const sorted = sortLineOptions(options, line.productId)
+        const key = JSON.stringify(sorted.map(o => o.optionTypeId).sort())
         const existing = items.findIndex(i =>
           i.productId === line.productId &&
           JSON.stringify((i.options || []).map(o => o.optionTypeId).sort()) === key)
@@ -488,7 +561,7 @@ export function AppProvider({ children }) {
             name: line.name,
             price: product ? finalPrice(product) : line.price,
             qty: line.qtyOrdered,
-            options,
+            options: sorted,
           })
         }
       }
@@ -504,7 +577,7 @@ export function AppProvider({ children }) {
     <AppContext.Provider value={{
       state, setState, resetState,
       messages, addMessage, clearMessages,
-      addToCart, updateCartQty, removeCartItem, clearCart,
+      addToCart, updateCartQty, updateCartItem, removeCartItem, clearCart,
       addToWishlist, updateWishlistItem, removeWishlistItem, moveToWishlist,
       addToCompare, removeFromCompare, clearCompare,
       submitReview,

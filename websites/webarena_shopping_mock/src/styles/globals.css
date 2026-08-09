@@ -103,7 +103,7 @@ button { font-family: inherit; }
 .columns.has-sidebar .column.main { padding-left: 24.8px; }
 
 .sidebar { order: 1; width: 207px; flex: 0 0 207px; padding-right: 24.8px; }
-.sidebar-account { width: 252px; flex: 0 0 252px; }
+.sidebar-account { width: 276.516px; flex: 0 0 276.516px; }
 
 /*
  * The source splits the rail into `sidebar sidebar-main` (Shop By / account
@@ -121,7 +121,11 @@ button { font-family: inherit; }
   grid-template-rows: auto auto 1fr;
   grid-template-areas: "side-main content" "side-add content" "side-fill content";
 }
-.page-layout-2columns-left .columns.has-account-nav { grid-template-columns: 252px minmax(0, 1fr); }
+/* Account pages get Luma's un-overridden `.page-layout-2columns-left
+   .sidebar-main {width:22.3%}` = 276.516px of the 1240px container; listing
+   pages are narrower because `.page-products` overrides it to 16.6% = 207px.
+   Measured with getComputedStyle on the logged-in source. */
+.page-layout-2columns-left .columns.has-account-nav { grid-template-columns: 276.516px minmax(0, 1fr); }
 .page-layout-2columns-left .sidebar-main { grid-area: side-main; }
 .page-layout-2columns-left .sidebar-additional { grid-area: side-add; padding-top: 30px; }
 .page-layout-2columns-left .column.main { grid-area: content; }
@@ -170,6 +174,12 @@ button { font-family: inherit; }
 .panel.header .header.links a { font-size: 12px; }
 .panel.header .greet.welcome { color: var(--text); font-size: 12px; margin-left: 15px; }
 .panel.header .counter.qty { color: var(--text); }
+/* DIFF-N01. The source ships the Compare Products link on every page and hides
+   it with Magento's own `no-display` class while the list is empty — measured
+   live, `.panel.header .action.compare` is present in the DOM with computed
+   display:none and a zero-area box. The mock used to omit the node entirely, so
+   the link could not be found at all; it now matches both states. */
+.no-display { display: none !important; }
 
 /* ------------------------------------------------------------------ */
 /* Header                                                              */
@@ -244,12 +254,25 @@ button { font-family: inherit; }
   color: #757575; background: none; border: 0; cursor: pointer; padding: 0;
 }
 .action.showcart:hover { color: #333; }
+/* DIFF-N02. `My Cart` and the counter's `N items` caption are both in the
+   source's DOM and both clipped rather than removed — Luma extends
+   .abs-visually-hidden — so `.action.showcart` innerText reads `My Cart` while
+   only the icon and the orange badge are painted. Clip them the same way so the
+   text is readable to a locator without changing the header's geometry. */
+.action.showcart .text,
+.action.showcart .counter-label {
+  border: 0; clip: rect(0, 0, 0, 0); height: 1px; margin: -1px;
+  overflow: hidden; padding: 0; position: absolute; width: 1px;
+}
 .action.showcart .counter.qty {
   position: absolute; top: -8px; right: -10px;
   background: var(--accent-orange); color: #fff;
   border-radius: 12px; min-width: 18px; height: 18px; line-height: 18px;
   font-size: 11px; font-weight: 700; text-align: center; padding: 0 4px;
 }
+/* The source keeps the badge in the DOM on an empty cart and hides it with
+   `.counter.qty.empty` rather than dropping the node. */
+.action.showcart .counter.qty.empty { display: none; }
 
 .block-minicart {
   position: absolute; right: 0; top: 34px; z-index: 100;
@@ -355,7 +378,38 @@ button { font-family: inherit; }
 }
 .message.success > div:before { content: '\2713'; }
 .message.error > div:before { content: '\2716'; }
-.message a { text-decoration: underline; }
+/* The source does NOT underline links inside a message. Its own stylesheet,
+ * `static/…/blank/en_US/css/styles-m.css`, carries exactly one rule per
+ * message type — `.message.notice a { color:#1979c3 }`, and the same for
+ * `.info`, `.warning`, `.error`, `.success` — with no `text-decoration`, over a
+ * base of `a,.alink { color:#1979c3; text-decoration:none }`. Confirmed on the
+ * rendered page: the "Related search terms" links in the notice at
+ * /catalogsearch/result/?q=a are plain blue, not underlined.
+ * (Was `underline`, which is what made the new related-terms links diverge.) */
+.message a { color: #1979c3; text-decoration: none; }
+.message a:hover, .message a:active { color: #006bb4; }
+
+/* "Related search terms" — the `<dl class="block">` that
+ * `Magento\AdvancedSearch\Block\Recommendations` emits INSIDE the
+ * `.message.notice` on both zero-result states (no matches, and below the
+ * minimum query length). The mock had no `dt`/`dd` rules at all, so the block
+ * rendered with the UA defaults (`dt` normal weight, `dd` indented 40px).
+ *
+ * Values are the live source's own computed styles, read off
+ * /catalogsearch/result/?q=a at 1280x720 on 2026-08-09 — they come from the
+ * blank theme's generic `dt { font-weight:700; margin-top:0 }` and
+ * `dd { margin-left:0; margin-bottom:10px; margin-top:0 }`:
+ *
+ *   dl.block           margin-top 0     margin-bottom 0
+ *   dl.block dt.title  font-weight 700  margin-bottom 10px  margin-left 0
+ *   dl.block dd.item   font-weight 400  margin-bottom 10px  margin-left 0
+ *
+ * Scoped to `.message` rather than declared on bare `dt`/`dd` so it cannot
+ * reach the order-item option lists, the cart, or any other `<dl>` in the mock.
+ */
+.message dl.block { margin: 0; }
+.message dl.block dt.title { font-weight: 700; margin: 0 0 10px; }
+.message dl.block dd.item { margin: 0 0 10px; }
 
 /* ------------------------------------------------------------------ */
 /* Buttons + form controls                                             */
@@ -411,17 +465,42 @@ textarea { height: auto; padding: 8px 9px; line-height: 20px; }
 select { padding: 5px 10px 4px; height: 32px; }
 input:focus, select:focus, textarea:focus { border-color: #006bb4; outline: 0; }
 
+/* Magento resets the ELEMENT, not just `.fieldset` — the review form nests a
+   bare `<fieldset class="field required review-field-ratings">` inside
+   `.fieldset.review-fieldset`, and without this it picks up the UA border and
+   draws a box the source does not have.
+   Source: `fieldset{border:0;margin:0 0 40px;padding:0}` (styles-m.css). */
+fieldset { border: 0; padding: 0; }
+legend { padding: 0; }
+
 .field { margin-bottom: 20px; }
 .field > .label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
 .field.required > .label:after,
-.field .label.required:after { content: '*'; color: var(--error); margin-left: 4px; }
+.field .label.required:after { content: '*'; color: var(--error); margin-left: 5px; }  /* source: margin-left 5px */
 .field .note { font-size: 12px; color: var(--muted); margin-top: 4px; }
-.field-error { color: var(--error); font-size: 12px; margin-top: 4px; display: block; }
+/* `.mage-error` is the class mage/validation.js actually stamps on a failed
+   field's message div; the mock uses it wherever it transcribes a source form's
+   validation verbatim. Same presentation as `.field-error`. */
+.field-error, .mage-error { color: var(--error); font-size: 12px; margin-top: 4px; display: block; }
 .fieldset { border: 0; margin: 0 0 40px; padding: 0; max-width: 500px; }
 .fieldset > .legend {
   font-size: 18px; font-weight: 300; margin: 0 0 20px; padding: 0 0 10px;
   border-bottom: 1px solid var(--rule); width: 100%; display: block;
 }
+/* Magento ships this globally: `.fieldset > .legend + br
+   {clear:both;display:block;height:0;overflow:hidden;visibility:hidden}`.
+   The source emits the `<br>` after every legend; it must not add a line box. */
+.fieldset > .legend + br {
+  clear: both; display: block; height: 0; overflow: hidden; visibility: hidden;
+}
+
+/* `.field.choice` is Magento's inline checkbox/radio row — the control keeps its
+   intrinsic size and the label sits beside it rather than above.
+   Source: `<input type="checkbox" … class="checkbox"><label class="label">`. */
+.field.choice > input[type=checkbox],
+.field.choice > input[type=radio] { width: auto; height: auto; }
+.field.choice > .label { display: inline; font-weight: 400; margin: 0; }
+
 .actions-toolbar { margin-top: 20px; display: flex; align-items: center; gap: 20px; }
 .actions-toolbar .secondary a { font-size: 14px; }
 
@@ -576,11 +655,18 @@ table.data .col.actions a:last-child { margin-right: 0; }
 .product-item .special-price .price { color: var(--price-strike); }
 .product-item-inner { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
 .product-item .actions-secondary { display: flex; gap: 10px; align-items: center; }
-.icon-button {
+.icon-button,
+/* DIFF-N03: the source's tile actions are `a.action.towishlist` /
+   `a.action.tocompare` with NO third class, so the icon styling is attached by
+   selector rather than by adding one. */
+.actions-secondary > .action.towishlist,
+.actions-secondary > .action.tocompare {
   background: none; border: 0; cursor: pointer; color: #757575; padding: 0;
-  display: inline-flex; align-items: center;
+  display: inline-flex; align-items: center; text-decoration: none;
 }
-.icon-button:hover { color: var(--link); }
+.icon-button:hover,
+.actions-secondary > .action.towishlist:hover,
+.actions-secondary > .action.tocompare:hover { color: var(--link); text-decoration: none; }
 
 .product-reviews-summary { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
 .product-reviews-summary .reviews-actions a { font-size: 12px; }
@@ -612,16 +698,64 @@ table.data .col.actions a:last-child { margin-right: 0; }
 .rating-result:before { color: #c7c7c7; }
 .rating-result > span { position: absolute; left: 0; top: 0; height: 20px; overflow: hidden; display: block; }
 .rating-result > span:before { color: var(--accent-orange); }
+/* Verbatim from the container's styles-m.css — both are CLIP-hidden, not
+   `display:none`, so `Rating:` and the `N%` text stay in innerText and an
+   evaluator reading the page sees them exactly as the source renders them:
+     .rating-summary .label,.table-reviews .rating-summary .label
+       {border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}
+     .rating-summary .rating-result>span span   { …same clip… }              */
+.rating-summary > .label,
+.rating-result > span span {
+  border: 0; clip: rect(0, 0, 0, 0); height: 1px; margin: -1px;
+  overflow: hidden; padding: 0; position: absolute; width: 1px;
+}
 
-.control.rating { display: flex; flex-direction: row-reverse; justify-content: flex-end; }
+/* The radios are emitted in ASCENDING DOM order (Rating_1 … Rating_5) to match
+   the source — see the comment in ProductPage.jsx's ReviewForm. That rules out
+   the usual `input:checked ~ label` fill, which only works with the DOM
+   reversed, so the fill is driven off `data-rating` on this container instead
+   and the row is laid out in plain document order: 1 star leftmost. */
+.control.rating { display: flex; justify-content: flex-start; }
 .control.rating input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .control.rating label {
   color: #c7c7c7; font-size: 20px; cursor: pointer; line-height: 20px;
   font-family: 'Times New Roman', serif;
 }
 .control.rating label:before { content: '\2605'; }
-.control.rating input:checked ~ label,
-.control.rating label:hover, .control.rating label:hover ~ label { color: var(--accent-orange); }
+/* Verbatim from styles-m.css — the "1 star".."5 stars" text is clip-hidden, not
+   absent, so a screen reader (and an evaluator) can still read each radio's
+   label while the visible control stays a row of stars.
+     .review-control-vote label span      {…clip…}
+     .fieldset .review-field-ratings>.label {font-weight:600;margin-bottom:10px;padding:0}
+     .review-field-rating .label          {font-weight:600}
+     .review-field-rating .control        {margin-bottom:48px;margin-top:10px}
+     .review-form .action.submit.primary  {background:#eee;border:1px solid #ccc;color:#333;
+                                           font-size:1.4rem;line-height:1.6rem;padding:7px 15px}
+   The source's Submit Review is a GREY secondary-looking button, not the blue
+   primary the rest of the site uses. */
+.review-control-vote label span {
+  border: 0; clip: rect(0, 0, 0, 0); height: 1px; margin: -1px;
+  overflow: hidden; padding: 0; position: absolute; width: 1px;
+}
+.fieldset .review-field-ratings > .label { font-weight: 600; margin-bottom: 10px; padding: 0; }
+.review-field-rating .label { font-weight: 600; }
+.review-field-rating .control { margin-top: 10px; margin-bottom: 48px; }
+.review-form .action.submit.primary {
+  background: #eee; border: 1px solid #ccc; color: #333;
+  font-size: 14px; line-height: 16px; padding: 7px 15px; margin: 0;
+}
+.review-form .action.submit.primary:hover { background: #e1e1e1; border: 1px solid #ccc; color: #333; }
+.review-form .action.submit.primary:focus,
+.review-form .action.submit.primary:active { background: #e2e2e2; border: 1px solid #ccc; color: #333; }
+/* Fill the first N stars. `data-rating` is the hovered value if the pointer is
+   over the widget, otherwise the checked one. `:nth-of-type` counts labels
+   among their own type, so labels are 1..5 in document order regardless of the
+   interleaved inputs. */
+.control.rating[data-rating="1"] label:nth-of-type(-n+1),
+.control.rating[data-rating="2"] label:nth-of-type(-n+2),
+.control.rating[data-rating="3"] label:nth-of-type(-n+3),
+.control.rating[data-rating="4"] label:nth-of-type(-n+4),
+.control.rating[data-rating="5"] label:nth-of-type(-n+5) { color: var(--accent-orange); }
 
 /* ------------------------------------------------------------------ */
 /* Toolbar / sorter / limiter / pager                                  */
@@ -631,22 +765,38 @@ table.data .col.actions a:last-child { margin-right: 0; }
   display: flex; align-items: center; gap: 20px; min-height: 40px; padding: 0 10px;
   flex-wrap: wrap;
 }
-.toolbar .modes { display: flex; gap: 4px; }
+.toolbar .modes { display: flex; gap: 4px; align-items: center; }
+/* DIFF-N03. The source's `View as` label is clipped, not removed — measured on
+   the live source at 1280x720, `.modes-label` computes position:absolute /
+   display:block, i.e. Luma's .abs-visually-hidden. What the mock was actually
+   missing is the `id="modes-label"` the mode anchors point at through
+   aria-labelledby; the clipping itself was already right, so it is reproduced
+   here rather than through the shared .visually-hidden class, whose name the
+   source's class list does not carry. */
+.toolbar .modes-label {
+  border: 0; clip: rect(0, 0, 0, 0); height: 1px; margin: -1px;
+  overflow: hidden; padding: 0; position: absolute; width: 1px;
+}
+/* One of the two switches is a <strong> and the other an <a> (the source's own
+   shape), so both tags need the same box and neither may inherit its default
+   font weight or link colour. */
 .toolbar .modes-mode {
   width: 30px; height: 30px; border: 1px solid #d1d1d1; background: #fff;
   display: inline-flex; align-items: center; justify-content: center;
-  color: #757575; cursor: pointer;
+  color: #757575; cursor: pointer; font-weight: 400; text-decoration: none;
 }
+.toolbar a.modes-mode:hover { color: #333; text-decoration: none; }
 .toolbar .modes-mode.active { background: #e8e8e8; color: #333; }
 .toolbar-amount { font-size: 14px; line-height: 26px; margin: 0; }
 .toolbar .toolbar-sorter { margin-left: auto; display: flex; align-items: center; gap: 8px; }
 .toolbar .sorter-label { font-size: 14px; }
 .toolbar select.sorter-options, .toolbar select.limiter-options { width: auto; min-width: 110px; }
+/* DIFF-N03: an <a> on the source, so it needs the link defaults neutralised. */
 .sorter-action {
   background: none; border: 0; cursor: pointer; color: #757575; font-size: 16px;
-  padding: 0 4px;
+  padding: 0 4px; display: inline-flex; align-items: center; text-decoration: none;
 }
-.sorter-action:hover { color: #333; }
+.sorter-action:hover { color: #333; text-decoration: none; }
 
 .toolbar-bottom { display: flex; align-items: center; margin-top: 20px; padding: 0 10px; }
 .toolbar-bottom .field.limiter { margin-left: auto; margin-bottom: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; }
@@ -714,6 +864,65 @@ table.data .col.actions a:last-child { margin-right: 0; }
 
 .sidebar .empty { font-size: 14px; margin: 0; }
 
+/* Sidebar "Recently Ordered" block. Values read off the live LOGGED-IN source
+   at 1280x720 (/customer/account/) with getComputedStyle:
+     .block-reorder                       font-size 14px
+     .block-reorder .subtitle             display:none  ("Last Ordered Items"
+                                          is in the DOM but never rendered, so
+                                          it is absent from innerText)
+     #cart-sidebar-reorder                list-style none; margin 0; padding 0
+     #cart-sidebar-reorder .product-item  display:flex; margin-bottom 10px
+     .field.item.choice                   display:block; width 18px
+     .field.item.choice > label.label     clipped 1x1 (still counted by
+                                          innerText — the source reads
+                                          "Add to Cart\n<product name>" per row)
+     input.checkbox                       13x13; margin 2px 5px 0 0
+     .product-item-name                   margin 0; line-height 20px
+     .product-item-link                   color #333; no underline
+     .actions-toolbar                     margin-top 17px
+     .actions-toolbar .primary            float:left
+     .actions-toolbar .secondary          float:right; text-align center
+     .action.tocart.primary               #1979c3 bg/border, #fff, 7px 15px,
+                                          radius 3px, 700, line-height 16px
+     .action.view                         #1979c3; inline-block; margin-top 6px */
+.block-reorder { font-size: 14px; }
+/* The source hides EVERY `.subtitle` inside a rail, not just the reorder one —
+   `.abs-no-display, …, .sidebar .subtitle, …, .no-display {display:none}` in
+   styles-m.css. That covers `Last Ordered Items` and the wishlist block's
+   `Last Added Items`, both of which are in the source's markup unconditionally
+   and in neither side's `innerText`. Checkout's summary is `#opc-sidebar`, an
+   id, so it is not caught by this. */
+.sidebar .subtitle { display: none; }
+.block-reorder #cart-sidebar-reorder { list-style: none; margin: 0; padding: 0; }
+.block-reorder #cart-sidebar-reorder .product-item { display: flex; margin-bottom: 10px; }
+.block-reorder .field.item.choice { display: block; width: 18px; flex: none; }
+.block-reorder .field.item.choice > label.label {
+  border: 0; clip: rect(0, 0, 0, 0); height: 1px; margin: -1px;
+  overflow: hidden; padding: 0; position: absolute; width: 1px;
+}
+.block-reorder input.checkbox {
+  display: inline-block; width: 13px; height: 13px; margin: 2px 5px 0 0; position: relative;
+}
+.block-reorder .product-item-name { margin: 0; font-size: 14px; font-weight: 400; line-height: 20px; }
+.block-reorder .product-item-link { color: var(--text); text-decoration: none; font-size: 14px; }
+.block-reorder .product-item-link:hover { text-decoration: underline; }
+.block-reorder .actions-toolbar { margin-top: 17px; overflow: hidden; }
+.block-reorder .actions-toolbar .primary { float: left; }
+.block-reorder .actions-toolbar .secondary { float: right; text-align: center; }
+.block-reorder .action.tocart.primary {
+  background: var(--link); border: 1px solid var(--link); color: #fff; cursor: pointer;
+  font-size: 14px; font-weight: 700; line-height: 16px; padding: 7px 15px; border-radius: 3px;
+}
+.block-reorder .action.tocart.primary:hover { background: #006bb4; border-color: #006bb4; }
+.block-reorder .action.view {
+  color: var(--link); font-size: 14px; text-decoration: none;
+  display: inline-block; margin-top: 6px;
+}
+.block-reorder .action.view:hover { text-decoration: underline; }
+.block-reorder #cart-sidebar-reorder-advice-container .mage-error {
+  color: var(--error, #e02b27); font-size: 12px; margin-top: 7px;
+}
+
 /* ------------------------------------------------------------------ */
 /* Account nav                                                         */
 /* ------------------------------------------------------------------ */
@@ -737,34 +946,172 @@ table.data .col.actions a:last-child { margin-right: 0; }
 /* Product detail                                                      */
 /* ------------------------------------------------------------------ */
 
+/* Luma floats the PDP: `.product-info-main` is FIRST in the DOM and floats
+   right, `.product.media` is second and floats left, `.product.info.detailed`
+   clears both. The mock used to wrap the pair in a flex `.product-info-wrapper`,
+   which inserted an extra level between `div.column.main` and
+   `div.product-info-main` and broke VWA's
+   `#maincontent > div.columns > div > div.product-info-main > …` price chain.
+   `.column.main` is a flex item / grid item, so it already establishes a BFC
+   and contains these floats. */
+/* Luma's own split is 57 / 40, which puts `.product.media` — and therefore the
+   square fotorama stage below — on 706.8 px against the 1240 px container, the
+   width measured on the source. The mock carried 56 %, leaving the media column
+   and every fotorama box 12.4 px narrow; DEV.part-M flagged that as the
+   remaining source of the 694-vs-707 delta. */
+.column.main > .product.media { float: left; width: 57%; }
+.column.main > .product-info-main { float: right; width: 40%; }
+.column.main > .product.data.items { clear: both; }
+
+/* CartConfigurePage still nests the pair in `.product-info-wrapper`; the float
+   rules above are scoped to direct children of `.column.main`, so that page
+   keeps the flex layout it was built against. */
 .product-info-wrapper { display: flex; gap: 40px; align-items: flex-start; }
-.product.media { flex: 1 1 55%; min-width: 0; }
-.product-info-main { flex: 1 1 45%; min-width: 0; }
+.product-info-wrapper > .product.media { flex: 1 1 55%; min-width: 0; }
+.product-info-wrapper > .product-info-main { flex: 1 1 45%; min-width: 0; }
 
-.gallery-main { position: relative; background: #fff; text-align: center; }
-.gallery-main img { max-width: 100%; max-height: 560px; display: block; margin: 0 auto; }
-.gallery-nav {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  background: rgba(255,255,255,.85); border: 1px solid var(--rule);
-  width: 32px; height: 44px; cursor: pointer; font-size: 18px; color: #555;
+/* Fotorama reserves a fixed SQUARE stage rather than sizing to the photo, so
+   the source's media column has the same height on every PDP: `.product.media`
+   is 707 for a one-image PDP (coffeecakes) and 801 = 707 + 94 for a
+   multi-image one (6S, the Quoizel lamp).
+
+   VWA's 7 shopping `page_image_query` tasks screenshot `.fotorama__stage__frame`,
+   so `ProductPage.jsx` emits fotorama's own element chain and these rules carry
+   the widget's box model. Re-measured side by side at 1920x1080 on
+   `/catalog/product/view/id/34309/` (2 images) and `/…/id/1088/` (1 image),
+   logged in as emma.lopez@gmail.com:
+     .gallery-placeholder / .fotorama / .fotorama__wrap   707 x 801 multi
+                                                          707 x 707 single
+     .fotorama__stage / .fotorama__stage__shaft           707 x 707
+     .fotorama__stage__frame  absolute, one per image     707 x 707
+     .fotorama__img (stage)   x + 3.4, flush with frame   700 x 700 = 99 %
+     .fotorama__arr           absolute, z-index 900        80 x 707
+     .fotorama__nav-wrap / .fotorama__nav                 707 x 94
+     .fotorama__nav__shaft    shrink-wraps, left-aligned  92*(n-1) + 90
+     .fotorama__nav__frame                                92 x 94, last 90 x 94
+     .fotorama__thumb / .fotorama__img (thumb)            90 x 90
+   The odd 92/90 split is fotorama's own `padding-left: 0 !important` on every
+   thumb frame plus `padding-right: 0 !important` on the last, over the 2 px
+   padding the per-instance <style> block sets — reproduced below, which is what
+   makes the shaft 182 for 2 thumbs and 366 for 4 exactly as on the source. */
+.gallery-placeholder { position: relative; }
+.fotorama { overflow: hidden; }
+.fotorama__wrap { position: relative; min-width: 0; max-width: 100%; }
+
+/* Fotorama sizes the stage in JS from a measurement, so it is square at every
+   viewport; `aspect-ratio` reproduces that without the widget. The mock used to
+   size the column to the photo instead — 213 and 617 — which left the source's
+   page materially taller (DIFF-F07). */
+.fotorama__stage {
+  position: relative; overflow: hidden; width: 100%; aspect-ratio: 1 / 1;
+  background: #fff;
 }
-.gallery-nav.prev { left: 0; }
-.gallery-nav.next { right: 0; }
-.gallery-thumbs { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-.gallery-thumbs button { background: none; border: 2px solid transparent; padding: 0; cursor: pointer; }
-.gallery-thumbs button.active { border-color: var(--accent-orange); }
-.gallery-thumbs img { width: 78px; height: 98px; object-fit: contain; display: block; }
+.fotorama__stage__shaft { position: relative; width: 100%; height: 100%; }
+.fotorama__stage__frame {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden;
+}
+.fotorama__stage__frame.fotorama__active { z-index: 8; }
+/* `fotorama_vertical_ratio` centres the photo horizontally and pins it to the
+   top of the frame — the source's stage image measures 700 x 700 at frame x +
+   3.4 with its top flush against the frame, not at the frame's centre.
 
-.product-info-stock-sku { display: flex; gap: 30px; align-items: baseline; margin-bottom: 12px; }
-/* The uppercase is CSS, not markup — the source DOM reads "In stock". */
-.stock.available { font-weight: 700; text-transform: uppercase; font-size: 14px; white-space: nowrap; }
-.stock.unavailable { font-weight: 400; font-size: 14px; white-space: nowrap; }
-.product.attribute.sku { font-size: 14px; display: flex; gap: 8px; align-items: baseline; min-width: 0; }
-.product.attribute.sku .value { word-break: break-all; }
-.product.attribute.sku .type { font-weight: 700; text-transform: uppercase; margin-right: 8px; }
+   `scale-down`, not `contain`, is what reproduces the picture inside that box.
+   The source's `<img>` is a 700 x 700 Magento cache file that PADS the original
+   onto a white square instead of enlarging it: on `…/id/34309/` the photo is
+   500 x 500 of white-margined canvas, measured at 98 px in from the left and
+   96 px down. The mock serves that same 500 x 500 original, so `contain` would
+   blow it up 1.4x and render the product markedly larger than the source does,
+   while `scale-down` leaves it at its natural size, centred, and still only
+   shrinks an asset that overflows — which is Magento's cache rule exactly. */
+.fotorama__stage .fotorama__img {
+  position: absolute; top: 0; left: 50%; transform: translate3d(-50%, 0, 0);
+  width: 99%; height: 99%; object-fit: scale-down; display: block;
+}
+
+/* The arrows are full-height 80 px hit areas pinned to the stage edges, and
+   they clamp rather than wrap: at either end the source adds
+   `fotorama__arr--disabled` and drops the arrow to opacity 0. */
+.fotorama__arr {
+  position: absolute; top: 0; height: 100%; width: 80px; z-index: 900;
+  cursor: pointer;
+}
+.fotorama__arr--prev { left: 0; }
+.fotorama__arr--next { right: 0; }
+.fotorama__arr--disabled { opacity: 0; pointer-events: none; cursor: default; }
+.fotorama__arr__arr {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 32px; height: 44px; display: flex; align-items: center;
+  justify-content: center; color: #555;
+  background: rgba(255, 255, 255, .85); border: 1px solid var(--rule);
+}
+/* Present in the source DOM but never painted there without a hover or a
+   fullscreen session, neither of which the mock implements. Kept out of the
+   layout AND out of the accessibility tree so they cannot read as dead
+   controls. */
+.fotorama__fullscreen-icon,
+.fotorama__zoom-in,
+.fotorama__zoom-out,
+.fotorama__video-close,
+.fotorama__spinner,
+.fotorama--hidden { display: none; }
+
+/* The thumbnail strip is the 94 px `.fotorama__nav-wrap`: 92 x 94 frames
+   holding 90 x 90 images, left-aligned under the stage, no top margin. */
+.fotorama__nav { position: relative; z-index: 5; overflow: hidden; width: 100%; font-size: 0; }
+.fotorama__nav__shaft { position: relative; display: inline-block; height: 100%; }
+.fotorama__nav__frame {
+  position: relative; display: inline-block; box-sizing: content-box;
+  vertical-align: top; cursor: pointer;
+}
+.fotorama__nav--thumbs .fotorama__nav__frame { padding-left: 0 !important; }
+.fotorama__nav--thumbs .fotorama__nav__frame:last-child { padding-right: 0 !important; }
+.fotorama__thumb { position: relative; width: 100%; height: 100%; overflow: hidden; background: #fff; }
+.fotorama__nav .fotorama__img {
+  position: absolute; top: 50%; left: 50%; transform: translate3d(-50%, -50%, 0);
+  width: 100%; height: 100%; object-fit: contain; display: block;
+}
+/* The active thumb is marked by a floating bordered box the widget slides to
+   `translate3d(<index> * 92px, 0, 0)`, not by a border on the frame itself. */
+.fotorama__thumb-border {
+  position: absolute; top: 0; left: 0; z-index: 9; box-sizing: border-box;
+  border-style: solid; border-color: var(--accent-orange); pointer-events: none;
+}
+.fotorama__thumb__arr { position: absolute; top: 0; height: 100%; width: 30px; z-index: 10; }
+.fotorama__thumb__arr--left { left: 0; }
+.fotorama__thumb__arr--right { right: 0; }
+
+/* Availability + SKU sit on ONE line in the source, and they do it with inline
+   boxes, not flex — which is what `innerText` reads off. Measured on the live
+   source (/quoizel-…-floor-lamp.html, 1280x720, getComputedStyle):
+     .product-info-stock-sku            display block
+     .product-info-stock-sku .stock     display inline-block; margin-right 20px
+     .product.attribute.sku             display inline-block
+     .product.attribute.sku .type       display inline; margin-right 5px
+     .product.attribute.sku .value      display inline-block
+   giving `IN STOCK SKU B00J8RZL7I` as a single innerText line. The mock's flex
+   boxes made each of the three a block, so innerText split them across three
+   lines (DIFF-F05). Same rendered layout either way. */
+.product-info-stock-sku { display: block; margin-bottom: 12px; }
+.product-info-stock-sku .stock { display: inline-block; margin-right: 20px; }
+/* The uppercase is CSS, not markup — the source DOM reads "In stock" /
+   "Out of stock". Both states are styled identically on the source: measured
+   `text-transform: uppercase; font-weight: 700; font-size: 14px; color: #333`
+   on `.stock.unavailable` (/coffeecakes-apple-walnut-coffee-cake.html) AND on
+   `.stock.available` (/quoizel-…-floor-lamp.html). The mock used to draw the
+   out-of-stock state at weight 400 with no uppercase. */
+.stock.available,
+.stock.unavailable { font-weight: 700; text-transform: uppercase; font-size: 14px; white-space: nowrap; }
+.product.attribute.sku { font-size: 14px; display: inline-block; min-width: 0; }
+.product.attribute.sku .value { display: inline-block; word-break: break-all; }
+.product.attribute.sku .type { display: inline; font-weight: 700; text-transform: uppercase; margin-right: 5px; }
 .product.attribute.sku .value { color: var(--muted); }
 
 .product-info-main .product-reviews-summary { margin: 0 0 12px; gap: 12px; }
+/* Source: `.product-reviews-summary .reviews-actions a { margin-right: 5px }`
+   — measured on the live PDP; the mock had 0 and ran `12 Reviews` straight
+   into `Add Your Review`. Margin only, so the innerText spacing that DIFF-R3
+   pins is untouched. */
+.product-info-main .reviews-actions a { margin-right: 5px; }
 .product-info-price .price { font-size: 18px; font-weight: 700; line-height: 1; }
 .product-info-price .old-price .price { font-size: 14px; font-weight: 400; color: var(--muted); text-decoration: line-through; }
 .product-info-price { margin-bottom: 15px; }
@@ -774,16 +1121,61 @@ table.data .col.actions a:last-child { margin-right: 0; }
 .product-options-wrapper .options-list li { margin-bottom: 5px; }
 .product-options-wrapper .options-list label { font-size: 14px; margin-left: 6px; cursor: pointer; }
 
-.box-tocart { display: flex; align-items: flex-end; gap: 15px; margin: 20px 0; }
+/* Source shape is `.box-tocart > .fieldset > (.field.qty + .actions)`, so the
+   row lays itself out on the inner fieldset. */
+.box-tocart { margin: 20px 0; }
+/* Source metrics at 1280x720: `.box-tocart` margin 20px 0, and its inner
+   `.fieldset` a further 20px bottom margin — 40px of clearance above the
+   add-to-links row, which itself has margin 0. */
+.box-tocart .fieldset { display: flex; align-items: flex-end; gap: 15px; border: 0; margin: 0 0 20px; padding: 0; }
 .box-tocart .field.qty { margin: 0; }
 .box-tocart .field.qty .label { font-weight: 700; }
 .box-tocart input#qty { width: 52px; height: 52px; text-align: center; font-size: 14px; }
 .box-tocart .action.tocart { min-width: 137px; height: 52px; font-size: 18px; white-space: nowrap; }
 
-.product-social-links { display: flex; gap: 10px; }
+/* `Add to Wish List` / `Add to Compare` are anchors inside
+   `.product-addto-links[data-role=add-to-links]` on the source, not buttons, so
+   they carry no `.action.secondary.small` and need the look spelled out here.
+   Kept inline (not flex) so `innerText` reads them as one run, as the source
+   does. Reference capture 12-product-6s-headphones.png shows both as small
+   grey-bordered chips side by side. */
+.product-social-links { margin: 0; }
+.product-social-links .action.towishlist,
+.product-social-links .action.tocompare {
+  background: var(--secondary-btn-bg);
+  border: 1px solid var(--secondary-btn-border);
+  border-radius: 3px;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 12px;
+  padding: 5px 8px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+}
+.product-social-links .action.towishlist:hover,
+.product-social-links .action.tocompare:hover { background: #e2e2e2; color: var(--text); text-decoration: none; }
 
-.product.data.items { margin-top: 40px; border-bottom: 1px solid var(--rule); }
-.product.data.items .items-title { display: flex; gap: 0; }
+/* Magento's gallery skip links: in the DOM on every PDP, off-screen until
+   focused (Luma's `_visually-hidden` on `.action.skip:not(:focus)`). */
+.action-skip-wrapper { margin: 0; }
+.action-skip-wrapper .action.skip:not(:focus) {
+  border: 0; clip: rect(0, 0, 0, 0); height: 1px; margin: -1px;
+  overflow: hidden; padding: 0; position: absolute; width: 1px;
+}
+
+/* The source interleaves the tabs and their panes as direct children of
+   `.product.data.items` — title, content, title, content — and lays them out
+   with Luma's float trick (`.item.title {float:left}`, `.item.content
+   {float:right; width:100%; margin-left:-100%}`), hiding the inactive pane with
+   `display:none` while leaving it in the DOM. A wrapping flex container with
+   `order` reaches the same rendered result from the same DOM order without
+   introducing floats, and keeps the previous geometry to the pixel. */
+.product.data.items { margin-top: 40px; border-bottom: 1px solid var(--rule); display: flex; flex-wrap: wrap; }
+.product.data.items > .item.title { order: 1; }
+.product.data.items > .item.content { order: 2; width: 100%; }
+.product.data.items > .item.content[aria-hidden="true"] { display: none; }
 .product.data.items .item.title { margin: 0; }
 .product.data.items .item.title > .switch {
   display: block; padding: 8px 20px; font-size: 14px; font-weight: 600;
@@ -799,10 +1191,28 @@ table.data .col.actions a:last-child { margin-right: 0; }
 .product.data.items .item.content { padding: 30px 0; border-top: 1px solid var(--rule); }
 .product.data.items .item.content img { max-width: 100%; height: auto; }
 .product.data.items .item.content table { border-collapse: collapse; }
-.product.data.items .item.content table { width: 100%; max-width: 700px; }
+/* DIFF-N04. `max-width: 700px` was pinning the attribute table to 700 px inside
+   a 1 240 px content column, which is what made it read as CENTRED against the
+   source. Measured on the live source at 1280x720 and 1920x1080, its
+   `#productDetails_detailBullets_sections1` is 1 200 px wide in the same
+   1 240 px column, i.e. the full content width with the tab's own padding. */
+.product.data.items .item.content table { width: 100%; }
 .product.data.items .item.content table td { padding: 6px 30px 6px 0; vertical-align: top; }
-.product.data.items .item.content table td:first-child { width: 40%; }
 
+/* DIFF-N04, second half. The seeded descriptions carry Amazon's own attribute
+   table, whose cells have no class and no inline alignment — so the UA default
+   `th { text-align: center }` centred every label, while the source paints them
+   flush left. Magento's reset (lib/web/css/source/lib/_resets.less) left-aligns
+   `th`; the mock had no equivalent. Scoped to the description body so the
+   account/order/cart data tables, which set their own alignment, are untouched.
+   No explicit column width: the source sets none either, so auto table layout
+   is what produces its ~61 % label column. */
+.description-body table th,
+.description-body table td {
+  text-align: left; vertical-align: top; padding: 6px 30px 6px 0; font-size: 14px;
+  line-height: 20px;
+}
+.description-body table th { font-weight: 700; }
 .description-body h2 { font-size: 26px; font-weight: 300; margin: 0 0 15px; }
 .description-body ul { list-style: disc; padding-left: 20px; margin: 0 0 15px; }
 .description-body li { margin-bottom: 10px; line-height: 20px; }
@@ -851,9 +1261,11 @@ table.data .col.actions a:last-child { margin-right: 0; }
 .cart-summary table.totals th { text-align: left; padding: 10px 0; font-weight: 400; }
 .cart-summary table.totals td { text-align: right; padding: 10px 0; }
 .cart-summary table.totals .grand th, .cart-summary table.totals .grand td { font-weight: 700; border-top: 1px solid var(--rule); }
-.cart-summary .checkout-methods-items { margin-top: 15px; text-align: center; }
-.cart-summary .action.checkout { width: 255px; max-width: 100%; height: 52px; font-size: 18px; }
-.cart-summary .multicheckout { display: inline-block; margin-top: 12px; font-size: 14px; }
+.cart-summary .checkout-methods-items { margin: 15px 0 0; padding: 0; list-style: none; text-align: center; }
+.cart-summary .checkout-methods-items > .item { margin: 0; }
+.cart-summary .action.checkout { width: 255px; max-width: 100%; height: 52px; font-size: 18px; font-weight: 700; }
+.cart-summary .multicheckout { display: inline-block; margin-top: 12px; font-size: 14px; color: var(--link); }
+.cart-summary .multicheckout:hover { color: var(--link-hover); text-decoration: underline; }
 
 table#shopping-cart-table { width: 100%; border-collapse: collapse; }
 table#shopping-cart-table th { padding: 20px 10px 8px; border-bottom: 1px solid var(--rule); text-align: left; font-weight: 700; }
@@ -862,16 +1274,55 @@ table#shopping-cart-table td { padding: 27px 8px 10px; vertical-align: top; }
 table#shopping-cart-table td.col.price, table#shopping-cart-table td.col.subtotal { text-align: right; font-weight: 700; }
 table#shopping-cart-table td.col.qty { text-align: right; }
 table#shopping-cart-table td.col.qty input { width: 45px; text-align: center; }
+/* The qty cell's source markup is `div.field.qty > div.control.qty > label >
+   span.label + input` (BUG-P01 — the wrapper carries `data-item-qty`'s input).
+   Luma clips that `span.label` rather than removing it:
+   `.cart.table-wrapper .col.qty .label { border:0; clip:rect(0,0,0,0); … }`
+   in styles-m.css. Same rule here, so the cell still reads as a bare input. */
+table#shopping-cart-table td.col.qty .field.qty,
+table#shopping-cart-table td.col.qty .control.qty { margin: 0; }
+table#shopping-cart-table td.col.qty label { display: inline; margin: 0; }
+table#shopping-cart-table td.col.qty .label {
+  border: 0; clip: rect(0, 0, 0, 0); height: 1px; margin: -1px;
+  overflow: hidden; padding: 0; position: absolute; width: 1px;
+}
 table#shopping-cart-table .item-info { border-bottom: 0; }
 table#shopping-cart-table .item-actions td { padding: 0 8px 20px; border-bottom: 1px solid #e8e8e8; }
-.cart .item .product-item-details { display: flex; gap: 20px; padding-top: 0; }
-.cart .item .product-image-container { width: 100px; flex: 0 0 100px; }
+/* The photo link and the details block are siblings inside td.col.item — see
+   the DOM note in CartPage.jsx — so the row lays itself out here, not on a
+   wrapper div that the evaluator's `td.col.item > div > dl > dd` would trip on. */
+.cart .item td.col.item:after { content: ''; display: block; clear: both; }
+.cart .item .product-item-photo { float: left; width: 100px; margin-right: 20px; }
+.cart .item .product-item-details { overflow: hidden; padding-top: 0; }
+.cart .item .product-image-container { width: 100px; }
 .cart .item .product-item-name a { color: var(--link); }
 .cart .item .product-item-name a:hover { color: var(--link-hover); }
 .cart .item .item-options { margin-top: 10px; font-size: 12px; }
-.cart .item .item-options .item-option { margin-bottom: 4px; }
-.cart .item .item-options dt { font-weight: 700; display: inline-block; margin-right: 6px; }
-.cart .item .item-options dd { display: inline-block; margin: 0; }
+.cart .item .item-options dt { font-weight: 700; float: left; clear: left; margin: 0 6px 4px 0; }
+.cart .item .item-options dt:after { content: ':'; }
+.cart .item .item-options dd { margin: 0 0 4px; }
+/* The row actions are inline anchors on the source (see the DOM note in
+   CartPage.jsx), so this row must NOT be a flex container — flex blockifies its
+   children and `innerText` then breaks `Move to Wishlist Edit Remove item`
+   across three lines. Reference capture 14-cart.png shows three grey chips on
+   one line, which is what these rules reproduce. */
+table#shopping-cart-table .item-actions .actions-toolbar { display: block; margin: 0; }
+table#shopping-cart-table .item-actions .actions-toolbar > .action {
+  background: var(--secondary-btn-bg);
+  border: 1px solid var(--secondary-btn-border);
+  border-radius: 3px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+  padding: 7px 15px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+}
+table#shopping-cart-table .item-actions .actions-toolbar > .action:hover {
+  background: #e2e2e2; color: var(--text); text-decoration: none;
+}
 .cart .actions-toolbar { display: flex; gap: 10px; }
 .cart-main-actions { display: flex; justify-content: space-between; margin-top: 20px; }
 
@@ -903,8 +1354,10 @@ table#shopping-cart-table .item-actions td { padding: 0 8px 20px; border-bottom:
 }
 .opc-wrapper { display: flex; gap: 40px; align-items: flex-start; }
 .opc-main { flex: 1 1 auto; min-width: 0; }
-.opc-sidebar { flex: 0 0 385px; background: var(--panel-bg); padding: 20px; }
-.opc-sidebar .title { font-size: 26px; font-weight: 300; margin: 0 0 20px; }
+/* The source names this node by id, not class — VWA's evaluator selects
+   `#opc-sidebar > div.opc-block-summary > …`, so the styling follows the id. */
+#opc-sidebar { flex: 0 0 385px; background: var(--panel-bg); padding: 20px; }
+#opc-sidebar > .opc-block-summary > .title { display: block; font-size: 26px; font-weight: 300; margin: 0 0 20px; }
 .step-title { font-size: 26px; font-weight: 300; padding-bottom: 10px; border-bottom: 1px solid var(--rule); margin: 0 0 20px; }
 .shipping-address-item {
   position: relative; border: 2px solid transparent; padding: 15px 30px 15px 15px;
@@ -915,11 +1368,96 @@ table#shopping-cart-table .item-actions td { padding: 0 8px 20px; border-bottom:
   content: '\2713'; position: absolute; top: 0; right: 0; background: var(--accent-orange);
   color: #fff; width: 27px; height: 27px; text-align: center; line-height: 27px;
 }
+/* ------------------------------------------------------------------
+ * Checkout-time "+ New Address" popup.
+ *
+ * The source's own checkout config names every hook (assets/html/checkout.html,
+ * `checkout.steps.shipping-step.shippingAddress.config.popUpForm`):
+ *   element "#opc-new-shipping-address", modalClass "new-shipping-address-modal",
+ *   title "Shipping Address", save "Ship Here" (.action.primary.action-save-address),
+ *   cancel "Cancel" (.action.secondary.action-hide-popup).
+ * Dimensions from the container's styles-m.css:
+ *   .modal-slide,.modal-popup            {position:fixed;top:0;right:0;bottom:0;left:0}
+ *   .modal-popup .modal-inner-wrap       {margin:5rem auto;width:75%;background:#fff;
+ *                                         box-shadow:0 0 12px 2px rgba(0,0,0,.35)}
+ *   .modal-popup .modal-header/.modal-content/.modal-footer {padding:0 3rem}
+ *   .modal-popup .modal-header           {padding-top:3rem;padding-bottom:1.2rem}
+ *   .modal-popup .modal-footer           {margin-top:auto;padding:3rem 3rem}
+ *   .modal-popup .modal-title            {font-size:26px;font-weight:300;
+ *                                         border-bottom:1px solid #c1c1c1;padding-bottom:10px}
+ *   .modal-slide .action-close           {position:absolute;top:0;right:0;margin:15px;
+ *                                         border:0;background:none}
+ * ------------------------------------------------------------------ */
+.modal-popup {
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 900;
+  overflow-y: visible; background: rgba(51, 51, 51, 0.55);
+}
+.modal-popup .modal-inner-wrap {
+  margin: 5rem auto; width: 75%; max-width: 700px; background: #fff;
+  box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.35);
+  display: flex; flex-direction: column; box-sizing: border-box; position: relative;
+}
+.modal-popup .modal-header { padding: 3rem 3rem 1.2rem; flex: 0 0 auto; }
+.modal-popup .modal-content { padding: 0 3rem; overflow-y: auto; }
+.modal-popup .modal-footer {
+  margin-top: auto; padding: 3rem; display: flex; justify-content: flex-end;
+  align-items: center; gap: 20px; flex: 0 0 auto;
+}
+/* The source configures this popup with `innerScroll: true`, so the modal never
+   grows past the viewport — the body scrolls and Cancel/Ship Here stay pinned
+   and hit-testable. Without it the footer sits at y≈970 and is unreachable at
+   1280x720 without scrolling. From styles-m.css:
+     .modal-popup._inner-scroll .modal-inner-wrap {max-height:90%}
+     .modal-popup._inner-scroll .modal-content     {overflow-y:auto}
+     .modal-slide._inner-scroll .modal-header,
+     .modal-slide._inner-scroll .modal-footer      {flex-grow:0;flex-shrink:0}   */
+.modal-popup .modal-inner-wrap { max-height: 90%; }
+.modal-popup .modal-title {
+  font-size: 26px; font-weight: 300; margin: 0; min-height: 1em;
+  border-bottom: 1px solid #c1c1c1; padding-bottom: 10px; word-wrap: break-word;
+}
+.modal-popup .action-close {
+  position: absolute; top: 0; right: 0; margin: 15px; padding: 0;
+  border: 0; background: none; cursor: pointer; font-size: 0; line-height: 1;
+}
+.modal-popup .action-close:after { content: '\00d7'; font-size: 22px; color: #757575; }
+.modal-popup .fieldset { max-width: none; margin-bottom: 0; }
+.modal-popup .field.street .nested { margin-top: 8px; }
+.modal-popup .field.street .field.primary > .label,
+.modal-popup .field.street .field.additional > .label {
+  font-weight: 400; font-size: 12px; color: #666; margin-bottom: 4px;
+}
+
 .table-checkout-shipping-method { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
 .table-checkout-shipping-method td { padding: 10px 10px 10px 0; }
 .checkout-payment-method .payment-method-title { padding: 15px 0; border-bottom: 1px solid var(--rule); }
-.opc-block-summary .items-in-cart .title { font-size: 16px; cursor: pointer; display: flex; justify-content: space-between; border-bottom: 1px solid var(--rule); padding: 10px 0; }
-.opc-block-summary .minicart-items .product-item { display: flex; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+#opc-sidebar .table-totals { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+#opc-sidebar .table-totals th.mark { text-align: left; padding: 6px 0; font-weight: 400; }
+#opc-sidebar .table-totals .grand.totals th.mark { font-weight: 700; }
+#opc-sidebar .table-totals td.amount { text-align: right; padding: 6px 0; }
+#opc-sidebar .table-totals .value { color: var(--muted); font-size: 12px; }
+.opc-block-summary .items-in-cart .title { font-size: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--rule); padding: 10px 0; }
+.opc-block-summary .items-in-cart .content.minicart-items { padding: 0; }
+.opc-block-summary .minicart-items { list-style: none; margin: 0; padding: 0; }
+.opc-block-summary .minicart-items .product-item { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.opc-block-summary .minicart-items .product-item > .product { display: flex; gap: 10px; }
+.opc-block-summary .minicart-items .product-image-container { flex: 0 0 78px; width: 78px; }
+.opc-block-summary .minicart-items .product-item-details { flex: 1 1 auto; min-width: 0; padding-top: 0; }
+.opc-block-summary .minicart-items .product-item-inner { display: flex; gap: 10px; justify-content: space-between; }
+.opc-block-summary .minicart-items .product-item-name { font-size: 13px; font-weight: 400; line-height: 18px; }
+.opc-block-summary .minicart-items .details-qty { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.opc-block-summary .minicart-items .subtotal .price { font-size: 13px; font-weight: 700; white-space: nowrap; }
+.opc-block-summary .minicart-items .product.options { margin-top: 6px; font-size: 12px; }
+.opc-block-summary .minicart-items .product.options .toggle { cursor: pointer; color: var(--link); }
+.opc-block-summary .minicart-items .product.options .toggle:hover { color: var(--link-hover); }
+.opc-block-summary .minicart-items .product.options .subtitle { display: block; margin: 6px 0 4px; }
+.opc-block-summary .minicart-items .product.options dl.item-options { margin: 0; }
+.opc-block-summary .minicart-items .product.options dt.label { font-weight: 700; float: left; clear: left; margin: 0 6px 4px 0; }
+.opc-block-summary .minicart-items .product.options dt.label:after { content: ':'; }
+.opc-block-summary .minicart-items .product.options dd.values { margin: 0 0 4px; }
+.opc-block-shipping-information:empty { display: none; }
+.opc-block-shipping-information .shipping-information-title { font-size: 18px; font-weight: 300; border-bottom: 1px solid var(--rule); margin: 20px 0 10px; padding-bottom: 10px; }
+.opc-block-shipping-information .shipping-information-content { font-size: 14px; line-height: 22px; }
 
 /* ------------------------------------------------------------------ */
 /* Account pages                                                       */
@@ -959,6 +1497,19 @@ address { font-style: normal; line-height: 22px; }
 #my-orders-table tfoot .grand_total th, #my-orders-table tfoot .grand_total td { font-weight: 700; }
 #my-orders-table .item-options dt { font-weight: 700; }
 #my-orders-table .item-options dd { margin: 0 0 8px; }
+/* Verbatim from the container's styles-m.css:
+     .items-qty{display:inline-block;vertical-align:top;margin:0;padding:0;list-style:none none}
+     .items-qty>li{margin:0}
+     .items-qty .item{white-space:nowrap}
+     .items-qty .title:after{content:': '}
+   The separator is generated content, so it stays out of innerText/outerText. */
+.items-qty {
+  display: inline-block; vertical-align: top;
+  margin: 0; padding: 0; list-style: none none;
+}
+.items-qty > li { margin: 0; }
+.items-qty .item { white-space: nowrap; }
+.items-qty .title:after { content: ': '; }
 .order-links { border-bottom: 1px solid var(--rule); margin-bottom: 20px; }
 .order-links .item strong { display: inline-block; padding: 8px 0; font-weight: 700; }
 

@@ -17,19 +17,22 @@ export function NewsletterPage() {
 
   return (
     <Page title="Newsletter Subscription" documentTitle="Newsletter Subscription" sidebar="account">
-      <form className="form form-newsletter-manage" onSubmit={onSubmit}>
+      <form className="form form-newsletter-manage" id="form-validate" onSubmit={onSubmit}>
         <fieldset className="fieldset">
-          <legend className="legend"><span>Subscription option</span></legend>
+          <legend className="legend"><span>Subscription option</span></legend><br />
           <div className="field choice">
-            <input type="checkbox" id="subscription" checked={checked}
-              onChange={e => setChecked(e.target.checked)} style={{ width: 'auto', height: 'auto' }} />{' '}
-            <label htmlFor="subscription" className="label" style={{ display: 'inline' }}>
+            <input type="checkbox" name="is_subscribed" id="subscription" value="1"
+              title="General Subscription" className="checkbox"
+              checked={checked} onChange={e => setChecked(e.target.checked)} />{' '}
+            <label htmlFor="subscription" className="label">
               <span>General Subscription</span>
             </label>
           </div>
         </fieldset>
         <div className="actions-toolbar">
-          <button type="submit" className="action save primary"><span>Save</span></button>
+          <div className="primary">
+            <button type="submit" title="Save" className="action save primary"><span>Save</span></button>
+          </div>
           <div className="secondary">
             <SLink to="/" className="action back"><span>Back</span></SLink>
           </div>

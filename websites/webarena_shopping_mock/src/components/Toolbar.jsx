@@ -82,24 +82,28 @@ export default function Toolbar({ listing, isSearch }) {
 
   return (
     <div className="toolbar toolbar-products">
+      {/* DIFF-N03. Magento renders the ACTIVE view mode as a plain <strong> and
+          the inactive one as an <a href="#" data-role="mode-switcher">, and it
+          labels the pair with a VISIBLE `View as`:
+
+            <strong class="modes-label" id="modes-label">View as</strong>
+            <strong title="Grid" class="modes-mode active mode-grid" data-value="grid">
+              <span>Grid</span></strong>
+            <a class="modes-mode mode-list" title="List" href="#"
+               data-role="mode-switcher" data-value="list" id="mode-list"
+               aria-labelledby="modes-label mode-list"><span>List</span></a>
+
+          and it swaps the two tags when ?product_list_mode=list (verified live
+          on /electronics/headphones.html both ways). Both were <button> here,
+          the label was visually-hidden, and `active` sat last in the class list
+          — so `strong.modes-mode.active` and `a.modes-mode` both selected
+          nothing. */}
       <div className="modes">
-        <strong className="modes-label visually-hidden">View as</strong>
-        <button
-          type="button"
-          className={`modes-mode mode-grid${mode === 'grid' ? ' active' : ''}`}
-          title="Grid"
-          onClick={() => navigate(withParams({ product_list_mode: 'grid' }))}
-        >
-          <GridIcon /><span className="visually-hidden">Grid</span>
-        </button>
-        <button
-          type="button"
-          className={`modes-mode mode-list${mode === 'list' ? ' active' : ''}`}
-          title="List"
-          onClick={() => navigate(withParams({ product_list_mode: 'list' }))}
-        >
-          <ListIcon /><span className="visually-hidden">List</span>
-        </button>
+        <strong className="modes-label" id="modes-label">View as</strong>
+        <ModeSwitch mode="grid" active={mode === 'grid'} label="Grid"
+          icon={<GridIcon />} navigate={navigate} withParams={withParams} />
+        <ModeSwitch mode="list" active={mode === 'list'} label="List"
+          icon={<ListIcon />} navigate={navigate} withParams={withParams} />
       </div>
 
       <ToolbarAmount first={listing.first} last={listing.last} total={listing.totalCount} limit={listing.limit} />
@@ -108,25 +112,62 @@ export default function Toolbar({ listing, isSearch }) {
         <label className="sorter-label" htmlFor="sorter">Sort By</label>
         <select
           id="sorter"
+          data-role="sorter"
           className="sorter-options"
           value={listing.order}
           onChange={e => navigate(withParams({ product_list_order: e.target.value, p: null }))}
         >
           {sortOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
-        <button
-          type="button"
+        {/* DIFF-N03. Source: `<a title="Set Descending Direction" href="#"
+            class="action sorter-action sort-asc" data-role="direction-switcher"
+            data-value="desc"><span>Set Descending Direction</span></a>`. */}
+        <a
+          href="#"
           className={`action sorter-action sort-${dir}`}
           title={dirTitle}
           data-role="direction-switcher"
           data-value={nextDir}
-          onClick={() => navigate(withParams({ product_list_dir: nextDir, p: null }))}
+          onClick={e => {
+            e.preventDefault()
+            navigate(withParams({ product_list_dir: nextDir, p: null }))
+          }}
         >
           {dir === 'asc' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
           <span className="visually-hidden">{dirTitle}</span>
-        </button>
+        </a>
       </div>
     </div>
+  )
+}
+
+/**
+ * One view-mode control. `<strong>` when it is the mode you are already in,
+ * `<a>` otherwise — the source's own shape (DIFF-N03). The icon carries the
+ * visual; the `<span>` carries the label the source prints, kept in the DOM so
+ * `.modes-mode` innerText matches.
+ */
+function ModeSwitch({ mode, active, label, icon, navigate, withParams }) {
+  if (active) {
+    return (
+      <strong title={label} className={`modes-mode active mode-${mode}`} data-value={mode}>
+        {icon}<span className="visually-hidden">{label}</span>
+      </strong>
+    )
+  }
+  return (
+    <a
+      className={`modes-mode mode-${mode}`}
+      title={label}
+      href="#"
+      data-role="mode-switcher"
+      data-value={mode}
+      id={`mode-${mode}`}
+      aria-labelledby={`modes-label mode-${mode}`}
+      onClick={e => { e.preventDefault(); navigate(withParams({ product_list_mode: mode })) }}
+    >
+      {icon}<span className="visually-hidden">{label}</span>
+    </a>
   )
 }
 
@@ -142,6 +183,7 @@ export function Limiter({ listing, param = 'product_list_limit', values }) {
       <label className="label" htmlFor="limiter"><span>Show</span></label>
       <select
         id="limiter"
+        data-role="limiter"
         className="limiter-options"
         value={listing.limit}
         onChange={e => navigate(withParams({ [param]: e.target.value, p: null }))}

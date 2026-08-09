@@ -8,19 +8,35 @@ import { categoryFacets, priceFacets, priceBucketLabel, getCategory } from '../u
  * Each chip's ✕ points at the current URL minus that one param; Clear All
  * drops every filter param.
  */
-export default function LayeredNav({ listing, categoryId }) {
+/**
+ * `showPrice` — whether the Price facet participates at all. Category pages get
+ * it; SEARCH pages do not. Measured on the live logged-in source at 1280x720:
+ *   /catalogsearch/result/?q=<chairs|tea|laptop|shoes|coffee|desk lamp>
+ *     .filter-options-title -> ['Category']  (six for six, never 'Price')
+ *   /electronics/headphones.html
+ *     .filter-options-title -> ['Category', 'Price']
+ * and the source ignores the param outright on search rather than merely
+ * hiding the control: ?q=chairs&price=50-100 renders no chip, no Price title,
+ * and the same `Items 1-12 of 3418` as ?q=chairs alone.
+ */
+export default function LayeredNav({ listing, categoryId, showPrice = true }) {
   const navigate = useNavigate()
   const { query, withParams, without } = useUrlBuilder()
 
   const activeCat = query.cat ? getCategory(query.cat) : null
   const activeChips = []
   if (activeCat) activeChips.push({ label: 'Category', value: activeCat.name, param: 'cat' })
-  if (listing.priceRange) {
+  if (showPrice && listing.priceRange) {
     activeChips.push({ label: 'Price', value: priceBucketLabel(listing.priceRange), param: 'price' })
   }
 
-  const catOptions = categoryFacets(listing, categoryId)
-  const priceOptions = priceFacets(listing, raw => withParams({ price: raw, p: null }))
+  // `query.cat` is the active layer: the source narrows the Category facet to
+  // the children of the filtered category, not of the page's own category
+  // (/home-kitchen.html?cat=34 lists Living Room Furniture … Kids' Furniture).
+  // A search page has no page category, so the fallback bottoms out at the
+  // store root — which is what makes the block render on EVERY term (BUG-N02).
+  const catOptions = categoryFacets(listing, categoryId, query.cat || null)
+  const priceOptions = showPrice ? priceFacets(listing, raw => withParams({ price: raw, p: null })) : []
 
   const hasFacets = catOptions.length > 0 || priceOptions.length > 0
 
@@ -74,6 +90,7 @@ export default function LayeredNav({ listing, categoryId }) {
                         <li className="item" key={o.cat + o.label}>
                           <a
                             href={withParams({ cat: o.cat, p: null })}
+                            rel="nofollow"
                             onClick={e => { e.preventDefault(); navigate(withParams({ cat: o.cat, p: null })) }}
                           >
                             {o.label}

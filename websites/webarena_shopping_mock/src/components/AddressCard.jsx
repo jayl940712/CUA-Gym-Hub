@@ -12,7 +12,14 @@ export default function AddressCard({ address }) {
       {address.firstname} {address.lastname}<br />
       {address.company ? <>{address.company}<br /></> : null}
       {streets.filter(Boolean).map((s, i) => <React.Fragment key={i}>{s}<br /></React.Fragment>)}
-      {address.city}, {address.region}, {address.postcode}<br />
+      {/* Magento's address template emits TWO spaces after the city —
+          `San Mateo,  California, 94010`. Verified identical in every source
+          `<address>`: assets/html/order-view-148.html, account-dashboard.html
+          and address-book.html all carry the doubled space, and the mock's own
+          CheckoutPage.jsx already does. It collapses in rendered text, so the
+          two evaluators that require `Manhattan, New York, 12112` /
+          `… 12345` still match (DIFF-W01). */}
+      {address.city}{',  '}{address.region}, {address.postcode}<br />
       {address.country || 'United States'}<br />
       T: <a href={`tel:${address.telephone}`} onClick={e => e.preventDefault()}>{address.telephone}</a>
     </address>

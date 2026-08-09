@@ -56,6 +56,14 @@ export default function CartPage() {
    * line while still reporting success, which is the opposite behaviour.
    * Removing a line is `Remove item`, not a qty of 0.
    */
+  /**
+   * The `dl.item-options` order is asserted by three VWA tasks through
+   * `dd:nth-child(4)`. It is normalised on WRITE now — every path that creates
+   * or edits a line (PDP add-to-cart, cart Edit, reorder) goes through
+   * `sortLineOptions()` in AppContext.jsx — so the stored state, the order
+   * written at checkout and this render all agree. Render what is stored.
+   */
+
   const validateCartQty = (raw) => {
     const v = String(raw).trim()
     if (!v.length) return 'This is a required field.'
@@ -106,50 +114,114 @@ export default function CartPage() {
                 return (
                   <tbody className="cart item" key={item.itemId}>
                     <tr className="item-info">
+                      {/*
+                        Source nesting (`/tmp/vwaE/cart.html`, captured from an
+                        authenticated /checkout/cart/ with a 3-line cart):
+
+                          td.col.item
+                            a.product-item-photo > span.product-image-container
+                            div.product-item-details
+                              strong.product-item-name > a
+                              dl.item-options
+                                dt Size
+                                dd Large
+                                dt Color
+                                dd Blue
+
+                        VWA's cart evaluators select
+                        `td.col.item > div > dl > dd` and three of them use
+                        `dd:nth-child(4)`, so the photo link must be a SIBLING of
+                        `.product-item-details` (not nested inside it), the `dl`
+                        a direct child of it, and the `dt`/`dd` pairs direct
+                        children of the `dl` in the order the options were
+                        chosen. Wrapping each pair in a `div.item-option` — as
+                        this used to — breaks both selectors.
+                        The `:` after the label is CSS (`.item-options dt:after`
+                        in Luma), not markup; the source `dt` reads "Size".
+                      */}
                       <td className="col item" data-th="Item">
+                        <SLink to={product ? `/${product.urlKey}.html` : '/checkout/cart/'}
+                          title={item.name} tabIndex={-1} className="product-item-photo">
+                          <ProductImage product={product} alt={item.name} />
+                        </SLink>
                         <div className="product-item-details">
-                          <SLink to={product ? `/${product.urlKey}.html` : '/checkout/cart/'} className="product-item-photo">
-                            <ProductImage product={product} alt={item.name} />
-                          </SLink>
-                          <div>
-                            <strong className="product-item-name">
-                              <SLink to={product ? `/${product.urlKey}.html` : '/checkout/cart/'}>{item.name}</SLink>
-                            </strong>
-                            {item.options && item.options.length > 0 && (
-                              <dl className="item-options">
-                                {item.options.map(o => (
-                                  <div className="item-option" key={`${o.optionId}-${o.optionTypeId}`}>
-                                    <dt>{o.label}:</dt>
-                                    <dd>{o.value}</dd>
-                                  </div>
-                                ))}
-                              </dl>
-                            )}
-                          </div>
+                          <strong className="product-item-name">
+                            <SLink to={product ? `/${product.urlKey}.html` : '/checkout/cart/'}>{item.name}</SLink>
+                          </strong>
+                          {item.options && item.options.length > 0 && (
+                            <dl className="item-options">
+                              {item.options.map(o => (
+                                <React.Fragment key={`${o.optionId}-${o.optionTypeId}`}>
+                                  <dt>{o.label}</dt>
+                                  <dd>{o.value}</dd>
+                                </React.Fragment>
+                              ))}
+                            </dl>
+                          )}
                         </div>
                       </td>
                       <td className="col price" data-th="Price">
                         <span className="price">{money(item.price)}</span>
                       </td>
+                      {/*
+                        BUG-P01. Transcribed attribute for attribute from the
+                        source's own render (assets/html/cart.html, and
+                        module-checkout/view/frontend/templates/cart/item/default.phtml
+                        lines 107 and 113 in the container):
+
+                          td.col.qty > div.field.qty > div.control.qty
+                            > label[for] > span.label + input
+
+                          <input id="cart-554-qty" name="cart[554][qty]"
+                                 data-cart-item-id="B087QSCXGT" value="1"
+                                 type="number" min="0" size="4" step="any"
+                                 title="Qty" class="input-text qty"
+                                 data-validate="…" data-item-qty="1"
+                                 data-role="cart-item-qty"/>
+
+                        `data-item-qty` is the ONLY attribute any shopping
+                        evaluator reads — visualwebarena-289 / -320 / -321 do
+                        `.item-info … querySelector('input').getAttribute('data-item-qty')`
+                        — and it was absent, so those three scored 0 whatever the
+                        agent did.
+
+                        VALUE SEMANTICS: the source renders BOTH `value` and
+                        `data-item-qty` from `$block->getQty()`, i.e. the
+                        PERSISTED quote qty, and only re-renders the row on
+                        `Update Shopping Cart`. So `data-item-qty` tracks
+                        `item.qty`, never the in-flight `qtyDraft` — typing 5
+                        without clicking Update leaves it at the stored value on
+                        both sides, and clicking Update moves both together.
+                        `value` keeps the draft because that is the control the
+                        agent is typing into.
+                      */}
                       <td className="col qty" data-th="Qty">
-                        <label className="visually-hidden" htmlFor={`cart-${item.itemId}-qty`}>Qty</label>
-                        <input
-                          id={`cart-${item.itemId}-qty`}
-                          /* Source: `<input id="cart-554-qty" name="cart[554][qty]" …>`
-                             — see assets/html/cart.html. */
-                          name={`cart[${item.itemId}][qty]`}
-                          type="number"
-                          min="0"
-                          title="Qty"
-                          className="input-text qty"
-                          data-validate="{required:true,'validate-greater-than-zero':true}"
-                          data-role="cart-item-qty"
-                          value={qtyDraft[item.itemId] != null ? qtyDraft[item.itemId] : item.qty}
-                          onChange={e => {
-                            setQtyDraft(d => ({ ...d, [item.itemId]: e.target.value }))
-                            setQtyErrors(errs => (errs[item.itemId] ? { ...errs, [item.itemId]: null } : errs))
-                          }}
-                        />
+                        <div className="field qty">
+                          <div className="control qty">
+                            <label htmlFor={`cart-${item.itemId}-qty`}>
+                              <span className="label">Qty</span>
+                              <input
+                                id={`cart-${item.itemId}-qty`}
+                                name={`cart[${item.itemId}][qty]`}
+                                data-cart-item-id={item.sku || (product ? product.sku : undefined)}
+                                type="number"
+                                min="0"
+                                size="4"
+                                step="any"
+                                title="Qty"
+                                className="input-text qty"
+                                data-validate="{required:true,'validate-greater-than-zero':true}"
+                                data-item-qty={item.qty}
+                                data-role="cart-item-qty"
+                                value={qtyDraft[item.itemId] != null ? qtyDraft[item.itemId] : item.qty}
+                                onChange={e => {
+                                  setQtyDraft(d => ({ ...d, [item.itemId]: e.target.value }))
+                                  setQtyErrors(errs => (errs[item.itemId] ? { ...errs, [item.itemId]: null } : errs))
+                                }}
+                              />
+                            </label>
+                          </div>
+                        </div>
                         {qtyErrors[item.itemId] && (
                           <div className="field-error" role="alert" id={`cart-${item.itemId}-qty-error`}>
                             {qtyErrors[item.itemId]}
@@ -160,27 +232,38 @@ export default function CartPage() {
                         <span className="price">{money(item.price * item.qty)}</span>
                       </td>
                     </tr>
+                    {/* Source (assets/html/cart.html) renders these three as
+                        INLINE anchors inside a plain `div.actions-toolbar`:
+                          a.use-ajax.action.towishlist.action-towishlist > span
+                          a.action.action-edit[href=/checkout/cart/configure/id/N/product_id/M/][title="Edit item parameters"] > span
+                          a.action.action-delete[href="#"][title="Remove item"] > span
+                        so `innerText` reads them as the single run
+                        `Move to Wishlist Edit Remove item`. The mock's flex row
+                        of <button>s blockified each child and split the run
+                        across three lines (DIFF-R6). */}
                     <tr className="item-actions">
                       <td colSpan={4}>
                         <div className="actions-toolbar">
-                          <button type="button" className="action secondary towishlist"
-                            onClick={() => {
+                          <a href="#" className="use-ajax action towishlist action-towishlist"
+                            onClick={e => {
+                              e.preventDefault()
                               moveToWishlist(item.itemId)
                               addMessage(`${item.name} has been moved to your wish list.`)
                             }}>
                             <span>Move to Wishlist</span>
-                          </button>
-                          <button type="button" className="action secondary action-edit"
-                            onClick={() => navigate(`/checkout/cart/configure/id/${item.itemId}/product_id/${item.productId}/`)}>
+                          </a>{' '}
+                          <SLink className="action action-edit" title="Edit item parameters"
+                            to={`/checkout/cart/configure/id/${item.itemId}/product_id/${item.productId}/`}>
                             <span>Edit</span>
-                          </button>
-                          <button type="button" className="action secondary action-delete"
-                            onClick={() => {
+                          </SLink>{' '}
+                          <a href="#" title="Remove item" className="action action-delete"
+                            onClick={e => {
+                              e.preventDefault()
                               removeCartItem(item.itemId)
                               addMessage(`You removed the item.`)
                             }}>
                             <span>Remove item</span>
-                          </button>
+                          </a>
                         </div>
                       </td>
                     </tr>
@@ -307,10 +390,35 @@ export default function CartPage() {
               )}
             </div>
 
-            <div className="checkout-methods-items">
-              <SLink to="/checkout/" className="action primary checkout large">Proceed to Checkout</SLink>
-              <SLink to="/multishipping/checkout/login/" className="multicheckout">Check Out with Multiple Addresses</SLink>
-            </div>
+            {/* Source (assets/html/cart.html):
+                  <ul class="checkout methods items checkout-methods-items">
+                    <li class="item"><button type="button" data-role="proceed-to-checkout"
+                        title="Proceed to Checkout" class="action primary checkout">
+                        <span>Proceed to Checkout</span></button></li>
+                    <li class="item"><a class="action multicheckout" href="…/multishipping/checkout/">
+                        <span>Check Out with Multiple Addresses</span></a></li>
+                  </ul>
+                The flat div ran both labels together in `innerText`
+                (`Proceed to CheckoutCheck Out with Multiple Addresses`); the
+                `li.item` wrappers put them on two lines as the source does
+                (DIFF-R6). */}
+            <ul className="checkout methods items checkout-methods-items">
+              <li className="item">
+                <button type="button" data-role="proceed-to-checkout" title="Proceed to Checkout"
+                  className="action primary checkout" onClick={() => navigate('/checkout/')}>
+                  <span>Proceed to Checkout</span>
+                </button>
+              </li>
+              <li className="item">
+                {/* Source href, measured logged-in on the live cart:
+                    `http://10.186.197.203:7770/multishipping/checkout/` — the
+                    `/login/` variant is the guest form. Both resolve to
+                    MultishippingPage in the mock. */}
+                <SLink to="/multishipping/checkout/" className="action multicheckout">
+                  <span>Check Out with Multiple Addresses</span>
+                </SLink>
+              </li>
+            </ul>
           </div>
         </div>
       )}

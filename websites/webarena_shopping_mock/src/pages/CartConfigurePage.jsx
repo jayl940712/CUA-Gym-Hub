@@ -12,7 +12,7 @@ import NotFoundPage from './NotFoundPage.jsx'
  * Reopens the product form pre-filled with the cart line's options and qty.
  */
 export default function CartConfigurePage({ itemId, productId }) {
-  const { state, setState, addMessage } = useApp()
+  const { state, updateCartItem, addMessage } = useApp()
   const navigate = useStoreNavigate()
   const line = state.cart.items.find(i => String(i.itemId) === String(itemId))
   const product = productsById.get(Number(productId))
@@ -50,16 +50,10 @@ export default function CartConfigurePage({ itemId, productId }) {
         }
       })
 
-    setState(prev => ({
-      ...prev,
-      cart: {
-        ...prev.cart,
-        items: prev.cart.items.map(i =>
-          String(i.itemId) === String(itemId)
-            ? { ...i, qty: Math.max(1, parseInt(qty, 10) || 1), options }
-            : i),
-      },
-    }))
+    // `groups` is getOptions()' PDP order, which is NOT Magento's storage order.
+    // updateCartItem() runs the line through sortLineOptions() so the stored
+    // state is right without CartPage having to re-sort at render.
+    updateCartItem(itemId, { qty, options, productId: product.id })
     addMessage(`${product.name} was updated in your shopping cart.`)
     navigate('/checkout/cart/')
   }

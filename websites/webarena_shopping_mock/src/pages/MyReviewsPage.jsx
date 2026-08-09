@@ -39,7 +39,7 @@ export default function MyReviewsPage() {
                       {product ? product.name : r.productId}
                     </SLink>
                   </td>
-                  <td className="col rating" data-th="Rating"><Rating percent={reviewRatingPercent(r)} /></td>
+                  <td className="col rating" data-th="Rating"><Rating percent={reviewRatingPercent(r)} variant="review" /></td>
                   <td className="col description" data-th="Review">{r.detail}</td>
                   <td className="col actions">
                     <SLink className="action more" to={`/review/customer/view/id/${r.reviewId}/`}>
@@ -79,8 +79,8 @@ export function ReviewViewPage({ reviewId }) {
           </strong>
         </div>
         <div className="review-ratings" style={{ margin: '15px 0' }}>
-          <span className="rating-label"><span>Rating</span></span>
-          <Rating percent={reviewRatingPercent(review)} />
+          {/* the `review` variant supplies `<span class="label rating-label">` itself */}
+          <Rating percent={reviewRatingPercent(review)} variant="review" />
         </div>
         <div className="review-title"><strong>{review.title}</strong></div>
         <div className="review-content">{review.detail}</div>

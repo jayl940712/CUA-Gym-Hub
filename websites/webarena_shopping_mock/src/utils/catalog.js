@@ -1,14 +1,392 @@
 import products from '../data/products.json'
 import categories from '../data/categories.json'
-import reviews from '../data/reviews.json'
-import productOptions from '../data/productOptions.json'
-import descriptions from '../data/productDescriptions.json'
 import listings from '../data/listings.json'
 import homepage from '../data/homepage.json'
 import searchTerms from '../data/searchTerms.json'
 import storeConfig from '../data/storeConfig.json'
+import reviewCounts from '../data/reviewCounts.json'
+
+/* ------------------------------------------------------------------ */
+/* Per-product detail — code-split, loaded once at boot                */
+/* ------------------------------------------------------------------ */
+
+/**
+ * `productDescriptions.json` (28.9 MB), `productOptions.json` (3.3 MB) and
+ * `reviews.json` (2.9 MB) are 35.1 MB of the 43.7 MB seed, and they describe
+ * one product at a time. Importing them statically put all three in the single
+ * `seed-*.js` chunk that every route had to download, parse and evaluate
+ * before React could mount.
+ *
+ * They are three dynamic chunks, fetched in parallel, kicked off from
+ * `main.jsx` before React mounts. The catch is that they are read through
+ * *synchronous* accessors (`getOptions`, `getDescription`, `reviewsForProduct`,
+ * `searchSeed`), so a view that reads one before it lands renders an empty
+ * description or an empty review list for a frame.
+ *
+ * R7-004: the first fix for that was to await ALL THREE inside `AppProvider`'s
+ * boot gate. That is correct but far too broad — it put 15.4 MB gzip on the
+ * critical path of every route, including the home page, which reads none of
+ * it. Measured cold at 1280x720: 4/4 seed chunks transferred before first
+ * content on `/`, on a category page and on a PDP.
+ *
+ * So the modules are tracked and awaited *individually*:
+ *
+ *   options       — small (0.35 MB gzip) but read from render paths on every
+ *                   listing tile, the reorder sidebar block, the wish list, and
+ *                   from the SYNCHRONOUS mutators in AppContext (`addToCart`
+ *                   normalises a line's options on write, `reorder` rebuilds
+ *                   them from an order). Those mutators cannot suspend without
+ *                   becoming async and taking the 117-task checkout flow with
+ *                   them, so this one stays in the boot gate.
+ *   descriptions  — read by the PDP, compare, list-mode tiles, the advanced
+ *                   search description filters, and `searchSeed` (Magento
+ *                   searches the description, so an uncaptured search term's
+ *                   RESULTS depend on it).
+ *   reviews       — read by the PDP review list and /review/product/listAjax.
+ *
+ * `descriptions` and `reviews` — 13.3 of the 15.4 MB — are awaited by the views
+ * that read them, through `<Page needs={[...]}>` (components/Page.jsx), which
+ * holds back the page body while keeping the header, footer and chrome on
+ * screen. Nothing ever renders a half-populated view, and a cold deep link onto
+ * a PDP still paints its description, options and reviews without a reload.
+ *
+ * `let` + reassignment is deliberate. ES module bindings are live, so the
+ * closures below and the `export`s at the bottom of this block all see the
+ * installed value without any consumer changing.
+ */
+let reviews = []
+let productOptions = {}
+let descriptions = {}
 
 export { products, categories, reviews, productOptions, descriptions, listings, homepage, searchTerms, storeConfig }
+
+/** The three code-split detail seeds, by the name callers ask for them by. */
+export const DETAIL_MODULES = ['descriptions', 'options', 'reviews']
+
+/* ---- descriptions: 32 shards keyed `id % 32` ------------------------------ *
+ *
+ * R8-001. The description corpus is 34.71 MB raw / 9.35 MB gzip, twice the
+ * size of anything else in the seed, and it was a single chunk. That is why the
+ * PDP could not paint until 4/4 seed chunks had landed (16.88 MB gzip, ~1 450 ms
+ * cold): the Details tab is the default pane, so the PDP genuinely needs a
+ * description — but it needs exactly ONE of 11 358, and it was downloading all
+ * of them.
+ *
+ * The corpus is now `assets/dumps/build_desc_shards.py`'s 32 files, ~1.1 MB raw
+ * / ~0.29 MB gzip each. Two entry points, and they share installs:
+ *
+ *   ensureDescriptionsFor([id, …])  — the shards those products live in. The
+ *                                     PDP's gate. One shard for one PDP.
+ *   ensureDetail(['descriptions'])  — all 32, i.e. exactly the old semantics.
+ *                                     Search (`searchSeed` scores the corpus),
+ *                                     advanced search, list-mode tiles, compare.
+ *
+ * `descriptions` stays one merged object that shards write into, so
+ * `getDescription()` and `buildSearchCorpus()` are untouched and the merged
+ * result is byte-identical to the old file (`--check` proves it).
+ */
+export const DESCRIPTION_SHARDS = 32
+
+// Static glob: Vite needs the import graph at build time, so this cannot be a
+// computed `import('../data/descriptions/' + name)`.
+const DESC_SHARD_LOADERS = import.meta.glob('../data/descriptions/*.json')
+
+function descShardKey(productId) {
+  return `../data/descriptions/d${String(Number(productId) % DESCRIPTION_SHARDS).padStart(2, '0')}.json`
+}
+
+const descShardInstalled = new Set()
+const descShardPending = new Map()
+
+function loadDescShard(key) {
+  if (descShardInstalled.has(key)) return Promise.resolve()
+  if (!descShardPending.has(key)) {
+    const load = DESC_SHARD_LOADERS[key]
+    if (!load) return Promise.resolve()
+    const p = load()
+      .catch(() => load())
+      .then(m => { Object.assign(descriptions, m.default) })
+      .catch(err => {
+        console.error(`[catalog] description shard "${key}" failed to load; ` +
+          'those products will have no description this session', err)
+      })
+      .then(() => {
+        descShardInstalled.add(key)
+        if (descShardInstalled.size === Object.keys(DESC_SHARD_LOADERS).length) {
+          detailInstalled.add('descriptions')
+        }
+        detailVersion += 1
+        for (const fn of detailListeners) fn()
+      })
+    descShardPending.set(key, p)
+  }
+  return descShardPending.get(key)
+}
+
+/**
+ * Install only the shards the named products live in. Idempotent, never
+ * rejects, and shares its promises with `ensureDetail(['descriptions'])`.
+ */
+export function ensureDescriptionsFor(productIds) {
+  const keys = new Set((productIds || []).map(descShardKey))
+  return Promise.all([...keys].map(loadDescShard)).then(() => undefined)
+}
+
+/** True once every named product's description is in memory. */
+export function descriptionsReadyFor(productIds) {
+  return (productIds || []).every(id => descShardInstalled.has(descShardKey(id)))
+}
+
+/* ---- description search index: 64 shards keyed by token prefix ------------ *
+ *
+ * R8-001, last row. The PDP and captured search stopped pulling the corpus in
+ * round 9; an UNCAPTURED `?q=` search still did, because `searchSeed()` scores
+ * raw description text with `\b<stem>(?:s|es|ies)?\b` per query token. That is
+ * 9.35 MB gzip to answer a yes/no question about a handful of words.
+ *
+ * It is also, exactly, a set-membership test — no approximation, no
+ * document-side stemming, nothing "close enough":
+ *
+ *   `stem` is always `[a-z0-9]+` (query tokens come from `tokenize()`, which
+ *   splits on `[^a-z0-9]+`, and `stemToken()` only truncates), so the span the
+ *   regex matches is itself all word characters, so `\b` fires exactly at the
+ *   edges of a maximal `[A-Za-z0-9_]` run. The regex is therefore true IFF the
+ *   text holds a maximal word run whose lowercase form is one of four literals:
+ *   `stem`, `stem+"s"`, `stem+"es"`, `stem+"ies"`.
+ *
+ * `_` counts as part of the run on purpose — it is a word character to `\b`
+ * even though `tokenize()` treats it as a separator — so "glass_es" does not
+ * match `?q=glass` here, and does not on the regex either.
+ *
+ * So the artifact is an inverted index, `assets/dumps/build_search_index.py`:
+ * token -> delta-base36 product ids, split into 64 buckets by a hash of the
+ * token's first 3 characters. A query fetches only the buckets its own tokens
+ * live in — median 49 kB gzip, worst 125 kB — instead of the whole corpus.
+ * All four candidate keys of a stem of length >= 3 share that prefix and land
+ * in one bucket; `searchIndexBuckets()` unions the buckets of all four anyway,
+ * so a 1- or 2-character stem is correct too, at up to 4 requests.
+ *
+ * The shards live in `src/searchindex/`, NOT `src/data/`: `vite.config.js`'s
+ * `manualChunks` folds everything under `/src/data/` into the always-loaded
+ * `seed` chunk unless it has an explicit rule, and 3.2 MB gzip of index in the
+ * chunk every route waits on is the regression this index exists to undo.
+ */
+export const SEARCH_INDEX_BUCKETS = 64
+const SEARCH_INDEX_PREFIX = 3
+
+const SEARCH_INDEX_LOADERS = import.meta.glob('../searchindex/*.json')
+
+/** Must stay byte-identical to `bucket_of()` in build_search_index.py. */
+function indexBucket(key) {
+  let h = 0
+  const n = Math.min(key.length, SEARCH_INDEX_PREFIX)
+  for (let i = 0; i < n; i++) h = (Math.imul(h, 131) + key.charCodeAt(i)) >>> 0
+  return h % SEARCH_INDEX_BUCKETS
+}
+
+function indexShardKey(bucket) {
+  return `../searchindex/s${String(bucket).padStart(2, '0')}.json`
+}
+
+// bucket -> the raw `{token: "<delta base36>"}` object, kept encoded. A bucket
+// holds ~1 100 tokens; a query reads at most four of them, so decoding the whole
+// bucket on install would be ~1 000x the work for no benefit.
+const indexShardData = new Map()
+const indexShardInstalled = new Set()
+const indexShardPending = new Map()
+const postingsCache = new Map()
+
+function loadIndexShard(bucket) {
+  if (indexShardInstalled.has(bucket)) return Promise.resolve()
+  if (!indexShardPending.has(bucket)) {
+    const load = SEARCH_INDEX_LOADERS[indexShardKey(bucket)]
+    if (!load) return Promise.resolve()
+    const p = load()
+      .catch(() => load())
+      .then(m => { indexShardData.set(bucket, m.default) })
+      .catch(err => {
+        console.error(`[catalog] search index shard ${bucket} failed to load; ` +
+          'terms in it will match on name/sku only this session', err)
+      })
+      .then(() => {
+        indexShardInstalled.add(bucket)
+        // Any result computed before this landed was scored against a partial
+        // index. A stale memo here would be silent and permanent.
+        postingsCache.clear()
+        searchCache.clear()
+        detailVersion += 1
+        for (const fn of detailListeners) fn()
+      })
+    indexShardPending.set(bucket, p)
+  }
+  return indexShardPending.get(bucket)
+}
+
+function decodePostings(encoded) {
+  const set = new Set()
+  let prev = 0
+  for (const part of encoded.split('.')) {
+    prev += parseInt(part, 36)
+    set.add(prev)
+  }
+  return set
+}
+
+/** Product ids whose description holds the exact word `key`. */
+function postingsFor(key) {
+  if (postingsCache.has(key)) return postingsCache.get(key)
+  const shard = indexShardData.get(indexBucket(key))
+  const encoded = shard ? shard[key] : undefined
+  const set = encoded ? decodePostings(encoded) : null
+  postingsCache.set(key, set)
+  return set
+}
+
+/**
+ * The four literals a query token's word-boundary regex can match, in the
+ * order the regex would try them. Exported shape is internal; see the block
+ * comment above for why these four and only these four.
+ */
+function candidateKeys(token) {
+  const stem = stemToken(token)
+  return [stem, `${stem}s`, `${stem}es`, `${stem}ies`]
+}
+
+/** Product ids whose DESCRIPTION matches this query token. */
+function weakPostings(token) {
+  const out = new Set()
+  for (const key of candidateKeys(token)) {
+    const set = postingsFor(key)
+    if (set) for (const id of set) out.add(id)
+  }
+  return out
+}
+
+/** The index buckets a term's tokens need. */
+export function searchIndexBuckets(term) {
+  const tokens = queryTokens(term)
+  const buckets = new Set()
+  for (const t of tokens) {
+    for (const key of candidateKeys(t)) buckets.add(indexBucket(key))
+  }
+  return [...buckets]
+}
+
+/** True once every bucket this term reads is in memory. */
+export function searchIndexReadyFor(term) {
+  return searchIndexBuckets(term).every(b => indexShardInstalled.has(b))
+}
+
+/** Fetch this term's buckets. Idempotent, never rejects. */
+export function ensureSearchIndexFor(term) {
+  return Promise.all(searchIndexBuckets(term).map(loadIndexShard)).then(() => undefined)
+}
+
+const DETAIL_LOADERS = {
+  descriptions: () => Promise.all(
+    Object.keys(DESC_SHARD_LOADERS).map(loadDescShard)).then(() => undefined),
+  options: () => import('../data/productOptions.json').then(m => {
+    productOptions = m.default
+  }),
+  reviews: () => import('../data/reviews.json').then(m => {
+    reviews = m.default
+    buildReviewIndex()
+  }),
+}
+
+const detailInstalled = new Set()
+const detailPending = new Map()
+
+/* Subscription so a mounted view re-renders the moment its module lands. */
+const detailListeners = new Set()
+let detailVersion = 0
+
+export function subscribeCatalogDetail(fn) {
+  detailListeners.add(fn)
+  return () => detailListeners.delete(fn)
+}
+
+/** Bumped once per module install; a cheap snapshot for useSyncExternalStore. */
+export function catalogDetailVersion() {
+  return detailVersion
+}
+
+/** True once every named module is in memory. `[]` is trivially ready. */
+export function detailReady(mods) {
+  return (mods || []).every(m => detailInstalled.has(m))
+}
+
+/** True once all three detail seeds are in memory. */
+export function catalogDetailLoaded() {
+  return detailReady(DETAIL_MODULES)
+}
+
+/**
+ * Fetch and install the named detail seeds. Idempotent and safe to call from
+ * anywhere — concurrent callers share one promise per module.
+ *
+ * The returned promise must never reject: `AppProvider`'s boot gate awaits it,
+ * and a rejection there would skip `setLoading(false)` and strand every route
+ * on "Loading..." permanently, with no way back short of the agent reloading.
+ * One retry (chunks are same-origin static files, so the only plausible failure
+ * is a transient read), then give up, mark the module installed anyway and
+ * resolve — a PDP whose description tab is empty is a bad page an agent can
+ * recover from, a page that never paints is not. The console error is the
+ * signal.
+ */
+export function ensureDetail(mods) {
+  const list = mods && mods.length ? mods : DETAIL_MODULES
+  return Promise.all(list.map(mod => {
+    if (detailInstalled.has(mod)) return Promise.resolve()
+    if (!detailPending.has(mod)) {
+      const load = DETAIL_LOADERS[mod]
+      if (!load) return Promise.resolve()
+      const p = load()
+        .catch(() => load())
+        .catch(err => {
+          console.error(`[catalog] detail seed "${mod}" failed to load; ` +
+            'it will be empty this session', err)
+        })
+        .then(() => {
+          detailInstalled.add(mod)
+          detailVersion += 1
+          for (const fn of detailListeners) fn()
+        })
+      detailPending.set(mod, p)
+    }
+    return detailPending.get(mod)
+  })).then(() => undefined)
+}
+
+/**
+ * Prefetch what every route may want at t=0. `main.jsx` calls this before React
+ * mounts so the chunks are in flight from the start — it does NOT gate
+ * anything, so a route that needs none of them paints as soon as `/state`
+ * answers.
+ *
+ * R8-001: the description corpus is deliberately NOT in here any more. It is 32
+ * shards now, and firing all 32 before React mounts costs more than it saves —
+ * measured, not assumed: they filled the browser's ~6 connections and pushed
+ * `seed` and `seed-options` back, taking first content on `/`, category, cart
+ * and orders from 574/523/536/526 ms to 857/782/827/801 ms and their
+ * bytes-before-content from 2.36 MB gzip to 11.97 MB. Every view that reads the
+ * whole corpus asks for it itself on mount; `prefetchDescriptionCorpus()` below
+ * warms the rest for later navigations, off the first-paint critical path.
+ */
+export function loadCatalogDetail() {
+  return ensureDetail(['options', 'reviews'])
+}
+
+/**
+ * Warm the whole description corpus once first content is safely on screen, so
+ * a LATER client-side navigation to search / advanced search / compare / a
+ * list-mode listing does not have to wait for it. Never gates anything; a view
+ * that needs the corpus before this fires simply calls
+ * `ensureDetail(['descriptions'])` itself and shares these promises.
+ */
+export function prefetchDescriptionCorpus() {
+  return ensureDetail(['descriptions'])
+}
 
 /* ------------------------------------------------------------------ */
 /* Product indexes                                                     */
@@ -26,9 +404,13 @@ export function getProductByUrlKey(key) {
   return productsByUrlKey.get(key) || null
 }
 
-// status 1 = enabled, visibility >= 4 = "Catalog, Search"
+// status 1 = enabled, visibility >= 4 = "Catalog, Search".
+// `inStock` matters because cataloginventory/options/show_out_of_stock has no
+// row in the source's core_config_data, so Magento defaults it to 0 and drops
+// out-of-stock products from every category listing, search result and price
+// index. 261 seeded products are out of stock upstream.
 export function isListable(p) {
-  return !!p && p.status === 1 && p.visibility >= 4
+  return !!p && p.status === 1 && p.visibility >= 4 && p.inStock
 }
 
 export function finalPrice(p) {
@@ -121,17 +503,44 @@ export function descendantIds(categoryId) {
 /* Reviews                                                             */
 /* ------------------------------------------------------------------ */
 
+// Built by loadCatalogDetail() rather than at module scope — `reviews` is an
+// empty placeholder until the split chunk lands.
 const reviewIndex = new Map()
-for (const r of reviews) {
-  if (!reviewIndex.has(r.productId)) reviewIndex.set(r.productId, [])
-  reviewIndex.get(r.productId).push(r)
-}
-for (const list of reviewIndex.values()) {
-  list.sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0))
+function buildReviewIndex() {
+  reviewIndex.clear()
+  for (const r of reviews) {
+    if (!reviewIndex.has(r.productId)) reviewIndex.set(r.productId, [])
+    reviewIndex.get(r.productId).push(r)
+  }
+  for (const list of reviewIndex.values()) {
+    list.sort((a, b) => (a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0))
+  }
 }
 
 export function seededReviews(productId) {
   return reviewIndex.get(Number(productId)) || []
+}
+
+/**
+ * How many reviews the seed holds for a product — WITHOUT the `reviews` chunk.
+ *
+ * R8-001. `reviewCounts.json` is 35 KB and rides in the small `seed` chunk that
+ * every route already loads; it is a plain `len(group_by(productId))` over
+ * `reviews.json` (see `assets/dumps/build_review_counts.py`). It exists so the
+ * PDP can print its Reviews tab label — `Math.max(reviewsCount, list length)`,
+ * which the source itself renders inconsistently with the summary above it —
+ * on its FIRST frame, without waiting for the 5.2 MB-gzip review corpus.
+ * 89 products have more seeded reviews than their `review_entity_summary`
+ * aggregate declares, so without this the label would tick up when the chunk
+ * landed.
+ *
+ * Once the chunk IS installed the live index wins, so a session that has
+ * loaded reviews never disagrees with what it is about to render.
+ */
+export function seededReviewCount(productId) {
+  const id = Number(productId)
+  if (detailInstalled.has('reviews')) return (reviewIndex.get(id) || []).length
+  return reviewCounts[String(id)] || 0
 }
 
 /**
@@ -201,11 +610,52 @@ export function normalizeListingPath(path) {
   return p
 }
 
+/**
+ * R9-001 — the search term as the CAPTURE is keyed on.
+ *
+ * Magento's search is neither case- nor edge-whitespace-sensitive, and the live
+ * source proves both, byte for byte. Same URL, logged in, 2026-08-09:
+ *
+ *   ?q=Anker charger   Items 1-12 of 2527   B09J4YHB7J B09C5SC9FW B01N0X3NL5 …
+ *   ?q=anker charger   Items 1-12 of 2527   ← identical ids, identical order
+ *   ?q=ANKER CHARGER   Items 1-12 of 2527   ← identical
+ *   ?q=AnKeR ChArGeR   Items 1-12 of 2527   ← identical
+ *   ?q=  anker charger    (padded)     Items 1-12 of 2527  ← identical
+ *   ?q=anker  charger     (doubled)    Items 1-12 of 2527  ← identical
+ *   ?q=anker%0Acharger    (newline)    Items 1-12 of 2527  ← identical
+ *
+ * The mechanism is two-sided and both sides are in the container:
+ *  - `Magento\Search\Model\QueryFactory::getRawQueryText()` does
+ *    `cleanString(trim($queryText))`, so the *edges* are stripped before the
+ *    query is ever looked up — which is why the `<title>` on `?q=  x  ` reads
+ *    `Search results for: 'x'` while `?q=a  b` keeps its inner double space.
+ *  - Elasticsearch tokenises on whitespace and lowercases, so interior runs and
+ *    casing never reach the result set at all.
+ *
+ * The seed already agrees: `listings.json` holds captures for BOTH `Amazon
+ * basic` and `amazon basic`, and for both `Lays` and ` Lays`, and each pair is
+ * identical in `totalCount` and `productIds` (7332 / 830). Normalising the key
+ * therefore merges exactly those 2 pairs of the 1 554 captures and loses
+ * nothing — 1 554 keys become 1 552, with no data difference between the
+ * merged entries.
+ *
+ * Only `q` is folded. `cat` is an entity id and `price` a numeric range; both
+ * are case-free already and lowercasing them would be noise.
+ */
+function normalizeQueryTerm(v) {
+  return String(v).trim().replace(/\s+/g, ' ').toLowerCase()
+}
+
 function listingKey(path, query, keys) {
   const parts = []
   for (const k of keys) {
-    const v = query[k]
-    if (v !== undefined && v !== null && v !== '') parts.push(`${k}=${v}`)
+    let v = query[k]
+    if (v === undefined || v === null || v === '') continue
+    if (k === 'q') {
+      v = normalizeQueryTerm(v)
+      if (v === '') continue
+    }
+    parts.push(`${k}=${v}`)
   }
   parts.sort()
   return normalizeListingPath(path) + '?' + parts.join('&')
@@ -284,6 +734,66 @@ export function capturedFacetCount(path, query) {
   const n = facetCountIndex.get(listingKey(path, query, FILTER_PARAMS))
   return n === undefined ? null : n
 }
+
+/**
+ * R8-001 — does a SEARCH listing's rendered output depend on the derived seed
+ * pool, and therefore on the description corpus?
+ *
+ * `searchSeed()` scores `descriptions` (Magento's `description` attribute is
+ * searchable at `search_weight` 1, alongside name 5 and sku 6), so
+ * `resolveListing({term})` reads the 9.35 MB-gzip chunk unconditionally. That
+ * is why `/catalogsearch/result/` sat behind 4/4 chunks — it was the single
+ * most expensive thing on the page and it renders none of it.
+ *
+ * But the pool only reaches the screen through four paths, and a fully
+ * captured page takes none of them:
+ *
+ *   items       — `exact.productIds` verbatim when every captured id is seeded,
+ *                 pool only as filler for the ids the 1 105-sample lacks
+ *   totalCount  — `anchor.totalCount`, the source's own number, unless it is
+ *                 absent
+ *   Category    — `anchor.filters[Category]` verbatim, otherwise counted over
+ *                 the pool
+ *   Price       — never on a search page (`showPrice={false}`, LayeredNav.jsx)
+ *
+ * So this returns false only when all four are answered by the capture, which
+ * is exactly when the page can paint before the corpus lands. It is deliberately
+ * conservative: any doubt returns true and the page waits, as it always did.
+ * Nothing that renders changes when the chunk later arrives, so there is no
+ * frame to flash — the page simply re-renders identically.
+ */
+export function searchNeedsTokenIndex(path, query) {
+  const exact = capturedListing(path, query)
+  const anchor = capturedAnchor(path, query)
+  if (!exact || !anchor) return true
+  if (anchor.totalCount == null) return true
+  if (!(exact.productIds || []).length) return true
+  if (!exact.productIds.every(id => productsById.has(id))) return true
+  if (!(anchor.filters || []).some(f => f.name === 'Category')) return true
+  return false
+}
+
+/**
+ * Does a SEARCH page need the whole description corpus before it can render?
+ *
+ * Shard Q: no longer, except in list mode. `searchSeed()` reads the sharded
+ * token index (see SEARCH_INDEX_BUCKETS) rather than raw description text, so
+ * the derived pool — items, `totalCount`, the Category facet — costs kilobytes.
+ * `?product_list_mode=list` is the one search surface that still prints a
+ * description per tile (ProductGrid.jsx), and that genuinely needs the corpus
+ * however the results were derived.
+ *
+ * The old name is kept because `main.jsx` — which this shard does not own —
+ * imports it as its corpus-prefetch hint, and this is exactly the question that
+ * hint is asking. `searchNeedsTokenIndex()` above carries the old body, i.e.
+ * "does this page read the derived pool at all", which is now a much cheaper
+ * question and the one `SearchPage` gates on.
+ */
+export function searchNeedsDescriptionCorpus(path, query) {
+  return !!query && query.product_list_mode === 'list'
+}
+
+export { searchNeedsDescriptionCorpus as searchNeedsSeedPool }
 
 /* ------------------------------------------------------------------ */
 /* Client-side listing resolution                                      */
@@ -365,8 +875,155 @@ function tokenMatcher(token) {
   return new RegExp(`\\b${esc}(?:s|es|ies)?\\b`, 'i')
 }
 
-// Lazily-built lowercase corpus: one strong field (name/sku/url key) and one
-// weak field (the description, tags stripped) per listable product.
+/* ---- minimum search query length (DIFF-A01) ------------------------------ */
+
+/**
+ * `catalog/search/min_query_length`, read out of THIS container rather than
+ * inferred from the `Minimum Search query length is 3` message string:
+ *
+ *   SELECT COUNT(*) FROM core_config_data;                          -> 56
+ *   SELECT COUNT(*) FROM core_config_data
+ *     WHERE path LIKE 'catalog/search%';                            -> 0
+ *   vendor/magento/module-catalog-search/etc/config.xml:
+ *     <min_query_length>3</min_query_length>
+ *
+ * i.e. the deployment carries no override at any scope, so the effective value
+ * is the module default, 3. `storeConfig.minQueryLength` is honoured first so a
+ * future re-extraction that does capture the row wins without a code change.
+ */
+export const MIN_QUERY_LENGTH =
+  Number.isFinite(Number(storeConfig.minQueryLength)) ? Number(storeConfig.minQueryLength) : 3
+
+/**
+ * `Magento\Search\Model\Query::getQueryText()` after
+ * `QueryFactory::getRawQueryText()`, which is `cleanString(trim($queryText))`.
+ * The *displayed* query keeps its interior whitespace (`?q=a  b` titles as
+ * `'a  b'`), so only the edges are stripped here.
+ */
+export function searchQueryText(raw) {
+  return String(raw == null ? '' : raw).trim()
+}
+
+/**
+ * `Magento\CatalogSearch\Helper\Data::isMinQueryLength()`:
+ *
+ *   $thisQueryLength = $this->string->strlen($this->getQueryText());
+ *   return !$thisQueryLength || ($minQueryLength !== '' && $thisQueryLength < $minQueryLength);
+ *
+ * `strlen` there is `Framework\Stdlib\StringUtils::strlen`, i.e. `mb_strlen` —
+ * code points, not UTF-16 units — hence the spread rather than `.length`.
+ *
+ * Note the empty case is folded in on the source too, but never reaches the
+ * block: the controller redirects an empty `q` away before rendering (see
+ * `searchRedirectsHome()`).
+ */
+export function isBelowMinQueryLength(raw) {
+  const text = searchQueryText(raw)
+  return [...text].length < MIN_QUERY_LENGTH
+}
+
+/**
+ * `Magento\CatalogSearch\Controller\Result\Index::execute()` renders the result
+ * page only when the trimmed query text is non-empty; otherwise it issues a
+ * redirect (`$this->_redirect->getRedirectUrl()`, which with no referer is the
+ * store base URL). Confirmed live on 2026-08-09 — `/catalogsearch/result/?q=`,
+ * `/catalogsearch/result/` and `/catalogsearch/result/?q=%20%20` all serve the
+ * homepage (`<title>One Stop Market</title>`, 166 814 B, no search notice).
+ */
+export function searchRedirectsHome(raw) {
+  return searchQueryText(raw) === ''
+}
+
+/**
+ * "Related search terms" — `Magento\AdvancedSearch\Block\Recommendations`,
+ * rendered by `search_data.phtml` through `Result::getAdditionalHtml()`, which
+ * `result.phtml` emits inside the `.message.notice` on BOTH zero-result states
+ * (no matches, and below the minimum query length).
+ *
+ * Reproduced from `AdvancedSearch\Model\ResourceModel\Recommendations`:
+ *
+ *  1. `$queryWords = [$query]`, plus — only when the query contains a space —
+ *     its unique space-split words, dropping any word shorter than 3 chars.
+ *  2. `WHERE (query_text LIKE '<word>%' OR …) AND store_id = 1`
+ *     `ORDER BY num_results DESC LIMIT <count + 1>`   (count = 5, below)
+ *  3. drop the current query's own row, then `array_slice(…, 0, count)`
+ *  4. a second `SELECT query_text, num_results WHERE query_id IN (…) AND
+ *     num_results > 0` — no ORDER BY, so InnoDB returns primary-key order.
+ *
+ * Step 4's ordering is not a guess. Live `?q=a` renders, in this order,
+ * `apple iphone 11 screen guard`, `apple iphone 7 screen guard`,
+ * `apple iphone 11`, `apple iphone 12`, `Anker Quick Charge 3.0 39W Dual`,
+ * whose `search_query.query_id`s are 288, 292, 300, 302, 440 — ascending id,
+ * NOT the `num_results DESC` (440, 292, 302, 288, 300) that selected them.
+ *
+ * The prefix match is case-insensitive because `search_query.query_text` is a
+ * `utf8_general_ci` column: live `?q=AB` and `?q=ab` both return `abc`, and
+ * `?q=Ze` returns `zebra pillow`.
+ *
+ * `search_recommendations_count` is 5 and
+ * `search_recommendations_count_results_enabled` is 0 in
+ * `module-advanced-search/etc/config.xml`, with no `core_config_data` override
+ * — so five items and no `<span class="count">`, which is what the source
+ * renders.
+ */
+const SEARCH_RECOMMENDATIONS_COUNT = 5
+
+export function relatedSearchTerms(raw) {
+  const query = searchQueryText(raw)
+  if (!query) return []
+
+  let words = [query]
+  if (query.includes(' ')) {
+    for (const w of query.split(' ')) {
+      const word = w.trim()
+      // PHP measures the UNTRIMMED word here (`strlen($word) < 3`), and keeps
+      // the trimmed one; splitting on a single space makes the two the same.
+      if (word.length >= 3 && !words.includes(word)) words.push(word)
+    }
+  }
+  const prefixes = words.map(w => w.toLowerCase())
+  const self = query.toLowerCase()
+
+  const hits = searchTerms.filter(t => {
+    const text = String(t.queryText || '').toLowerCase()
+    return prefixes.some(pre => text.startsWith(pre))
+  })
+  // ORDER BY num_results DESC LIMIT count + 1. MySQL leaves ties unordered;
+  // queryId ascending keeps this deterministic.
+  hits.sort((a, b) => (b.numResults || 0) - (a.numResults || 0) || a.queryId - b.queryId)
+
+  const picked = hits
+    .slice(0, SEARCH_RECOMMENDATIONS_COUNT + 1)
+    .filter(t => String(t.queryText || '').toLowerCase() !== self)
+    .slice(0, SEARCH_RECOMMENDATIONS_COUNT)
+    .filter(t => (t.numResults || 0) > 0)
+
+  // The second SELECT has no ORDER BY -> primary-key order.
+  return picked.slice().sort((a, b) => a.queryId - b.queryId)
+}
+
+/**
+ * The query tokens `searchSeed()` scores, in order.
+ *
+ * Factored out so the gate (`searchIndexBuckets`) and the scorer read the same
+ * tokens from the same term — a gate that waited on a different token set than
+ * the one being scored would let a search paint against a partial index.
+ */
+function queryTokens(term) {
+  const raw = tokenize(term)
+  if (!raw.length) return []
+  // Magento drops stopwords, but a query made *entirely* of them still runs.
+  const kept = raw.filter(t => !SEARCH_STOPWORDS.has(t))
+  return kept.length ? kept : raw
+}
+
+// Lazily-built lowercase strong field (name/sku/url key) per listable product.
+//
+// R8-001: the weak field — the whole description, tags stripped — used to live
+// here too, which is what made `searchSeed()` a 9.35 MB-gzip dependency. The
+// description side is now the sharded inverted index above, and this corpus
+// depends only on `products.json`, which every route already loads. It is
+// therefore built once and never invalidated.
 let searchCorpus = null
 function buildSearchCorpus() {
   if (searchCorpus) return searchCorpus
@@ -374,11 +1031,9 @@ function buildSearchCorpus() {
   for (const p of products) {
     if (!isListable(p)) continue
     const urlWords = String(p.urlKey || '').replace(/-/g, ' ')
-    const desc = descriptions[String(p.id)] || ''
     searchCorpus.push({
       p,
       strong: `${p.name} ${p.sku} ${urlWords}`.toLowerCase(),
-      weak: desc.replace(/<[^>]*>/g, ' ').toLowerCase(),
     })
   }
   return searchCorpus
@@ -409,19 +1064,20 @@ export function searchSeed(term) {
   const key = String(term || '').toLowerCase().trim()
   if (searchCache.has(key)) return searchCache.get(key)
 
-  const raw = tokenize(term)
-  if (!raw.length) return []
-  // Magento drops stopwords, but a query made *entirely* of them still runs.
-  const kept = raw.filter(t => !SEARCH_STOPWORDS.has(t))
-  const tokens = kept.length ? kept : raw
+  const tokens = queryTokens(term)
+  if (!tokens.length) return []
   const matchers = tokens.map(tokenMatcher)
+  // Same predicate as `matchers[i].test(weakText)`, read out of the index
+  // instead of out of 34.71 MB of raw description. See the block comment on
+  // SEARCH_INDEX_BUCKETS for why the two are equal rather than similar.
+  const weakSets = tokens.map(weakPostings)
 
   const scored = []
   for (const entry of buildSearchCorpus()) {
     let score = 0
-    for (const re of matchers) {
-      if (re.test(entry.strong)) score += W_STRONG
-      else if (entry.weak && re.test(entry.weak)) score += W_WEAK
+    for (let i = 0; i < matchers.length; i++) {
+      if (matchers[i].test(entry.strong)) score += W_STRONG
+      else if (weakSets[i].has(entry.p.id)) score += W_WEAK
     }
     if (score > 0) scored.push({ p: entry.p, score })
   }
@@ -657,8 +1313,45 @@ function paramFromCapturedHref(href, name) {
   }
 }
 
-/** Child-category facet: label + count + the descendant id to filter by. */
-export function categoryFacets(listing, categoryId) {
+// Magento's store root ("Default Category"). Every top-level department hangs
+// off it, and it is the category layer a SEARCH page sits in when no ?cat= has
+// been applied.
+export const ROOT_CATEGORY_ID = 2
+
+/**
+ * Child-category facet: label + count + the descendant id to filter by.
+ *
+ * BUG-N02: this used to return `[]` whenever `categoryId == null`, which is
+ * every search page. Combined with `LayeredNav`'s `hasFacets` guard, the whole
+ * `.block.filter` ("Shop By" / "Shopping Options" / "Category") disappeared on
+ * any term that was not captured into `listings.json` during recon — so an
+ * agent could only narrow a search by category on 105 hard-coded terms and had
+ * no control at all on a term it invented.
+ *
+ * The source derives the layer from the ACTIVE category, and always has one:
+ *
+ *   /catalogsearch/result/?q=tea            → children of the root, 12 options
+ *                                             (Beauty & Personal Care 867 …
+ *                                              Grocery & Gourmet Food 1235)
+ *   /catalogsearch/result/?q=tea&cat=6      → children of 6, 8 options
+ *                                             (Furniture 386 … Bath 7)
+ *   /home-kitchen.html                      → children of 6
+ *   /home-kitchen.html?cat=34               → children of 34, NOT of 6
+ *
+ * — ordered by the category tree's own order, counted within the current result
+ * set, and with the zero-count children dropped (?q=blanket omits Tools & Home
+ * Improvement and Cell Phones, which ?q=tea and ?q=chairs both list).
+ *
+ * `activeCategoryId` is the `?cat=` filter when one is applied. It wins over
+ * the page's own category, which is the last live case above and was also
+ * wrong before.
+ *
+ * The counts are seed-scale rather than source-scale — the seed is a sample of
+ * the container's catalog — which is the same declared gap the toolbar count on
+ * the same page already carries. Captured pages still render the source's own
+ * facet list and counts verbatim, above.
+ */
+export function categoryFacets(listing, categoryId, activeCategoryId = null) {
   const captured = listing.anchor && listing.anchor.filters
     ? listing.anchor.filters.find(f => f.name === 'Category')
     : null
@@ -669,8 +1362,10 @@ export function categoryFacets(listing, categoryId) {
       cat: paramFromCapturedHref(o.href, 'cat'),
     }))
   }
-  if (categoryId == null) return []
-  const kids = childrenOf(categoryId)
+  const base = activeCategoryId != null ? Number(activeCategoryId)
+    : categoryId != null ? Number(categoryId)
+    : ROOT_CATEGORY_ID
+  const kids = childrenOf(base)
   return kids
     .map(c => {
       const ids = descendantIds(c.id)

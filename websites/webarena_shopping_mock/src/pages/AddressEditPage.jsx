@@ -72,116 +72,153 @@ export default function AddressEditPage({ addressId }) {
 
   return (
     <Page title={title} documentTitle={title} sidebar="account">
-      <form className="form-address-edit" onSubmit={onSubmit} noValidate>
+      {/* Attributes transcribed from assets/html/address-edit.html: the source
+          form is `<form class="form-address-edit" id="form-validate">`, every
+          control carries a real `name`, each field div carries a semantic class,
+          and each legend is followed by a `<br>` (hidden by CSS). */}
+      <form className="form-address-edit" id="form-validate" onSubmit={onSubmit} noValidate>
         <fieldset className="fieldset">
-          <legend className="legend"><span>Contact Information</span></legend>
-          <div className="field required">
+          <legend className="legend"><span>Contact Information</span></legend><br />
+          <div className="field field-name-firstname required">
             <label className="label" htmlFor="firstname"><span>First Name</span></label>
             <div className="control">
-              <input type="text" id="firstname" value={form.firstname} onChange={e => set('firstname', e.target.value)} />
+              <input type="text" id="firstname" name="firstname" title="First Name"
+                value={form.firstname} onChange={e => set('firstname', e.target.value)} />
               {errors.firstname && <span className="field-error">{errors.firstname}</span>}
             </div>
           </div>
-          <div className="field required">
+          <div className="field field-name-lastname required">
             <label className="label" htmlFor="lastname"><span>Last Name</span></label>
             <div className="control">
-              <input type="text" id="lastname" value={form.lastname} onChange={e => set('lastname', e.target.value)} />
+              <input type="text" id="lastname" name="lastname" title="Last Name"
+                value={form.lastname} onChange={e => set('lastname', e.target.value)} />
               {errors.lastname && <span className="field-error">{errors.lastname}</span>}
             </div>
           </div>
-          <div className="field">
+          <div className="field company">
             <label className="label" htmlFor="company"><span>Company</span></label>
             <div className="control">
-              <input type="text" id="company" value={form.company} onChange={e => set('company', e.target.value)} />
+              <input type="text" id="company" name="company" title="Company"
+                value={form.company} onChange={e => set('company', e.target.value)} />
             </div>
           </div>
-          <div className="field required">
+          <div className="field telephone required">
             <label className="label" htmlFor="telephone"><span>Phone Number</span></label>
             <div className="control">
-              <input type="text" id="telephone" value={form.telephone} onChange={e => set('telephone', e.target.value)} />
+              <input type="tel" id="telephone" name="telephone" title="Phone Number"
+                value={form.telephone} onChange={e => set('telephone', e.target.value)} />
               {errors.telephone && <span className="field-error">{errors.telephone}</span>}
             </div>
           </div>
         </fieldset>
 
         <fieldset className="fieldset">
-          <legend className="legend"><span>Address</span></legend>
-          <div className="field required">
+          <legend className="legend"><span>Address</span></legend><br />
+          {/* The source spells the two lines out as real sublabels, not
+              placeholders: `.field.primary > label[for=street_1]` reading
+              "Street Address: Line 1", then `.nested > .field.additional`
+              holding "Street Address: Line 2". */}
+          <div className="field street required">
             <label className="label" htmlFor="street_1"><span>Street Address</span></label>
             <div className="control">
-              <input type="text" id="street_1" placeholder="Street Address: Line 1"
+              <div className="field primary">
+                <label className="label" htmlFor="street_1"><span>Street Address: Line 1</span></label>
+              </div>
+              <input type="text" id="street_1" name="street[0]" title="Street Address"
                 value={form.street[0]} onChange={e => set('street', [e.target.value, form.street[1]])} />
               {errors.street && <span className="field-error">{errors.street}</span>}
-              <input type="text" id="street_2" placeholder="Street Address: Line 2" style={{ marginTop: 8 }}
-                value={form.street[1]} onChange={e => set('street', [form.street[0], e.target.value])} />
+              <div className="nested">
+                <div className="field additional">
+                  <label className="label" htmlFor="street_2"><span>Street Address: Line 2</span></label>
+                  <div className="control">
+                    <input type="text" id="street_2" name="street[1]" title="Street Address 2"
+                      value={form.street[1]} onChange={e => set('street', [form.street[0], e.target.value])} />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="field required">
+          <div className="field country required">
             <label className="label" htmlFor="country"><span>Country</span></label>
             <div className="control">
-              <select id="country" value={form.countryId} onChange={e => set('countryId', e.target.value)}>
+              <select id="country" name="country_id" title="Country"
+                value={form.countryId} onChange={e => set('countryId', e.target.value)}>
                 {COUNTRIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
             </div>
           </div>
-          <div className="field required">
-            <label className="label" htmlFor="region"><span>State/Province</span></label>
+          {/* The source ships BOTH controls in the DOM and shows whichever the
+              selected country needs: `select#region_id[name=region_id]` for
+              countries with a region table, `input#region[name=region]` for the
+              rest. Keeping both means a source-derived `#region_id` OR `#region`
+              selector resolves, exactly as it does on the container. */}
+          <div className="field region required">
+            <label className="label" htmlFor="region_id"><span>State/Province</span></label>
             <div className="control">
-              {form.countryId === 'US' ? (
-                <select id="region" value={form.region} onChange={e => set('region', e.target.value)}>
-                  <option value="">Please select a region, state or province.</option>
-                  {US_REGIONS.map(r => <option key={r.id} value={r.name}>{r.name}</option>)}
-                </select>
-              ) : (
-                <input type="text" id="region" value={form.region} onChange={e => set('region', e.target.value)} />
-              )}
+              <select id="region_id" name="region_id" title="State/Province"
+                className="validate-select region_id"
+                value={form.region} onChange={e => set('region', e.target.value)}
+                style={{ display: form.countryId === 'US' ? '' : 'none' }}>
+                <option value="">Please select a region, state or province.</option>
+                {US_REGIONS.map(r => <option key={r.id} value={r.name}>{r.name}</option>)}
+              </select>
+              <input type="text" id="region" name="region" title="State/Province"
+                value={form.region} onChange={e => set('region', e.target.value)}
+                style={{ display: form.countryId === 'US' ? 'none' : '' }} />
               {errors.region && <span className="field-error">{errors.region}</span>}
             </div>
           </div>
-          <div className="field required">
+          <div className="field city required">
             <label className="label" htmlFor="city"><span>City</span></label>
             <div className="control">
-              <input type="text" id="city" value={form.city} onChange={e => set('city', e.target.value)} />
+              <input type="text" id="city" name="city" title="City"
+                value={form.city} onChange={e => set('city', e.target.value)} />
               {errors.city && <span className="field-error">{errors.city}</span>}
             </div>
           </div>
-          <div className="field required">
+          <div className="field zip required">
             <label className="label" htmlFor="zip"><span>Zip/Postal Code</span></label>
             <div className="control">
-              <input type="text" id="zip" value={form.postcode} onChange={e => set('postcode', e.target.value)} />
+              <input type="text" id="zip" name="postcode" title="Zip/Postal Code"
+                value={form.postcode} onChange={e => set('postcode', e.target.value)} />
               {errors.postcode && <span className="field-error">{errors.postcode}</span>}
             </div>
           </div>
-          <div className="field choice">
-            {isOnly ? (
-              <span>It&#039;s a default billing address.</span>
-            ) : (
-              <>
-                <input type="checkbox" id="primary_billing" checked={form.isDefaultBilling}
-                  onChange={e => set('isDefaultBilling', e.target.checked)} style={{ width: 'auto', height: 'auto' }} />{' '}
-                <label className="label" htmlFor="primary_billing" style={{ display: 'inline' }}>
-                  <span>Use as my default billing address</span>
-                </label>
-              </>
-            )}
-          </div>
-          <div className="field choice">
-            {isOnly ? (
-              <span>It&#039;s a default shipping address.</span>
-            ) : (
-              <>
-                <input type="checkbox" id="primary_shipping" checked={form.isDefaultShipping}
-                  onChange={e => set('isDefaultShipping', e.target.checked)} style={{ width: 'auto', height: 'auto' }} />{' '}
-                <label className="label" htmlFor="primary_shipping" style={{ display: 'inline' }}>
-                  <span>Use as my default shipping address</span>
-                </label>
-              </>
-            )}
-          </div>
+          {/* When the address is the customer's only one Magento cannot let it
+              stop being the default, so it swaps each checkbox for
+              `<div class="message info"><span>It's a default … address.</span></div>`
+              (verbatim from address-edit.html). */}
+          {isOnly ? (
+            <div className="message info"><span>It&#039;s a default billing address.</span></div>
+          ) : (
+            <div className="field choice">
+              <input type="checkbox" name="default_billing" id="primary_billing" value="1"
+                title="Use as my default billing address" className="checkbox"
+                checked={form.isDefaultBilling} onChange={e => set('isDefaultBilling', e.target.checked)} />{' '}
+              <label className="label" htmlFor="primary_billing">
+                <span>Use as my default billing address</span>
+              </label>
+            </div>
+          )}
+          {isOnly ? (
+            <div className="message info"><span>It&#039;s a default shipping address.</span></div>
+          ) : (
+            <div className="field choice">
+              <input type="checkbox" name="default_shipping" id="primary_shipping" value="1"
+                title="Use as my default shipping address" className="checkbox"
+                checked={form.isDefaultShipping} onChange={e => set('isDefaultShipping', e.target.checked)} />{' '}
+              <label className="label" htmlFor="primary_shipping">
+                <span>Use as my default shipping address</span>
+              </label>
+            </div>
+          )}
         </fieldset>
 
         <div className="actions-toolbar">
-          <button type="submit" className="action save primary"><span>Save Address</span></button>
+          <div className="primary">
+            <button type="submit" className="action save primary" data-action="save-address"
+              title="Save Address"><span>Save Address</span></button>
+          </div>
           <div className="secondary"><SLink to="/customer/address/" className="action back"><span>Go back</span></SLink></div>
         </div>
       </form>

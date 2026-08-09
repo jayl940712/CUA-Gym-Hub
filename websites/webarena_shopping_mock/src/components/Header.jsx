@@ -2,47 +2,101 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useApp } from '../context/AppContext.jsx'
 import { SLink, useStoreNavigate, useUrlBuilder } from '../utils/url.js'
-import { topCategories, childrenOf, categoryUrl, searchTerms, storeConfig, productsById } from '../utils/catalog.js'
+import { topCategories, childrenOf, categoryUrl, searchTerms, productsById } from '../utils/catalog.js'
 import { money } from '../utils/format.js'
 import { CartIcon, SearchIcon } from './Icons.jsx'
 import ProductImage from './ProductImage.jsx'
 
-function PanelBar() {
+/*
+ * `ul.header.links`. The source renders this list TWICE: once in
+ * `.panel.header` (the desktop bar) and once inside
+ * `div#store.links.nav-sections-item-content`, the "Account links" tab panel of
+ * the mobile nav-sections. Both copies are identical markup; the second carries
+ * an inline `display:none` at desktop widths. Hence every `.header.links`
+ * descendant — including the greeting — occurs twice in the source's DOM.
+ */
+function HeaderLinks() {
   const { state } = useApp()
+  const c = state.customer
+  // Magento's `customer` customer-data section exposes `fullname`; for this
+  // customer it is "Emma Lopez" = firstname + ' ' + lastname.
+  const fullname = [c.firstname, c.lastname].filter(Boolean).join(' ')
+  const compareCount = state.compareList.items.length
+  const compareCaption = compareCount === 1 ? '1 item' : `${compareCount} items`
+  return (
+    <ul className="header links">
+      <li><SLink to="/customer/account/">My Account</SLink></li>
+      <li className="link wishlist">
+        <SLink to="/wishlist/">My Wish List
+          {state.wishlist.items.length > 0 && (
+            <span className="counter qty"> {state.wishlist.items.length} items</span>
+          )}
+        </SLink>
+      </li>
+      {/* The source shows a Sign Out link; the mock boots pre-logged-in and
+          never gates anything, so it simply returns you to the storefront. */}
+      <li className="link authorization-link"><SLink to="/">Sign Out</SLink></li>
+      {/* DIFF-N01. The source ships this `<li>` on EVERY page, empty list or
+          not — the entry point into the comparison list is site chrome, not a
+          conditional. Verified in the source HTML:
+
+            <li class="item link compare" data-bind="scope: 'compareProducts'"
+                data-role="compare-products-link">
+              <a class="action compare no-display" title="Compare Products"
+                 data-bind="… css: {'no-display': !compareProducts().count}">
+                Compare Products        <span class="counter qty"
+                       data-bind="text: compareProducts().countCaption"></span>
+              </a>
+            </li>
+
+          `countCaption` is Magento\Catalog\CustomerData\CompareProducts:
+          `1 item` at one, `%1 items` otherwise — so the empty state reads
+          `Compare Products 0 items`, not a bare `0`. The mock rendered the link
+          only once the list was non-empty and printed the raw count.
+
+          Measured on the live source at 1280x720 with an empty compare list:
+          `.panel.header .action.compare` IS in the DOM, with the `no-display`
+          class and a computed `display: none` / zero-area box. So the node is
+          unconditional and the class carries the empty state — matched here in
+          both directions. */}
+      <li className="item link compare" data-role="compare-products-link">
+        <SLink
+          to="/catalog/product_compare/index/"
+          className={`action compare${compareCount ? '' : ' no-display'}`}
+          title="Compare Products"
+        >
+          Compare Products <span className="counter qty">{compareCaption}</span>
+        </SLink>
+      </li>
+      {/* Magento renders this greeting from the `customer` customer-data
+          section, which is populated by JS *after* first paint. Measured on the
+          live container while LOGGED IN as emma.lopez@gmail.com,
+          /customer/section/load/?sections=customer returns
+          {"fullname":"Emma Lopez","firstname":"Emma",…}, so the Knockout
+          `if: customer().fullname` branch wins and every page renders
+          `<span class="logged-in">Welcome, Emma Lopez!</span>` — two of them,
+          one per copy of this list.
+
+          A previous round asserted the opposite (that the container never
+          populates the section and the store greeting always shows). That
+          measurement was taken on a LOGGED-OUT session, where the source really
+          does render `Welcome to One Stop Market` inside
+          `<span class="not-logged-in">`. The mock boots pre-logged-in, so the
+          logged-in branch is the only correct one here. Re-check this only
+          against a source session that reports `span.logged-in` count 2. */}
+      <li className="greet welcome">
+        <span className="logged-in">Welcome, {fullname}!</span>
+      </li>
+    </ul>
+  )
+}
+
+function PanelBar() {
   return (
     <div className="panel wrapper">
       <div className="panel header">
         <a className="action skip contentarea visually-hidden" href="#contentarea"><span>Skip to Content</span></a>
-        <ul className="header links">
-          <li><SLink to="/customer/account/">My Account</SLink></li>
-          <li className="link wishlist">
-            <SLink to="/wishlist/">My Wish List
-              {state.wishlist.items.length > 0 && (
-                <span className="counter qty"> {state.wishlist.items.length} items</span>
-              )}
-            </SLink>
-          </li>
-          {/* The source shows a Sign Out link; the mock boots pre-logged-in and
-              never gates anything, so it simply returns you to the storefront. */}
-          <li className="link authorization-link"><SLink to="/">Sign Out</SLink></li>
-          {state.compareList.items.length > 0 && (
-            <li className="item link compare">
-              <SLink to="/catalog/product_compare/index/" className="action compare" title="Compare Products">
-                Compare Products <span className="counter qty">{state.compareList.items.length}</span>
-              </SLink>
-            </li>
-          )}
-          {/* Magento renders this greeting from the `customer` customer-data
-              section. In this deployment that section comes back as
-              {"data_id":…} with no `fullname` — verified against
-              /customer/section/load/ on the live container — so the Knockout
-              `ifnot: customer().fullname` branch wins and every page, including
-              the authenticated ones, shows the store greeting. Reference
-              captures 14-cart.png and 15-account-dashboard.png agree. */}
-          <li className="greet welcome">
-            <span className="not-logged-in">{storeConfig.welcomeMessage}</span>
-          </li>
-        </ul>
+        <HeaderLinks />
       </div>
     </div>
   )
@@ -101,8 +155,27 @@ function SearchBlock() {
                 onChange={e => { setValue(e.target.value); setOpen(true) }}
                 onFocus={() => setOpen(true)}
               />
-              <button type="submit" title="Search" className="action search" aria-label="Search">
+              {/*
+                The source's button is
+                  <button type="submit" title="Search" class="action search"
+                          aria-label="Search" disabled><span>Search</span></button>
+                — the label lives in a clipped <span> (Luma's abs-visually-hidden:
+                position:absolute; 1x1; margin:-1px; clip:rect(0,0,0,0)), and the
+                magnifier is an ::before icon-font glyph, so `innerText` reads
+                'Search' on a 22x32 button. Magento's quickSearch widget keeps the
+                button `disabled` until the input holds `minSearchLength` = 3
+                characters; measured on the live source: '' → disabled,
+                'a' → disabled, 'ab' → disabled, 'abc' → enabled.
+              */}
+              <button
+                type="submit"
+                title="Search"
+                className="action search"
+                aria-label="Search"
+                disabled={value.length < 3}
+              >
                 <SearchIcon size={18} />
+                <span className="visually-hidden">Search</span>
               </button>
               {open && suggestions.length > 0 && (
                 <div id="search_autocomplete" className="search-autocomplete">
@@ -143,10 +216,35 @@ function MiniCart() {
 
   return (
     <div data-block="minicart" className="minicart-wrapper" ref={ref}>
-      <button type="button" className="action showcart" onClick={() => setOpen(o => !o)} aria-label="My Cart">
+      {/* DIFF-N02. The source's showcart is an `<a href="…/checkout/cart/">`
+          whose FIRST child is `<span class="text">My Cart</span>`; the counter
+          follows it and carries `empty` while the cart is empty:
+
+            <a class="action showcart" href="…/checkout/cart/">
+              <span class="text">My Cart</span>
+              <span class="counter qty empty">
+                <span class="counter-number">3</span>
+                <span class="counter-label">3 items</span>
+              </span>
+            </a>
+
+          The mock rendered the counter alone, so `.action.showcart` innerText
+          was `3` where the source reads `My Cart`. The click still opens the
+          minicart flyout rather than following the href, which is what the
+          source's JS does too. */}
+      <SLink
+        to="/checkout/cart/"
+        className="action showcart"
+        aria-label="My Cart"
+        onClick={e => { e.preventDefault(); setOpen(o => !o) }}
+      >
         <CartIcon />
-        {count > 0 && <span className="counter qty"><span className="counter-number">{count}</span></span>}
-      </button>
+        <span className="text">My Cart</span>
+        <span className={`counter qty${count > 0 ? '' : ' empty'}`}>
+          <span className="counter-number">{count > 0 ? count : ''}</span>
+          <span className="counter-label">{count > 0 ? `${count} ${count === 1 ? 'item' : 'items'}` : ''}</span>
+        </span>
+      </SLink>
       {open && (
         <div className="block block-minicart">
           <div id="minicart-content-wrapper">
@@ -245,6 +343,16 @@ function NavBand() {
           })}
         </ul>
       </nav>
+      {/* Luma's mobile "Account links" tab panel. The source ships it on every
+          page inside `.sections.nav-sections` with an inline `display: none` at
+          desktop widths, carrying a second, identical copy of
+          `ul.header.links` — which is why `span.logged-in` counts 2 on the
+          source and not 1. Kept hidden so it contributes nothing to `innerText`
+          or to hit-testing, exactly as on the source at 1280px and up. */}
+      <div className="section-item-content nav-sections-item-content" id="store.links"
+        data-role="content" role="tabpanel" aria-hidden="true" style={{ display: 'none' }}>
+        <HeaderLinks />
+      </div>
     </div>
   )
 }

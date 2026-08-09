@@ -35,11 +35,20 @@ export function ReviewsSummary({ product }) {
   const count = reviewCount(product, state.myReviews)
   if (!count) return null
   return (
-    <div className="product-reviews-summary">
-      <Rating percent={pct} />
+    // Source (home.html, cat-headphones.html):
+    //   <div class="product-reviews-summary short">
+    //     <div class="rating-summary">…</div>
+    //     <div class="reviews-actions">
+    //       <a class="action view" href="…html#reviews">12{ws}&nbsp;<span>Reviews{ws}</span></a>
+    //   Collapsible whitespace AND a non-breaking space sit between the count
+    //   and the word, which is why the source's innerText reads `12  Reviews`
+    //   with two spaces. The `#reviews` fragment is dropped: buildUrl() appends
+    //   `?sid=` after the path, so a fragment here would swallow the sid.
+    <div className="product-reviews-summary short">
+      <Rating percent={pct} variant="tile" />
       <div className="reviews-actions">
         <SLink to={`/${product.urlKey}.html`} className="action view">
-          {count} {count === 1 ? 'Review' : 'Reviews'}
+          {`${count} \u00a0`}<span>{count === 1 ? 'Review' : 'Reviews'}</span>
         </SLink>
       </div>
     </div>
@@ -68,13 +77,34 @@ export function AddToCartButton({ product, className = 'action tocart primary' }
 
 export function TileActions({ product }) {
   const { addToWishlist, addToCompare, addMessage } = useApp()
+  // DIFF-N03. Both tile actions are anchors on the source, inside a wrapper
+  // that carries `data-role="add-to-links"`:
+  //
+  //   <div data-role="add-to-links" class="actions-secondary">
+  //     <a href="#" class="action towishlist" title="Add to Wish List"
+  //        aria-label="Add to Wish List" data-action="add-to-wishlist"
+  //        role="button"><span>Add to Wish List</span></a>
+  //     <a href="#" class="action tocompare" title="Add to Compare"
+  //        aria-label="Add to Compare" role="button">
+  //        <span>Add to Compare</span></a>
+  //   </div>
+  //
+  // They were <button>s here, so a locator written as `a.towishlist` — the
+  // shape anyone reading the source would write — selected nothing. `href="#"`
+  // plus preventDefault keeps them anchors without navigating, and the icon
+  // styling is attached by selector in globals.css so the class list stays
+  // byte-identical to the source's.
   return (
-    <div className="actions-secondary">
-      <button
-        type="button"
-        className="action towishlist icon-button"
+    <div data-role="add-to-links" className="actions-secondary">
+      <a
+        href="#"
+        className="action towishlist"
         title="Add to Wish List"
-        onClick={() => {
+        aria-label="Add to Wish List"
+        data-action="add-to-wishlist"
+        role="button"
+        onClick={e => {
+          e.preventDefault()
           addToWishlist(product)
           addMessage(
             <span>{product.name} has been added to your Wish List.{' '}
@@ -84,19 +114,22 @@ export function TileActions({ product }) {
       >
         <HeartIcon size={18} />
         <span className="visually-hidden">Add to Wish List</span>
-      </button>
-      <button
-        type="button"
-        className="action tocompare icon-button"
+      </a>
+      <a
+        href="#"
+        className="action tocompare"
         title="Add to Compare"
-        onClick={() => {
+        aria-label="Add to Compare"
+        role="button"
+        onClick={e => {
+          e.preventDefault()
           addToCompare(product)
           addMessage(`You added product ${product.name} to the comparison list.`)
         }}
       >
         <CompareIcon size={18} />
         <span className="visually-hidden">Add to Compare</span>
-      </button>
+      </a>
     </div>
   )
 }

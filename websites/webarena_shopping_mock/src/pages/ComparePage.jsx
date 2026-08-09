@@ -5,6 +5,7 @@ import Rating from '../components/Rating.jsx'
 import { AddToCartButton } from '../components/ProductGrid.jsx'
 import { useApp } from '../context/AppContext.jsx'
 import { SLink } from '../utils/url.js'
+import { useDetailReady } from '../components/DetailGate.jsx'
 import { productsById, ratingPercent, getDescription } from '../utils/catalog.js'
 import { money } from '../utils/format.js'
 import { sanitizeStoredHtml } from '../utils/html.js'
@@ -20,11 +21,14 @@ export default function ComparePage() {
   const products = state.compareList.items
     .map(i => productsById.get(i.productId))
     .filter(Boolean)
+  // R7-004: the comparison table prints each product's stripped description.
+  const detailPending = !useDetailReady(products.length ? ['descriptions'] : null)
 
   return (
     // The <h1> and the document <title> genuinely differ on the source:
     // h1 = "Compare Products", <title> = "Products Comparison List - Magento Commerce".
-    <Page title="Compare Products" documentTitle="Products Comparison List - Magento Commerce" sidebar="none">
+    <Page title="Compare Products" documentTitle="Products Comparison List - Magento Commerce" sidebar="none"
+      pending={detailPending}>
       {products.length === 0 ? (
         <div className="message info empty"><div><span>You have no items to compare.</span></div></div>
       ) : (
@@ -44,7 +48,7 @@ export default function ComparePage() {
                     <strong className="product-item-name">
                       <SLink to={`/${p.urlKey}.html`}>{p.name}</SLink>
                     </strong>
-                    <Rating percent={ratingPercent(p, state.myReviews)} />
+                    <Rating percent={ratingPercent(p, state.myReviews)} variant="tile" />
                     <div className="price-box"><span className="price">{money(p.price)}</span></div>
                     <div className="product-item-inner">
                       <AddToCartButton product={p} />{' '}

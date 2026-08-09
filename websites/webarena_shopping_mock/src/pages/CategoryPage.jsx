@@ -3,6 +3,7 @@ import Page from '../components/Page.jsx'
 import Listing from '../components/Listing.jsx'
 import LayeredNav from '../components/LayeredNav.jsx'
 import { useUrlBuilder } from '../utils/url.js'
+import { useDetailReady } from '../components/DetailGate.jsx'
 import { resolveListing, categoryAncestors, categoryUrl } from '../utils/catalog.js'
 
 /**
@@ -13,6 +14,11 @@ import { resolveListing, categoryAncestors, categoryUrl } from '../utils/catalog
  */
 export default function CategoryPage({ category, path }) {
   const { query } = useUrlBuilder()
+  // R7-004: a grid-mode category page reads none of the code-split detail seeds
+  // (utils/catalog.js), so it must not wait for them. `?product_list_mode=list`
+  // prints one description line per tile, and that alone needs `descriptions`.
+  const detailPending = !useDetailReady(
+    query.product_list_mode === 'list' ? ['descriptions'] : null)
   const listing = resolveListing({ path, query, categoryId: category.id })
 
   const ancestors = categoryAncestors(category)
@@ -36,6 +42,7 @@ export default function CategoryPage({ category, path }) {
       breadcrumbs={breadcrumbs}
       sidebar="catalog"
       sidebarTop={<LayeredNav listing={listing} categoryId={category.id} />}
+      pending={detailPending}
     >
       <Listing listing={listing} isSearch={false} />
     </Page>

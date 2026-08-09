@@ -40,9 +40,18 @@ export default function ProductImage({ product, path, alt, className }) {
   )
 }
 
-export function RawProductImage({ product, path, alt, style }) {
+export function RawProductImage({ product, path, alt, style, className, ariaHidden }) {
   const src = mediaUrl(path)
   const [failed, setFailed] = useState(false)
   const finalSrc = !src || failed ? placeholder(product && product.sku, alt) : src
-  return <img src={finalSrc} alt={alt || ''} style={style} onError={() => setFailed(true)} />
+  return (
+    <img
+      src={finalSrc}
+      alt={alt || ''}
+      className={className}
+      aria-hidden={ariaHidden}
+      style={style}
+      onError={() => setFailed(true)}
+    />
+  )
 }

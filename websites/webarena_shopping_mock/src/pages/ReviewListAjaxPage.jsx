@@ -4,6 +4,7 @@ import Rating from '../components/Rating.jsx'
 import { Pager } from '../components/Toolbar.jsx'
 import { useApp } from '../context/AppContext.jsx'
 import { SLink, useUrlBuilder } from '../utils/url.js'
+import { useDetailReady } from '../components/DetailGate.jsx'
 import { productsById, reviewsForProduct, reviewRatingPercent } from '../utils/catalog.js'
 import { shortDate } from '../utils/format.js'
 import NotFoundPage from './NotFoundPage.jsx'
@@ -18,6 +19,8 @@ const PER_PAGE = 10
  */
 export default function ReviewListAjaxPage({ productId }) {
   const { state } = useApp()
+  // R7-004: this route IS the seeded review list, so it waits on that chunk.
+  const detailPending = !useDetailReady(['reviews'])
   const { query } = useUrlBuilder()
   const product = productsById.get(Number(productId))
   if (!product) return <NotFoundPage />
@@ -33,6 +36,7 @@ export default function ReviewListAjaxPage({ productId }) {
       documentTitle={`${product.name} Reviews`}
       breadcrumbs={[{ label: product.name, to: `/${product.urlKey}.html` }, { label: 'Customer Reviews' }]}
       sidebar="none"
+      pending={detailPending}
     >
       <ol className="items review-items">
         {items.map(r => (
@@ -40,7 +44,7 @@ export default function ReviewListAjaxPage({ productId }) {
             <div className="review-title-line">{r.title}</div>
             {reviewRatingPercent(r) != null && (
               <div className="review-ratings">
-                <Rating percent={reviewRatingPercent(r)} />
+                <Rating percent={reviewRatingPercent(r)} variant="review" />
               </div>
             )}
             <div className="review-content-container">

@@ -40,7 +40,11 @@ export function OrderItemsTable({ order }) {
             <td className="col price" data-th="Price"><span className="price">{money(item.price)}</span></td>
             <td className="col qty" data-th="Qty">
               <ul className="items-qty">
-                <li className="item"><span className="title">Ordered</span>: <span className="content">{item.qtyOrdered}</span></li>
+                {/* No separator in the markup — the source's `: ` comes from
+                    `.items-qty .title:after{content:': '}` in styles-m.css, so
+                    the anchored `.order-details-items.ordered` outerText reads
+                    `Ordered1`, not `Ordered: 1`. */}
+                <li className="item"><span className="title">Ordered</span><span className="content">{item.qtyOrdered}</span></li>
               </ul>
             </td>
             <td className="col subtotal" data-th="Subtotal"><span className="price">{money(item.rowTotal)}</span></td>

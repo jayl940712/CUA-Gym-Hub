@@ -71,7 +71,7 @@ export default function WishlistPage() {
                       <strong className="product-item-name">
                         <SLink to={product ? `/${product.urlKey}.html` : '/wishlist/'}>{item.name}</SLink>
                       </strong>
-                      {product && <Rating percent={ratingPercent(product, state.myReviews)} />}
+                      {product && <Rating percent={ratingPercent(product, state.myReviews)} variant="tile" />}
                       <div className="price-box"><span className="price">{money(item.price)}</span></div>
                       <textarea
                         className="product-item-comment"
