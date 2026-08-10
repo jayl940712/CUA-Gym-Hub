@@ -43,6 +43,13 @@ SUPERSETS = [
     ("repo_trees.json", "repo_trees.add.json", "path"),
     ("commits.json", "commits.add.json", "sha"),
 ]
+# entities src/data has no file for yet — written whole. If the destination
+# already exists it must be byte-identical, so a re-run is a no-op and can never
+# silently overwrite hand edits.
+NEW_FILES = [
+    ("releases.json", "releases.add.json"),
+    ("boards.json", "boards.add.json"),
+]
 
 SORT = {
     "issues.json": lambda r: (r["project_id"], r["iid"]),
@@ -64,7 +71,8 @@ def write(name, obj, apply):
     before = os.path.getsize(p) if os.path.exists(p) else 0
     body = json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
     if apply:
-        shutil.copy2(p, p + ".prexpand")
+        if before:
+            shutil.copy2(p, p + ".prexpand")
         open(p, "w").write(body)
     print("  %-28s %7.0f KB -> %7.0f KB   n=%d"
           % (name, before / 1024, len(body.encode()) / 1024, len(obj)))
@@ -129,6 +137,14 @@ def main():
             new.setdefault(k, v)
         total += write(name, new, a.apply)
 
+    for name, add in NEW_FILES:
+        obj = stage(add)
+        p = os.path.join(C.DATA, name)
+        if os.path.exists(p):
+            assert C.load(name) == obj, \
+                "%s: already present and differs from the staged file" % name
+        total += write(name, obj, a.apply)
+
     if a.files != "none":
         src = "repo_files.add.json" if a.files == "full" else "repo_files.add.slim.json"
         cur = C.load("repo_files.json")
@@ -146,7 +162,8 @@ def main():
     for f in sorted(os.listdir(C.DATA)):
         if f.endswith(".json") and f not in {n for n, *_ in LIST_ADDS} \
                 and f not in {n for n, _ in DICT_ADDS} \
-                and f not in {n for n, *_ in SUPERSETS} and f != "repo_files.json":
+                and f not in {n for n, *_ in SUPERSETS} \
+                and f not in {n for n, _ in NEW_FILES} and f != "repo_files.json":
             total += os.path.getsize(os.path.join(C.DATA, f))
     print("\n  src/data total after merge: %.1f MB  (file-content tier: %s)"
           % (total / 1e6, a.files))

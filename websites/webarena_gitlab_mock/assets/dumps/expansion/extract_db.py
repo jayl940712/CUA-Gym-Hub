@@ -21,8 +21,8 @@ import os
 
 import common as C
 
-CAP_ISSUES = 50
-CAP_MRS = 70
+CAP_ISSUES = 450
+CAP_MRS = 850
 NOTES_PER = 3
 DESC_CLIP = 700          # matches trim.py's non-anchored description clip
 BODY_CLIP = 500          # matches trim.py's non-anchored note clip

@@ -98,6 +98,19 @@ def new_page(ctx, base):
 def visit(page, base, path, sid, wait=700):
     sep = "&" if "?" in path else "?"
     page.goto("%s%s%ssid=%s" % (base, path, sep, sid), wait_until="domcontentloaded")
+    # Wait for the page to have ANY content before the settle sleep. `wait` used
+    # to be the whole budget, which made this a latency test as well as a render
+    # test: `/search?search=…` blocks on the `search_bodies` module (GitLab
+    # matches description, not just title) and after the 5x seed expansion that
+    # module is 16.6 MB, so 700 ms captured an empty body and the legacy-vs-light
+    # comparison failed with "0 chars vs 5496". The settle sleep is still there
+    # and still identical for both sides of every comparison.
+    try:
+        page.wait_for_function(
+            "() => document.body && document.body.innerText.trim().length > 0",
+            timeout=10000)
+    except Exception:
+        pass
     page.wait_for_timeout(wait)
     return page.inner_text("body")
 

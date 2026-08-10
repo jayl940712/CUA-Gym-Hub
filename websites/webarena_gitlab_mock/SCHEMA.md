@@ -203,8 +203,11 @@ getContributors(project, ref, state)     // contributors.json (read-only)
 getMrDiff(mr)                            // merge_request_diffs.json (read-only)
 ```
 
-The other four are imported directly by the one page or helper that renders
-them and are equally static:
+The other six are imported directly by the one page or helper that renders
+them and are equally static. (Sizes in this table are as of the round that
+added each file; `resource_events.json`, `merge_request_diffs.json` and the two
+issue/MR modules all grew with round 20's 5x expansion — see
+`DEV.part-data.md` for the current figures.)
 
 | Module | Size | Imported by | Holds |
 |---|---|---|---|
@@ -212,6 +215,8 @@ them and are equally static:
 | `resource_events.json` | 168 KB | `src/pages/NotesTimeline.jsx:10` | GitLab's `resource_state_events` / `resource_label_events` / `resource_milestone_events` (1 207 rows). Since 11.x these are *not* in the `notes` table, so the timeline was missing every close/reopen, label and milestone event without it. |
 | `repo_languages.json` | 12 KB | `src/pages/ProjectOverview.jsx` | `repository_languages` × `programming_languages` — name, hex colour and share for 151 projects, 407 rows. Drives the `.repository-languages-bar` strip (TEST.md DIFF-907). |
 | `ci_pipelines.json` | 1 037 KB | `src/utils/ci.js` (→ `src/pages/PipelinesCi.jsx`) | **round 12, TEST.md DIFF-1105.** The project CI/CD surface: **all 1 465 pipelines and all 14 179 jobs** the source has, across the **67** of 175 seeded projects that have any — complete, not sampled. Drives `/-/pipelines`, `/-/pipelines/:id`, `/-/pipelines/charts`, `/-/jobs` and `/-/jobs/:id`. Shape in `assets/data_model.md §11b`. |
+| `releases.json` | 1 384 KB | `dataManager.getReleases()` (→ `src/pages/Releases.jsx`) | **round 20.** `{_source, _static, _page_size: 10, projects: {<id>: [{id, tag, name, description, author_id, released_at, created_at}]}}` — **all 1 732 releases** the source has, across the **48** of 175 projects that have any; complete, not sampled. Drives `/-/releases` and `/-/releases/:tag`. `sha` is empty for every row upstream and is not carried; `released_at` is emitted `AT TIME ZONE 'UTC'` so `format.js:parseDate` accepts it. Sliced into the lazy per-project chunks as `releases`. |
+| `boards.json` | 4 KB | `src/pages/Boards.jsx` | **round 20.** The 9 `boards` rows and their 18 `lists`. All nine are the DEFAULT board GitLab creates lazily on the first visit to `/-/boards` — same name (`Development`), same two lists (`backlog` + `closed`), both `hide_*` flags false — so they are the 9 projects someone opened a board on, not 9 configurations. Supplies the board name and list set; a project without a row gets the same default, which is what the source creates for it. Eager (4 KB), not chunked. |
 
 `merge_request_diffs.json` (478 KB) joins them as a git-derived module read only
 through `getMrDiff()`: 729 merge requests, 2 543 diff commits, 112 pipelines —

@@ -57,7 +57,7 @@ function useOpsPage(suffix) {
  * (`gl-display-flex empty-state gl-text-center gl-flex-direction-column`),
  * with the `h1.gl-font-size-h-display…h4` heading it always uses.
  */
-function GlEmptyState({ title, children, actions, testid }) {
+export function GlEmptyState({ title, children, actions, testid }) {
   return (
     <section className="gl-display-flex empty-state gl-text-center gl-flex-direction-column"
       data-testid={testid}>
@@ -240,41 +240,11 @@ export function Environments() {
   )
 }
 
-/** ROUTES #111 — `/:ns/:proj/-/releases`. */
-export function Releases() {
-  const { ready, project, base } = useOpsPage('Releases')
-  if (!ready) return null
-  if (!project) return <NotFound />
-  return (
-    <div className="gl-display-flex gl-flex-direction-column gl-mt-3">
-      <div className="gl-align-self-end gl-mb-3">
-        <div role="group" className="gl-sorting gl-mr-2 btn-group" data-testid="releases-sort">
-          <button type="button" className="btn dropdown-toggle btn-default btn-md gl-button gl-dropdown-toggle btn-default-secondary">
-            <span className="gl-dropdown-button-text">Released date</span>
-            <Icon name="chevron-down" />
-          </button>
-          <button title="Sort direction" aria-label="Sorting Direction: Descending" type="button"
-            className="btn btn-default btn-md gl-button btn-icon sorting-direction-button">
-            <Icon name="sort-highest" />
-          </button>
-        </div>
-        <a href={`${base}/-/releases/new`} className="btn btn-confirm btn-md gl-button"
-          aria-describedby="releases-description">
-          <span className="gl-button-text">New release</span>
-        </a>
-      </div>
-      <GlEmptyState title="Getting started with releases">
-        <span id="releases-description">
-          {`Releases are based on Git tags and mark specific points in a project's development `}
-          {'history. They can contain information about the type of changes and can also deliver '}
-          {'binaries, like compiled versions of your software. '}
-          <a aria-label="Releases documentation" href="/help/user/project/releases/index"
-            className="gl-link">More information</a>
-        </span>
-      </GlEmptyState>
-    </div>
-  )
-}
+// ROUTES #111 — `/:ns/:proj/-/releases` MOVED to `src/pages/Releases.jsx`.
+// It was an unconditional empty state here; the instance has 1 732 releases
+// over 48 projects, so it needed the real card list. The empty state itself is
+// unchanged and still serves the 127 projects that have none — it now lives in
+// `Releases.jsx` and re-uses the `GlEmptyState` exported from this file.
 
 /** ROUTES #118 — `/:ns/:proj/-/feature_flags`. */
 export function FeatureFlags() {

@@ -82,7 +82,20 @@ def main():
             page.on("pageerror", lambda e: errs.append(f"pageerror: {e}"))
             try:
                 page.goto(url, wait_until="load", timeout=20000)
-                page.wait_for_timeout(350)
+                # Wait FOR CONTENT, not for a fixed 350 ms. This used to sleep
+                # 350 ms and then assert; that turned a white-screen check into
+                # a hidden 350 ms latency budget, and `/search?search=…` broke
+                # it the moment the seed grew — that route blocks on the whole
+                # `search_bodies` module (GitLab matches description, not just
+                # title) and now takes ~1 s to have results. A genuine white
+                # screen — the ReferenceError case this file exists for — never
+                # fills in, so it still fails, 5 s later instead of 350 ms.
+                try:
+                    page.wait_for_function(
+                        "() => document.body && document.body.innerText.trim().length > 0",
+                        timeout=5000)
+                except Exception:
+                    pass
                 body = (page.inner_text("body") or "").strip()
                 if not body:
                     errs.append("BLANK PAGE (empty <body> text)")

@@ -17,7 +17,7 @@ import {
 } from './pages/ProjectSettingsMisc.jsx'
 import {
   PipelineSchedules, PipelineEditor,
-  Environments, Releases, FeatureFlags, PackageRegistry, InfrastructureRegistry,
+  Environments, FeatureFlags, PackageRegistry, InfrastructureRegistry,
   Terraform, Clusters, Incidents, AlertManagement, ErrorTracking, Metrics,
   ProjectSnippets, Wiki, ProjectActivity, ServerError,
 } from './pages/ProjectOps.jsx'
@@ -78,6 +78,7 @@ import LabelsList from './pages/LabelsList.jsx'
 import NewLabel from './pages/NewLabel.jsx'
 import EditLabel from './pages/EditLabel.jsx'
 import Boards from './pages/Boards.jsx'
+import Releases, { ReleaseDetail } from './pages/Releases.jsx'
 import ServiceDesk from './pages/ServiceDesk.jsx'
 import DashboardTodos, { TodoAction } from './pages/DashboardTodos.jsx'
 import DashboardMilestones from './pages/DashboardMilestones.jsx'
@@ -436,6 +437,7 @@ export default function App() {
         <Route path="/:ns/:proj/-/ci/editor" element={<PipelineEditor />} />                {/* #109 */}
         <Route path="/:ns/:proj/-/environments" element={<Environments />} />               {/* #110 */}
         <Route path="/:ns/:proj/-/releases" element={<Releases />} />                       {/* #111 */}
+        <Route path="/:ns/:proj/-/releases/:tag" element={<ReleaseDetail />} />             {/* #111 — the card the index links to */}
         <Route path="/:ns/:proj/-/packages" element={<PackageRegistry />} />                {/* #112 */}
         <Route path="/:ns/:proj/-/infrastructure_registry" element={<InfrastructureRegistry />} /> {/* #112 */}
         <Route path="/:ns/:proj/-/value_stream_analytics" element={<ProjectValueStreamAnalytics />} />     {/* #113 */}

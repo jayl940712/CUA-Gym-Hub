@@ -51,8 +51,8 @@ WHAT STAYS EAGER
 Cross-cutting reference data that every route can reach and that grows with the
 number of PROJECTS and USERS, not with the number of issues/notes/commits:
 projects, users, groups, labels, milestones, members, stars, follows, todos,
-current_user, repo_languages, the two metadata indexes above, and the small CI
-header (job_specs / statuses / _page_size).
+current_user, repo_languages, the two metadata indexes above, the small CI
+header (job_specs / statuses / _page_size) and boards.json (9 rows, 4 KB).
 
 SOURCE OF TRUTH
 ---------------
@@ -166,6 +166,15 @@ def build():
     # --- ci_pipelines.projects: already keyed by project id ------------------
     for pid_str, rows in load('ci_pipelines.json')['projects'].items():
         bucket(int(pid_str))['pipelines'] = rows
+
+    # --- releases: already keyed by project id -------------------------------
+    # 1.4 MB over 48 projects, read only by `/:ns/:proj/-/releases` and
+    # `/:ns/:proj/-/releases/:tag`, so it is per-project by construction.
+    for pid_str, rows in load('releases.json')['projects'].items():
+        if int(pid_str) not in by_id:
+            print('WARN releases.json: no project for id %r' % pid_str, file=sys.stderr)
+            continue
+        bucket(int(pid_str))['releases'] = rows
 
     # --- issue / MR descriptions ---------------------------------------------
     for rows, field in ((load('issues.json'), 'issueBodies'), (mrs, 'mrBodies')):

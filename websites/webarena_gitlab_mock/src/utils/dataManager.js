@@ -499,6 +499,24 @@ export function getTags(state, project) {
 }
 
 /**
+ * The project's releases, newest first — `/:ns/:proj/-/releases`.
+ *
+ * STATIC reference data: `releases` are rows on the project, not git objects,
+ * so unlike `getTags` this does NOT walk `originChunk` — a fork inherits its
+ * origin's tags but gets no releases of its own upstream either, and a
+ * session-created project has none. Both correctly return `[]`.
+ *
+ * 1 732 rows over 48 of the 175 projects; the other 127 have none upstream and
+ * keep rendering the "Getting started with releases" empty state, which is
+ * exactly what the source serves for them.
+ */
+export function getReleases(project) {
+  if (!project) return EMPTY
+  const chunk = chunkFor(project.id)
+  return (chunk && chunk.releases) || EMPTY
+}
+
+/**
  * Record a branch/tag deletion. Returns the next state; callers do
  * `setState(prev => deleteRefs(prev, project, 'branch', ['old-feature']))`.
  *

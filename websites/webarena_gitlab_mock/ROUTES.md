@@ -198,7 +198,7 @@ left sidebar has no dead links.
 | 108 | `/:ns/:proj/-/pipeline_schedules` | P2 | [x] |
 | 109 | `/:ns/:proj/-/ci/editor?branch_name=:ref` | P2 | [x] |
 | 110 | `/:ns/:proj/-/environments` | P2 | [x] |
-| 111 | `/:ns/:proj/-/releases` | P2 | [x] |
+| 111 | `/:ns/:proj/-/releases` | P2 | [x] — **plus `/-/releases/:tag`. Populated on the 48 projects that have releases, empty on the other 127.** The instance has 1 732 releases (`SELECT count(*), count(DISTINCT project_id) FROM releases` -> 1 732 over 48); this used to be an unconditional empty state because every round-4 capture came from `byteblaze/dotfiles`, which has none. The list paginates 10/page with GitLab's keyset `?after=`/`?before=` cursors, the sort control offers Released/Created date with a direction toggle, each card links to `/-/releases/:tag` and `/-/tags/:tag`, and the four generated source-code archive links are the source's own. Backed by the static `src/data/releases.json`, sliced into the lazy per-project chunks. |
 | 112 | `/:ns/:proj/-/packages`, `/-/infrastructure_registry` | P2 | [x] |
 | 113 | `/:ns/:proj/-/value_stream_analytics` | P2 | [x] — filtered-search bar, date range, the 6-stage path nav, Key metrics / DORA metrics and `We don't have enough data to show this stage.` |
 

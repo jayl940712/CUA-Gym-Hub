@@ -5,10 +5,25 @@ import NotFound from './NotFound.jsx'
 import { useProject } from './hooks.js'
 import { UserAvatar } from '../components/layout/Avatar.jsx'
 import { LabelChip } from '../components/issuable/Controls.jsx'
+import boards from '../data/boards.json'
 
 // ROUTES #75 — `/:ns/:proj/-/boards`. The default board in GitLab CE is
 // Open / Closed, with a card per issue. Cards link to the issue, so the board
 // is a real navigation surface rather than a dead page.
+//
+// `src/data/boards.json` is the instance's own `boards` + `lists` tables, 9
+// rows / 18 lists, 4 KB, eager. Read the measurement before assuming those 9
+// rows mean 9 configured boards: every one of them is named `Development`,
+// carries exactly the two default lists (`backlog` + `closed`), has no label /
+// assignee / milestone list, and has both `hide_*` flags false. They are the
+// default board GitLab CREATES LAZILY the first time anyone opens `/-/boards`
+// — so the 9 are simply the 9 projects whose board page someone happened to
+// visit, not 9 distinct configurations, and a project without a row renders
+// the identical default board upstream. The seed is used for the board NAME
+// and the list set so those come from the source instead of a literal here;
+// the fallback below is what the source itself would create on first visit.
+const BOARD_BY_PROJECT = new Map(boards.map(b => [b.project_id, b]))
+const DEFAULT_BOARD = { name: 'Development', hide_backlog_list: false, hide_closed_list: false }
 
 function Card({ issue, project, indexes }) {
   const labels = (issue.label_ids || []).map(id => indexes.labelsById.get(id)).filter(Boolean)
@@ -41,16 +56,18 @@ export default function Boards() {
   })
   if (!project) return <NotFound />
 
+  const board = BOARD_BY_PROJECT.get(project.id) || DEFAULT_BOARD
   const issues = state.issues.filter(i => i.project_id === project.id)
   const lists = [
-    ['Open', issues.filter(i => i.state === 'opened')],
-    ['Closed', issues.filter(i => i.state === 'closed')],
-  ]
+    // `backlog` is the list GitLab labels "Open" in the board UI.
+    !board.hide_backlog_list && ['Open', issues.filter(i => i.state === 'opened')],
+    !board.hide_closed_list && ['Closed', issues.filter(i => i.state === 'closed')],
+  ].filter(Boolean)
 
   return (
     <div className="boards-app">
       <div className="top-area">
-        <h1 className="page-title gl-font-size-h-display">Development</h1>
+        <h1 className="page-title gl-font-size-h-display">{board.name}</h1>
         <div className="nav-controls">
           <a className="btn gl-button btn-confirm" href={`${base}/-/issues/new`}>New issue</a>
         </div>
