@@ -7,6 +7,9 @@
 **State read**: `GET /state?sid=<sid>` → `{stored_state, has_custom_state, sid}`
 **Upload**: `POST /upload?sid=<sid>` (multipart) → `.mock-files/<sid>/`; served at `GET /files/<sid>/<name>`
 
+Uploads are content-addressed and isolated by SID. Legacy `reset` restores JSON
+state but deliberately leaves session fixture files available.
+
 Source of truth: `src/utils/dataManager.js` (`createInitialData`). Session state
 lives at `.mock-states/<sid>.json` with a frozen baseline at
 `.mock-states/<sid>.initial.json`. The app boots pre-logged-in as **byteblaze**
@@ -234,16 +237,20 @@ A cold session payload is now ~2 KB. `dataManager.persist()` writes
 the current-state key to localStorage first and only then the baseline key, so
 `initialKey present ⇒ storageKey present`. If a write exceeds the browser quota
 both keys are dropped and the next load rehydrates from
-`.mock-states/<sid>.json` via `fetchCustomState()`. That guard is now only
+`.mock-states/<sid>.json` via `fetchServerState()`. That guard is now only
 reachable through a legacy full-array injection — an overlay-sized session is
 0.06 % of quota — but it is kept for exactly that case. `/go`'s diff stays
-correct either way, because the server writes `<sid>.initial.json` exactly once
-and **only** on `{action:'set'}`. `AppContext` also
-calls `publishInitialState()` (`{action:'set'}`) at boot on a cold session with
-no injected state, so the baseline is pristine and the first mutation is visible
-in `state_diff`. `POST /post` bodies are gzipped by the client when
+correct either way: harness `{action:'set'}` replaces both current and initial
+files on every call, while `{action:'set_current'}` writes current only.
+`AppContext` checks server current and initial state before trusting localStorage,
+so a reinjection or server reset wins over a warm browser cache. If the server
+has genuinely lost one or both files, the client uses the internal guarded
+`restore` action; it only fills files that are still absent or equal, so a
+concurrent harness injection cannot be overwritten. `POST /post` bodies are
+coalesced per tick, serialized across ticks and gzipped by the client when
 `CompressionStream` exists and inflated by the server, with a transparent plain
-fallback.
+fallback. `flushState()` resolves after queued writes land and rejects on a
+failed request.
 
 ---
 
@@ -692,15 +699,18 @@ key**: it is what the diff literally contains.
 
 | Endpoint | Method | Purpose |
 |---|---|---|
-| `/post?sid=` | POST | `{action:'set'\|'set_current'\|'reset', state, merge?}`. `set` writes `<sid>.json` **and** `<sid>.initial.json`; `set_current` writes `<sid>.json` **only**; `reset` restores `<sid>.json` from the baseline. |
-| `/state?sid=` | GET | `{stored_state, has_custom_state, sid}` |
+| `/post?sid=` | POST | `{action:'set'\|'set_current'\|'reset', state, merge?}`. `set` writes `<sid>.json` **and** `<sid>.initial.json`; `set_current` writes `<sid>.json` **only**; `reset` restores `<sid>.json` from the baseline. Internal `{action:'restore', state, initial_state}` fills missing files only while existing files still equal the supplied values. |
+| `/state?sid=` | GET | `{stored_state, has_custom_state, initial_state, has_initial_state, sid}` |
 | `/go?sid=` | GET | `{initial_state, current_state, state_diff}` |
 | `/upload?sid=` | POST | multipart upload → `.mock-files/<sid>/` |
 | `/files/:sid/:name` | GET | serve an uploaded file |
 
-`sid` is sanitised with `sid.replace(/[^a-zA-Z0-9_-]/g, '')` at every
-path-forming site (verified: `POST /post?sid=../../pwn` writes
-`.mock-states/pwn.json`, never outside the directory). The middleware is
+Provided SIDs must fully match `[A-Za-z0-9_-]{1,128}`; invalid values are
+rejected instead of being lossy-sanitised into a colliding filename. Omitting
+`sid` retains the legacy default-session behavior. State request bodies are
+buffered before one strict UTF-8 decode, bounded at 64 MiB, and state/upload
+writes use a same-directory temporary file plus atomic rename. Mutations are
+serialized per SID and write/read failures return non-2xx JSON errors. The middleware is
 registered under **both** `configureServer` and `configurePreviewServer`, so the
 state API works identically under `npm run dev` and `npm run preview` — both were
 driven with a real browser. `secureMockApiPlugin()` is first in `plugins[]`.
@@ -715,8 +725,7 @@ its defects against this mock and now reports it **clean**:
 * **A — `set_current` must not seed the baseline.** It used to call
   `writeInitialStateIfMissing()`, so on a fresh session the first mutation became
   the baseline and `state_diff` was `{}` forever. Removed; the baseline is seeded
-  by `set`, which `AppContext.publishInitialState()` posts once at boot on a cold
-  session, and by the eval harness when it injects task state.
+  by harness `set`, or by the client's guarded cold-session `restore`.
 * **B — `/go` must not fall back to the current state.** It read
   `initialState || currentState || defaultState`, which turns a missing baseline
   into a self-comparison — the same empty diff by another route. It now reads
@@ -725,3 +734,6 @@ its defects against this mock and now reports it **clean**:
   matches what the client boots from, which it does:
   `GET /go?sid=<untouched>` returns `state_diff == {}` (asserted by
   `assets/dumps/test_overlay.py §1`).
+* **C — repeated `set` rebaselines.** Retrying setup on the same SID replaces
+  both current and initial files, preventing an old baseline from producing a
+  phantom pre-task diff.

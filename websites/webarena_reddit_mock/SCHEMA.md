@@ -26,6 +26,9 @@ container `forum`, image `postmill-populated-exposed-withimg:latest`.
 **State read**: `GET /state?sid=<sid>` → `{stored_state, has_custom_state, sid}`
 **Uploads**: `POST /upload?sid=<sid>` (multipart) → `/files/<sid>/<name>`
 
+Uploads are content-addressed and isolated by SID. Legacy `reset` restores JSON
+state but deliberately leaves session fixture files available.
+
 The app boots pre-logged-in as `MarvelsGrantMan136` (user id `13915`). There is
 no login, logout or registration surface.
 
@@ -37,17 +40,16 @@ Implementation: `vite.config.js:173-260` (`/post`, `/state`, `/go`),
 
 ## State API contract
 
-Five behaviours differ from the shared `websites/mixpanel_mock` template that
-every hub mock is copied from. All five are deliberate, and all five were
-re-measured on 2026-08-07 against a fresh sid — twice, the second time after
-the seed grew, on run-unique sids each time. None of the five changed.
+The state API deliberately differs from the shared
+`websites/mixpanel_mock` template. The compatibility-sensitive rules and the
+2026-08 persistence hardening are summarized below.
 
 | Behaviour | Contract | Measured |
 |---|---|---|
-| **`set_current` never writes the baseline** | `{"action":"set_current"}` writes **`.mock-states/<sid>.json` only** and never `<sid>.initial.json` (`vite.config.js:212-227`). Only `{"action":"set"}` establishes a baseline, and only the first time (`writeInitialStateIfMissing`). A harness that wants a custom baseline **must** seed with `{"action":"set", "state":{…}}`; seeding with `set_current` leaves the baseline at `createInitialData()`. | `POST set_current` on a never-seeded sid produced `<sid>.json` and **no** `<sid>.initial.json` on disk |
+| **`set_current` never writes the baseline** | `{"action":"set_current"}` writes **`.mock-states/<sid>.json` only** and never `<sid>.initial.json`. `{"action":"set"}` establishes or replaces the baseline on every call, so retrying setup on the same SID starts a new clean episode. A harness that wants a custom baseline **must** seed with `{"action":"set", "state":{…}}`; seeding with `set_current` leaves `/go` falling back to `createInitialData()`. | `POST set_current` on a never-seeded sid produces `<sid>.json` and **no** `<sid>.initial.json` |
 | **`/go` on a never-seeded sid baselines against the pristine seed** | `initial_state` is `createInitialData()` (`vite.config.js:255`, `const initial = initialState \|\| defaultState`; the template's `\|\| currentState` fallback is deliberately absent). That is byte-for-byte what the client boots from, so the two agree by construction and the **first** mutation on a fresh sid appears in `state_diff`. | fresh sid + one `set_current` writing `hiddenForums:["books"]` → `initial_state.hiddenForums` `[]`, 22 top-level keys, `state_diff` keys `["hiddenForums"]` |
 | **`reset` on a never-seeded sid** | Returns `{"success":true,"sid":…,"message":"State cleared."}` — there is no `.initial.json` to restore from, so it deletes whatever exists. On a **seeded** sid it returns `"State reset to initial."` and restores `<sid>.json` from `<sid>.initial.json`. Both are correct; only the message differs. | `{"success":true,"sid":"freshaud…","message":"State cleared."}` |
-| **The client does not POST on boot** | Cold load posts **nothing** (`AppContext.jsx:114-119` — the post-commit persist effect skips the first committed state via `bootSeatedRef`). So until the first mutation: `.mock-states/<sid>.json` does not exist, and `GET /state?sid=<sid>` returns `{"stored_state":null,"has_custom_state":false}`. `GET /go?sid=<sid>` still works — it falls back to the pristine seed on both sides and returns an empty `state_diff`. | `/state` on an unused sid → `{"stored_state":null,"has_custom_state":false,"sid":"…"}`; `.mock-states/` had no file for it |
+| **Server state is authoritative on boot** | Every boot reads server current and initial state before seating localStorage. A harness reinjection, reset, or another browser's write therefore wins over stale browser cache. If the server genuinely has no files, the client sends an internal guarded `restore`; it fills only files that are still absent/equal, so a concurrent injection wins. The first seated React state is still skipped by the mutation persist effect. | Reinjection on a reused SID replaces warm local current and baseline; changing `?sid=` triggers a fresh hydration |
 | **`set_current` replaces, it does not merge** | `const newState = data.merge ? deepMerge(currentState, data.state) : data.state`. The client always POSTs the *whole* state, so this is safe in normal use — but a hand-written `set_current` carrying two keys will truncate the session to those two keys unless it also sends `"merge": true`. | `set_current` with `{"hiddenForums":["books"]}` left `.mock-states/<sid>.json` at 39 bytes |
 
 **localStorage persistence works again.** `initializeData()` calls
@@ -63,7 +65,9 @@ still inject a full `submissions` array as the base (see *Frozen corpus vs
 overlay* below), which puts the session back over quota. When that happens the
 write fails silently rather than leaving the page stuck on `Loading…`,
 `saveState()` still POSTs `set_current`, and `AppContext` falls through to
-`fetchCustomState(sid)` → `GET /state` when `initialKey(sid)` is absent.
+`fetchServerState(sid)` → `GET /state` when browser state is absent.
+The page remains usable on quota failure, but the failure is now logged; server
+write failures are retained and surfaced by `flushState()`.
 
 > **The old localStorage quota budget is obsolete and so is the seed-size
 > ceiling that came with it.** Growing `submissions.json` / `comments.json` no
@@ -307,8 +311,8 @@ Every row below reaches `saveState()` → `POST /post {action:'set_current'}` �
 
 ### How to read `state_diff`
 
-`calculateStateDiff` (`vite.config.js:89-97`) is a **top-level-key**
-`JSON.stringify` comparison. Every row above therefore surfaces as one or more
+`calculateStateDiff` is a **top-level-key** `JSON.stringify` comparison over the
+union of initial and current keys. Every row above therefore surfaces as one or more
 of the 16 top-level keys, with `{old, new}` holding the *whole* array/object,
 not a path-level delta. Three consequences worth knowing when writing
 evaluators:
@@ -330,6 +334,8 @@ evaluators:
   e.g. a task that begins with subscriptions or notifications already present,
   where diffing against the pristine seed would report those as agent-caused
   changes.
+- Removing a top-level key is observable as `{old: <previous>, new: null}`;
+  deletions no longer disappear merely because the key is absent from current.
 
 ### Mutations that bypass the AppContext reducers
 
@@ -364,10 +370,24 @@ lives in exactly one file.
 
 ### Persistence timing
 
-`saveState()` (`dataManager.js`) is **not debounced** — every committed state
-POSTs immediately. The payload is the ~37 KB overlay state, not the corpus:
-`AppContext`'s persist effect writes `core`, never the materialized `state`. Writes are last-write-wins and
-ordered by the click sequence. Persistence lives in a post-commit `useEffect`
-(`AppContext.jsx:115-119`), **not** inside the state updater, because React
+`saveState()` coalesces whole-state writes scheduled in the same tick and
+serializes the resulting `set_current` requests. A later click can therefore
+never land before an earlier request and be overwritten by it. `flushState()`
+forces any pending write into the chain, resolves after the final response, and
+rejects if a request failed. The payload is the ~37 KB overlay state, not the
+corpus: `AppContext`'s persist effect writes `core`, never the materialized
+`state`. Persistence lives in a post-commit `useEffect`, **not** inside the state updater, because React
 double-invokes updaters under `<React.StrictMode>` and doing it there produced
 two full POSTs per mutation. Do not move it back.
+
+### Transport, SID, and files
+
+Provided SIDs must fully match `[A-Za-z0-9_-]{1,128}`. Invalid SIDs are rejected
+instead of being stripped into colliding filenames; omitting `sid` keeps the
+legacy default session. JSON request bodies are bounded at 64 MiB, buffered,
+decompressed when needed, and decoded once with strict UTF-8 validation.
+State and upload writes use same-directory temporary files plus atomic rename,
+and mutations are serialized per SID. `/state` returns both current and
+baseline envelopes: `{stored_state, has_custom_state, initial_state,
+has_initial_state, sid}`. Upload names use an 8-character SHA-1 content prefix,
+so re-uploading identical bytes under one SID is deterministic.

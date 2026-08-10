@@ -118,15 +118,27 @@ export function initialKey(sid) {
   return sid ? `${BASE_INITIAL_KEY}_${sid}` : BASE_INITIAL_KEY
 }
 
-export async function fetchCustomState(sid) {
+export async function fetchServerState(sid) {
+  const empty = { available: false, current: null, initial: null }
   try {
     const url = sid ? `/state?sid=${encodeURIComponent(sid)}` : '/state'
     const res = await fetch(url, { cache: 'no-store' })
-    if (!res.ok) return null
+    if (!res.ok) return empty
     const data = await res.json()
-    if (data.has_custom_state && data.stored_state) return data.stored_state
-  } catch (e) { /* offline / no dev server */ }
-  return null
+    if (!Object.prototype.hasOwnProperty.call(data, 'has_custom_state')) return empty
+    return {
+      available: true,
+      current: data.has_custom_state ? data.stored_state : null,
+      initial: data.has_initial_state ? data.initial_state : null,
+    }
+  } catch (e) {
+    console.warn('Unable to read server state:', e)
+    return empty
+  }
+}
+
+export async function fetchCustomState(sid) {
+  return (await fetchServerState(sid)).current
 }
 
 // ---------------------------------------------------------------------------
@@ -136,17 +148,21 @@ export async function fetchCustomState(sid) {
 // inside Chrome's ~5 MB per-origin quota (which it bills in UTF-16). Before the
 // overlay refactor they were 2 × 2 068 670 = 4 137 340 units — 79 % of quota
 // with nothing done yet — and a handful of the site's 49 "create" tasks pushed
-// a session over, at which point persistence died silently.
+// a session over, at which point browser persistence failed.
 //
 // The guard stays because a harness may still inject a full `issues` / `notes`
 // array as the base (see src/utils/overlay.js) and reach the quota again. When
 // a write fails we drop BOTH keys and let the next load rehydrate from the dev
-// server's .mock-states/<sid>.json via fetchCustomState(). /go's diff stays
-// correct either way because the server writes <sid>.initial.json exactly once.
+// server's .mock-states/<sid>.json via fetchServerState(). /go's diff stays
+// correct because harness `set` owns the baseline and rebaselines on retries.
 // ---------------------------------------------------------------------------
 
 function lsSet(key, value) {
-  try { localStorage.setItem(key, value); return true } catch (e) { return false }
+  try { localStorage.setItem(key, value); return true }
+  catch (e) {
+    console.warn(`Unable to persist browser state at ${key}:`, e)
+    return false
+  }
 }
 
 function lsRemove(key) {
@@ -169,6 +185,40 @@ function persist(sid, state, alsoInitial) {
   return true
 }
 
+function readJson(key) {
+  try {
+    const raw = localStorage.getItem(key)
+    return raw === null ? null : JSON.parse(raw)
+  } catch (e) {
+    console.warn(`Unable to read browser state at ${key}:`, e)
+    return null
+  }
+}
+
+export function readStoredState(sid) {
+  return readJson(storageKey(sid))
+}
+
+export function readStoredInitial(sid) {
+  return readJson(initialKey(sid))
+}
+
+export function writeStoredInitial(sid, state) {
+  return lsSet(initialKey(sid), JSON.stringify(state))
+}
+
+export function sameState(a, b) {
+  if (a === null || a === undefined || b === null || b === undefined) return a === b
+  const canonical = value => JSON.stringify(value, (_key, item) =>
+    (item && typeof item === 'object' && !Array.isArray(item))
+      ? Object.keys(item).sort().reduce((out, key) => {
+          out[key] = item[key]
+          return out
+        }, {})
+      : item)
+  return canonical(a) === canonical(b)
+}
+
 // ---------------------------------------------------------------------------
 // initializeData / saveState
 // ---------------------------------------------------------------------------
@@ -189,14 +239,20 @@ function persist(sid, state, alsoInitial) {
  * `toCore()` fills any overlay key the injected object omitted, so a task
  * fixture never has to spell out all 36.
  */
+export function mergeOverDefaults(customState) {
+  const defaults = createInitialData()
+  const custom = customState || {}
+  const merged = toCore({ ...defaults, ...custom })
+  // keep nested defaults alive when a task injects only part of a subtree
+  merged.repo = { ...defaults.repo, ...(custom.repo || {}) }
+  merged.ui = { ...defaults.ui, ...(custom.ui || {}) }
+  merged.nextIds = { ...defaults.nextIds, ...(custom.nextIds || {}) }
+  return merged
+}
+
 export function initializeData(sid = null, customState = null) {
-  if (customState) {
-    const defaults = createInitialData()
-    const merged = toCore({ ...defaults, ...customState })
-    // keep nested defaults alive when a task injects only part of a subtree
-    merged.repo = { ...defaults.repo, ...(customState.repo || {}) }
-    merged.ui = { ...defaults.ui, ...(customState.ui || {}) }
-    merged.nextIds = { ...defaults.nextIds, ...(customState.nextIds || {}) }
+  if (customState !== null && customState !== undefined) {
+    const merged = mergeOverDefaults(customState)
     persist(sid, merged, true)
     return merged
   }
@@ -219,23 +275,6 @@ export function initializeData(sid = null, customState = null) {
   return data
 }
 
-/**
- * Publish the pristine state as the session baseline.
- *
- * The server writes <sid>.initial.json on the FIRST /post it sees. Without
- * this call that first post is a mutation, so the baseline captures the
- * already-mutated state and /go reports an empty diff for it — the first
- * action of every rollout would be invisible to the reward signal.
- * Call this once, at boot, when the session has no stored state yet.
- */
-export function publishInitialState(state, sid = null) {
-  // Goes through the same write chain as saveState: if the agent mutates
-  // within the first tick after boot, this baseline post must still land first
-  // or it would overwrite the mutation with the pristine seed.
-  writeChain = writeChain.then(() => post(sid, { action: 'set', state })).catch(() => {})
-  return writeChain
-}
-
 // ---------------------------------------------------------------------------
 // Persisted writes: coalesced and strictly ordered.
 //
@@ -255,9 +294,10 @@ export function publishInitialState(state, sid = null) {
 // carries both the counter bump and the record. This is the backstop.)
 // ---------------------------------------------------------------------------
 
-let pendingWrite = null   // { sid, state } — latest state awaiting a flush
+const pendingWrites = new Map() // sid -> latest whole state awaiting a flush
 let flushScheduled = false
 let writeChain = Promise.resolve()
+let pendingRuns = []
 
 /**
  * Encode a /post payload, gzipping it when the browser can (PIPELINE-005).
@@ -288,34 +328,75 @@ async function encodePost(payload) {
 async function post(sid, payload) {
   const sidParam = sid ? `?sid=${encodeURIComponent(sid)}` : ''
   const { body, headers } = await encodePost(payload)
-  return fetch(`/post${sidParam}`, { method: 'POST', headers, body }).catch(() => {})
+  const response = await fetch(`/post${sidParam}`, { method: 'POST', headers, body })
+  if (!response.ok) {
+    let detail = ''
+    try { detail = (await response.json()).error || '' } catch (_) {}
+    throw new Error(`State write failed (${response.status})${detail ? `: ${detail}` : ''}`)
+  }
+  return response.json()
 }
 
 function postState(sid, state) {
   return post(sid, { action: 'set_current', state })
 }
 
+function enqueueWrite(operation) {
+  const run = writeChain.catch(() => {}).then(operation)
+  writeChain = run.catch(error => {
+    console.error('State persistence failed:', error)
+  })
+  pendingRuns.push(run)
+  return run
+}
+
 function flushPendingWrite() {
   flushScheduled = false
-  if (!pendingWrite) return
-  const { sid, state } = pendingWrite
-  pendingWrite = null
-  writeChain = writeChain.then(() => postState(sid, state)).catch(() => {})
+  if (pendingWrites.size === 0) return
+  const writes = [...pendingWrites.entries()]
+  pendingWrites.clear()
+  for (const [sid, state] of writes) enqueueWrite(() => postState(sid || null, state))
 }
 
 export function saveState(state, sid = null) {
   persist(sid, state, false)
-  pendingWrite = { sid, state }
-  if (flushScheduled) return
+  pendingWrites.set(sid || '', state)
+  if (flushScheduled) return writeChain
   flushScheduled = true
   if (typeof queueMicrotask === 'function') queueMicrotask(flushPendingWrite)
   else Promise.resolve().then(flushPendingWrite)
+  return writeChain
+}
+
+/**
+ * Restore browser-held files only while every server file is still absent or
+ * equal. This is the race-safe cold/restart counterpart to harness `set`.
+ */
+export function restoreServerState(initialState, currentState, sid = null) {
+  return enqueueWrite(() => post(sid, {
+    action: 'restore',
+    initial_state: initialState,
+    state: currentState,
+  }))
+}
+
+export function publishInitialState(state, sid = null) {
+  return restoreServerState(state, state, sid)
 }
 
 /** Force any queued write out now, and resolve when it has landed. */
-export function flushState() {
+export async function flushState() {
   flushPendingWrite()
-  return writeChain
+  const runs = [...pendingRuns]
+  let results
+  try {
+    results = await Promise.allSettled(runs)
+  } finally {
+    const completed = new Set(runs)
+    pendingRuns = pendingRuns.filter(run => !completed.has(run))
+  }
+  const failure = results.find(result => result.status === 'rejected')
+  if (failure) throw failure.reason
 }
 
 // ---------------------------------------------------------------------------

@@ -3,7 +3,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import fs from 'fs'
 import path from 'path'
-import { randomUUID } from 'crypto'
+import { createHash, randomUUID } from 'crypto'
+import { TextDecoder } from 'util'
 import { createInitialData } from './src/utils/dataManager.js'
 
 const STATE_DIR = path.join(process.cwd(), '.mock-states')
@@ -12,16 +13,40 @@ if (!fs.existsSync(STATE_DIR)) fs.mkdirSync(STATE_DIR, { recursive: true })
 const FILES_DIR = path.join(process.cwd(), '.mock-files')
 if (!fs.existsSync(FILES_DIR)) fs.mkdirSync(FILES_DIR, { recursive: true })
 
+const SID_PATTERN = /^[a-zA-Z0-9_-]{1,128}$/
+const MAX_STATE_BODY_BYTES = 10 * 1024 * 1024
+const MAX_UPLOAD_BODY_BYTES = 25 * 1024 * 1024
+const mutationQueues = new Map()
+
+class ApiError extends Error {
+  constructor(statusCode, message) {
+    super(message)
+    this.statusCode = statusCode
+  }
+}
+
+function validateSid(sid, supplied = false) {
+  if (sid === null || sid === undefined || sid === '') {
+    if (supplied) throw new ApiError(400, 'Invalid sid: value must not be empty')
+    return null
+  }
+  if (supplied && sid === '_default') {
+    throw new ApiError(400, 'Invalid sid: _default is reserved')
+  }
+  if (!SID_PATTERN.test(sid)) {
+    throw new ApiError(400, 'Invalid sid: use 1-128 letters, numbers, hyphens, or underscores')
+  }
+  return sid
+}
+
 function getStateFile(sid) {
   if (!sid) return path.join(process.cwd(), '.mock-state.json')
-  const safeSid = sid.replace(/[^a-zA-Z0-9_-]/g, '')
-  return path.join(STATE_DIR, `${safeSid}.json`)
+  return path.join(STATE_DIR, `${sid}.json`)
 }
 
 function getInitialStateFile(sid) {
   if (!sid) return path.join(process.cwd(), '.mock-state.initial.json')
-  const safeSid = sid.replace(/[^a-zA-Z0-9_-]/g, '')
-  return path.join(STATE_DIR, `${safeSid}.initial.json`)
+  return path.join(STATE_DIR, `${sid}.initial.json`)
 }
 
 function readState(sid) {
@@ -32,9 +57,30 @@ function readState(sid) {
   return null
 }
 
-function writeState(sid, state) {
-  try { fs.writeFileSync(getStateFile(sid), JSON.stringify(state, null, 2)); return true }
-  catch (e) { console.error('Error writing state:', e); return false }
+async function atomicWriteJson(file, state) {
+  const temp = path.join(path.dirname(file), `.tmp-${process.pid}-${randomUUID()}`)
+  try {
+    await fs.promises.writeFile(temp, JSON.stringify(state, null, 2), 'utf-8')
+    await fs.promises.rename(temp, file)
+  } catch (e) {
+    await fs.promises.unlink(temp).catch(() => {})
+    throw e
+  }
+}
+
+async function atomicWriteBuffer(file, data) {
+  const temp = path.join(path.dirname(file), `.tmp-${process.pid}-${randomUUID()}`)
+  try {
+    await fs.promises.writeFile(temp, data)
+    await fs.promises.rename(temp, file)
+  } catch (e) {
+    await fs.promises.unlink(temp).catch(() => {})
+    throw e
+  }
+}
+
+async function writeState(sid, state) {
+  await atomicWriteJson(getStateFile(sid), state)
 }
 
 /**
@@ -47,11 +93,8 @@ function writeState(sid, state) {
  * NOTE: `set_current` deliberately does NOT write a baseline — see the comment
  * on the `set_current` branch below (PIPELINE-003).
  */
-function writeInitialStateUnconditional(sid, state) {
-  try {
-    fs.writeFileSync(getInitialStateFile(sid), JSON.stringify(state, null, 2))
-    return true
-  } catch (e) { console.error('Error writing initial state:', e); return false }
+async function writeInitialStateUnconditional(sid, state) {
+  await atomicWriteJson(getInitialStateFile(sid), state)
 }
 
 /**
@@ -73,22 +116,17 @@ function writeInitialStateUnconditional(sid, state) {
  * would silently vanish from `state_diff` — an empty diff is indistinguishable
  * from a correct no-op, which is far worse than the phantom keys this fixes.
  */
-function writeInitialState(sid, state) {
-  try {
-    const initFile = getInitialStateFile(sid)
-    if (fs.existsSync(initFile)) {
-      const current = readState(sid)
-      const initial = readInitialState(sid)
-      if (current !== null && JSON.stringify(current) !== JSON.stringify(initial)) {
-        return { written: false, reason: 'session already mutated' }
-      }
+async function writeInitialState(sid, state) {
+  const initFile = getInitialStateFile(sid)
+  if (fs.existsSync(initFile)) {
+    const current = readState(sid)
+    const initial = readInitialState(sid)
+    if (current !== null && JSON.stringify(current) !== JSON.stringify(initial)) {
+      return { written: false, reason: 'session already mutated' }
     }
-    fs.writeFileSync(initFile, JSON.stringify(state, null, 2))
-    return { written: true }
-  } catch (e) {
-    console.error('Error writing initial state:', e)
-    return { written: false, reason: e.message }
   }
+  await atomicWriteJson(initFile, state)
+  return { written: true }
 }
 
 function readInitialState(sid) {
@@ -99,25 +137,24 @@ function readInitialState(sid) {
   return null
 }
 
-function clearState(sid) {
+async function clearState(sid) {
   try {
     const file = getStateFile(sid)
-    if (fs.existsSync(file)) fs.unlinkSync(file)
     const initFile = getInitialStateFile(sid)
-    if (fs.existsSync(initFile)) fs.unlinkSync(initFile)
-    return true
-  } catch (e) { console.error('Error clearing state:', e); return false }
+    await Promise.all([
+      fs.promises.unlink(file).catch(e => { if (e.code !== 'ENOENT') throw e }),
+      fs.promises.unlink(initFile).catch(e => { if (e.code !== 'ENOENT') throw e }),
+    ])
+  } catch (e) {
+    console.error('Error clearing state:', e)
+    throw e
+  }
 }
 
 function parseQuery(url) {
   const idx = url.indexOf('?')
   if (idx === -1) return {}
-  const params = {}
-  url.substring(idx + 1).split('&').forEach(pair => {
-    const [k, v] = pair.split('=')
-    if (k) params[decodeURIComponent(k)] = decodeURIComponent(v || '')
-  })
-  return params
+  return Object.fromEntries(new URLSearchParams(url.substring(idx + 1)))
 }
 
 function deepMerge(target, source) {
@@ -132,21 +169,100 @@ function deepMerge(target, source) {
   return result
 }
 
+function equalState(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right)
+}
+
 function calculateStateDiff(initial, current) {
   const diff = {}
-  for (const key in current) {
+  const keys = new Set([
+    ...Object.keys(initial || {}),
+    ...Object.keys(current || {}),
+  ])
+  for (const key of keys) {
     if (!initial || JSON.stringify(current[key]) !== JSON.stringify(initial[key])) {
-      diff[key] = { old: initial ? initial[key] : undefined, new: current[key] }
+      const hasOld = !!initial && Object.prototype.hasOwnProperty.call(initial, key)
+      const hasNew = !!current && Object.prototype.hasOwnProperty.call(current, key)
+      diff[key] = {
+        old: hasOld ? initial[key] : null,
+        new: hasNew ? current[key] : null,
+      }
     }
   }
   return diff
 }
 
 function getFilesDir(sid) {
-  const safeSid = (sid || '_default').replace(/[^a-zA-Z0-9_-]/g, '')
-  const dir = path.join(FILES_DIR, safeSid)
+  const dir = path.join(FILES_DIR, sid || '_default')
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
   return dir
+}
+
+async function readBody(req) {
+  const maxBytes = MAX_STATE_BODY_BYTES
+  const declared = Number(req.headers['content-length'])
+  if (Number.isFinite(declared) && declared > maxBytes) {
+    throw new ApiError(413, `Request body exceeds ${maxBytes} bytes`)
+  }
+  const chunks = []
+  let size = 0
+  for await (const chunk of req) {
+    const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)
+    size += buf.length
+    if (size > maxBytes) throw new ApiError(413, `Request body exceeds ${maxBytes} bytes`)
+    chunks.push(buf)
+  }
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(Buffer.concat(chunks))
+  } catch {
+    throw new ApiError(400, 'Request body is not valid UTF-8')
+  }
+}
+
+async function readUploadBody(req) {
+  const declared = Number(req.headers['content-length'])
+  if (Number.isFinite(declared) && declared > MAX_UPLOAD_BODY_BYTES) {
+    throw new ApiError(413, `Request body exceeds ${MAX_UPLOAD_BODY_BYTES} bytes`)
+  }
+  const chunks = []
+  let size = 0
+  for await (const chunk of req) {
+    const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)
+    size += buf.length
+    if (size > MAX_UPLOAD_BODY_BYTES) {
+      throw new ApiError(413, `Request body exceeds ${MAX_UPLOAD_BODY_BYTES} bytes`)
+    }
+    chunks.push(buf)
+  }
+  return Buffer.concat(chunks)
+}
+
+function queueMutation(sid, operation) {
+  const key = sid || ''
+  const previous = mutationQueues.get(key) || Promise.resolve()
+  const next = previous.catch(() => {}).then(operation)
+  mutationQueues.set(key, next)
+  void next.finally(() => {
+    if (mutationQueues.get(key) === next) mutationQueues.delete(key)
+  }).catch(() => {})
+  return next
+}
+
+async function waitForMutation(sid) {
+  const pending = mutationQueues.get(sid || '')
+  if (pending) await pending
+}
+
+function sendJson(res, payload, statusCode = 200) {
+  res.statusCode = statusCode
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify(payload))
+}
+
+function sendError(res, error) {
+  const status = error instanceof ApiError ? error.statusCode : 500
+  if (status === 500) console.error('Mock API error:', error)
+  sendJson(res, { error: status === 500 ? 'State persistence failed' : error.message }, status)
 }
 
 function parseMultipart(buf, boundary) {
@@ -251,34 +367,39 @@ function setupMiddlewares(server, mediaRoot) {
 
   server.middlewares.use('/upload', async (req, res, next) => {
     if (req.method !== 'POST') return next()
-    const query = parseQuery(req.url || '')
-    const sid = query.sid || null
-    const contentType = req.headers['content-type'] || ''
-    const boundaryMatch = contentType.match(/boundary=(.+)/)
-    if (!boundaryMatch) { res.statusCode = 400; res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify({ error: 'multipart required' })); return }
-    const chunks = []; for await (const chunk of req) chunks.push(chunk)
-    const buf = Buffer.concat(chunks)
-    const files = parseMultipart(buf, boundaryMatch[1])
-    if (files.length === 0) { res.statusCode = 400; res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify({ error: 'No files found' })); return }
-    const filesDir = getFilesDir(sid)
-    const uploaded = []
-    for (const file of files) {
-      const safeFilename = file.filename.replace(/[^a-zA-Z0-9._-]/g, '_')
-      const storedName = `${randomUUID().slice(0, 8)}_${safeFilename}`
-      fs.writeFileSync(path.join(filesDir, storedName), file.data)
-      const safeSid = (sid || '_default').replace(/[^a-zA-Z0-9_-]/g, '')
-      uploaded.push({ original_name: file.filename, stored_name: storedName, size: file.data.length, content_type: file.contentType, url: `/files/${safeSid}/${storedName}` })
+    try {
+      const query = parseQuery(req.url || '')
+      const sid = validateSid(query.sid, Object.prototype.hasOwnProperty.call(query, 'sid'))
+      const contentType = req.headers['content-type'] || ''
+      const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i)
+      if (!boundaryMatch) throw new ApiError(400, 'multipart required')
+      const buf = await readUploadBody(req)
+      const files = parseMultipart(buf, boundaryMatch[1] || boundaryMatch[2].trim())
+      if (files.length === 0) throw new ApiError(400, 'No files found')
+      const filesDir = getFilesDir(sid)
+      const uploaded = []
+      for (const file of files) {
+        const safeFilename = file.filename.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 238)
+        const digest = createHash('sha256').update(file.data).digest('hex').slice(0, 16)
+        const storedName = `${digest}_${safeFilename}`
+        await atomicWriteBuffer(path.join(filesDir, storedName), file.data)
+        uploaded.push({ original_name: file.filename, stored_name: storedName, size: file.data.length, content_type: file.contentType, url: `/files/${sid || '_default'}/${storedName}` })
+      }
+      sendJson(res, { success: true, files: uploaded })
+    } catch (e) {
+      sendError(res, e)
     }
-    res.setHeader('Content-Type', 'application/json')
-    res.end(JSON.stringify({ success: true, files: uploaded }))
   })
 
   server.middlewares.use('/files', (req, res, next) => {
     if (req.method !== 'GET') return next()
     const parts = (req.url || '').split('/').filter(Boolean)
-    if (parts.length < 2) { res.statusCode = 404; res.end('Not found'); return }
-    const sid = parts[0].replace(/[^a-zA-Z0-9_-]/g, '')
-    const filename = parts.slice(1).join('/').replace(/[^a-zA-Z0-9._-]/g, '_')
+    if (parts.length !== 2) { res.statusCode = 404; res.end('Not found'); return }
+    const sid = parts[0]
+    const filename = parts[1]
+    if (!SID_PATTERN.test(sid) || !/^[a-zA-Z0-9._-]+$/.test(filename) || filename === '.' || filename === '..') {
+      res.statusCode = 400; res.end('Invalid file path'); return
+    }
     const filePath = path.join(FILES_DIR, sid, filename)
     if (!fs.existsSync(filePath)) { res.statusCode = 404; res.end('Not found'); return }
     const ext = path.extname(filename).toLowerCase()
@@ -291,111 +412,122 @@ function setupMiddlewares(server, mediaRoot) {
 
   server.middlewares.use('/post', async (req, res, next) => {
     if (req.method !== 'POST') return next()
-    const query = parseQuery(req.url || '')
-    const sid = query.sid || null
-    let body = ''
-    for await (const chunk of req) body += chunk
     try {
-      const data = JSON.parse(body)
+      const query = parseQuery(req.url || '')
+      const sid = validateSid(query.sid, Object.prototype.hasOwnProperty.call(query, 'sid'))
+      const body = await readBody(req)
+      let data
+      try {
+        data = JSON.parse(body)
+      } catch {
+        throw new ApiError(400, 'Malformed JSON body')
+      }
+      if (!data || typeof data !== 'object' || Array.isArray(data)) {
+        throw new ApiError(400, 'JSON body must be an object')
+      }
       const action = data.action || 'set'
-      if (action === 'reset') {
-        const initial = readInitialState(sid)
-        if (initial) {
-          writeState(sid, initial)
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ success: true, sid, message: 'State reset to initial.' }))
-        } else {
-          clearState(sid)
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ success: true, sid, message: 'State cleared.' }))
+      const result = await queueMutation(sid, async () => {
+        if (action === 'reset') {
+          const initial = readInitialState(sid)
+          if (initial !== null) {
+            await writeState(sid, initial)
+            return { success: true, sid, message: 'State reset to initial.' }
+          }
+          await clearState(sid)
+          return { success: true, sid, message: 'State cleared.' }
         }
-        return
-      }
-      if (action === 'set') {
+
+        if (!Object.prototype.hasOwnProperty.call(data, 'state')) {
+          throw new ApiError(400, `Action ${action} requires state`)
+        }
         const newState = data.state
-        writeState(sid, newState)
-        // `set` is the injector's verb: the state it carries is the session's
-        // starting point by definition, so it establishes the baseline even if
-        // a previous rollout on this sid left one behind. (The app then
-        // normalises a *partial* inject into the full 15-key tree with
-        // `set_initial` — see SCHEMA.md §2.3.)
-        writeInitialStateUnconditional(sid, newState)
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({ success: true, sid, message: 'State set.', state: newState }))
-        return
-      }
-      if (action === 'set_initial') {
-        const newState = data.state
-        const result = writeInitialState(sid, newState)
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({ success: true, sid, message: result.written ? 'Initial state published.' : `Initial state left untouched: ${result.reason}.`, written: result.written }))
-        return
-      }
-      if (action === 'set_current') {
-        const currentState = readState(sid) || {}
-        const newState = data.merge ? deepMerge(currentState, data.state) : data.state
-        writeState(sid, newState)
-        // PIPELINE-003: `set_current` carries the POST-mutation tree and must
-        // NEVER establish the baseline. It used to call
-        // writeInitialStateIfMissing() here, so whenever `<sid>.initial.json`
-        // was absent (fresh deploy — `.mock-states/` is gitignored — or a
-        // wiped/reset session) the mutated tree became the baseline;
-        // `initial === current` made state_diff `{}`, and writeInitialState's
-        // guard then permanently refused the app's `set_initial` correction.
-        // An empty diff on a mutated session is indistinguishable from a
-        // correct no-op, so the RL reward signal read clean on a dirty session.
-        //
-        // With this gone, a missing baseline merely degrades `/go` to
-        // `initial = current` *transiently*: the app's next `set_initial`
-        // (posted on every boot, see AppContext) finds no baseline file, is
-        // therefore unguarded, and repairs it.
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({ success: true, message: 'Current state updated.', state: newState }))
-        return
-      }
-      res.statusCode = 400; res.end(JSON.stringify({ error: 'Unknown action' }))
+        if (!newState || typeof newState !== 'object' || Array.isArray(newState)) {
+          throw new ApiError(400, 'state must be a JSON object')
+        }
+        if (action === 'set') {
+          const normalized = { ...createInitialData(), ...newState }
+          await writeState(sid, normalized)
+          // The set injector verb unconditionally replaces both
+          // current state and baseline, including on a reused sid.
+          await writeInitialStateUnconditional(sid, normalized)
+          return { success: true, sid, message: 'State set.', state: normalized }
+        }
+        if (action === 'set_initial') {
+          const writeResult = await writeInitialState(sid, newState)
+          return { success: true, sid, message: writeResult.written ? 'Initial state published.' : `Initial state left untouched: ${writeResult.reason}.`, written: writeResult.written }
+        }
+        if (action === 'restore') {
+          if (!Object.prototype.hasOwnProperty.call(data, 'initial_state')) {
+            throw new ApiError(400, 'restore requires initial_state')
+          }
+          const initialState = data.initial_state
+          if (!initialState || typeof initialState !== 'object' || Array.isArray(initialState)) {
+            throw new ApiError(400, 'initial_state must be a JSON object')
+          }
+          const current = readState(sid)
+          const initial = readInitialState(sid)
+          const compatible = (current === null || equalState(current, newState))
+            && (initial === null || equalState(initial, initialState))
+          if (!compatible) return { success: true, sid, restored: false }
+          if (initial === null) await writeInitialStateUnconditional(sid, initialState)
+          if (current === null) await writeState(sid, newState)
+          return { success: true, sid, restored: true }
+        }
+        if (action === 'set_current') {
+          const currentState = readState(sid) || {}
+          const mergedState = data.merge ? deepMerge(currentState, newState) : newState
+          await writeState(sid, mergedState)
+          // Deliberately does not establish or replace the baseline.
+          return { success: true, message: 'Current state updated.', state: mergedState }
+        }
+        throw new ApiError(400, 'Unknown action')
+      })
+      sendJson(res, result)
     } catch (e) {
-      res.statusCode = 400; res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify({ error: e.message }))
+      sendError(res, e)
     }
   })
 
-  server.middlewares.use('/state', (req, res, next) => {
+  server.middlewares.use('/state', async (req, res, next) => {
     if (req.method !== 'GET') return next()
-    const query = parseQuery(req.url || '')
-    const sid = query.sid || null
-    const state = readState(sid)
-    const initial = readInitialState(sid)
-    res.setHeader('Content-Type', 'application/json')
-    res.setHeader('Cache-Control', 'no-cache, no-store')
-    // `stored_state` / `has_custom_state` are the hub contract. `initial_state`
-    // / `has_initial_state` are additive: the app reads them at boot so it can
-    // tell "the server has no record of this sid" (republish from localStorage)
-    // apart from "the server holds a state this browser did not write"
-    // (a task inject or a `reset` — adopt it). Consumers that do not know
-    // these fields are unaffected.
-    res.end(JSON.stringify({
-      stored_state: state,
-      has_custom_state: state !== null,
-      initial_state: initial,
-      has_initial_state: initial !== null,
-      sid,
-    }))
+    try {
+      const query = parseQuery(req.url || '')
+      const sid = validateSid(query.sid, Object.prototype.hasOwnProperty.call(query, 'sid'))
+      await waitForMutation(sid)
+      const state = readState(sid)
+      const initial = readInitialState(sid)
+      res.setHeader('Cache-Control', 'no-cache, no-store')
+      sendJson(res, {
+        stored_state: state,
+        has_custom_state: state !== null,
+        initial_state: initial,
+        has_initial_state: initial !== null,
+        sid,
+      })
+    } catch (e) {
+      sendError(res, e)
+    }
   })
 
-  server.middlewares.use('/go', (req, res, next) => {
+  server.middlewares.use('/go', async (req, res, next) => {
     if (req.method !== 'GET') return next()
-    const query = parseQuery(req.url || '')
-    const sid = query.sid || null
-    const currentState = readState(sid)
-    const initialState = readInitialState(sid)
-    const defaultState = createInitialData()
-    const initial = initialState || currentState || defaultState
-    const current = currentState || initial
-    const stateDiff = calculateStateDiff(initial, current)
-    res.setHeader('Content-Type', 'application/json')
-    res.setHeader('Cache-Control', 'no-cache, no-store')
-    res.end(JSON.stringify({ initial_state: initial, current_state: current, state_diff: stateDiff }))
+    try {
+      const query = parseQuery(req.url || '')
+      const sid = validateSid(query.sid, Object.prototype.hasOwnProperty.call(query, 'sid'))
+      await waitForMutation(sid)
+      const currentState = readState(sid)
+      const initialState = readInitialState(sid)
+      const defaultState = createInitialData()
+      // A missing baseline must compare current state with defaults, never with
+      // itself, or the first mutation is hidden behind an empty diff.
+      const initial = initialState || defaultState
+      const current = currentState || initial
+      const stateDiff = calculateStateDiff(initial, current)
+      res.setHeader('Cache-Control', 'no-cache, no-store')
+      sendJson(res, { initial_state: initial, current_state: current, state_diff: stateDiff })
+    } catch (e) {
+      sendError(res, e)
+    }
   })
 }
 

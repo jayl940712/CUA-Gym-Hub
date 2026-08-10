@@ -99,6 +99,23 @@ curl -X POST "http://localhost:5173/post?sid=task_042" -d '{"action":"reset"}'
 
 Each mock's `SCHEMA.md` documents the full state schema and an **Observable State Changes** table that maps user actions to the state fields they affect — the primary reference for writing reward functions.
 
+For the five `webarena_*` mocks, expired legacy state and uploads can be
+reviewed safely with `python3 shared/cleanup-webarena-sessions.py`; pass
+`--apply` only after reviewing the dry-run output.
+
+Their shared legacy contract can be checked with:
+
+```bash
+python3 shared/check-state-contract.py
+python3 shared/test-webarena-state-contract.py --mock all --mode both
+# To intentionally run HTTP checks only:
+python3 shared/test-webarena-state-contract.py --mock all --mode both --api-only
+```
+
+Managed runs include Playwright cache, SID-switch, coalescing, and flush checks
+by default. Install Chromium through Playwright or pass
+`--browser-executable /path/to/chromium`.
+
 ### UDA Hardened Mode
 
 The default CUA-Gym state API is intentionally inspectable for pure computer-use training. When a benchmark gives the same agent both shell and browser access, enable hybrid hardened mode so new harness traffic can use server-side private state while existing legacy traffic stays backward compatible:

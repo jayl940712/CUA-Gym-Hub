@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
 import {
-  getSessionId, fetchCustomState, initializeData, saveState,
-  initialKey, storageKey, createInitialData, publishInitialState,
+  getSessionId, fetchServerState, initializeData, saveState, flushState,
+  readStoredState, readStoredInitial, writeStoredInitial, mergeOverDefaults,
+  restoreServerState, sameState, createInitialData,
   CURRENT_USER_ID, SEED_NEXT_IDS, ID_KIND_COLLECTION,
 } from '../utils/dataManager.js'
 import { materialize, dematerialize, toCore } from '../utils/overlay.js'
@@ -27,6 +29,9 @@ export function AppProvider({ children }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   const coreRef = useRef(null)
+  const activeSidRef = useRef(null)
+  const location = useLocation()
+  const sid = useMemo(() => getSessionId(), [location.search])
 
   // -------------------------------------------------------------------------
   // stateRef mirrors `state` SYNCHRONOUSLY.
@@ -61,27 +66,116 @@ export function AppProvider({ children }) {
   }, [])
 
   useEffect(() => {
-    const sid = getSessionId()
+    let cancelled = false
+    activeSidRef.current = null
+    coreRef.current = null
+    stateRef.current = null
+    setCoreInternal(null)
+    setStateInternal(null)
+    setLoading(true)
 
-    // ⚠️ Order is load-bearing. initializeData() writes defaults into
-    // localStorage, which would make this check always true and mean injected
-    // task state never loads. Read the key BEFORE calling it.
-    const isRefresh = localStorage.getItem(initialKey(sid)) !== null
+    ;(async () => {
+      try {
+        await flushState()
+      } catch (error) {
+        console.error('Unable to flush previous GitLab state:', error)
+      }
+      const server = await fetchServerState(sid)
+      if (cancelled) return
 
-    if (isRefresh) {
-      commit(initializeData(sid))
+      // Read browser state only after the server response, but before
+      // initializeData() writes anything. Server files are authoritative when
+      // present; localStorage is only a recovery source when those files are
+      // genuinely absent.
+      const localCurrent = readStoredState(sid)
+      const localInitial = readStoredInitial(sid)
+      let data
+      let baseline
+      let shouldRestore = false
+
+      if (server.available && server.current !== null) {
+        data = mergeOverDefaults(server.current)
+        if (server.initial !== null) {
+          baseline = mergeOverDefaults(server.initial)
+        } else if (localCurrent !== null && localInitial !== null
+                   && sameState(localCurrent, server.current)) {
+          baseline = mergeOverDefaults(localInitial)
+          shouldRestore = true
+        } else {
+          // Preserve set_current-on-a-never-seeded-sid semantics: /go uses the
+          // pristine default baseline, so the browser reset baseline does too.
+          baseline = createInitialData()
+        }
+      } else if (server.available && server.initial !== null) {
+        // A partially lost session can safely rebuild current from its server
+        // baseline through the guarded restore action.
+        data = mergeOverDefaults(server.initial)
+        baseline = data
+        shouldRestore = true
+      } else if (server.available) {
+        data = mergeOverDefaults(localCurrent || localInitial || createInitialData())
+        baseline = mergeOverDefaults(localInitial || data)
+        shouldRestore = true
+      } else {
+        // A failed/incompatible /state read is not proof that files vanished.
+        // Render the browser cache (or defaults) without publishing over a
+        // possibly newer server injection.
+        data = mergeOverDefaults(localCurrent || createInitialData())
+        baseline = mergeOverDefaults(localInitial || data)
+      }
+
+      initializeData(sid, data)
+      writeStoredInitial(sid, baseline)
+
+      if (shouldRestore) {
+        const result = await restoreServerState(baseline, data, sid)
+        if (cancelled) return
+        if (!result.restored) {
+          // A harness injection landed after our /state read. Fetch once more
+          // and adopt it rather than seating stale browser data.
+          const latest = await fetchServerState(sid)
+          if (cancelled) return
+          if (!latest.available) {
+            throw new Error('Unable to re-read authoritative GitLab state')
+          }
+          if (latest.current !== null) {
+            data = mergeOverDefaults(latest.current)
+            baseline = latest.initial !== null
+              ? mergeOverDefaults(latest.initial)
+              : createInitialData()
+            initializeData(sid, data)
+            writeStoredInitial(sid, baseline)
+          } else if (latest.initial !== null) {
+            data = mergeOverDefaults(latest.initial)
+            baseline = data
+            const retry = await restoreServerState(baseline, data, sid)
+            if (!retry.restored) throw new Error('GitLab initial-only recovery lost a setup race')
+            initializeData(sid, data)
+            writeStoredInitial(sid, baseline)
+          } else {
+            throw new Error('GitLab restore conflict returned no authoritative state')
+          }
+        }
+      }
+
+      if (cancelled) return
+      activeSidRef.current = server.available ? (sid || '_default') : null
+      commit(data)
       setLoading(false)
-    } else {
-      fetchCustomState(sid).then(custom => {
-        const data = initializeData(sid, custom)
-        commit(data)
-        setLoading(false)
-        // Cold session with no injected state: hand the server a pristine
-        // baseline now, so the first mutation shows up in /go's state_diff.
-        if (!custom) publishInitialState(data, sid)
-      })
+    })().catch(error => {
+      if (cancelled) return
+      console.error('Unable to hydrate GitLab session:', error)
+      const data = initializeData(sid)
+      activeSidRef.current = null
+      commit(data)
+      setLoading(false)
+    })
+
+    return () => {
+      cancelled = true
+      flushState().catch(error => console.error('Unable to flush GitLab state:', error))
     }
-  }, [])
+  }, [sid, commit])
 
   // -------------------------------------------------------------------------
   // A per-project chunk arriving GROWS the frozen base (`state.notes`), so the
@@ -128,34 +222,32 @@ export function AppProvider({ children }) {
    * than a set of overlay verbs.
    */
   const setState = useCallback((updater) => {
+    if (activeSidRef.current !== (sid || '_default')) return
     const prev = stateRef.current
     if (!prev) return
     const next = withReservedIds(typeof updater === 'function' ? updater(prev) : updater)
     const nextCore = dematerialize(coreRef.current, prev, next)
     commit(nextCore)
-    saveState(nextCore, getSessionId())
-  }, [commit, withReservedIds])
+    saveState(nextCore, sid)
+  }, [commit, sid, withReservedIds])
 
   const resetState = useCallback(() => {
-    const sid = getSessionId()
+    if (activeSidRef.current !== (sid || '_default')) return
     reservedIds.current = {}
-    const stored = localStorage.getItem(initialKey(sid))
+    const stored = readStoredInitial(sid)
     if (stored) {
-      try {
-        // The baseline key holds a CORE (or, for an injected task state, a core
-        // carrying full base arrays). Either way it goes back through toCore()
-        // so a fixture that omitted overlay keys still restores cleanly.
-        const initial = toCore(JSON.parse(stored))
-        localStorage.setItem(storageKey(sid), JSON.stringify(initial))
-        commit(initial)
-        saveState(initial, sid)
-        return
-      } catch (e) { /* fall through */ }
+      // The baseline key holds a CORE (or, for an injected task state, a core
+      // carrying full base arrays). Either way it goes back through toCore()
+      // so a fixture that omitted overlay keys still restores cleanly.
+      const initial = toCore(stored)
+      commit(initial)
+      saveState(initial, sid)
+      return
     }
     const fresh = createInitialData()
     commit(fresh)
     saveState(fresh, sid)
-  }, [commit])
+  }, [commit, sid])
 
   // -------------------------------------------------------------------------
   // Id allocation. Created records must not collide with real container ids.

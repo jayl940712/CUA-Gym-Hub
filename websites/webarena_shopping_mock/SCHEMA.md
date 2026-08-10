@@ -233,33 +233,17 @@ case (a)) — there is no push channel to a page that is already open.
 
 ### 2.3 How the `/go` baseline is established
 
-`{"action":"set"}` writes your object to **both** the current and the initial
-state file. When that object is partial, it is not yet a usable `/go` baseline:
-the app merges it over `createInitialData()` and republishes the whole tree, so
-a diff against the partial object would report all 15 keys as mutations.
+`{"action":"set"}` normalises a partial object over `createInitialData()` and
+writes that complete tree to both current and initial state before responding.
+A freshly injected session therefore has `state_diff == {}` even before a
+browser opens.
 
-The app therefore normalises the baseline itself. On **every** boot for a `sid`
-(first load, refresh or deep link — before any UI is interactive) it posts:
-
-```json
-{ "action": "set_initial", "state": { …the merged tree… } }
-```
-
-and only then posts the usual `set_current`. `set_initial` overwrites the
-initial state file, so `state_diff` is `{}` on a freshly injected session
-regardless of how few keys you injected. It is posted on every boot rather than
-only the first because the server's state files can vanish under a live session
-(`.mock-states/` is gitignored) and nothing else would restore them — see §4.1.
-
-**Ordering guarantee.** `set_initial` is refused — with
-`"Initial state left untouched: session already mutated."` — whenever the
-stored current state exists and differs from the stored baseline. A cold load
-in a fresh browser context (empty `localStorage`) on a `sid` that has already
-been driven therefore cannot adopt post-mutation state as the baseline and
-silently erase a real `state_diff`.
-
-`set_initial` is an app-internal verb. Task setup should keep using `set`;
-there is no reason for an injector to call it.
+The browser uses an internal race-safe `restore` action only when state files
+are genuinely absent. It fills missing current/baseline files while existing
+files still equal the browser's view; if a concurrent task `set` wins, restore
+returns `restored:false` and the browser re-fetches the injected state.
+`set_initial` remains accepted for backward compatibility, but normal task
+setup and browser boot do not rely on it.
 
 ---
 
@@ -309,12 +293,30 @@ plugin under **both** `configureServer` and `configurePreviewServer`.
 |---|---|---|
 | `/post?sid=` | POST | `{action: 'set' \| 'set_current' \| 'set_initial' \| 'reset', state}` — `set_initial` republishes the `/go` baseline and is app-internal, see §2.3 |
 | `/state?sid=` | GET | `{stored_state, has_custom_state, initial_state, has_initial_state, sid}` |
-| `/go?sid=` | GET | `{initial_state, current_state, state_diff}` |
+| `/go?sid=` | GET | `{initial_state, current_state, state_diff}`; a missing baseline falls back to `createInitialData()`, never to current state |
 | `/upload?sid=` | POST | multipart upload (unused by this site, kept for contract parity) |
 | `/files/:sid/:name` | GET | uploaded file download |
 
-State files live at `.mock-states/<sid>.json` and `.mock-states/<sid>.initial.json`;
-`sid` is sanitised with `sid.replace(/[^a-zA-Z0-9_-]/g, '')`.
+Uploads are content-addressed and isolated by SID. Legacy `reset` restores JSON
+state but deliberately leaves session fixture files available.
+
+State files live at `.mock-states/<sid>.json` and `.mock-states/<sid>.initial.json`.
+A supplied `sid` must fully match `[A-Za-z0-9_-]{1,128}`; invalid and empty
+supplied values are rejected instead of being lossy-sanitised into a colliding
+filename. Omitting `sid` remains supported for the default-state compatibility
+route.
+
+The server buffers each request body as bytes and decodes UTF-8 once, rejects
+malformed JSON, non-object state, and state bodies over 10 MiB, serializes
+mutations per `sid`, and writes each state file through a same-directory
+temporary file followed by an atomic rename. A failed write returns an error
+response rather than a success acknowledgement.
+
+Browser `saveState()` calls made in the same tick coalesce to the newest whole
+state and are serialized per `sid` across ticks. `flushState()` forces any
+pending write to start and resolves only after all queued writes have landed;
+it rejects on a failed request. Top-level diffing compares the union of baseline
+and current keys, so deleting a top-level key remains observable.
 
 `initial_state` / `has_initial_state` on `/state` are additive to the hub
 contract. The app reads them at boot to tell *"the server has no record of this
@@ -332,11 +334,9 @@ three-way decision in `AppContext` (`src/context/AppContext.jsx`), against
 
 | # | Condition | Behaviour |
 |---|---|---|
-| **a. Adopt** | server has a current state **and it differs from `localStorage`** | The server wins. Its state is merged over `createInitialData()` (an inject may be partial) and becomes what the app renders. `localStorage`'s baseline is replaced by the server's baseline when it has one. |
-| **b. Republish** | server agrees with `localStorage`, or has nothing, and this browser holds a baseline for the `sid` | Render from `localStorage`, then post `set_initial` (the stored baseline) followed by `set_current` (the stored current), so a server that has lost its state files is repaired. |
-| **c. Cold boot** | neither side has anything | Seed from `createInitialData()`, publish it as both baseline and current. |
-
-Every path ends with `set_initial` then `set_current`, in that order.
+| **a. Adopt** | server has a current state | The server wins and becomes the rendered/local state; its baseline is mirrored locally. |
+| **b. Restore** | server is reachable but one or both files are absent | Render the local/default state and issue guarded `restore`; a concurrent inject wins and is re-fetched. |
+| **c. Offline fallback** | `/state` is unavailable | Render localStorage/defaults without posting anything that could overwrite an unseen injection. |
 
 Why each case exists:
 
@@ -350,22 +350,18 @@ Why each case exists:
   the reset is itself posted as `set_current`.
 - **(b)** is what keeps `/go` truthful when `.mock-states/` is absent —
   it is gitignored, so it is **empty on every fresh deploy** while a persistent
-  browser profile may still hold a mutated session. Without the republish, `/go`
+  browser profile may still hold a mutated session. Without the restore, `/go`
   falls back to `createInitialData()` and reports the DEFAULT tree with
   `state_diff: {}` while the agent's browser shows a mutated one.
 
-**Republishing can never erase a real diff.** `set_initial` is refused whenever
-the stored current state exists and differs from the stored baseline (§2.3), so
-on a plain reload of an already-driven `sid` the baseline write is a no-op and
-`state_diff` survives. It only lands when the baseline file is genuinely missing.
+**Restore can never erase a real diff.** It fills only missing files and checks
+all existing files against the supplied values in the same serialized mutation.
+If they differ, nothing is written.
 
 **`set_current` never establishes the baseline.** It carries the *post*-mutation
 tree; adopting that as `initial_state` would make `state_diff` `{}` on a mutated
-session, and — because the `set_initial` guard would then see
-`current !== initial` — would make the corruption permanent and silent. A
-missing baseline instead degrades `/go` to `initial = current` only until the
-next boot's `set_initial`, which finds no baseline file, is therefore unguarded,
-and repairs it.
+session. When the baseline file is missing, `/go` compares current state with
+`createInitialData()` so the mutation stays visible.
 
 **`{"action":"set"}` always (re)writes the baseline**, even if the `sid` already
 has one. That verb is the task injector declaring the session's starting point,

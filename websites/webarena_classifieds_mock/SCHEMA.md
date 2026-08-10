@@ -2,18 +2,35 @@
 
 **Base URL**: `http://localhost:8087/` (position of `webarena_classifieds_mock` in
 `deploy-all.sh`'s alphabetical sweep from 8000; re-derive after adding any mock)
-**Go Endpoint**: `GET /go?sid=<sid>` → `{initial_state, current_state, state_diff}`
+**Go Endpoint**: `GET /go?sid=<sid>` → `{initial_state, current_state, state_diff, revision}`
 **Inject**: `POST /post?sid=<sid>` with body `{"action":"set","state":{...}}`
-**Update**: `POST /post?sid=<sid>` with body `{"action":"set_current","state":{...}}`
-**Reset**: `POST /post?sid=<sid>` with body `{"action":"reset"}`
-**State read**: `GET /state?sid=<sid>` → `{stored_state, has_custom_state, sid}`
+**Publish baseline**: `POST /post?sid=<sid>` with body `{"action":"set_initial","state":{...},"base_revision":N}`
+**Update**: `POST /post?sid=<sid>` with body `{"action":"set_current","state":{...},"base_revision":N}`
+**Reset**: `POST /post?sid=<sid>` with body `{"action":"reset","base_revision":N}` (`base_revision` is optional for legacy callers)
+**State read**: `GET /state?sid=<sid>` → `{stored_state, has_custom_state, initial_state, has_initial_state, revision, sid}`
 **Uploads**: `POST /upload?sid=<sid>` (multipart) → `{files:[{url:"/files/<sid>/<name>"}]}`
 
+Uploads are content-addressed and isolated by SID. Legacy `reset` restores JSON
+state but deliberately leaves session fixture files available.
+
 State files live at `.mock-states/<sid>.json` and `.mock-states/<sid>.initial.json`;
-`sid` is sanitised with `sid.replace(/[^a-zA-Z0-9_-]/g, '')` on every path-forming
-endpoint. All five endpoints are served under **both** `npm run dev` and
+an explicitly supplied `sid` must match `[a-zA-Z0-9_-]{1,128}` exactly. Invalid
+or empty values are rejected rather than stripped into a colliding filename.
+Omitting `sid` still selects the legacy default session. All endpoints are served under **both** `npm run dev` and
 `npm run preview` (`vite.config.js` registers the same middleware stack under
 `configureServer` and `configurePreviewServer`).
+
+`set` shallow-merges a partial injection over `createInitialData()` and
+unconditionally replaces both current and baseline state. `set_current` never
+creates or changes the baseline. `set_initial` is the browser's guarded
+baseline-republication operation: it is refused once stored current differs
+from stored initial, or when current exists but its baseline is missing.
+`reset` restores current from baseline and preserves the
+baseline. Mutation responses carry a monotonic `revision`; clients may send
+`base_revision`, and a stale value receives HTTP 409. State files are replaced
+atomically, and malformed UTF-8, malformed JSON, and oversized request bodies
+are rejected. Browser recovery uses an internal revision-guarded `restore`;
+conflicts cause a re-fetch and adoption of the newer server injection.
 
 ---
 
@@ -113,6 +130,10 @@ URL and appears in search.
 
 Every mutation flows through `AppContext.setState` → `saveState()` →
 `POST /post?sid=…` with `{"action":"set_current"}` → visible in `/go`'s `state_diff`.
+Same-tick browser writes are coalesced per SID and all whole-state posts are
+serialized. Tests can import `flushState()` from `src/utils/dataManager.js` to
+wait for the final acknowledged write. Top-level diffing compares the union of
+baseline and current keys, so deleting a key remains observable.
 
 | Action (source route) | Trigger in UI | State keys changed |
 |---|---|---|

@@ -11,18 +11,38 @@
 **State read**: `GET /state?sid=<sid>`
 **Upload**: `POST /upload?sid=<sid>` · **Serve**: `GET /files/<sid>/<filename>`
 
+Uploads are content-addressed and isolated by SID. Legacy `reset` restores JSON
+state but deliberately leaves session fixture files available.
+
 The app boots pre-logged-in as `admin` (WebArena's `admin` / `admin1234`). There
 is no login gate. `?sid=` rides on every URL and survives every redirect.
 
-Injected state may be **partial** — `mergeOverDefaults()` fills the rest of the
-tree from `createInitialData()`, so `{"cmsPages":[…]}` alone is a valid inject
-and produces no spurious diff.
+Injected state may be **partial** — server-side `set` fills the rest of the tree
+from `createInitialData()`, so `{"cmsPages":[…]}` alone is a valid inject and
+produces no spurious diff before a browser opens. Browser recovery uses an
+internal guarded `restore` action; it fills only missing files and refuses to
+overwrite a concurrent task injection.
+
+A supplied `sid` must fully match `[A-Za-z0-9_-]{1,128}`; invalid and empty
+supplied values are rejected rather than sanitised into a colliding filename.
+Omitting `sid` remains supported for default-state compatibility. The server
+buffers request bytes before one UTF-8 decode, rejects malformed JSON,
+non-object state, and state bodies over 10 MiB, serializes mutations per `sid`,
+and atomically renames
+temporary state files into place. Write failures return error responses.
+
+Browser `saveState()` calls in one tick coalesce to the newest whole state and
+are serialized per `sid` across ticks. Exported `flushState()` forces pending
+writes to start and resolves after all queued writes land, rejecting on failure.
+Top-level diffing compares the union of baseline and current keys. If a baseline
+file is missing, `/go` compares current state with `createInitialData()` rather
+than comparing current state with itself.
 
 ---
 
 ## How the state is split
 
-`src/data/` is 4.8 MB; the state blob is **329,014 bytes (321 KB) across 43
+`src/data/` is 4.8 MB; the state blob is approximately **321 KB across 44
 top-level keys**, because the split is by *mutability*, not importance
 (`src/utils/dataManager.js:1-35`):
 
@@ -81,15 +101,16 @@ directly in a page misses the session overlay.
 | `attributeSetOverrides` | object(0) | — | `{[attribute_set_id]: Partial<AttributeSet>}` |
 | `newAttributeSets` | array(0) | — | Sets created through Stores > Attribute Set > Add Attribute Set |
 | `coreConfig` | array(34) | `src/data/coreConfig.json` | `{config_id, scope, scope_id, path, value}` — the `core_config_data` table. Editing a field with no seeded row appends one, exactly as Magento does on first override. |
-| `systemConfig` | object(14) | `src/data/systemConfig.json` + 7 declared overlays | `{websites[], store_groups[], stores[], themes[], currency_rates[], variables[], checkout_agreements[], cacheStatus{}, cacheFlushLog[], indexerModes{}, indexerStatuses{}, notificationOverrides{}, integrationStatus{}, unlockedAdminUserIds[]}`. Three further sub-keys are written at runtime but **not** declared in the baseline: `url_rewrites[]`, `url_rewrite_edits{}`, `url_rewrite_deleted[]` (see PIPELINE-026). |
+| `systemConfig` | object(26) | `src/data/systemConfig.json` + 19 declared overlays | Seed keys: `{websites[], store_groups[], stores[], themes[], currency_rates[], variables[], checkout_agreements[]}`. Baseline overlay defaults: `{cacheStatus{}, cacheFlushLog[], indexerModes{}, indexerStatuses{}, notificationOverrides{}, integrationStatus{}, unlockedAdminUserIds[], widgets[], design_changes[], synonyms[], newsletter_templates[], url_rewrites[], url_rewrite_edits{}, url_rewrite_deleted[], report_statistics{}, integrations[], sitemaps[], email_templates[], currency_symbols{}}`. |
+| `dashboardStatistics` | object(0) | — | `{}` initially; Dashboard > Reload Data writes `{lifetime_refreshed_at, lifetime_refresh_count}`. |
 | `taxConfig` | object(6) | `src/data/taxConfig.json` | `{classes[], rates[], rules[], calculations[], rate_titles[], shipping_tablerate[]}` |
 | `gridBookmarks` | object(0) | — | `{[gridId]: {[viewName]: queryString}}` — views saved through any grid's Default View > Save View as |
 
-### Undeclared key written at runtime
+### Baseline completeness
 
-| Key | Type | Writer | Note |
-|---|---|---|---|
-| `dashboardStatistics` | object | `src/pages/Dashboard.jsx:37-41` | `{lifetime_refreshed_at, lifetime_refresh_count}`, written by Dashboard > Reload Data. **Not present in `createInitialData()`**, so it diffs as `{new}` with no `old` member. Filed as PIPELINE-024 (P1); the fix is to declare `dashboardStatistics: {}` in the baseline. |
+`dashboardStatistics` and all documented URL-rewrite overlay keys are declared
+in `createInitialData()`. Their first mutation therefore has a precise `old`
+value (`{}` or `[]`) instead of appearing as an undeclared object creation.
 
 ### Default IDs
 
@@ -222,7 +243,7 @@ path but no reachable affordance in the current seed.
 | User Action | State Field Changed |
 |---|---|
 | Reports > Refresh Statistics → mass action | `systemConfig.report_statistics` |
-| **Dashboard → Reload Data** | `dashboardStatistics.{lifetime_refreshed_at, lifetime_refresh_count}` *(key not yet declared in the baseline — PIPELINE-024)* |
+| **Dashboard → Reload Data** | `dashboardStatistics.{lifetime_refreshed_at, lifetime_refresh_count}` |
 
 ### Stores & System
 

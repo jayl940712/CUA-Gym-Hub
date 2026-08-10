@@ -1,12 +1,10 @@
 import React from 'react'
 import { useApp } from '../context/AppContext.jsx'
 import { computeStateDiff } from '../utils/stateTracker.js'
-import { initialKey } from '../utils/dataManager.js'
+import { createInitialData, initialKey } from '../utils/dataManager.js'
 
 export default function GoPage() {
-  const { state } = useApp()
-
-  const sid = new URLSearchParams(window.location.search).get('sid')
+  const { state, sid } = useApp()
 
   let initialState = null
   try {
@@ -14,7 +12,7 @@ export default function GoPage() {
     if (stored) initialState = JSON.parse(stored)
   } catch (e) {}
 
-  const initial = initialState || state
+  const initial = initialState || createInitialData()
   const output = {
     initial_state: initial,
     current_state: state,

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import {
-  getSessionId, fetchServerState, initializeData, saveState, publishInitialState,
+  getSessionId, fetchServerState, initializeData, saveState, flushState, restoreServerState,
   readStoredState, readStoredInitial, writeStoredInitial, mergeOverDefaults,
   sameState, createInitialData,
 } from '../utils/dataManager.js'
@@ -43,7 +43,14 @@ export function AppProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const [messages, setMessages] = useState([])
   const location = useLocation()
+  const routeSid = new URLSearchParams(location.search).get('sid')
   const navCount = useRef(0)
+  const activeSidRef = useRef(null)
+  const renderedRouteSidRef = useRef(routeSid)
+  if (renderedRouteSidRef.current !== routeSid) {
+    renderedRouteSidRef.current = routeSid
+    activeSidRef.current = null
+  }
 
   /* ------------------------------------------------------------------ *
    * Boot.
@@ -75,9 +82,19 @@ export function AppProvider({ children }) {
    * exactly the case being repaired.
    * ------------------------------------------------------------------ */
   useEffect(() => {
+    let cancelled = false
     const sid = getSessionId()
+    activeSidRef.current = null
+    setLoading(true)
 
     ;(async () => {
+      try {
+        await flushState()
+      } catch (error) {
+        console.error('[state persistence] Previous Shopping write failed', error)
+      }
+      if (cancelled) return
+
       // R7-004. Descriptions, options and reviews are code-split
       // (utils/catalog.js) and read through synchronous accessors. This gate
       // used to await ALL THREE — 15.4 MB gzip in front of the first paint of
@@ -95,47 +112,96 @@ export function AppProvider({ children }) {
       // it in flight since before React mounted, so it costs ~nothing on top
       // of the `/state` round-trip it is sharing this gate with.
       const [server] = await Promise.all([fetchServerState(sid), ensureDetail(['options'])])
+      if (cancelled) return
       // Read localStorage BEFORE any initializeData() call — initializeData
       // writes defaults, which would make every boot look like a refresh and
       // injected task state would never load.
       const localCurrent = readStoredState(sid)
       const localInitial = readStoredInitial(sid)
 
-      let data      // what to render, and to post as `set_current`
-      let baseline  // what to post as `set_initial`
+      let data
+      let baseline
+      let shouldRestore = false
 
-      if (server.current !== null && !sameState(server.current, localCurrent)) {
-        // (a) ADOPT. The inject may be partial (SCHEMA.md §2.2), so merge it
-        // over the 15-key defaults; that merged tree — not the partial object —
-        // is the real baseline.
-        data = initializeData(sid, server.current)
-        // If the server's session has already diverged, its baseline is the
-        // older, correct one. Mirror that rather than the state we just
-        // adopted, so the client's notion of "initial" matches /go's.
-        baseline = server.initial ? mergeOverDefaults(server.initial) : data
-        // initializeData set BOTH localStorage keys to the merged current.
-        writeStoredInitial(sid, baseline)
-      } else if (localInitial !== null) {
-        // (b) REPUBLISH.
-        data = localCurrent || localInitial
-        baseline = localInitial
-      } else {
-        // (c) COLD BOOT.
-        data = initializeData(sid, null)
+      if (server.available && server.current !== null) {
+        data = mergeOverDefaults(server.current)
+        if (server.initial !== null) {
+          baseline = mergeOverDefaults(server.initial)
+        } else if (
+          localCurrent !== null
+          && localInitial !== null
+          && sameState(localCurrent, server.current)
+        ) {
+          baseline = mergeOverDefaults(localInitial)
+          shouldRestore = true
+        } else {
+          baseline = createInitialData()
+        }
+      } else if (server.available && server.initial !== null) {
+        data = mergeOverDefaults(server.initial)
         baseline = data
+        shouldRestore = true
+      } else if (server.available) {
+        data = mergeOverDefaults(localCurrent || localInitial || createInitialData())
+        baseline = mergeOverDefaults(localInitial || data)
+        shouldRestore = true
+      } else {
+        // An unavailable endpoint is not evidence that server files vanished.
+        // Render cache/defaults without publishing over a possible injection.
+        data = mergeOverDefaults(localCurrent || createInitialData())
+        baseline = mergeOverDefaults(localInitial || data)
       }
 
-      // set_initial must land BEFORE set_current: the plugin only republishes a
-      // baseline while the session is still unmutated (current absent, or
-      // deep-equal to initial), so if set_current raced ahead on a
-      // baseline-less session the guard would see full-tree-vs-partial and
-      // correctly refuse.
-      await publishInitialState(baseline, sid)
-      saveState(data, sid)
+      if (cancelled) return
+      initializeData(sid, data)
+      writeStoredInitial(sid, baseline)
+
+      if (shouldRestore) {
+        const result = await restoreServerState(baseline, data, sid)
+        if (cancelled) return
+        if (!result.restored) {
+          const latest = await fetchServerState(sid)
+          if (cancelled) return
+          if (!latest.available) {
+            throw new Error('Unable to re-read authoritative Shopping state')
+          }
+          if (latest.current !== null) {
+            data = mergeOverDefaults(latest.current)
+            baseline = latest.initial !== null
+              ? mergeOverDefaults(latest.initial)
+              : createInitialData()
+            initializeData(sid, data)
+            writeStoredInitial(sid, baseline)
+          } else if (latest.initial !== null) {
+            data = mergeOverDefaults(latest.initial)
+            baseline = data
+            const retry = await restoreServerState(baseline, data, sid)
+            if (!retry.restored) throw new Error('Shopping initial-only recovery lost a setup race')
+            initializeData(sid, data)
+            writeStoredInitial(sid, baseline)
+          } else {
+            throw new Error('Shopping restore conflict returned no authoritative state')
+          }
+        }
+      }
+
+      if (cancelled) return
+      activeSidRef.current = server.available ? (sid || '_default') : null
       setStateRaw(data)
       setLoading(false)
-    })()
-  }, [])
+    })().catch(error => {
+      if (cancelled) return
+      console.error('[state persistence] Unable to initialize Shopping state', error)
+      activeSidRef.current = null
+      setStateRaw(initializeData(sid))
+      setLoading(false)
+    })
+
+    return () => {
+      cancelled = true
+      flushState().catch(error => console.error('[state persistence] Unable to flush Shopping state', error))
+    }
+  }, [routeSid])
 
   // Magento shows a message on the page you land on, then it is gone.
   useEffect(() => {
@@ -145,8 +211,10 @@ export function AppProvider({ children }) {
 
   const setState = useCallback((updater) => {
     setStateRaw(prev => {
+      const sid = getSessionId()
+      if (activeSidRef.current !== (sid || '_default')) return prev
       const next = typeof updater === 'function' ? updater(prev) : updater
-      saveState(next, getSessionId())
+      saveState(next, sid)
       return next
     })
   }, [])

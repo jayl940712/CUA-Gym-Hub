@@ -50,13 +50,15 @@ export async function fetchCustomState(sid) {
  * so both fields come back `null` and boot behaves exactly as it did before.
  */
 export async function fetchServerState(sid) {
-  const empty = { current: null, initial: null }
+  const empty = { available: false, current: null, initial: null }
   try {
     const url = sid ? `/state?sid=${encodeURIComponent(sid)}` : '/state'
     const res = await fetch(url, { cache: 'no-store' })
     if (!res.ok) return empty
     const data = await res.json()
+    if (!Object.prototype.hasOwnProperty.call(data, 'has_custom_state')) return empty
     return {
+      available: true,
       current: data.has_custom_state && data.stored_state ? data.stored_state : null,
       initial: data.has_initial_state && data.initial_state ? data.initial_state : null,
     }
@@ -206,22 +208,97 @@ export function initializeData(sid = null, customState = null) {
  * while a session whose baseline file is simply missing is repaired.
  */
 export function publishInitialState(state, sid = null) {
+  return enqueuePost(sid, { action: 'set_initial', state })
+}
+
+/*
+ * Whole-state writes must never overlap. React can schedule several mutations
+ * in one event, and an older set_current response arriving last would otherwise
+ * overwrite the newest state on the server. Writes from the same tick coalesce
+ * to the latest snapshot; writes across ticks are serialized per sid.
+ */
+const pendingWrite = new Map()
+let writeChain = Promise.resolve()
+let flushScheduled = false
+let pendingRuns = []
+
+function sidKey(sid) {
+  return sid || ''
+}
+
+async function post(sid, payload) {
   const sidParam = sid ? `?sid=${encodeURIComponent(sid)}` : ''
-  return fetch(`/post${sidParam}`, {
+  const response = await fetch(`/post${sidParam}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'set_initial', state })
-  }).catch(() => {})
+    body: JSON.stringify(payload),
+  })
+  let data = null
+  try { data = await response.json() } catch (_) {}
+  if (!response.ok) {
+    const detail = data && data.error ? `: ${data.error}` : ''
+    throw new Error(`State write failed (${response.status})${detail}`)
+  }
+  return data || {}
+}
+
+function enqueuePost(sid, payload) {
+  // The rejection branch keeps later writes moving after a failed request;
+  // this request's own rejection remains visible to flushState() and callers.
+  const run = writeChain.then(
+    () => post(sid, payload),
+    () => post(sid, payload),
+  )
+  writeChain = run.catch(error => {
+    console.error('[state persistence]', error)
+  })
+  pendingRuns.push(run)
+  return run
+}
+
+function flushPendingWrites() {
+  flushScheduled = false
+  const writes = [...pendingWrite.values()]
+  pendingWrite.clear()
+  for (const { sid, state } of writes) {
+    enqueuePost(sid, { action: 'set_current', state })
+  }
 }
 
 export function saveState(state, sid = null) {
-  const key = storageKey(sid)
-  localStorage.setItem(key, JSON.stringify(state))
+  try {
+    localStorage.setItem(storageKey(sid), JSON.stringify(state))
+  } catch (error) {
+    // localStorage is only a render cache; the authoritative server write must
+    // still be queued even when the cache is unavailable or over quota.
+    console.error('[state persistence] Browser cache write failed', error)
+  }
+  pendingWrite.set(sidKey(sid), { sid, state })
+  if (flushScheduled) return
+  flushScheduled = true
+  if (typeof queueMicrotask === 'function') queueMicrotask(flushPendingWrites)
+  else Promise.resolve().then(flushPendingWrites)
+}
 
-  const sidParam = sid ? `?sid=${encodeURIComponent(sid)}` : ''
-  fetch(`/post${sidParam}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'set_current', state })
-  }).catch(() => {})
+export function restoreServerState(initialState, currentState, sid = null) {
+  return enqueuePost(sid, {
+    action: 'restore',
+    initial_state: initialState,
+    state: currentState,
+  })
+}
+
+/** Force queued writes to start and resolve once every sid has persisted. */
+export async function flushState() {
+  flushPendingWrites()
+  const runs = [...pendingRuns]
+  let results
+  try {
+    results = await Promise.allSettled(runs)
+  } finally {
+    const completed = new Set(runs)
+    pendingRuns = pendingRuns.filter(run => !completed.has(run))
+  }
+  const failure = results.find(result => result.status === 'rejected')
+  if (failure) throw failure.reason
 }

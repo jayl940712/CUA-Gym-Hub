@@ -57,13 +57,18 @@ function diffUnkeyedList(before, after) {
 
 function diffValues(path, a, b, out) {
   if (JSON.stringify(a) === JSON.stringify(b)) return
-  if (Array.isArray(a) || Array.isArray(b)) { out[path] = { old: a, new: b }; return }
+  const oldValue = a === undefined ? null : a
+  const newValue = b === undefined ? null : b
+  if (Array.isArray(a) || Array.isArray(b)) {
+    out[path] = { old: oldValue, new: newValue }
+    return
+  }
   if (a && b && typeof a === 'object' && typeof b === 'object') {
     const keys = new Set([...Object.keys(a), ...Object.keys(b)])
     for (const k of keys) diffValues(`${path}.${k}`, a[k], b[k], out)
     return
   }
-  out[path] = { old: a, new: b }
+  out[path] = { old: oldValue, new: newValue }
 }
 
 export function computeStateDiff(initial, current) {

@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
 import {
-  getSessionId, fetchCustomState, initializeData, createInitialData, saveState,
-  initialKey, storageKey
+  getSessionId, fetchServerState, initializeData, createInitialData, saveState, flushState,
+  readStoredState, readStoredInitial, writeStoredInitial, mergeOverDefaults,
+  restoreServerState, sameState
 } from '../utils/dataManager.js'
 import { slugify } from '../utils/slug.js'
 import {
@@ -14,19 +16,26 @@ import {
 const AppContext = createContext(null)
 
 /**
- * One in-flight `GET /state` per sid, for the lifetime of the page.
+ * One in-flight `GET /state` per sid during a StrictMode mount pair.
  *
  * `<React.StrictMode>` mounts, runs the boot effect, tears it down and runs it
  * again — so without this the app issued TWO `/state` requests for a ~2.3 MB
  * payload and raced their resolutions against each other (AUDIT PIPELINE-003).
- * Deduping the promise means the second invocation joins the first request
- * instead of starting a competing one.
+ * Deduping the promise means the second invocation joins the first request.
+ * The entry is removed after settlement so returning to a SID performs a fresh
+ * authoritative read instead of reusing stale server data.
  */
 const bootFetches = new Map()
 
 function bootFetch(sid) {
   const k = sid == null ? '' : String(sid)
-  if (!bootFetches.has(k)) bootFetches.set(k, fetchCustomState(sid))
+  if (!bootFetches.has(k)) {
+    const request = fetchServerState(sid)
+    bootFetches.set(k, request)
+    request.finally(() => setTimeout(() => {
+      if (bootFetches.get(k) === request) bootFetches.delete(k)
+    }, 0))
+  }
   return bootFetches.get(k)
 }
 
@@ -65,6 +74,10 @@ export function AppProvider({ children }) {
   const state = useMemo(() => materialize(core), [core])
   const [loading, setLoading] = useState(true)
   const [flashes, setFlashes] = useState([])
+  const location = useLocation()
+  const sid = useMemo(() => getSessionId(), [location.search])
+  const activeSidRef = useRef(null)
+  const skipPersistRef = useRef(true)
 
   useEffect(() => {
     // `cancelled` is the StrictMode guard. React mounts -> effect -> cleanup ->
@@ -77,23 +90,84 @@ export function AppProvider({ children }) {
     // Do NOT try to lean on `isRefresh` being true the second time round: run
     // A's localStorage write only happens after its fetch resolves.
     let cancelled = false
-    const sid = getSessionId()
-    const initK = initialKey(sid)
-    // ⚠️ Check localStorage BEFORE calling initializeData(). initializeData()
-    // writes defaults, which would make isRefresh always true and injected task
-    // state would never load.
-    const isRefresh = localStorage.getItem(initK) !== null
+    activeSidRef.current = null
+    skipPersistRef.current = true
+    setStateRaw(null)
+    setLoading(true)
 
-    if (isRefresh) {
-      setStateRaw(initializeData(sid))
-      setLoading(false)
-      return
-    }
-
-    bootFetch(sid)
-      .then(custom => {
+    flushState()
+      .catch(error => console.error('Unable to flush previous Reddit state:', error))
+      .then(() => bootFetch(sid))
+      .then(async server => {
         if (cancelled) return
-        setStateRaw(initializeData(sid, custom))
+        const localCurrent = readStoredState(sid)
+        const localInitial = readStoredInitial(sid)
+        let data
+        let baseline
+        let shouldRestore = false
+
+        if (server.available && server.current !== null) {
+          data = mergeOverDefaults(server.current)
+          if (server.initial !== null) {
+            baseline = mergeOverDefaults(server.initial)
+          } else if (localCurrent !== null && localInitial !== null
+                     && sameState(localCurrent, server.current)) {
+            baseline = mergeOverDefaults(localInitial)
+            shouldRestore = true
+          } else {
+            baseline = createInitialData()
+          }
+        } else if (server.available && server.initial !== null) {
+          data = mergeOverDefaults(server.initial)
+          baseline = data
+          shouldRestore = true
+        } else if (server.available) {
+          data = mergeOverDefaults(localCurrent || localInitial || createInitialData())
+          baseline = mergeOverDefaults(localInitial || data)
+          shouldRestore = true
+        } else {
+          // Network/plugin failure is not evidence that server files vanished.
+          // Do not publish stale localStorage over a potentially newer inject.
+          data = mergeOverDefaults(localCurrent || createInitialData())
+          baseline = mergeOverDefaults(localInitial || data)
+        }
+
+        initializeData(sid, data)
+        writeStoredInitial(sid, baseline)
+
+        if (shouldRestore) {
+          const result = await restoreServerState(baseline, data, sid)
+          if (cancelled) return
+          if (!result.restored) {
+            const latest = await fetchServerState(sid)
+            if (cancelled) return
+            if (!latest.available) {
+              throw new Error('Unable to re-read authoritative Reddit state')
+            }
+            if (latest.current !== null) {
+              data = mergeOverDefaults(latest.current)
+              baseline = latest.initial !== null
+                ? mergeOverDefaults(latest.initial)
+                : createInitialData()
+              initializeData(sid, data)
+              writeStoredInitial(sid, baseline)
+            } else if (latest.initial !== null) {
+              data = mergeOverDefaults(latest.initial)
+              baseline = data
+              const retry = await restoreServerState(baseline, data, sid)
+              if (!retry.restored) throw new Error('Reddit initial-only recovery lost a setup race')
+              initializeData(sid, data)
+              writeStoredInitial(sid, baseline)
+            } else {
+              throw new Error('Reddit restore conflict returned no authoritative state')
+            }
+          }
+        }
+
+        if (cancelled) return
+        activeSidRef.current = server.available ? (sid || '_default') : null
+        skipPersistRef.current = true
+        setStateRaw(data)
         setLoading(false)
       })
       // Boot must ALWAYS finish. If anything throws in here the old code left
@@ -102,11 +176,16 @@ export function AppProvider({ children }) {
         if (cancelled) return
         try { setStateRaw(initializeData(sid)) }
         catch (e) { setStateRaw(createInitialData()) }
+        activeSidRef.current = null
+        skipPersistRef.current = true
         setLoading(false)
       })
 
-    return () => { cancelled = true }
-  }, [])
+    return () => {
+      cancelled = true
+      flushState().catch(error => console.error('Unable to flush Reddit state:', error))
+    }
+  }, [sid])
 
   // Reflect the user's night mode onto <html>, as Postmill does.
   useEffect(() => {
@@ -121,32 +200,27 @@ export function AppProvider({ children }) {
   // one meant every mutation did two ~2.3 MB `POST /post` round-trips and two
   // 2.7 MB server-side writeFileSync calls in dev (AUDIT PIPELINE-004).
   const setState = useCallback((updater) => {
+    if (activeSidRef.current !== (sid || '_default')) return
     setStateRaw(prev => (typeof updater === 'function' ? updater(prev) : updater))
-  }, [])
+  }, [sid])
 
   // Persist AFTER commit, exactly once per committed state. The ref skips the
   // very first committed state — that is the boot seat, not a mutation, and
   // POSTing it would be a pointless 2.3 MB upload on every cold load.
-  const bootSeatedRef = useRef(false)
   useEffect(() => {
-    if (loading || !core) return
-    if (!bootSeatedRef.current) { bootSeatedRef.current = true; return }
+    if (loading || !core || activeSidRef.current !== (sid || '_default')) return
+    if (skipPersistRef.current) { skipPersistRef.current = false; return }
     // `core`, never `state`: persisting the materialized arrays would put the
     // frozen corpus back on the wire — that was the 14.67 MB POST / 40 MB `/go`
     // this refactor removed.
-    saveState(core, getSessionId())
-  }, [core, loading])
+    saveState(core, sid)
+  }, [core, loading, sid])
 
   const resetState = useCallback(() => {
-    const sid = getSessionId()
-    const stored = localStorage.getItem(initialKey(sid))
-    if (!stored) return
-    try {
-      const initial = JSON.parse(stored)
-      localStorage.setItem(storageKey(sid), JSON.stringify(initial))
-      setStateRaw(initial)
-    } catch (e) { /* corrupt baseline */ }
-  }, [])
+    if (activeSidRef.current !== (sid || '_default')) return
+    const initial = readStoredInitial(sid)
+    if (initial) setStateRaw(initial)
+  }, [sid])
 
   const addFlash = useCallback((message, type = 'success') => {
     setFlashes(f => [...f, { id: Date.now() + Math.random(), message, type }])

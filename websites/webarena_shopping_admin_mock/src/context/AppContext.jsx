@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react'
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import {
-  getSessionId, fetchServerState, initializeData, saveState, publishInitialState,
+  getSessionId, fetchServerState, initializeData, saveState, flushState, restoreServerState,
   readStoredState, readStoredInitial, writeStoredInitial, mergeOverDefaults,
-  sameState, initialKey, storageKey, assertTrackerCoverage,
+  sameState, createInitialData, initialKey, storageKey, assertTrackerCoverage,
 } from '../utils/dataManager.js'
 
 const AppContext = createContext(null)
@@ -14,6 +14,14 @@ export function AppProvider({ children }) {
   // Flash messages are deliberately NOT part of the persisted state: they are
   // one-page-load UI chrome and would otherwise pollute /go's state_diff.
   const [messages, setMessages] = useState([])
+  const location = useLocation()
+  const routeSid = new URLSearchParams(location.search).get('sid')
+  const activeSidRef = useRef(null)
+  const renderedRouteSidRef = useRef(routeSid)
+  if (renderedRouteSidRef.current !== routeSid) {
+    renderedRouteSidRef.current = routeSid
+    activeSidRef.current = null
+  }
 
   /* ------------------------------------------------------------------ *
    * Boot.
@@ -48,7 +56,10 @@ export function AppProvider({ children }) {
    * missing, which is exactly the case being repaired.
    * ------------------------------------------------------------------ */
   useEffect(() => {
+    let cancelled = false
     const sid = getSessionId()
+    activeSidRef.current = null
+    setLoading(true)
 
     // Every path in stateTracker's Observable State Changes table must be
     // declared in createInitialData(), or its first write lands in state_diff
@@ -56,55 +67,109 @@ export function AppProvider({ children }) {
     assertTrackerCoverage()
 
     ;(async () => {
+      try {
+        await flushState()
+      } catch (error) {
+        console.error('[state persistence] Previous Shopping Admin write failed', error)
+      }
+      if (cancelled) return
+
       const server = await fetchServerState(sid)
+      if (cancelled) return
       // ⚠️ Read localStorage BEFORE any initializeData() call. initializeData()
       // writes defaults, which would make every boot look like a refresh and
       // injected task state would never load.
       const localCurrent = readStoredState(sid)
       const localInitial = readStoredInitial(sid)
 
-      let data      // what to render, and to post as `set_current`
-      let baseline  // what to post as `set_initial`
+      let data
+      let baseline
+      let shouldRestore = false
 
-      if (server.current !== null && !sameState(server.current, localCurrent)) {
-        // (a) ADOPT. The inject may be partial, so merge it over the defaults;
-        // that merged tree — not the partial object — is the real baseline.
-        data = initializeData(sid, server.current)
-        // If the server's session has already diverged, its baseline is the
-        // older, correct one. Mirror that rather than the state we just
-        // adopted, so the client's notion of "initial" matches /go's.
-        baseline = server.initial ? mergeOverDefaults(server.initial) : data
-        // initializeData set BOTH localStorage keys to the merged current.
-        writeStoredInitial(sid, baseline)
-      } else if (localInitial !== null) {
-        // (b) REPUBLISH. Merge over defaults so a state written by an older
-        // build gains keys added since, and mirror the merged baseline back
-        // into localStorage so the client and the server agree on it.
-        data = mergeOverDefaults(localCurrent || localInitial)
-        baseline = mergeOverDefaults(localInitial)
-        writeStoredInitial(sid, baseline)
-      } else {
-        // (c) COLD BOOT.
-        data = initializeData(sid, null)
+      if (server.available && server.current !== null) {
+        data = mergeOverDefaults(server.current)
+        if (server.initial !== null) {
+          baseline = mergeOverDefaults(server.initial)
+        } else if (
+          localCurrent !== null
+          && localInitial !== null
+          && sameState(localCurrent, server.current)
+        ) {
+          baseline = mergeOverDefaults(localInitial)
+          shouldRestore = true
+        } else {
+          baseline = createInitialData()
+        }
+      } else if (server.available && server.initial !== null) {
+        data = mergeOverDefaults(server.initial)
         baseline = data
+        shouldRestore = true
+      } else if (server.available) {
+        data = mergeOverDefaults(localCurrent || localInitial || createInitialData())
+        baseline = mergeOverDefaults(localInitial || data)
+        shouldRestore = true
+      } else {
+        data = mergeOverDefaults(localCurrent || createInitialData())
+        baseline = mergeOverDefaults(localInitial || data)
       }
 
-      // set_initial must land BEFORE set_current: the plugin only republishes a
-      // baseline while the session is still unmutated (current absent, or
-      // deep-equal to initial), so if set_current raced ahead on a
-      // baseline-less session the guard would see full-tree-vs-partial and
-      // correctly refuse.
-      await publishInitialState(baseline, sid)
-      saveState(data, sid)
+      if (cancelled) return
+      initializeData(sid, data)
+      writeStoredInitial(sid, baseline)
+
+      if (shouldRestore) {
+        const result = await restoreServerState(baseline, data, sid)
+        if (cancelled) return
+        if (!result.restored) {
+          const latest = await fetchServerState(sid)
+          if (cancelled) return
+          if (!latest.available) {
+            throw new Error('Unable to re-read authoritative Shopping Admin state')
+          }
+          if (latest.current !== null) {
+            data = mergeOverDefaults(latest.current)
+            baseline = latest.initial !== null
+              ? mergeOverDefaults(latest.initial)
+              : createInitialData()
+            initializeData(sid, data)
+            writeStoredInitial(sid, baseline)
+          } else if (latest.initial !== null) {
+            data = mergeOverDefaults(latest.initial)
+            baseline = data
+            const retry = await restoreServerState(baseline, data, sid)
+            if (!retry.restored) throw new Error('Shopping Admin initial-only recovery lost a setup race')
+            initializeData(sid, data)
+            writeStoredInitial(sid, baseline)
+          } else {
+            throw new Error('Shopping Admin restore conflict returned no authoritative state')
+          }
+        }
+      }
+
+      if (cancelled) return
+      activeSidRef.current = server.available ? (sid || '_default') : null
       setStateRaw(data)
       setLoading(false)
-    })()
-  }, [])
+    })().catch(error => {
+      if (cancelled) return
+      console.error('[state persistence] Unable to initialize Shopping Admin state', error)
+      activeSidRef.current = null
+      setStateRaw(initializeData(sid))
+      setLoading(false)
+    })
+
+    return () => {
+      cancelled = true
+      flushState().catch(error => console.error('[state persistence] Unable to flush Shopping Admin state', error))
+    }
+  }, [routeSid])
 
   const setState = useCallback((updater) => {
     setStateRaw(prev => {
+      const sid = getSessionId()
+      if (activeSidRef.current !== (sid || '_default')) return prev
       const next = typeof updater === 'function' ? updater(prev) : updater
-      saveState(next, getSessionId())
+      saveState(next, sid)
       return next
     })
   }, [])
@@ -113,7 +178,6 @@ export function AppProvider({ children }) {
 
   // Magento sets a message, redirects, shows it on the next page, and drops it
   // on the load after that. Mirror the same one-navigation lifetime.
-  const location = useLocation()
   useEffect(() => {
     setMessages(prev => prev.filter(m => !m.shown).map(m => ({ ...m, shown: true })))
   }, [location.pathname])

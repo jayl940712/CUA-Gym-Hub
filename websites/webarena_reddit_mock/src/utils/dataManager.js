@@ -18,10 +18,10 @@ export function getSessionId() {
   const params = new URLSearchParams(window.location.search)
   const sid = params.get('sid')
   if (sid) {
-    sessionStorage.setItem('reddit_sid', sid)
+    try { sessionStorage.setItem('reddit_sid', sid) } catch (_) {}
     return sid
   }
-  return sessionStorage.getItem('reddit_sid') || null
+  try { return sessionStorage.getItem('reddit_sid') || null } catch (_) { return null }
 }
 
 export function storageKey(sid) {
@@ -32,15 +32,27 @@ export function initialKey(sid) {
   return sid ? `${BASE_INITIAL_KEY}_${sid}` : BASE_INITIAL_KEY
 }
 
-export async function fetchCustomState(sid) {
+export async function fetchServerState(sid) {
+  const empty = { available: false, current: null, initial: null }
   try {
     const url = sid ? `/state?sid=${encodeURIComponent(sid)}` : '/state'
     const res = await fetch(url, { cache: 'no-store' })
-    if (!res.ok) return null
+    if (!res.ok) return empty
     const data = await res.json()
-    if (data.has_custom_state && data.stored_state) return data.stored_state
-  } catch (e) { /* offline / built preview without the plugin */ }
-  return null
+    if (!Object.prototype.hasOwnProperty.call(data, 'has_custom_state')) return empty
+    return {
+      available: true,
+      current: data.has_custom_state ? data.stored_state : null,
+      initial: data.has_initial_state ? data.initial_state : null,
+    }
+  } catch (e) {
+    console.warn('Unable to read server state:', e)
+    return empty
+  }
+}
+
+export async function fetchCustomState(sid) {
+  return (await fetchServerState(sid)).current
 }
 
 /**
@@ -102,7 +114,44 @@ export function createInitialData() {
  */
 function safeSetItem(key, value) {
   try { localStorage.setItem(key, value); return true }
-  catch (e) { return false }
+  catch (e) {
+    console.warn(`Unable to persist browser state at ${key}:`, e)
+    return false
+  }
+}
+
+function readJson(key) {
+  try {
+    const raw = localStorage.getItem(key)
+    return raw === null ? null : JSON.parse(raw)
+  } catch (e) {
+    console.warn(`Unable to read browser state at ${key}:`, e)
+    return null
+  }
+}
+
+export function readStoredState(sid) {
+  return readJson(storageKey(sid))
+}
+
+export function readStoredInitial(sid) {
+  return readJson(initialKey(sid))
+}
+
+export function writeStoredInitial(sid, state) {
+  return safeSetItem(initialKey(sid), JSON.stringify(state))
+}
+
+export function sameState(a, b) {
+  if (a === null || a === undefined || b === null || b === undefined) return a === b
+  const canonical = value => JSON.stringify(value, (_key, item) =>
+    (item && typeof item === 'object' && !Array.isArray(item))
+      ? Object.keys(item).sort().reduce((out, key) => {
+          out[key] = item[key]
+          return out
+        }, {})
+      : item)
+  return canonical(a) === canonical(b)
 }
 
 /**
@@ -128,30 +177,30 @@ function evictForeignSessions(sid) {
   } catch (e) { /* storage unavailable */ }
 }
 
+export function mergeOverDefaults(customState) {
+  return { ...createInitialData(), ...(customState || {}) }
+}
+
 export function initializeData(sid = null, customState = null) {
   const key = storageKey(sid)
   const initKey = initialKey(sid)
 
   evictForeignSessions(sid)
 
-  if (customState) {
-    const defaults = createInitialData()
-    const merged = { ...defaults, ...customState }
+  if (customState !== null && customState !== undefined) {
+    const merged = mergeOverDefaults(customState)
     const json = JSON.stringify(merged)
     safeSetItem(key, json)
     safeSetItem(initKey, json)
     return merged
   }
 
-  const stored = localStorage.getItem(key)
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored)
-      if (!localStorage.getItem(initKey)) {
-        safeSetItem(initKey, stored)
-      }
-      return parsed
-    } catch (e) { /* corrupt — fall through to defaults */ }
+  const parsed = readJson(key)
+  if (parsed !== null) {
+    if (readJson(initKey) === null) {
+      safeSetItem(initKey, JSON.stringify(parsed))
+    }
+    return parsed
   }
 
   const data = createInitialData()
@@ -161,14 +210,84 @@ export function initializeData(sid = null, customState = null) {
   return data
 }
 
-export function saveState(state, sid = null) {
-  const key = storageKey(sid)
-  try { localStorage.setItem(key, JSON.stringify(state)) } catch (e) { /* quota */ }
+const pendingWrites = new Map()
+let flushScheduled = false
+let writeChain = Promise.resolve()
+let pendingRuns = []
 
+async function encodePost(payload) {
+  const json = JSON.stringify(payload)
+  if (typeof CompressionStream === 'undefined' || typeof Blob === 'undefined') {
+    return { body: json, headers: { 'Content-Type': 'application/json' } }
+  }
+  try {
+    const stream = new Blob([json]).stream().pipeThrough(new CompressionStream('gzip'))
+    const body = await new Response(stream).arrayBuffer()
+    return { body, headers: { 'Content-Type': 'application/json', 'Content-Encoding': 'gzip' } }
+  } catch (_) {
+    return { body: json, headers: { 'Content-Type': 'application/json' } }
+  }
+}
+
+async function post(sid, payload) {
   const sidParam = sid ? `?sid=${encodeURIComponent(sid)}` : ''
-  fetch(`/post${sidParam}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'set_current', state })
-  }).catch(() => {})
+  const { body, headers } = await encodePost(payload)
+  const response = await fetch(`/post${sidParam}`, { method: 'POST', headers, body })
+  if (!response.ok) {
+    let detail = ''
+    try { detail = (await response.json()).error || '' } catch (_) {}
+    throw new Error(`State write failed (${response.status})${detail ? `: ${detail}` : ''}`)
+  }
+  return response.json()
+}
+
+function enqueueWrite(operation) {
+  const run = writeChain.catch(() => {}).then(operation)
+  writeChain = run.catch(error => {
+    console.error('State persistence failed:', error)
+  })
+  pendingRuns.push(run)
+  return run
+}
+
+function flushPendingWrite() {
+  flushScheduled = false
+  if (pendingWrites.size === 0) return
+  const writes = [...pendingWrites.entries()]
+  pendingWrites.clear()
+  for (const [sid, state] of writes) {
+    enqueueWrite(() => post(sid || null, { action: 'set_current', state }))
+  }
+}
+
+export function saveState(state, sid = null) {
+  safeSetItem(storageKey(sid), JSON.stringify(state))
+  pendingWrites.set(sid || '', state)
+  if (flushScheduled) return writeChain
+  flushScheduled = true
+  if (typeof queueMicrotask === 'function') queueMicrotask(flushPendingWrite)
+  else Promise.resolve().then(flushPendingWrite)
+  return writeChain
+}
+
+export function restoreServerState(initialState, currentState, sid = null) {
+  return enqueueWrite(() => post(sid, {
+    action: 'restore',
+    initial_state: initialState,
+    state: currentState,
+  }))
+}
+
+export async function flushState() {
+  flushPendingWrite()
+  const runs = [...pendingRuns]
+  let results
+  try {
+    results = await Promise.allSettled(runs)
+  } finally {
+    const completed = new Set(runs)
+    pendingRuns = pendingRuns.filter(run => !completed.has(run))
+  }
+  const failure = results.find(result => result.status === 'rejected')
+  if (failure) throw failure.reason
 }

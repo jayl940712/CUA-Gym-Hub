@@ -3,7 +3,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import fs from 'fs'
 import path from 'path'
-import { randomUUID } from 'crypto'
+import zlib from 'zlib'
+import { createHash } from 'crypto'
+import { TextDecoder } from 'util'
 import { createInitialData } from './src/utils/dataManager.js'
 
 const STATE_DIR = path.join(process.cwd(), '.mock-states')
@@ -12,45 +14,85 @@ if (!fs.existsSync(STATE_DIR)) fs.mkdirSync(STATE_DIR, { recursive: true })
 const FILES_DIR = path.join(process.cwd(), '.mock-files')
 if (!fs.existsSync(FILES_DIR)) fs.mkdirSync(FILES_DIR, { recursive: true })
 
+const SID_RE = /^[a-zA-Z0-9_-]{1,128}$/
+const MAX_BODY_BYTES = 64 * 1024 * 1024
+const MAX_UPLOAD_BYTES = 64 * 1024 * 1024
+const mutationQueues = new Map()
+let tempCounter = 0
+
+class HttpError extends Error {
+  constructor(statusCode, message) {
+    super(message)
+    this.statusCode = statusCode
+  }
+}
+
+function validateSid(sid) {
+  if (sid === null || sid === undefined || sid === '') return null
+  if (!SID_RE.test(sid)) {
+    throw new HttpError(400, 'Invalid sid: use 1-128 letters, numbers, underscores, or hyphens.')
+  }
+  return sid
+}
+
 function getStateFile(sid) {
   if (!sid) return path.join(process.cwd(), '.mock-state.json')
-  const safeSid = sid.replace(/[^a-zA-Z0-9_-]/g, '')
-  return path.join(STATE_DIR, `${safeSid}.json`)
+  return path.join(STATE_DIR, `${sid}.json`)
 }
 
 function getInitialStateFile(sid) {
   if (!sid) return path.join(process.cwd(), '.mock-state.initial.json')
-  const safeSid = sid.replace(/[^a-zA-Z0-9_-]/g, '')
-  return path.join(STATE_DIR, `${safeSid}.initial.json`)
+  return path.join(STATE_DIR, `${sid}.initial.json`)
+}
+
+function readJsonFile(file) {
+  try {
+    if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf-8'))
+  } catch (e) {
+    console.error(`Error reading ${file}:`, e)
+    throw new HttpError(500, 'Stored state could not be read.')
+  }
+  return null
 }
 
 function readState(sid) {
+  return readJsonFile(getStateFile(sid))
+}
+
+function atomicWrite(file, data) {
+  const temp = path.join(path.dirname(file), `.tmp-${process.pid}-${Date.now()}-${tempCounter++}`)
   try {
-    const file = getStateFile(sid)
-    if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf-8'))
-  } catch (e) { console.error('Error reading state:', e) }
-  return null
+    fs.writeFileSync(temp, data, { encoding: 'utf8', flag: 'wx' })
+    fs.renameSync(temp, file)
+  } catch (e) {
+    try { if (fs.existsSync(temp)) fs.unlinkSync(temp) } catch (_) {}
+    console.error(`Error writing ${file}:`, e)
+    throw new HttpError(500, 'State could not be written.')
+  }
+}
+
+function atomicWriteBuffer(file, data) {
+  const temp = path.join(path.dirname(file), `.tmp-${process.pid}-${Date.now()}-${tempCounter++}`)
+  try {
+    fs.writeFileSync(temp, data, { flag: 'wx' })
+    fs.renameSync(temp, file)
+  } catch (e) {
+    try { if (fs.existsSync(temp)) fs.unlinkSync(temp) } catch (_) {}
+    console.error(`Error writing ${file}:`, e)
+    throw new HttpError(500, 'File could not be written.')
+  }
 }
 
 function writeState(sid, state) {
-  try { fs.writeFileSync(getStateFile(sid), JSON.stringify(state, null, 2)); return true }
-  catch (e) { console.error('Error writing state:', e); return false }
+  atomicWrite(getStateFile(sid), JSON.stringify(state, null, 2))
 }
 
-function writeInitialStateIfMissing(sid, state) {
-  try {
-    const initFile = getInitialStateFile(sid)
-    if (!fs.existsSync(initFile)) fs.writeFileSync(initFile, JSON.stringify(state, null, 2))
-    return true
-  } catch (e) { console.error('Error writing initial state:', e); return false }
+function writeInitialState(sid, state) {
+  atomicWrite(getInitialStateFile(sid), JSON.stringify(state, null, 2))
 }
 
 function readInitialState(sid) {
-  try {
-    const f = getInitialStateFile(sid)
-    if (fs.existsSync(f)) return JSON.parse(fs.readFileSync(f, 'utf-8'))
-  } catch (e) { console.error('Error reading initial state:', e) }
-  return null
+  return readJsonFile(getInitialStateFile(sid))
 }
 
 function clearState(sid) {
@@ -59,19 +101,63 @@ function clearState(sid) {
     if (fs.existsSync(file)) fs.unlinkSync(file)
     const initFile = getInitialStateFile(sid)
     if (fs.existsSync(initFile)) fs.unlinkSync(initFile)
-    return true
-  } catch (e) { console.error('Error clearing state:', e); return false }
+  } catch (e) {
+    console.error('Error clearing state:', e)
+    throw new HttpError(500, 'State could not be cleared.')
+  }
 }
 
 function parseQuery(url) {
-  const idx = url.indexOf('?')
-  if (idx === -1) return {}
-  const params = {}
-  url.substring(idx + 1).split('&').forEach(pair => {
-    const [k, v] = pair.split('=')
-    if (k) params[decodeURIComponent(k)] = decodeURIComponent(v || '')
+  try {
+    return Object.fromEntries(new URL(url || '/', 'http://localhost').searchParams)
+  } catch (_) {
+    throw new HttpError(400, 'Malformed query string.')
+  }
+}
+
+function requestSid(req) {
+  const query = parseQuery(req.url || '')
+  const supplied = Object.prototype.hasOwnProperty.call(query, 'sid')
+  const sid = query.sid
+  if (supplied && !sid) throw new HttpError(400, 'Invalid sid: value must not be empty.')
+  if (sid === '_default') throw new HttpError(400, 'Invalid sid: _default is reserved.')
+  return validateSid(sid)
+}
+
+function sendError(res, error) {
+  const statusCode = error instanceof HttpError ? error.statusCode : 500
+  if (!(error instanceof HttpError)) console.error('Unexpected mock API error:', error)
+  res.statusCode = statusCode
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify({ error: error.message || 'Internal server error.' }))
+}
+
+function enqueueMutation(sid, task) {
+  const key = sid || '_default'
+  const previous = mutationQueues.get(key) || Promise.resolve()
+  const current = previous.catch(() => {}).then(task)
+  mutationQueues.set(key, current)
+  return current.finally(() => {
+    if (mutationQueues.get(key) === current) mutationQueues.delete(key)
   })
-  return params
+}
+
+function equalState(a, b) {
+  const canonical = value => JSON.stringify(value, (_key, item) =>
+    (item && typeof item === 'object' && !Array.isArray(item))
+      ? Object.keys(item).sort().reduce((out, key) => {
+          out[key] = item[key]
+          return out
+        }, {})
+      : item)
+  return canonical(a) === canonical(b)
+}
+
+function requireState(value, label) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new HttpError(400, `${label} must be a JSON object.`)
+  }
+  return value
 }
 
 function deepMerge(target, source) {
@@ -88,19 +174,63 @@ function deepMerge(target, source) {
 
 function calculateStateDiff(initial, current) {
   const diff = {}
-  for (const key in current) {
-    if (!initial || JSON.stringify(current[key]) !== JSON.stringify(initial[key])) {
-      diff[key] = { old: initial ? initial[key] : undefined, new: current[key] }
+  const keys = new Set([
+    ...Object.keys(initial || {}),
+    ...Object.keys(current || {}),
+  ])
+  for (const key of keys) {
+    const hasInitial = !!initial && Object.prototype.hasOwnProperty.call(initial, key)
+    const hasCurrent = !!current && Object.prototype.hasOwnProperty.call(current, key)
+    if (!hasInitial || !hasCurrent
+        || JSON.stringify(current[key]) !== JSON.stringify(initial[key])) {
+      diff[key] = {
+        old: hasInitial ? initial[key] : null,
+        new: hasCurrent ? current[key] : null,
+      }
     }
   }
   return diff
 }
 
 function getFilesDir(sid) {
-  const safeSid = (sid || '_default').replace(/[^a-zA-Z0-9_-]/g, '')
-  const dir = path.join(FILES_DIR, safeSid)
+  const dir = path.join(FILES_DIR, sid || '_default')
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
   return dir
+}
+
+async function readBuffer(req, maxBytes, tooLargeMessage) {
+  const chunks = []
+  let size = 0
+  const declared = Number(req.headers['content-length'] || 0)
+  if (Number.isFinite(declared) && declared > maxBytes) {
+    throw new HttpError(413, tooLargeMessage)
+  }
+  for await (const chunk of req) {
+    const part = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)
+    size += part.length
+    if (size > maxBytes) throw new HttpError(413, tooLargeMessage)
+    chunks.push(part)
+  }
+  return Buffer.concat(chunks)
+}
+
+async function readBody(req) {
+  let buf = await readBuffer(req, MAX_BODY_BYTES, 'Request body is too large.')
+  const enc = String(req.headers['content-encoding'] || '').toLowerCase()
+  try {
+    if (enc === 'gzip') buf = zlib.gunzipSync(buf, { maxOutputLength: MAX_BODY_BYTES })
+    else if (enc === 'deflate') buf = zlib.inflateSync(buf, { maxOutputLength: MAX_BODY_BYTES })
+    else if (enc && enc !== 'identity') throw new HttpError(415, `Unsupported content encoding: ${enc}`)
+  } catch (e) {
+    if (e instanceof HttpError) throw e
+    throw new HttpError(400, 'Compressed request body is malformed or too large.')
+  }
+  if (buf.length > MAX_BODY_BYTES) throw new HttpError(413, 'Request body is too large.')
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(buf)
+  } catch (_) {
+    throw new HttpError(400, 'Request body is not valid UTF-8.')
+  }
 }
 
 function parseMultipart(buf, boundary) {
@@ -132,132 +262,155 @@ function parseMultipart(buf, boundary) {
 function setupMiddlewares(server) {
   server.middlewares.use('/upload', async (req, res, next) => {
     if (req.method !== 'POST') return next()
-    const query = parseQuery(req.url || '')
-    const sid = query.sid || null
-    const contentType = req.headers['content-type'] || ''
-    const boundaryMatch = contentType.match(/boundary=(.+)/)
-    if (!boundaryMatch) { res.statusCode = 400; res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify({ error: 'multipart required' })); return }
-    const chunks = []; for await (const chunk of req) chunks.push(chunk)
-    const buf = Buffer.concat(chunks)
-    const files = parseMultipart(buf, boundaryMatch[1])
-    if (files.length === 0) { res.statusCode = 400; res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify({ error: 'No files found' })); return }
-    const filesDir = getFilesDir(sid)
-    const uploaded = []
-    for (const file of files) {
-      const safeFilename = file.filename.replace(/[^a-zA-Z0-9._-]/g, '_')
-      const storedName = `${randomUUID().slice(0, 8)}_${safeFilename}`
-      fs.writeFileSync(path.join(filesDir, storedName), file.data)
-      const safeSid = (sid || '_default').replace(/[^a-zA-Z0-9_-]/g, '')
-      uploaded.push({ original_name: file.filename, stored_name: storedName, size: file.data.length, content_type: file.contentType, url: `/files/${safeSid}/${storedName}` })
+    try {
+      const sid = requestSid(req)
+      const contentType = req.headers['content-type'] || ''
+      const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i)
+      if (!boundaryMatch) throw new HttpError(400, 'multipart required')
+      const buf = await readBuffer(req, MAX_UPLOAD_BYTES, 'Upload is too large.')
+      const files = parseMultipart(buf, (boundaryMatch[1] || boundaryMatch[2]).trim())
+      if (files.length === 0) throw new HttpError(400, 'No files found')
+      const filesDir = getFilesDir(sid)
+      const uploaded = []
+      for (const file of files) {
+        const safeFilename = file.filename.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 246)
+        const storedName = `${createHash('sha1').update(file.data).digest('hex').slice(0, 8)}_${safeFilename}`
+        atomicWriteBuffer(path.join(filesDir, storedName), file.data)
+        uploaded.push({ original_name: file.filename, stored_name: storedName, size: file.data.length, content_type: file.contentType, url: `/files/${sid || '_default'}/${storedName}` })
+      }
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify({ success: true, files: uploaded }))
+    } catch (e) {
+      sendError(res, e)
     }
-    res.setHeader('Content-Type', 'application/json')
-    res.end(JSON.stringify({ success: true, files: uploaded }))
   })
 
   server.middlewares.use('/files', (req, res, next) => {
     if (req.method !== 'GET') return next()
-    const parts = (req.url || '').split('/').filter(Boolean)
-    if (parts.length < 2) { res.statusCode = 404; res.end('Not found'); return }
-    const sid = parts[0].replace(/[^a-zA-Z0-9_-]/g, '')
-    const filename = parts.slice(1).join('/').replace(/[^a-zA-Z0-9._-]/g, '_')
-    const filePath = path.join(FILES_DIR, sid, filename)
-    if (!fs.existsSync(filePath)) { res.statusCode = 404; res.end('Not found'); return }
-    const ext = path.extname(filename).toLowerCase()
-    const mimeMap = { '.pdf': 'application/pdf', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.txt': 'text/plain', '.csv': 'text/csv' }
-    const ct = mimeMap[ext] || 'application/octet-stream'
-    const fileData = fs.readFileSync(filePath)
-    res.setHeader('Content-Type', ct); res.setHeader('Content-Length', fileData.length)
-    res.end(fileData)
+    try {
+      const pathname = new URL(req.url || '/', 'http://localhost').pathname
+      const parts = pathname.split('/').filter(Boolean).map(decodeURIComponent)
+      if (parts.length !== 2) { res.statusCode = 404; res.end('Not found'); return }
+      const sid = validateSid(parts[0])
+      const filename = parts[1]
+      if (!/^[a-zA-Z0-9._-]+$/.test(filename)) throw new HttpError(400, 'Invalid filename.')
+      const filePath = path.join(FILES_DIR, sid || '_default', filename)
+      if (!fs.existsSync(filePath)) { res.statusCode = 404; res.end('Not found'); return }
+      const ext = path.extname(filename).toLowerCase()
+      const mimeMap = { '.pdf': 'application/pdf', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.txt': 'text/plain', '.csv': 'text/csv' }
+      const ct = mimeMap[ext] || 'application/octet-stream'
+      const fileData = fs.readFileSync(filePath)
+      res.setHeader('Content-Type', ct); res.setHeader('Content-Length', fileData.length)
+      res.end(fileData)
+    } catch (e) {
+      sendError(res, e)
+    }
   })
 
   server.middlewares.use('/post', async (req, res, next) => {
     if (req.method !== 'POST') return next()
-    const query = parseQuery(req.url || '')
-    const sid = query.sid || null
-    // NEVER `body += chunk`. Each chunk is a Buffer and `+=` decodes it with
-    // Buffer.prototype.toString() PER CHUNK, so any multi-byte UTF-8 sequence
-    // straddling a ~64 KB chunk boundary decodes as two U+FFFD replacement
-    // characters and is persisted to .mock-states/<sid>.json permanently.
-    // The ~2.7 MB state payload spans dozens of chunks, so this fired on every
-    // mutation and silently corrupted seeded titles/bodies containing `’`, `—`,
-    // emoji or CJK (TEST BUG-B01). Buffer.concat first, decode once — the same
-    // shape the /upload reader above already uses.
-    const chunks = []
-    for await (const chunk of req) chunks.push(chunk)
-    const body = Buffer.concat(chunks).toString('utf-8')
     try {
+      const sid = requestSid(req)
+      // Buffer first and decode once with a fatal UTF-8 decoder. This preserves
+      // multi-byte characters split across transport chunks and rejects invalid
+      // byte sequences instead of persisting U+FFFD replacements.
+      const body = await readBody(req)
       const data = JSON.parse(body)
       const action = data.action || 'set'
-      if (action === 'reset') {
-        const initial = readInitialState(sid)
-        if (initial) {
-          writeState(sid, initial)
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ success: true, sid, message: 'State reset to initial.' }))
-        } else {
+      const result = await enqueueMutation(sid, () => {
+        if (action === 'reset') {
+          const initial = readInitialState(sid)
+          if (initial !== null) {
+            writeState(sid, initial)
+            return { success: true, sid, message: 'State reset to initial.' }
+          }
           clearState(sid)
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ success: true, sid, message: 'State cleared.' }))
+          return { success: true, sid, message: 'State cleared.' }
         }
-        return
-      }
-      if (action === 'set') {
-        const newState = data.state
-        writeState(sid, newState)
-        writeInitialStateIfMissing(sid, newState)
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({ success: true, sid, message: 'State set.', state: newState }))
-        return
-      }
-      if (action === 'set_current') {
-        // `set_current` updates <sid>.json ONLY and must never touch
-        // <sid>.initial.json — that is the documented contract (README.md,
-        // shared/secureMockApiPlugin.mjs:279) and `set` is the seeding action.
-        // Writing the baseline here folded the FIRST mutation on a never-seeded
-        // sid into the baseline, so `/go` reported an empty state_diff and the
-        // reward signal vanished (AUDIT PIPELINE-001).
-        const currentState = readState(sid) || {}
-        const newState = data.merge ? deepMerge(currentState, data.state) : data.state
-        writeState(sid, newState)
-        res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify({ success: true, message: 'Current state updated.', state: newState }))
-        return
-      }
-      res.statusCode = 400; res.end(JSON.stringify({ error: 'Unknown action' }))
+        if (action === 'set') {
+          if (!Object.prototype.hasOwnProperty.call(data, 'state')) {
+            throw new HttpError(400, 'set requires a state value.')
+          }
+          requireState(data.state, 'state')
+          // Retried harness setup is a complete rebaseline, not a current-only
+          // overwrite over a stale initial file.
+          writeInitialState(sid, data.state)
+          writeState(sid, data.state)
+          return { success: true, sid, message: 'State set.', state: data.state }
+        }
+        if (action === 'restore') {
+          if (!Object.prototype.hasOwnProperty.call(data, 'state')
+              || !Object.prototype.hasOwnProperty.call(data, 'initial_state')) {
+            throw new HttpError(400, 'restore requires state and initial_state.')
+          }
+          requireState(data.state, 'state')
+          requireState(data.initial_state, 'initial_state')
+          const current = readState(sid)
+          const initial = readInitialState(sid)
+          const compatible = (current === null || equalState(current, data.state))
+            && (initial === null || equalState(initial, data.initial_state))
+          if (!compatible) return { success: true, sid, restored: false }
+          if (initial === null) writeInitialState(sid, data.initial_state)
+          if (current === null) writeState(sid, data.state)
+          return { success: true, sid, restored: true }
+        }
+        if (action === 'set_current') {
+          // Current-only is intentionally baseline-free on a fresh sid.
+          if (!Object.prototype.hasOwnProperty.call(data, 'state')) {
+            throw new HttpError(400, 'set_current requires a state value.')
+          }
+          requireState(data.state, 'state')
+          const currentState = readState(sid) || {}
+          const newState = data.merge ? deepMerge(currentState, data.state) : data.state
+          writeState(sid, newState)
+          return { success: true, sid, message: 'Current state updated.', state: newState }
+        }
+        throw new HttpError(400, 'Unknown action')
+      })
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify(result))
     } catch (e) {
-      res.statusCode = 400; res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify({ error: e.message }))
+      sendError(res, e instanceof SyntaxError ? new HttpError(400, 'Malformed JSON body.') : e)
     }
   })
 
   server.middlewares.use('/state', (req, res, next) => {
     if (req.method !== 'GET') return next()
-    const query = parseQuery(req.url || '')
-    const sid = query.sid || null
-    const state = readState(sid)
-    res.setHeader('Content-Type', 'application/json')
-    res.setHeader('Cache-Control', 'no-cache, no-store')
-    res.end(JSON.stringify({ stored_state: state, has_custom_state: state !== null, sid }))
+    try {
+      const sid = requestSid(req)
+      const state = readState(sid)
+      const initial = readInitialState(sid)
+      res.setHeader('Content-Type', 'application/json')
+      res.setHeader('Cache-Control', 'no-cache, no-store')
+      res.end(JSON.stringify({
+        stored_state: state,
+        has_custom_state: state !== null,
+        initial_state: initial,
+        has_initial_state: initial !== null,
+        sid,
+      }))
+    } catch (e) {
+      sendError(res, e)
+    }
   })
 
   server.middlewares.use('/go', (req, res, next) => {
     if (req.method !== 'GET') return next()
-    const query = parseQuery(req.url || '')
-    const sid = query.sid || null
-    const currentState = readState(sid)
-    const initialState = readInitialState(sid)
-    const defaultState = createInitialData()
-    // No `currentState` fallback: that turned a missing baseline into a
-    // self-comparison and guaranteed an empty diff (AUDIT PIPELINE-001). A
-    // never-seeded sid correctly baselines against createInitialData(), which
-    // is byte-for-byte what the client boots from (dataManager.js), so the two
-    // agree by construction.
-    const initial = initialState || defaultState
-    const current = currentState || initial
-    const stateDiff = calculateStateDiff(initial, current)
-    res.setHeader('Content-Type', 'application/json')
-    res.setHeader('Cache-Control', 'no-cache, no-store')
-    res.end(JSON.stringify({ initial_state: initial, current_state: current, state_diff: stateDiff }))
+    try {
+      const sid = requestSid(req)
+      const currentState = readState(sid)
+      const initialState = readInitialState(sid)
+      const defaultState = createInitialData()
+      // No currentState fallback: a missing baseline compares against defaults.
+      const initial = initialState || defaultState
+      const current = currentState || initial
+      const stateDiff = calculateStateDiff(initial, current)
+      res.setHeader('Content-Type', 'application/json')
+      res.setHeader('Cache-Control', 'no-cache, no-store')
+      res.end(JSON.stringify({ initial_state: initial, current_state: current, state_diff: stateDiff }))
+    } catch (e) {
+      sendError(res, e)
+    }
   })
 }
 
