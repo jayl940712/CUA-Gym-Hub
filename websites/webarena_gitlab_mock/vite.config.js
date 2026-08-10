@@ -359,6 +359,52 @@ export default defineConfig({
   // i.e. no production win, +411 KB of bundle, and a 3.5x slower dev server —
   // dev is what every agent round and every playwright run actually loads.
   // Vite 5's default is `stringify: false`, so this is simply left unset.
+  //
+  // RE-TESTED after the 6.4x seed expansion took src/data from 6.4 MB to 24.4 MB,
+  // on the theory that JSON.parse would finally dominate at that size. It does
+  // not — a BUILD-ONLY variant (`json: command === 'build' ? {stringify:true}
+  // : undefined`, which sidesteps the dev penalty entirely) measured 916 ms vs
+  // 896 ms preview FCP and +1.9 MB of bundle. The cost is not parse strategy,
+  // it is total bytes. Do not try this a third time.
+
+  // ---------------------------------------------------------------------------
+  // One chunk per seed module. This is what actually recovered first paint.
+  //
+  // The expansion made the single bundle 23.9 MB, and preview FCP went
+  // 368 -> 896 ms while dev only went 444 -> 636 ms. Preview regressing HARDER
+  // than dev is the tell: dev already serves each JSON module as its own file,
+  // so the browser fetches ~24 of them in parallel and parses each as it lands,
+  // while the production build was one 23.9 MB file that had to arrive in full
+  // before a single byte of it could execute.
+  //
+  // Splitting the seed restores that parallelism in production. Medians of 5
+  // interleaved cold loads of /byteblaze/dotfiles, same method as above:
+  //
+  //   npm run preview   one chunk        896 ms
+  //                     per-module      488-512 ms   <- -384 ms
+  //   npm run dev       unaffected (rollup does not run in dev)
+  //
+  // Nothing is deferred and no module is dropped: every chunk is still a static
+  // import, so the same bytes are still fetched and the same data is available
+  // on first render. This is purely a serialization win, which is why it needs
+  // no route manifest, no readiness gate and no component changes — verified by
+  // route_smoke passing 201/201 against the CHUNKED preview build.
+  //
+  // This does NOT make the corpus lazy. Getting FCP back to the pre-expansion
+  // 368 ms needs true code-splitting (~15.7 MB of the bundle is data the
+  // project-overview route never reads); see DEV.part-merge.md §5 for the
+  // design and the measured per-module budget.
+  // ---------------------------------------------------------------------------
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          const m = /src\/data\/([a-z_]+)\.json$/.exec(id.replace(/\\/g, '/'))
+          if (m) return 'seed-' + m[1]
+        },
+      },
+    },
+  },
   esbuild: { loader: 'jsx', include: /src\/.*\.jsx?$/, exclude: [] },
   optimizeDeps: { esbuildOptions: { loader: { '.js': 'jsx' } } },
   server: {
