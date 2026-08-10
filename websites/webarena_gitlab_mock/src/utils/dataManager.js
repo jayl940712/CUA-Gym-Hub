@@ -9,15 +9,21 @@
 //     projects users groups issues merge_requests notes labels milestones
 //     members stars follows todos
 //
-//   STATIC (7 git modules) -> imported as reference data, NEVER copied into
-//   state. They total ~2.9 MB and only ever change through file create/edit,
-//   which is modelled as a small set of overlays under `state.repo`.
+//   STATIC (7 git modules) -> LAZY, per project. They totalled 9.7 MB imported
+//   eagerly here, which is the larger half of what used to make first paint
+//   scale with the whole corpus. They now live in `src/data/by-project/<id>.json`
+//   and arrive through `src/data/lazy.js`; the accessors at the bottom of this
+//   file read the loaded chunk instead of a module-level object.
 //     repo_files repo_trees commits contributors branches tags
-//     merge_request_diffs
+//     merge_request_diffs   (+ tree_last_commits, resource_events, CI pipelines)
 //
 // Read git data through the accessors at the bottom of this file
 // (getRepoTree / getRepoFile / getCommits / getBranches / getTags /
-//  getContributors) so the overlays are always applied.
+//  getContributors) so the overlays are always applied AND the chunk lookup
+// stays in one place. They are SYNCHRONOUS and stay synchronous: `App` does not
+// render a project route until that project's chunk has resolved (see
+// `useProjectChunk` in src/App.jsx), so by the time any of these runs the data
+// is there. A component must never await one of them itself.
 // ---------------------------------------------------------------------------
 
 import { accessLabel } from './format.js'
@@ -37,24 +43,8 @@ export {
   CURRENT_USER_ID, CURRENT_USERNAME,
 }
 
-// --- STATIC git reference data (not part of state) --------------------------
-import repoFilesStatic from '../data/repo_files.json'
-import repoTreesStatic from '../data/repo_trees.json'
-import commitsStatic from '../data/commits.json'
-import contributorsStatic from '../data/contributors.json'
-import branchesStatic from '../data/branches.json'
-import tagsStatic from '../data/tags.json'
-import mrDiffsStatic from '../data/merge_request_diffs.json'
-
-export const staticRepo = {
-  files: repoFilesStatic,
-  trees: repoTreesStatic,
-  commits: commitsStatic,
-  contributors: contributorsStatic,
-  branches: branchesStatic,
-  tags: tagsStatic,
-  mrDiffs: mrDiffsStatic,
-}
+// --- STATIC git reference data — lazy, one chunk per project ----------------
+import { chunkFor, projectIdForPath, EMPTY } from '../data/lazy.js'
 
 const BASE_KEY = 'webarena_gitlab_mock_state'
 const BASE_INITIAL_KEY = 'webarena_gitlab_mock_initial_state'
@@ -367,6 +357,26 @@ export function originPath(state, fullPath) {
 }
 
 /**
+ * The loaded chunk that backs `project`'s git data, or `null`.
+ *
+ * A fork's git data lives in its SOURCE project's chunk — `originPath()` walks
+ * `state.repo.forkOrigin` to find it, exactly as the old `staticRepo[...]`
+ * lookups did, and `useProjectChunk` in App.jsx walks the same chain so the
+ * chunk this resolves to is the one the route already awaited.
+ *
+ * `null` here is not an error: 2 of the 175 seeded projects have no git data at
+ * all and a session-created project never does. Every accessor below falls back
+ * to its empty value, which is the same thing they did before for a project
+ * missing from `repo_files.json`.
+ */
+function originChunk(state, project) {
+  if (!project) return null
+  const path = originPath(state, project.full_path)
+  const id = path === project.full_path ? project.id : projectIdForPath(path)
+  return chunkFor(id == null ? project.id : id)
+}
+
+/**
  * File body for <fullPath>@<ref>:<path>.
  * Returns `undefined` when the path is not a known blob, `null` when a task
  * deleted it. `repo_files.json` stores default-ref blobs under a bare path and
@@ -380,7 +390,8 @@ export function getRepoFile(state, project, ref, path) {
     const k = fileOverlayKey(fullPath, ref, path)
     if (Object.prototype.hasOwnProperty.call(overlay, k)) return overlay[k]
   }
-  const bucket = staticRepo.files[originPath(state, fullPath)]
+  const chunk = originChunk(state, project)
+  const bucket = chunk && chunk.files
   if (!bucket) return undefined
   if (ref !== defaultBranchOf(project)) {
     const scoped = bucket[`${ref}:${path}`]
@@ -393,7 +404,8 @@ export function getRepoFile(state, project, ref, path) {
 export function getRepoTree(state, project, ref) {
   if (!project) return []
   const fullPath = project.full_path
-  const base = staticRepo.trees[originPath(state, fullPath)] || []
+  const chunk = originChunk(state, project)
+  const base = (chunk && chunk.tree) || EMPTY
   const extra = (state && state.repo && state.repo.treeOverlay
     && state.repo.treeOverlay[`${fullPath}:${ref}`]) || []
   const deleted = new Set()
@@ -416,7 +428,8 @@ export function getRepoTree(state, project, ref) {
 export function getCommits(state, project, ref) {
   if (!project) return []
   const fullPath = project.full_path
-  const rec = staticRepo.commits[originPath(state, fullPath)]
+  const chunk = originChunk(state, project)
+  const rec = chunk && chunk.commits
   const base = rec && (!ref || rec.ref === ref || !rec.ref) ? (rec.list || []) : (rec ? rec.list || [] : [])
   const extra = (state && state.repo && state.repo.commitOverlay
     && state.repo.commitOverlay[`${fullPath}:${ref}`]) || []
@@ -439,7 +452,8 @@ export function getCommits(state, project, ref) {
  */
 export function getMrDiff(mr) {
   if (!mr) return null
-  const rec = staticRepo.mrDiffs[String(mr.id)]
+  const chunk = chunkFor(mr.project_id)
+  const rec = chunk && chunk.mrDiffs && chunk.mrDiffs[String(mr.id)]
   if (!rec) return null
   return {
     commitsCount: rec.commits_count,
@@ -462,7 +476,8 @@ function deletedNames(state, bucket, fullPath) {
 export function getBranches(state, project) {
   if (!project) return []
   const fullPath = project.full_path
-  const base = staticRepo.branches[originPath(state, fullPath)] || []
+  const chunk = originChunk(state, project)
+  const base = (chunk && chunk.branches) || EMPTY
   const extra = (state && state.repo && state.repo.branchOverlay
     && state.repo.branchOverlay[fullPath]) || []
   const deleted = deletedNames(state, 'branchDeletions', fullPath)
@@ -475,7 +490,8 @@ export function getBranches(state, project) {
 export function getTags(state, project) {
   if (!project) return []
   const fullPath = project.full_path
-  const base = staticRepo.tags[originPath(state, fullPath)] || []
+  const chunk = originChunk(state, project)
+  const base = (chunk && chunk.tags) || EMPTY
   const extra = (state && state.repo && state.repo.tagOverlay
     && state.repo.tagOverlay[fullPath]) || []
   const deleted = deletedNames(state, 'tagDeletions', fullPath)
@@ -523,13 +539,25 @@ export function undeleteRef(state, project, kind, name) {
 }
 
 /**
+ * `tree_last_commits` record for a project — the "last commit on this path"
+ * column of the file browser. `RepoTree` used to import the whole 0.38 MB module
+ * and index it by `originPath()`; it is per-project data like everything else
+ * around it, so it rides in the chunk now.
+ */
+export function getTreeLastCommits(state, project) {
+  const chunk = originChunk(state, project)
+  return (chunk && chunk.treeLastCommits) || null
+}
+
+/**
  * Contributor aggregate for a ref (assets/data_model.md §11).
  * `state` is optional and only needed so a forked project resolves through its
  * origin; existing two-argument calls keep working unchanged.
  */
 export function getContributors(project, ref, state = null) {
   if (!project) return null
-  const rec = staticRepo.contributors[originPath(state, project.full_path)]
+  const chunk = originChunk(state, project)
+  const rec = chunk && chunk.contributors
   if (!rec) return null
   if (ref && rec[ref]) return rec[ref]
   const keys = Object.keys(rec)
@@ -572,6 +600,7 @@ export function projectRoleFor(state, project, user) {
 /** Refs a project has contributor data for — used by /-/graphs/:ref. */
 export function contributorRefs(project, state = null) {
   if (!project) return []
-  const rec = staticRepo.contributors[originPath(state, project.full_path)]
-  return rec ? Object.keys(rec) : []
+  const chunk = originChunk(state, project)
+  const rec = chunk && chunk.contributors
+  return rec ? Object.keys(rec) : EMPTY
 }

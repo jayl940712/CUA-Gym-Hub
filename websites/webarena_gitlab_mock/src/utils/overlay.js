@@ -61,6 +61,7 @@
  * Both paths are proved to render identically in `assets/dumps/test_overlay.py`.
  */
 import { FROZEN } from '../data/frozen.js'
+import { lazyNotes, bodyFor, dataVersion, EMPTY } from '../data/lazy.js'
 import {
   OVERLAY_COLLECTIONS, OVERLAY_KEYS, OVERLAY_COLLECTION_NAMES,
   recordKey, emptyOverlay, toCore, SEED_NEXT_IDS, ID_KIND_COLLECTION,
@@ -78,10 +79,23 @@ const SPEC_BY_NAME = new Map(OVERLAY_COLLECTIONS.map(c => [c.name, c]))
 /**
  * The base array for `name`: the harness's injected array when there is one,
  * otherwise the frozen corpus.
+ *
+ * `notes` is the one collection whose base is LAZY — it is the concatenation of
+ * the per-project chunks loaded so far (src/data/lazy.js). That array is
+ * memoised on the chunk version, so it is reference-stable between loads and
+ * `mergeCollection`'s inert fast path and `dematerialize`'s identity skip both
+ * keep working. An injected `notes` array still wins, exactly as before, so a
+ * harness fixture is unaffected by the split.
+ *
+ * The empty fallback is a shared frozen constant rather than a fresh `[]`: a new
+ * array on every call would make an inert collection look changed on every
+ * render.
  */
 export function baseArray(core, name) {
   const injected = core && core[name]
-  return Array.isArray(injected) ? injected : (FROZEN[name] || [])
+  if (Array.isArray(injected)) return injected
+  if (name === 'notes') return lazyNotes()
+  return FROZEN[name] || EMPTY
 }
 
 /**
@@ -109,6 +123,83 @@ export function indexByKey(arr, spec) {
   return m
 }
 
+/* ------------------------------------------------------------------ *
+ * Lazy bodies                                                         *
+ * ------------------------------------------------------------------ */
+
+/**
+ * The eager base record for an issue / merge request carries every field EXCEPT
+ * `description` (src/data/frozen.js); the description lives in the project's
+ * lazy chunk. This splices it back on, and it is the ONLY place that does — so
+ * a record is either whole or consistently body-less, never half of each.
+ *
+ * `hasOwnProperty`, not truthiness, decides. A record the UI produced always has
+ * its own `description` key (`{...issue, state: 'closed'}` carries it forward,
+ * and the edit forms write it explicitly), so an agent who empties a description
+ * gets `''` and NOT the seed body resurrected on the next render. Only the index
+ * records — which never had the key — get spliced.
+ *
+ * MEMOISED, and that is load-bearing rather than a micro-optimisation.
+ * `reconcileCollection()` calls this on the base record and compares the result
+ * with what the reducer returned; a fresh object each time would make all 3 926
+ * issues compare unequal on every write, so every one of them would be
+ * JSON.stringify'd and tombstoned into `issueEdits`. Returning the SAME object
+ * `materialize()` handed out keeps that comparison a reference check.
+ *
+ * The cache is dropped whenever a chunk arrives, because a body that was
+ * `undefined` a moment ago may now be present.
+ */
+let bodyCache = new WeakMap()
+let bodyCacheVersion = -1
+
+function withBody(spec, rec) {
+  if (!spec.body || !rec) return rec
+  if (Object.prototype.hasOwnProperty.call(rec, spec.body)) return rec
+
+  const v = dataVersion()
+  if (bodyCacheVersion !== v) { bodyCache = new WeakMap(); bodyCacheVersion = v }
+  const hit = bodyCache.get(rec)
+  if (hit !== undefined) return hit
+
+  const body = bodyFor(spec.name, rec.project_id, String(rec.id))
+  // No body loaded yet: hand back the record ITSELF, so the identity check above
+  // still holds and no wrapper object is allocated per render on the dashboard.
+  const out = body === undefined ? rec : { ...rec, [spec.body]: body }
+  bodyCache.set(rec, out)
+  return out
+}
+
+/**
+ * `withBody` over a whole base array, memoised on (array identity, chunk version).
+ *
+ * The cold case — no chunk loaded, so no record gains a body — returns the input
+ * array ITSELF. That matters: `mergeCollection` hands this straight back for an
+ * inert collection and `dematerialize` skips a collection whose array came back
+ * reference-identical, so a fresh array here would defeat both on every render
+ * of every route, for the two largest collections in the app.
+ */
+const bodiedArrays = new WeakMap()
+
+function withBodies(spec, arr) {
+  if (!spec.body) return arr
+  const v = dataVersion()
+  let bySpec = bodiedArrays.get(arr)
+  if (!bySpec) { bySpec = new Map(); bodiedArrays.set(arr, bySpec) }
+  const hit = bySpec.get(spec.name)
+  if (hit && hit.version === v) return hit.out
+
+  let changed = false
+  const mapped = new Array(arr.length)
+  for (let i = 0; i < arr.length; i += 1) {
+    const next = withBody(spec, arr[i])
+    if (next !== arr[i]) changed = true
+    mapped[i] = next
+  }
+  const out = changed ? mapped : arr
+  bySpec.set(spec.name, { version: v, out })
+  return out
+}
+
 function isEmpty(v) {
   if (Array.isArray(v)) return v.length === 0
   if (v && typeof v === 'object') return Object.keys(v).length === 0
@@ -127,8 +218,11 @@ function inert(core, spec) {
 function mergeCollection(core, spec) {
   const base = baseArray(core, spec.name)
   // Reference-identical when inert, which is what keeps `state.notes` stable
-  // across renders on a session that never touched a note.
-  if (inert(core, spec)) return base
+  // across renders on a session that never touched a note. `spec.body` breaks
+  // that identity only for the two collections that HAVE a lazy body, and only
+  // once their chunk has arrived — `withBody` memoises, so the mapped array is
+  // rebuilt on a chunk load and not on every render.
+  if (inert(core, spec)) return withBodies(spec, base)
 
   const created = core[spec.created] || []
   const edits = core[spec.edits] || {}
@@ -139,7 +233,9 @@ function mergeCollection(core, spec) {
   for (const raw of base) {
     const k = recordKey(spec, raw)
     if (deleted.has(k)) continue
-    out.push(hasEdits && Object.prototype.hasOwnProperty.call(edits, k) ? edits[k] : raw)
+    out.push(hasEdits && Object.prototype.hasOwnProperty.call(edits, k)
+      ? edits[k]
+      : withBody(spec, raw))
   }
   // Created records are appended, never interleaved. Every GitLab list view
   // sorts explicitly (see `sortProjects` / `sortMilestones` / `sortIssuables`
@@ -197,7 +293,7 @@ function reconcileCollection(core, spec, next) {
   for (const rec of next) {
     const k = recordKey(spec, rec)
     seen.add(k)
-    const from = baseIdx.get(k)
+    const from = baseIdx.get(k) === undefined ? undefined : withBody(spec, baseIdx.get(k))
     if (from === undefined) {
       // Not in the base at all: agent-created. An edit to an agent-created
       // record is stored in place here, so `newIssues` always carries the
@@ -273,6 +369,11 @@ export function dematerialize(core, prevState, nextState) {
 export function checkSeedNextIds() {
   const bad = []
   for (const [kind, name] of Object.entries(ID_KIND_COLLECTION)) {
+    // `notes` is lazy, so the eager corpus cannot see its real maximum and a
+    // check against the chunks loaded so far would pass vacuously on a cold
+    // page. `assets/dumps/check_next_ids.py` reads notes.json off disk and is
+    // the authority for that one counter.
+    if (name === 'notes') continue
     const rows = FROZEN[name] || []
     let max = 0
     for (const r of rows) {

@@ -12,24 +12,32 @@
 // Coverage is COMPLETE, not sampled: all 1 465 pipelines and all 14 179 jobs
 // the instance has, across all 67 projects that have any. The other 108 seeded
 // projects genuinely have none and correctly render the source's empty state.
+//
+// The 1.06 MB of pipeline rows is per-project, so it was split out of
+// `ci_pipelines.json` into the lazy per-project chunks by
+// `assets/dumps/build_lazy_chunks.py`. What is left here — the 14-entry job
+// vocabulary, the two status strings and the three page sizes — is
+// `ci_header.json`, ~2 KB, and stays eager because it is shared by every
+// project. `pipelinesFor()` therefore reads the chunk, and the four CI views
+// are project routes, so the chunk gate in App.jsx has already awaited it.
 // ---------------------------------------------------------------------------
-import seed from '../data/ci_pipelines.json'
+import header from '../data/ci_header.json'
+import { chunkFor, EMPTY } from '../data/lazy.js'
 
 /** `[name, stage, stage_idx, allow_failure]` — the closed 14-entry vocabulary. */
-const SPECS = seed.job_specs
-const STATUSES = seed.statuses
+const SPECS = header.job_specs
+const STATUSES = header.statuses
 
 /** Source page sizes, measured off the live site (DEV.r12-cicd.md §1.3). */
-export const PIPELINES_PER_PAGE = seed._page_size.pipelines // 15
-export const JOBS_PER_PAGE = seed._page_size.jobs           // 30
-export const JOBS_COUNT_CAP = seed._page_size.jobs_count_cap // `1,000+`
-
-const EMPTY = []
+export const PIPELINES_PER_PAGE = header._page_size.pipelines // 15
+export const JOBS_PER_PAGE = header._page_size.jobs           // 30
+export const JOBS_COUNT_CAP = header._page_size.jobs_count_cap // `1,000+`
 
 /** Every pipeline of a project, newest first — the source's own order. */
 export function pipelinesFor(projectId) {
   if (projectId == null) return EMPTY
-  return seed.projects[String(projectId)] || EMPTY
+  const chunk = chunkFor(projectId)
+  return (chunk && chunk.pipelines) || EMPTY
 }
 
 /** One pipeline by its real id, scoped to the project (`/-/pipelines/:id`). */

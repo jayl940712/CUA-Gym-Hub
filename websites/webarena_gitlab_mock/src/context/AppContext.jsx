@@ -5,6 +5,7 @@ import {
   CURRENT_USER_ID, SEED_NEXT_IDS, ID_KIND_COLLECTION,
 } from '../utils/dataManager.js'
 import { materialize, dematerialize, toCore } from '../utils/overlay.js'
+import { subscribe as subscribeChunks } from '../data/lazy.js'
 
 const AppContext = createContext(null)
 
@@ -81,6 +82,20 @@ export function AppProvider({ children }) {
       })
     }
   }, [])
+
+  // -------------------------------------------------------------------------
+  // A per-project chunk arriving GROWS the frozen base (`state.notes`), so the
+  // materialized state has to be rebuilt. Re-committing the SAME core is the
+  // whole fix: it goes through the one materialization point like every other
+  // write, so there is still no way for two views to see different merges.
+  //
+  // This must not persist. The core did not change — only the base data behind
+  // it — so calling saveState() here would POST an identical state on every
+  // navigation and put spurious no-op writes into /go's history.
+  // -------------------------------------------------------------------------
+  useEffect(() => subscribeChunks(() => {
+    if (coreRef.current) commit(coreRef.current)
+  }), [commit])
 
   /**
    * Fold any ids allocateId handed out into the state about to be committed, so

@@ -9,7 +9,7 @@ import { projectRoleFor } from '../utils/dataManager.js'
 import Dropdown from '../components/ui/Dropdown.jsx'
 import { dbStamp } from '../components/create/mutations.js'
 import { labelFilterUrl } from '../utils/issuableUrl.js'
-import RESOURCE_EVENTS from '../data/resource_events.json'
+import { resourceEventsFor } from '../data/lazy.js'
 
 // assets/README.md §14.8 / §15c — the shared notes timeline.
 //
@@ -29,9 +29,11 @@ import RESOURCE_EVENTS from '../data/resource_events.json'
 // simply absent — e.g. /a11yproject/a11yproject.com/-/issues/566 shows
 // "Byte Blaze closed 8 years ago" on the source and showed nothing here.
 // `src/data/resource_events.json` is the container's own three tables for the
-// seeded issues/MRs (1 207 rows, every user/label/milestone id already present
-// in the seed); it is historical, never mutated, and therefore imported
-// directly rather than carried in state.
+// seeded issues/MRs (every user/label/milestone id already present in the
+// seed); it is historical and never mutated, so it is reference data rather
+// than state. It is also strictly per-issuable, so it rides in the project's
+// lazy chunk and is read through `resourceEventsFor(project.id)` — the route is
+// already behind the chunk gate, so the rows are there on first render.
 //
 // Every glyph, wrapper and string below is read off the source's markup — see
 // assets/html/issue-a11y-{566,719,1478,1517}.html and mr-a11y-{1265,1270,1485}.html.
@@ -214,7 +216,7 @@ export default function NotesTimeline({ noteableType, noteable, project }) {
     }))
 
   // --- the three resource-event tables, merged in like the source does -------
-  const rows = RESOURCE_EVENTS
+  const rows = resourceEventsFor(project && project.id)
     .filter(e => e.noteable_type === noteableType && e.noteable_id === noteable.id)
 
   // GitLab collapses label events made by one user in the same second into one

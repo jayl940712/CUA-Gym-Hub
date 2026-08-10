@@ -19,6 +19,13 @@
  * `created` array of records the agent created, in insertion order.
  * `edits`   `{ [key]: fullRecord }` — a FROZEN record's replacement value.
  * `deleted` array of keys of frozen records the agent removed (tombstones).
+ * `body`    OPTIONAL — a field the eager base does NOT carry, because it is big
+ *           and only a handful of views read it. `issues` and `mergeRequests`
+ *           ship as metadata indexes (src/data/frozen.js) and their
+ *           `description` arrives with the project's lazy chunk;
+ *           `overlay.withBody()` splices it on at the single materialization
+ *           point, so no view sees a record whose body state disagrees with
+ *           another view's. Absent for the other ten.
  * `key`     what identifies a record. `'id'` for the ten keyed collections;
  *           `stars` and `follows` have no id in the source either (they are
  *           join rows) so they are keyed on their composite, which is also how
@@ -33,8 +40,8 @@ export const OVERLAY_COLLECTIONS = Object.freeze([
   { name: 'users', created: 'newUsers', edits: 'userEdits', deleted: 'deletedUsers', key: 'id' },
   { name: 'projects', created: 'newProjects', edits: 'projectEdits', deleted: 'deletedProjects', key: 'id' },
   { name: 'groups', created: 'newGroups', edits: 'groupEdits', deleted: 'deletedGroups', key: 'id' },
-  { name: 'issues', created: 'newIssues', edits: 'issueEdits', deleted: 'deletedIssues', key: 'id' },
-  { name: 'mergeRequests', created: 'newMergeRequests', edits: 'mergeRequestEdits', deleted: 'deletedMergeRequests', key: 'id' },
+  { name: 'issues', created: 'newIssues', edits: 'issueEdits', deleted: 'deletedIssues', key: 'id', body: 'description' },
+  { name: 'mergeRequests', created: 'newMergeRequests', edits: 'mergeRequestEdits', deleted: 'deletedMergeRequests', key: 'id', body: 'description' },
   { name: 'notes', created: 'newNotes', edits: 'noteEdits', deleted: 'deletedNotes', key: 'id' },
   { name: 'labels', created: 'newLabels', edits: 'labelEdits', deleted: 'deletedLabels', key: 'id' },
   { name: 'milestones', created: 'newMilestones', edits: 'milestoneEdits', deleted: 'deletedMilestones', key: 'id' },

@@ -8,7 +8,7 @@ import { useApp } from '../context/AppContext.jsx'
 import { useProject, useQuery } from './hooks.js'
 import NotFound from './NotFound.jsx'
 import { shortSha } from '../utils/format.js'
-import { staticRepo } from '../utils/dataManager.js'
+import { getMrDiff } from '../utils/dataManager.js'
 import {
   PIPELINES_PER_PAGE, JOBS_PER_PAGE,
   pipelinesFor, pipelineById, jobsOf, jobsFor, jobCountFor, jobsBadge,
@@ -240,9 +240,9 @@ function relatedMergeRequests(state, project, pipeline) {
   return state.mergeRequests
     .filter(m => m.project_id === project.id && m.source_branch === pipeline.ref)
     .filter(m => {
-      const diff = staticRepo.mrDiffs[String(m.id)]
+      const diff = getMrDiff(m)
       if (!diff || !diff.commits) return true
-      return diff.commits.some(c => c[0] === pipeline.sha)
+      return diff.commits.some(c => c.sha === pipeline.sha)
     })
     .map(m => ({ iid: m.iid, title: m.title }))
 }

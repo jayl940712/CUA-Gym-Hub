@@ -70,15 +70,15 @@ Counts come from `SELECT count(*)` against `gitlabhq_production`. They are the
 
 | Entity | Source rows | Seeded |
 |---|---|---|
-| users | 2 399 | 1 133 |
+| users | 2 399 | 1 858 |
 | projects | **175** | **all 175** |
 | namespaces | 2 576 | — (derived from projects) |
 | groups | **2** | **both** |
-| issues | 80 962 | 613 |
-| merge_requests | 134 338 | 729 |
-| notes (comments) | 303 407 | 1 599 |
-| labels | 1 753 | 630 |
-| milestones | 545 | 202 |
+| issues | 80 962 | 3 926 |
+| merge_requests | 134 338 | 4 636 |
+| notes (comments) | 303 407 | 12 648 |
+| labels | 1 753 | 972 |
+| milestones | 545 | 252 |
 | members | 183 | **all 183** |
 | users_star_projects | 2 218 | 569 |
 | user_follow_users | **5** | **all 5** |
@@ -86,13 +86,16 @@ Counts come from `SELECT count(*)` against `gitlabhq_production`. They are the
 | events | 1 | — (activity feed is derived) |
 | snippets | **0** | — (render the real empty state) |
 
+(Seeded counts re-measured off `src/data/*.json`; the column predated the 6.4x
+expansion in `c75e0449d` and still read 613 / 729 / 1 599.)
+
 Only **2 groups** exist (`gitlab-instance-58545a48`, `robert1003`). The five
 groups the anchors name are created by tasks 799–803.
 
-Seed footprint: **2.07 MB frozen corpus** (12 modules) + **2.9 MB static
-reference** (7 git-derived modules) + ~1.6 MB of other static modules
-(`ci_pipelines`, `tree_last_commits`, `resource_events`, `repo_languages`).
-See `assets/data_model.md §0` and `§12`.
+Seed footprint on disk: **23.8 MB** across `src/data/*.json`. Loaded on a cold
+project route: **2.34 MB eagerly** plus the project's own chunk (median 82 KB).
+The split, and why each collection falls on the side it does, is in `SCHEMA.md`
+§ *Per-project lazy loading*. See also `assets/data_model.md §0` and `§12`.
 
 ### Design decision: the corpus is frozen, mutations are an overlay
 
@@ -134,6 +137,51 @@ would have been 79 chances to miss one, and a missed one is invisible — the UI
 still renders and only persistence and `/go` are wrong. So the reducers were
 left exactly as they were and `overlay.dematerialize()` derives the delta from
 what they return. The full argument is in the header of `src/utils/overlay.js`.
+
+### Design decision: the per-project half of the corpus is loaded on demand
+
+Freezing the corpus fixed *state* size. It did nothing for *load* size — all
+23.8 MB of `src/data` was still in the eager module graph on every route, via
+`frozen.js` and via a second, larger import site in `dataManager.js` for the
+seven STATIC git modules. Bundled JSON parses at ~32 ms/MB over a ~130 ms floor
+on this host, so first contentful paint scaled with the size of the WHOLE
+corpus regardless of which page was open, and the planned 3-5x seed expansion
+would have taken a project route past 1.5 s.
+
+16.8 MB of the corpus is strictly per-project — repo files, trees, commits,
+contributors, branches, tags, notes, resource events, MR diffs, CI pipelines —
+and 2.9 MB more is issue/MR `description`, read by five views, four of them
+project routes. Nobody opening `/byteblaze/dotfiles` needs any of it for the
+other 174 projects. So it is sliced by project id into
+`src/data/by-project/<id>.json` and loaded with `import()`.
+
+What stays eager is what is genuinely cross-cutting — projects, users, groups,
+labels, milestones, members, stars, follows, todos — plus a **metadata index**
+for issues and merge requests: every field except `description`, tuple-encoded.
+The navbar's assigned-issue counts, both sidebars' open counts, the three
+dashboards, the group rollups and `/search` all read across every project on
+every route, and `overlay.reconcileCollection()` derives deletion tombstones
+from the base array, so those two collections must exist globally or a single
+write would tombstone thousands of records. Only their bodies are lazy.
+
+Measured on `/byteblaze/dotfiles`, five interleaved cold loads each:
+
+| | eager seed | preview FCP | dev FCP |
+|---|---|---|---|
+| before | ~24 MB | 432 ms | 580 ms |
+| after | 2.34 MB + one 104 KB chunk | **172 ms** | **376 ms** |
+
+and with the corpus deliberately padded to **139 MB** (every chunk but
+dotfiles' 5x, `search_bodies` 5x), preview FCP on that route was **184 ms** —
+inside the spread of the unpadded runs. Load time no longer scales with total
+corpus size, which is the point: the next seed expansion is now bounded by the
+index (~160 B per issue, ~220 B per merge request) rather than by everything.
+
+The correctness rule is in `SCHEMA.md` § *Per-project lazy loading* and in
+`src/data/lazy.js`: `App` renders **nothing** until the route's chunk is
+resolved, so a cold deep link paints the real page once rather than an empty
+one that fills in. `assets/dumps/test_lazy.py` asserts exactly that, plus the
+body round-trip and the overlay crossing a lazy boundary.
 
 ## Task contract
 

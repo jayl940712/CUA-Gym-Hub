@@ -1,6 +1,11 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { useApp } from './context/AppContext.jsx'
+import {
+  ensureProjects, projectReady, projectIdForPath, projectPathFromPathname,
+  ensureSearchBodies, searchBodiesReady,
+} from './data/lazy.js'
+import { originPath } from './utils/dataManager.js'
 import RedirectWithQuery, { appendSid } from './utils/RedirectWithQuery.jsx'
 import { buildPathIndex, canonicalPathname } from './utils/canonicalPath.js'
 import Layout from './components/layout/Layout.jsx'
@@ -134,6 +139,86 @@ function useGlobalLinkInterception() {
   }, [navigate, location.search])
 }
 
+/**
+ * Block rendering until the current route's project chunk is in memory.
+ *
+ * 16.8 MB of the seed is per-project and now arrives by `import()`
+ * (src/data/lazy.js). The single most important property of this app is that a
+ * COLD DEEP LINK on any route renders correctly on first paint — RL agents are
+ * dropped straight onto arbitrary URLs — so a project route must not render
+ * empty and fill in a tick later. This hook is the gate: `App` returns `null`
+ * while the chunk is outstanding, on the same early return that already covered
+ * state hydration, so the page appears once and correct.
+ *
+ * Gating at the App level rather than per page is deliberate. There are ~90
+ * project routes and every one of them reads git data, notes, resource events,
+ * MR diffs or CI rows from the chunk; a per-route declaration of what to await
+ * would be ~90 chances to forget one, and a forgotten one fails SILENTLY as an
+ * empty file tree or a missing discussion. One chunk per project, awaited for
+ * the whole project subtree, cannot be got wrong. The cost of over-fetching is
+ * a median 72 KB — about 2 ms of parse.
+ *
+ * Forks resolve through `state.repo.forkOrigin`: a fork's git data lives in its
+ * source project's chunk (see `originChunk` in dataManager.js), so the origin is
+ * what gets awaited. `lazy.js` also fires a prefetch for the opening URL at
+ * module-init time, which overlaps the fetch with the eager bundle's parse;
+ * this hook is the correctness half and re-resolves once state exists.
+ */
+function useProjectChunk(state, indexes) {
+  const { pathname, search } = useLocation()
+
+  // The project id the URL needs, AFTER walking the fork chain.
+  //
+  // Resolution goes through the LIVE project index, not the seed map, so a
+  // project the agent created resolves too. That is not hypothetical: a fork
+  // has no chunk of its own and reads its SOURCE project's (see `originChunk`
+  // in dataManager.js), so `/byteblaze/<fork>/-/tree/main` has to await the
+  // origin's chunk or the file tree renders empty.
+  const needId = useMemo(() => {
+    const byPath = indexes && indexes.projectsByPathLower
+    const path = projectPathFromPathname(pathname, byPath && (p => byPath.has(p)))
+    if (!path) return null
+    const project = byPath ? byPath.get(path) : null
+    if (!project) return projectIdForPath(path)
+    const origin = originPath(state, project.full_path)
+    const originId = origin === project.full_path
+      ? project.id
+      : projectIdForPath(origin)
+    // A fork of a project the agent also created has no chunk anywhere; falling
+    // back to its own id makes `projectReady` true immediately (no loader), so
+    // the route renders its empty repo state rather than hanging.
+    return originId == null ? project.id : originId
+  }, [pathname, state, indexes])
+
+  // `projectReady` is consulted during RENDER, not in the effect, so a chunk
+  // that is already in memory (a second visit, or the module-init prefetch that
+  // resolved while React was mounting) never costs an extra blank frame.
+  // `/search?search=…` is the one route that reads issue and MR DESCRIPTIONS
+  // across every project — GitLab without Elasticsearch matches title OR
+  // description, so without the bodies this page would quietly return fewer
+  // rows than the source rather than fail visibly. It gets one 2.87 MB module
+  // (src/data/lazy.js) instead of fanning out to 173 chunks. An empty `search`
+  // renders no results at all, so it needs nothing.
+  const needBodies = pathname === '/search'
+    && !!new URLSearchParams(search).get('search')
+
+  const ready = (needId == null || projectReady(needId))
+    && (!needBodies || searchBodiesReady())
+  const [, force] = useState(0)
+
+  useEffect(() => {
+    let live = true
+    const waits = []
+    if (needId != null && !projectReady(needId)) waits.push(ensureProjects(needId))
+    if (needBodies && !searchBodiesReady()) waits.push(ensureSearchBodies())
+    if (waits.length === 0) return undefined
+    Promise.all(waits).then(() => { if (live) force(n => n + 1) })
+    return () => { live = false }
+  }, [needId, needBodies])
+
+  return ready
+}
+
 /** Scroll to top on navigation, like a server-rendered app. */
 function useScrollReset() {
   const { pathname } = useLocation()
@@ -141,7 +226,7 @@ function useScrollReset() {
 }
 
 export default function App() {
-  const { loading, state } = useApp()
+  const { loading, state, indexes } = useApp()
   const location = useLocation()
   useGlobalLinkInterception()
   useScrollReset()
@@ -155,9 +240,16 @@ export default function App() {
   // than run from an effect so NotFound never flashes first.
   const pathIndex = useMemo(() => buildPathIndex(state), [state])
   const canonical = state ? canonicalPathname(location.pathname, pathIndex) : null
+  // Case-insensitive like `canonicalPathname` above, so `/byteblaze/ChatGPT`
+  // awaits `chatgpt`'s chunk during the render that also emits the redirect —
+  // the corrected URL then lands on a chunk that is already in memory.
+  const chunkReady = useProjectChunk(state, indexes)
 
   if (loading) return null
   if (canonical) return <RedirectWithQuery to={canonical} />
+  // Nothing has painted yet at this point — this is the same blank the app
+  // already showed during hydration, not a flash of a half-built page.
+  if (!chunkReady) return null
 
   return (
     <Routes>

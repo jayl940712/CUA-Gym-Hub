@@ -24,22 +24,77 @@ lives at `.mock-states/<sid>.json` with a frozen baseline at
 
 ## Frozen corpus, overlay, and static seed
 
-`src/data/` holds **24 JSON modules, ~6.4 MB**, in three tiers:
+`src/data/` holds **23.8 MB of canonical seed JSON**, of which only **2.34 MB is
+loaded eagerly**. Four tiers:
 
 | Tier | State key / module | Where they live |
 |---|---|---|
-| **Frozen corpus (12)** | `projects` `users` `groups` `issues` `mergeRequests` `notes` `labels` `milestones` `members` `stars` `follows` `todos` | `src/data/frozen.js` — read-only base data. **Not copied into state.** `overlay.materialize()` merges them with the session's delta on read, so `state.issues` is still a complete array to every component. |
+| **Frozen corpus, eager (9)** | `projects` `users` `groups` `labels` `milestones` `members` `stars` `follows` `todos` | `src/data/frozen.js` — read-only base data. **Not copied into state.** `overlay.materialize()` merges them with the session's delta on read, so `state.projects` is still a complete array to every component. |
+| **Frozen corpus, eager INDEX (2)** | `issues` `mergeRequests` | `issues_index.json` / `merge_requests_index.json` — every field **except `description`**, tuple-encoded and rebuilt by `frozen.js:unpack()`. Existence is global and eager; the body is not. |
+| **Frozen corpus, LAZY (1)** | `notes` | per project, in `src/data/by-project/<id>.json`. `overlay.baseArray('notes')` returns the concatenation of the chunks loaded so far. |
 | **Overlay (36 keys)** | `new<X>` / `<x>Edits` / `deleted<X>` for each of the 12 above | **this is what is persisted** — POSTed to `/post`, diffed by `/go`, written to localStorage |
-| **Static (11)** | `repo_files` `repo_trees` `commits` `contributors` `branches` `tags` `merge_request_diffs` `tree_last_commits` `resource_events` `repo_languages` `ci_pipelines` | reference data — imported at module scope, **never** copied into state |
+| **Static, LAZY** | `repo_files` `repo_trees` `commits` `contributors` `branches` `tags` `merge_request_diffs` `tree_last_commits` `resource_events` `ci_pipelines.projects` + issue/MR `description` | reference data in the same per-project chunk — read through the accessors in `dataManager.js` and `ci.js`, **never** copied into state |
+| **Static, eager** | `repo_languages` (11 KB) `ci_header` (0.6 KB) `current_user` (0.4 KB) | too small and too cross-cutting to split |
 
-(The 24th module is `current_user.json`, 382 B — byteblaze's row extracted
-verbatim from `users.json` so that `createInitialData()` can seed `currentUser`
-without importing the 256 KB user corpus.)
+(`current_user.json` is byteblaze's row extracted verbatim from `users.json` so
+that `createInitialData()` can seed `currentUser` without importing the user
+corpus.)
 
 The corpus names above are the **state keys** — the names components read and
 the names this document uses. One differs from its file name: `mergeRequests` is
 loaded from `src/data/merge_requests.json`. The static names are file names;
 they have no state key, by definition.
+
+### Per-project lazy loading
+
+`assets/dumps/build_lazy_chunks.py` derives `src/data/by-project/<project id>.json`
+(173 chunks, 19.7 MB total, median 82 KB, p90 261 KB, max 606 KB) plus the two
+indexes, `ci_header.json` and `search_bodies.json` from the monolithic seeds. **The
+monoliths stay canonical** — the extract scripts keep writing them and nothing in
+`src/` imports them. Re-run the script after any reseed:
+
+```bash
+python3 assets/dumps/build_lazy_chunks.py            # rebuild
+python3 assets/dumps/build_lazy_chunks.py --verify   # non-zero if stale
+```
+
+A chunk holds one project's `files` `tree` `commits` `contributors` `branches`
+`tags` `treeLastCommits` `notes` `resourceEvents` `mrDiffs` `pipelines`
+`issueBodies` `mrBodies`. `src/data/lazy.js` loads them with `import.meta.glob`
++ `import()`, never evicts one, and notifies `AppContext`, which re-commits the
+same core so the merge is rebuilt through the **one** materialization point.
+
+**The gate.** `useProjectChunk()` in `src/App.jsx` resolves the route's project
+(including a fork's origin, via `state.repo.forkOrigin`) and `App` returns
+`null` until that chunk is in memory — the same early return that already
+covered state hydration. A project route therefore never renders half-loaded:
+an agent deep-linked onto `/byteblaze/dotfiles/-/merge_requests/40/diffs` gets
+the real diff on first paint, not an empty state that fills in a tick later.
+`/search?search=…` additionally awaits `search_bodies.json`, because GitLab
+without Elasticsearch matches issue/MR **description** as well as title.
+
+**Why issues and MRs are not per-project.** The navbar's assigned-issue counts,
+both sidebars' open counts, `/dashboard/issues`, `/dashboard/merge_requests`,
+`/dashboard/milestones`, `/search` and the group rollups read across every
+project on every route — and `overlay.reconcileCollection()` derives deletion
+tombstones from the base array, so a partially loaded base would tombstone every
+unloaded project's issues on the first write. `notes` is safe to load partially
+because its only two consumers (`IssueDetail`, `MergeRequestDetail`, through
+`NotesTimeline`) are project routes behind the gate.
+
+Measured cold-load payload for `/byteblaze/dotfiles`:
+
+| | eager seed bytes | FCP `npm run preview` | FCP `npm run dev` |
+|---|---|---|---|
+| before | ~24 MB | 432 ms | 580 ms |
+| after | **2.34 MB** + one 104 KB chunk | **172 ms** | **376 ms** |
+
+And with the corpus deliberately inflated to **139 MB** (every chunk except
+`byteblaze/dotfiles`' padded 5x, `search_bodies` 5x, `dist` 107 MB), preview FCP
+on that route was **184 ms** — inside the run-to-run spread of the 172 ms
+figure. That is the property this design exists for: **first paint no longer
+scales with total corpus size.** What it still scales with is the eager index,
+at ~160 B per issue and ~220 B per merge request.
 
 ### Why the corpus is frozen
 

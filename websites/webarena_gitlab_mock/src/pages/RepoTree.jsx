@@ -6,11 +6,10 @@ import Icon from '../components/layout/Icon.jsx'
 import TimeAgo from '../components/layout/TimeAgo.jsx'
 import NotFound from './NotFound.jsx'
 import { useProject, useQuery } from './hooks.js'
-import { getRepoTree, getRepoFile, getCommits, getBranches, getTags, originPath } from '../utils/dataManager.js'
+import { getRepoTree, getRepoFile, getCommits, getBranches, getTags, getTreeLastCommits } from '../utils/dataManager.js'
 import { shortSha } from '../utils/format.js'
 import { renderMarkdown } from '../utils/markdown.js'
 import RefSwitcher from '../components/people/RefSwitcher.jsx'
-import treeLastCommitsStatic from '../data/tree_last_commits.json'
 
 // ROUTES #45 / #46 — `/:ns/:proj/-/tree/:ref[/*path]`. assets/README.md §10a.
 // repo_trees.json is a FLAT blob list; directories are derived by splitting
@@ -28,10 +27,11 @@ import treeLastCommitsStatic from '../data/tree_last_commits.json'
  * `/-/refs/<ref>/logs_tree` to fill the tree's `Last commit` / `Last update`
  * cells and the blob page's commit well.
  *
- * Backed by the STATIC seed `src/data/tree_last_commits.json` (assets/data_model.md
- * §11), extracted with `git log -1 -- <path>` against the container's bare
- * repositories. Static reference data, exactly like commits.json /
- * repo_trees.json — never copied into session state.
+ * Backed by the STATIC seed `tree_last_commits` (assets/data_model.md §11),
+ * extracted with `git log -1 -- <path>` against the container's bare
+ * repositories. Static reference data, exactly like commits / repo_trees —
+ * never copied into session state, and since it is per-project it travels in
+ * the project's lazy chunk and is read through `getTreeLastCommits()`.
  *
  * Shape: `{ "<full_path>": { ref, commits: [[sha, title, author_name,
  * author_email, committed_date, authored_date?], …], paths: { "<path>": i } } }`
@@ -57,7 +57,7 @@ export function getTreeLastCommit(state, project, ref, path, entry) {
     const made = overlay.find(c => c.sha && c.sha.startsWith(entry.sha))
     if (made) return made
   }
-  const rec = treeLastCommitsStatic[originPath(state, project.full_path)]
+  const rec = getTreeLastCommits(state, project)
   const i = rec && rec.paths[path]
   if (i === undefined) return null
   const [sha, title, author_name, author_email, committed_date, authored_date] = rec.commits[i]
