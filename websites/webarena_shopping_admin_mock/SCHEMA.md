@@ -11,7 +11,7 @@
 **State read**: `GET /state?sid=<sid>`
 **Upload**: `POST /upload?sid=<sid>` · **Serve**: `GET /files/<sid>/<filename>`
 
-Uploads are content-addressed and isolated by SID. Legacy `reset` restores JSON
+Uploads are content-addressed and isolated by SID. Legacy `reset` deletes JSON
 state but deliberately leaves session fixture files available.
 
 The app boots pre-logged-in as `admin` (WebArena's `admin` / `admin1234`). There

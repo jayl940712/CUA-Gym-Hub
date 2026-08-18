@@ -32,7 +32,7 @@ Three actions are supported:
 |--------|------|--------|
 | `set` | `{"action":"set","state":{...}}` | Writes `<sid>.json` (current state) **and** `<sid>.initial.json` (initial state). Both files are set to the same payload. This is used to inject the starting state for a task. After a `set`, `state_diff` in `/go` will be empty until the agent makes changes. |
 | `set_current` | `{"action":"set_current","state":{...}}` | Writes only `<sid>.json`. Never touches `.initial.json`. Used by `golden_patch.py` to write the expected final state for task evaluation without resetting the baseline. |
-| `reset` | `{"action":"reset"}` | Deletes `<sid>.json`. The browser reverts to application defaults on next load. |
+| `reset` | `{"action":"reset"}` | Deletes `<sid>.json` and `<sid>.initial.json`. The browser reverts to application defaults on next load. |
 
 All three actions accept an optional `"merge": true` flag (for `set` and `set_current`), which deep-merges the provided state onto the existing file rather than replacing it.
 

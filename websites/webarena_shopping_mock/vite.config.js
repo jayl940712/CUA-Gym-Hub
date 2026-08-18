@@ -428,11 +428,6 @@ function setupMiddlewares(server, mediaRoot) {
       const action = data.action || 'set'
       const result = await queueMutation(sid, async () => {
         if (action === 'reset') {
-          const initial = readInitialState(sid)
-          if (initial !== null) {
-            await writeState(sid, initial)
-            return { success: true, sid, message: 'State reset to initial.' }
-          }
           await clearState(sid)
           return { success: true, sid, message: 'State cleared.' }
         }

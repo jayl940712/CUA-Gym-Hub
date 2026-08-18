@@ -8,7 +8,7 @@ reliably in the current Vite/data-manager layout:
 * ``set`` rewrites current state and the baseline on every call.
 * ``set_current`` cannot write the baseline.
 * a missing baseline in ``/go`` falls back to defaults, never current state.
-* reset restores current state from the baseline.
+* reset deletes both current and baseline session state.
 * request bodies are buffered as bytes before one UTF-8 decode.
 * ``/state`` and ``/go`` expose their required envelope keys in dev and preview.
 * state paths are SID-specific.
@@ -270,6 +270,7 @@ def audit_mock(name: str) -> MockResult:
             )
     state_file = function_body(vite, "getStateFile") or ""
     initial_file = function_body(vite, "getInitialStateFile") or ""
+    clear_body = function_body(vite, "clearState") or ""
 
     checks = (
         CheckResult(
@@ -288,11 +289,12 @@ def audit_mock(name: str) -> MockResult:
             "/go must use defaults rather than current state when the baseline is absent",
         ),
         CheckResult(
-            "reset restores baseline",
+            "reset deletes session state",
             bool(reset_body)
-            and bool(re.search(r"\breadInitialState\s*\(", reset_body))
-            and bool(re.search(r"\bwriteState\s*\(", reset_body)),
-            "reset must copy the baseline to current state",
+            and bool(re.search(r"\bclearState\s*\(", reset_body))
+            and bool(re.search(r"\bgetStateFile\s*\(", clear_body))
+            and bool(re.search(r"\bgetInitialStateFile\s*\(", clear_body)),
+            "reset must delete both current and initial state files",
         ),
         CheckResult(
             "SID-specific files",

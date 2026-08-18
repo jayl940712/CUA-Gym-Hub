@@ -43,13 +43,12 @@ function mockApiPlugin() {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ ok: true }));
               } else if (action === 'reset') {
-                const existing = sessions.get(sid);
-                if (!existing) {
+                if (!sessions.has(sid)) {
                   res.writeHead(404, { 'Content-Type': 'application/json' });
                   res.end(JSON.stringify({ error: 'session not found' }));
                   return;
                 }
-                existing.current = JSON.parse(JSON.stringify(existing.initial));
+                sessions.delete(sid);
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ ok: true }));
               } else {
@@ -119,13 +118,12 @@ function mockApiPlugin() {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ ok: true }));
               } else if (action === 'reset') {
-                const existing = sessions.get(sid);
-                if (!existing) {
+                if (!sessions.has(sid)) {
                   res.writeHead(404, { 'Content-Type': 'application/json' });
                   res.end(JSON.stringify({ error: 'session not found' }));
                   return;
                 }
-                existing.current = JSON.parse(JSON.stringify(existing.initial));
+                sessions.delete(sid);
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ ok: true }));
               } else {

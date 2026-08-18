@@ -491,9 +491,10 @@ class ContractSuite:
         self.client.post(self.sid_a, "reset")
         state = self.client.state(self.sid_a)
         go = self.client.go(self.sid_a)
-        require(go["initial_state"] == baseline, "reset changed the baseline")
-        require(go["current_state"] == baseline, "reset did not restore current from baseline")
-        require(state["stored_state"] == baseline, "/state did not expose reset state")
+        require(state["has_custom_state"] is False, "reset preserved current state")
+        require(state["has_initial_state"] is False, "reset preserved the baseline")
+        require(PROBE_KEY not in go["initial_state"], "reset baseline remained visible")
+        require(PROBE_KEY not in go["current_state"], "reset current state remained visible")
         require(not go["state_diff"], "reset left a non-empty diff")
 
     def never_seeded_mutation(self) -> None:
@@ -578,8 +579,8 @@ class ContractSuite:
         other_status, _ = self.client.download(self.sid_b, stored_name)
         require(other_status == 404, "another SID could read the uploaded file")
 
-        # Legacy reset restores state but deliberately leaves baseline fixture
-        # files available. Expired-session cleanup is a separate admin concern.
+        # Reset clears state files but deliberately leaves session uploads.
+        # Expired-upload cleanup is a separate admin concern.
         self.client.post(self.sid_a, "reset")
         reset_status, reset_content = self.client.download(self.sid_a, stored_name)
         require(
@@ -918,10 +919,13 @@ def make_self_test_server() -> tuple[ThreadingHTTPServer, threading.Thread]:
             sid = self.sid()
             if route == "/state":
                 state = states.get(sid)
+                initial = initials.get(sid)
                 self.send_json(
                     {
                         "stored_state": state,
                         "has_custom_state": state is not None,
+                        "initial_state": initial,
+                        "has_initial_state": initial is not None,
                         "sid": sid,
                     }
                 )
@@ -964,10 +968,8 @@ def make_self_test_server() -> tuple[ThreadingHTTPServer, threading.Thread]:
             elif action == "set_current":
                 states[sid] = copy.deepcopy(payload["state"])
             elif action == "reset":
-                if sid in initials:
-                    states[sid] = copy.deepcopy(initials[sid])
-                else:
-                    states.pop(sid, None)
+                states.pop(sid, None)
+                initials.pop(sid, None)
             else:
                 self.send_json({"error": "unknown action"}, 400)
                 return

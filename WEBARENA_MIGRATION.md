@@ -404,7 +404,7 @@ the set and degrading gracefully outside it.
 - [ ] Real IDs/slugs/usernames from the container appear in the seed
 - [ ] Zero runtime network calls (verify: DevTools network panel is empty after a full click-through)
 - [ ] No login required; app boots as the site's default user
-- [ ] `?sid=` isolation verified: two sids, independent mutations, `reset` restores
+- [ ] `?sid=` isolation verified: two sids, independent mutations, `reset` deletes current and baseline state
 - [ ] `/go?sid=` `state_diff` reflects every mutating action in `SCHEMA.md`'s Observable State Changes table
 - [ ] Side-by-side visual check against the live site passes on every major route
 - [ ] `npm run build` and `npm run preview` both serve the state API

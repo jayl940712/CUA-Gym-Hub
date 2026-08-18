@@ -10,7 +10,7 @@
 **State read**: `GET /state?sid=<sid>` → `{stored_state, has_custom_state, initial_state, has_initial_state, revision, sid}`
 **Uploads**: `POST /upload?sid=<sid>` (multipart) → `{files:[{url:"/files/<sid>/<name>"}]}`
 
-Uploads are content-addressed and isolated by SID. Legacy `reset` restores JSON
+Uploads are content-addressed and isolated by SID. Legacy `reset` deletes JSON
 state but deliberately leaves session fixture files available.
 
 State files live at `.mock-states/<sid>.json` and `.mock-states/<sid>.initial.json`;
@@ -25,8 +25,8 @@ unconditionally replaces both current and baseline state. `set_current` never
 creates or changes the baseline. `set_initial` is the browser's guarded
 baseline-republication operation: it is refused once stored current differs
 from stored initial, or when current exists but its baseline is missing.
-`reset` restores current from baseline and preserves the
-baseline. Mutation responses carry a monotonic `revision`; clients may send
+`reset` deletes current, baseline, and revision state for the SID. Other
+mutation responses carry a monotonic `revision`; clients may send
 `base_revision`, and a stale value receives HTTP 409. State files are replaced
 atomically, and malformed UTF-8, malformed JSON, and oversized request bodies
 are rejected. Browser recovery uses an internal revision-guarded `restore`;

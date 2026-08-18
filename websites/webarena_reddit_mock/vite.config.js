@@ -319,11 +319,6 @@ function setupMiddlewares(server) {
       const action = data.action || 'set'
       const result = await enqueueMutation(sid, () => {
         if (action === 'reset') {
-          const initial = readInitialState(sid)
-          if (initial !== null) {
-            writeState(sid, initial)
-            return { success: true, sid, message: 'State reset to initial.' }
-          }
           clearState(sid)
           return { success: true, sid, message: 'State cleared.' }
         }

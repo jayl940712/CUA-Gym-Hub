@@ -5,6 +5,7 @@ import path from 'path';
 const SESSION_COOKIE = 'cua_mock_session';
 const PLACEHOLDER_SID = '__cua_session__';
 const TOKEN_FILE = '.cua-admin-token';
+const LEGACY_RESET_BODY_LIMIT = 64 * 1024;
 
 function isHardenedEnabled() {
   return process.env.CUA_GYM_HARDENED === '1' || process.env.CUA_GYM_HARDENED === 'true';
@@ -33,6 +34,77 @@ function readJson(filePath, fallback = {}) {
 
 function writeJson(filePath, value) {
   fs.writeFileSync(filePath, JSON.stringify(value, null, 2));
+}
+
+function legacyStateFiles(rootDir, stateDir, rawSid) {
+  const sid = sanitizeSid(rawSid || '');
+  if (sid) {
+    return [
+      path.join(stateDir, `${sid}.json`),
+      path.join(stateDir, `${sid}.initial.json`),
+      path.join(stateDir, `${sid}_initial.json`),
+      path.join(stateDir, `${sid}.revision`),
+    ];
+  }
+  return [
+    path.join(rootDir, '.mock-state.json'),
+    path.join(rootDir, '.mock-state.initial.json'),
+    path.join(rootDir, '.mock-state.revision'),
+    path.join(stateDir, 'default.json'),
+    path.join(stateDir, 'default.initial.json'),
+    path.join(stateDir, 'default_initial.json'),
+    path.join(stateDir, 'default.revision'),
+  ];
+}
+
+function deleteLegacyState(rootDir, stateDir, rawSid) {
+  for (const file of legacyStateFiles(rootDir, stateDir, rawSid)) {
+    if (fs.existsSync(file)) fs.unlinkSync(file);
+  }
+}
+
+function observeLegacyReset(req, res, url, rootDir, stateDir, next) {
+  const chunks = [];
+  let bodySize = 0;
+  let bodyTooLarge = false;
+  let resetRequested = false;
+
+  req.on('data', (chunk) => {
+    if (bodyTooLarge) return;
+    bodySize += chunk.length;
+    if (bodySize > LEGACY_RESET_BODY_LIMIT) {
+      bodyTooLarge = true;
+      chunks.length = 0;
+      return;
+    }
+    chunks.push(Buffer.from(chunk));
+  });
+  req.on('end', () => {
+    if (bodyTooLarge) return;
+    try {
+      resetRequested = JSON.parse(Buffer.concat(chunks).toString('utf-8')).action === 'reset';
+    } catch {
+      resetRequested = false;
+    }
+  });
+
+  const originalEnd = res.end;
+  res.end = function legacyResetEnd(...args) {
+    if (resetRequested && res.statusCode >= 200 && res.statusCode < 300) {
+      try {
+        deleteLegacyState(rootDir, stateDir, url.searchParams.get('sid'));
+      } catch (error) {
+        console.error('[cua-gym-hub] Failed to delete legacy session state:', error);
+        if (!res.headersSent) {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          args = [JSON.stringify({ error: 'Legacy session state could not be reset.' })];
+        }
+      }
+    }
+    return originalEnd.apply(this, args);
+  };
+  return next();
 }
 
 function parseCookies(header = '') {
@@ -213,6 +285,8 @@ function localStorageShim() {
 
 export function secureMockApiPlugin(options = {}) {
   const stateDir = options.stateDir || path.join(process.cwd(), '.mock-secure-states');
+  const legacyRootDir = options.legacyRootDir || process.cwd();
+  const legacyStateDir = options.legacyStateDir || path.join(legacyRootDir, '.mock-states');
   const sessions = new Map();
   const setupTokens = new Map();
 
@@ -350,9 +424,15 @@ export function secureMockApiPlugin(options = {}) {
   function register(server) {
     ensureDir(stateDir);
     server.middlewares.use((req, res, next) => {
-      if (!isHardenedEnabled()) return next();
       const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
       const pathname = url.pathname;
+      const legacyNext = () => {
+        if (pathname === '/post' && req.method === 'POST') {
+          return observeLegacyReset(req, res, url, legacyRootDir, legacyStateDir, next);
+        }
+        return next();
+      };
+      if (!isHardenedEnabled()) return legacyNext();
       const requestedSid = sanitizeSid(url.searchParams.get('sid') || '');
       const admin = isAdmin(req);
       const secureSession = hasSecureSession(req);
@@ -365,7 +445,7 @@ export function secureMockApiPlugin(options = {}) {
           sendJson(res, 403, { error: 'Missing authenticated session or admin token' });
           return;
         }
-        if (isLegacyCompatEnabled()) return next();
+        if (isLegacyCompatEnabled()) return legacyNext();
         sendJson(res, 403, { error: 'Missing authenticated session or admin token' });
         return;
       }

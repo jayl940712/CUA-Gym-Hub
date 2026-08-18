@@ -3,11 +3,11 @@
 **Base URL**: `http://localhost:<port>/`
 **Go Endpoint**: `GET /go?sid=<sid>` → `{initial_state, current_state, state_diff}`
 **Inject**: `POST /post?sid=<sid>` with body `{"action":"set","state":{...}}`
-**Reset**: `POST /post?sid=<sid>` with body `{"action":"reset"}` → restores `<sid>.json` from `<sid>.initial.json`
+**Reset**: `POST /post?sid=<sid>` with body `{"action":"reset"}` → deletes current and initial state files
 **State read**: `GET /state?sid=<sid>` → `{stored_state, has_custom_state, sid}`
 **Upload**: `POST /upload?sid=<sid>` (multipart) → `.mock-files/<sid>/`; served at `GET /files/<sid>/<name>`
 
-Uploads are content-addressed and isolated by SID. Legacy `reset` restores JSON
+Uploads are content-addressed and isolated by SID. Legacy `reset` deletes JSON
 state but deliberately leaves session fixture files available.
 
 Source of truth: `src/utils/dataManager.js` (`createInitialData`). Session state
@@ -699,7 +699,7 @@ key**: it is what the diff literally contains.
 
 | Endpoint | Method | Purpose |
 |---|---|---|
-| `/post?sid=` | POST | `{action:'set'\|'set_current'\|'reset', state, merge?}`. `set` writes `<sid>.json` **and** `<sid>.initial.json`; `set_current` writes `<sid>.json` **only**; `reset` restores `<sid>.json` from the baseline. Internal `{action:'restore', state, initial_state}` fills missing files only while existing files still equal the supplied values. |
+| `/post?sid=` | POST | `{action:'set'\|'set_current'\|'reset', state, merge?}`. `set` writes `<sid>.json` **and** `<sid>.initial.json`; `set_current` writes `<sid>.json` **only**; `reset` deletes both files. Internal `{action:'restore', state, initial_state}` fills missing files only while existing files still equal the supplied values. |
 | `/state?sid=` | GET | `{stored_state, has_custom_state, initial_state, has_initial_state, sid}` |
 | `/go?sid=` | GET | `{initial_state, current_state, state_diff}` |
 | `/upload?sid=` | POST | multipart upload → `.mock-files/<sid>/` |

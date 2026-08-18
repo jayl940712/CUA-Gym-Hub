@@ -23,7 +23,7 @@
 |---------------|----------|
 | `"set"` | Replace entire stored state with `data.state`; also writes `.initial.json`. Add `"merge": true` to deep-merge instead of replace. |
 | `"set_current"` | Update **only** current state (`<sid>.json`); never touches `.initial.json`. Used by golden-patch scripts to simulate correct completion. Add `"merge": true` for deep-merge. |
-| `"reset"` | Delete stored state file; browser reverts to built-in default on next load. |
+| `"reset"` | Delete current and initial state files; browser reverts to built-in default on next load. |
 
 ### State Diff Logic (server-side `/go`)
 

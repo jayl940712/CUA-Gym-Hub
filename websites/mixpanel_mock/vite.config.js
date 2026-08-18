@@ -180,16 +180,9 @@ function setupMiddlewares(server) {
       const data = JSON.parse(body)
       const action = data.action || 'set'
       if (action === 'reset') {
-        const initial = readInitialState(sid)
-        if (initial) {
-          writeState(sid, initial)
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ success: true, sid, message: 'State reset to initial.' }))
-        } else {
-          clearState(sid)
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ success: true, sid, message: 'State cleared.' }))
-        }
+        clearState(sid)
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify({ success: true, sid, message: 'State cleared.' }))
         return
       }
       if (action === 'set') {

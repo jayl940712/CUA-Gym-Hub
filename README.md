@@ -72,7 +72,7 @@ Every mock exposes the same HTTP API. In dev mode (`npm run dev`) and in product
 |----------|--------|-----------------|
 | `/post?sid=<sid>` | POST | `{"action":"set","state":{...}}` — set initial + current state |
 | `/post?sid=<sid>` | POST | `{"action":"set_current","state":{...}}` — update current only, preserve initial |
-| `/post?sid=<sid>` | POST | `{"action":"reset"}` — restore current to initial |
+| `/post?sid=<sid>` | POST | `{"action":"reset"}` — delete current + initial state for the SID |
 | `/go?sid=<sid>` | GET | `{initial_state, current_state, state_diff}` |
 | `/state?sid=<sid>` | GET | `{stored_state, has_custom_state, sid}` |
 | `/upload?sid=<sid>` | POST | multipart/form-data → `{files:[{url, original_name, stored_name, size}]}` |
@@ -93,9 +93,14 @@ curl -X POST "http://localhost:5173/post?sid=task_042" \
 curl "http://localhost:5173/go?sid=task_042"
 # → {"initial_state":{...}, "current_state":{...}, "state_diff":{"messages.C001":[...]}}
 
-# Reset for the next episode
+# Delete this SID's current state and baseline for the next episode
 curl -X POST "http://localhost:5173/post?sid=task_042" -d '{"action":"reset"}'
 ```
+
+Legacy and hardened reset both delete the SID's current and initial state files.
+Session uploads are preserved and can be removed later with the cleanup tooling.
+Reset does not clear an already-open browser's localStorage; use a fresh browser
+context or clear that SID's browser cache before reusing it.
 
 Each mock's `SCHEMA.md` documents the full state schema and an **Observable State Changes** table that maps user actions to the state fields they affect — the primary reference for writing reward functions.
 
@@ -106,6 +111,7 @@ reviewed safely with `python3 shared/cleanup-webarena-sessions.py`; pass
 Their shared legacy contract can be checked with:
 
 ```bash
+node shared/test-legacy-reset.mjs
 python3 shared/check-state-contract.py
 python3 shared/test-webarena-state-contract.py --mock all --mode both
 # To intentionally run HTTP checks only:

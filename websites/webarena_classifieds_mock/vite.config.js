@@ -106,6 +106,8 @@ function clearState(sid) {
   if (fs.existsSync(file)) fs.unlinkSync(file)
   const initFile = getInitialStateFile(sid)
   if (fs.existsSync(initFile)) fs.unlinkSync(initFile)
+  const revisionFile = getRevisionFile(sid)
+  if (fs.existsSync(revisionFile)) fs.unlinkSync(revisionFile)
 }
 
 function readRevision(sid) {
@@ -374,16 +376,8 @@ function setupMiddlewares(server) {
       const action = data.action || 'set'
       if (action === 'reset') {
         assertFreshRevision(sid, data.base_revision)
-        const initial = readInitialState(sid)
-        if (initial) {
-          writeState(sid, initial)
-          const revision = nextRevision(sid)
-          sendJson(res, 200, { success: true, sid, revision, message: 'State reset to initial.', state: initial })
-        } else {
-          clearState(sid)
-          const revision = nextRevision(sid)
-          sendJson(res, 200, { success: true, sid, revision, message: 'State cleared.' })
-        }
+        clearState(sid)
+        sendJson(res, 200, { success: true, sid, message: 'State cleared.' })
         return
       }
       if (action === 'set') {

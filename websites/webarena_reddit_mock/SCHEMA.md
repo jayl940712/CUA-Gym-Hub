@@ -26,7 +26,7 @@ container `forum`, image `postmill-populated-exposed-withimg:latest`.
 **State read**: `GET /state?sid=<sid>` → `{stored_state, has_custom_state, sid}`
 **Uploads**: `POST /upload?sid=<sid>` (multipart) → `/files/<sid>/<name>`
 
-Uploads are content-addressed and isolated by SID. Legacy `reset` restores JSON
+Uploads are content-addressed and isolated by SID. Legacy `reset` deletes JSON
 state but deliberately leaves session fixture files available.
 
 The app boots pre-logged-in as `MarvelsGrantMan136` (user id `13915`). There is
@@ -48,7 +48,7 @@ The state API deliberately differs from the shared
 |---|---|---|
 | **`set_current` never writes the baseline** | `{"action":"set_current"}` writes **`.mock-states/<sid>.json` only** and never `<sid>.initial.json`. `{"action":"set"}` establishes or replaces the baseline on every call, so retrying setup on the same SID starts a new clean episode. A harness that wants a custom baseline **must** seed with `{"action":"set", "state":{…}}`; seeding with `set_current` leaves `/go` falling back to `createInitialData()`. | `POST set_current` on a never-seeded sid produces `<sid>.json` and **no** `<sid>.initial.json` |
 | **`/go` on a never-seeded sid baselines against the pristine seed** | `initial_state` is `createInitialData()` (`vite.config.js:255`, `const initial = initialState \|\| defaultState`; the template's `\|\| currentState` fallback is deliberately absent). That is byte-for-byte what the client boots from, so the two agree by construction and the **first** mutation on a fresh sid appears in `state_diff`. | fresh sid + one `set_current` writing `hiddenForums:["books"]` → `initial_state.hiddenForums` `[]`, 22 top-level keys, `state_diff` keys `["hiddenForums"]` |
-| **`reset` on a never-seeded sid** | Returns `{"success":true,"sid":…,"message":"State cleared."}` — there is no `.initial.json` to restore from, so it deletes whatever exists. On a **seeded** sid it returns `"State reset to initial."` and restores `<sid>.json` from `<sid>.initial.json`. Both are correct; only the message differs. | `{"success":true,"sid":"freshaud…","message":"State cleared."}` |
+| **`reset` deletes the session state** | Returns `{"success":true,"sid":…,"message":"State cleared."}` and removes both `<sid>.json` and `<sid>.initial.json`, whether or not the SID was seeded. Session uploads are preserved. | `{"success":true,"sid":"freshaud…","message":"State cleared."}` |
 | **Server state is authoritative on boot** | Every boot reads server current and initial state before seating localStorage. A harness reinjection, reset, or another browser's write therefore wins over stale browser cache. If the server genuinely has no files, the client sends an internal guarded `restore`; it fills only files that are still absent/equal, so a concurrent injection wins. The first seated React state is still skipped by the mutation persist effect. | Reinjection on a reused SID replaces warm local current and baseline; changing `?sid=` triggers a fresh hydration |
 | **`set_current` replaces, it does not merge** | `const newState = data.merge ? deepMerge(currentState, data.state) : data.state`. The client always POSTs the *whole* state, so this is safe in normal use — but a hand-written `set_current` carrying two keys will truncate the session to those two keys unless it also sends `"merge": true`. | `set_current` with `{"hiddenForums":["books"]}` left `.mock-states/<sid>.json` at 39 bytes |
 

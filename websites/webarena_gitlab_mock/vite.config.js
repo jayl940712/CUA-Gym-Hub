@@ -375,14 +375,9 @@ function setupMiddlewares(server) {
       const data = JSON.parse(body)
       const action = data.action || 'set'
       const result = await enqueueMutation(sid, () => {
-        // `reset` restores current state from the baseline and deliberately
-        // keeps the baseline. With no baseline it clears the orphaned current.
+        // Reset removes the episode entirely so a reused SID cannot inherit
+        // either its current state or its previous baseline.
         if (action === 'reset') {
-          const initial = readInitialState(sid)
-          if (initial !== null) {
-            writeState(sid, initial)
-            return { success: true, sid, message: 'State reset to initial.' }
-          }
           clearState(sid)
           return { success: true, sid, message: 'State cleared.' }
         }

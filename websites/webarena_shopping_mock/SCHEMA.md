@@ -227,9 +227,8 @@ A fuller example — empty cart, one item already wish-listed, ready for a
 ```
 
 Read back with `GET /go?sid=<sid>` → `{initial_state, current_state, state_diff}`.
-Restore with `{"action":"reset"}`; it rewrites the current state from the
-baseline immediately, and the browser picks it up on its next page load (§4.1
-case (a)) — there is no push channel to a page that is already open.
+Delete the session with `{"action":"reset"}`; it removes both current and
+baseline state. There is no push channel to a page that is already open.
 
 ### 2.3 How the `/go` baseline is established
 
@@ -297,7 +296,7 @@ plugin under **both** `configureServer` and `configurePreviewServer`.
 | `/upload?sid=` | POST | multipart upload (unused by this site, kept for contract parity) |
 | `/files/:sid/:name` | GET | uploaded file download |
 
-Uploads are content-addressed and isolated by SID. Legacy `reset` restores JSON
+Uploads are content-addressed and isolated by SID. Legacy `reset` deletes JSON
 state but deliberately leaves session fixture files available.
 
 State files live at `.mock-states/<sid>.json` and `.mock-states/<sid>.initial.json`.
@@ -343,11 +342,10 @@ Why each case exists:
 - **(a)** is what makes a task inject win over stale `localStorage`. A rollout
   retry that reuses a `sid` in a browser profile that already booted it would
   otherwise render the *previous* rollout's cart and ignore the injected state
-  entirely. It is also how a server-side `{"action":"reset"}` reaches the UI:
-  `reset` rewrites `<sid>.json` from the baseline, which then differs from
-  `localStorage`, so the next page load adopts it. `AppContext.resetState()`
-  covers the other direction (client-initiated), and goes through `setState` so
-  the reset is itself posted as `set_current`.
+  entirely. A server-side `{"action":"reset"}` now deletes both JSON files; use
+  a fresh browser context or clear that SID's local cache before reusing it,
+  because case (b) deliberately recovers browser state after server file loss.
+  `AppContext.resetState()` remains the client-initiated in-page reset.
 - **(b)** is what keeps `/go` truthful when `.mock-states/` is absent —
   it is gitignored, so it is **empty on every fresh deploy** while a persistent
   browser profile may still hold a mutated session. Without the restore, `/go`
