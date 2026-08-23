@@ -220,6 +220,19 @@ export default function SiteNav() {
                   <Icon name="block" /> Block list
                 </SLink>
               </li>
+              {/* Direct entry to the moderator trash page. /trash used to be
+                  reachable only via the front page's "Moderated" filter tab,
+                  while the profile Toolbox's same-named "Trash" (the user's
+                  own trash, usually empty) acted as a decoy. */}
+              {((state.moderatorOf || []).length > 0 || state.currentUser?.admin) && (
+                <li>
+                  <SLink to="/trash"
+                         className={menuItemClass(false)}
+                         onClick={() => setMenuOpen(false)}>
+                    <Icon name="trash" /> Mod trash
+                  </SLink>
+                </li>
+              )}
               <li><hr /></li>
               {/* Two buttons, not one: the source renders both and lets
                   `_utilities/night-mode.less` hide whichever does not apply to

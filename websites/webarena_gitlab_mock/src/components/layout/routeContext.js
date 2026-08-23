@@ -114,6 +114,13 @@ function isLimitedProjectView(section, infix, head) {
 export function projectSidebarActive(ctx) {
   const s = ctx.section
   if (!s) return { top: null, sub: null }
+  // `edit` is two different sections (see resolveRouteContext): `/:ns/:proj/edit`
+  // (no infix) is General Settings, `/-/edit/:ref/*path` (infix) is the file
+  // editor. Without this split the Settings submenu never expands anywhere —
+  // the sidebar "Settings" item itself links to `/edit` — so Settings > CI/CD /
+  // Repository / Access Tokens / Webhooks / MR / Monitor / Packages had no
+  // clickable path at all.
+  if (s === 'edit' && !ctx.infix) return { top: 'settings', sub: 'general' }
   const map = {
     activity: ['project_information', 'activity'],
     labels: ['project_information', 'labels'],
