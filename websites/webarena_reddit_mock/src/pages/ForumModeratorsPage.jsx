@@ -6,6 +6,7 @@ import Forbidden from '../components/forms/Forbidden.jsx'
 import SLink from '../components/SLink.jsx'
 import Time from '../components/Time.jsx'
 import { ForumSidebar } from '../components/Sidebars.jsx'
+import OffsetPagination from '../components/user/OffsetPagination.jsx'
 import '../components/forms/forms.css'
 import { useApp } from '../context/AppContext.jsx'
 
@@ -59,6 +60,7 @@ export default function ForumModeratorsPage({ mode = 'list' }) {
   // Pagerfanta pager, so an out-of-range page throws NotFoundHttpException.
   // Confirmed live: GET /f/news/moderators/2 -> 404 (page 1 -> 200).
   const page = Math.max(1, parseInt(params.page || '1', 10) || 1)
+  const pageCount = Math.max(1, Math.ceil(all.length / MODS_PER_PAGE))
   const mods = all.slice((page - 1) * MODS_PER_PAGE, page * MODS_PER_PAGE)
   if (page > 1 && mods.length === 0) return <NotFound />
 
@@ -85,6 +87,7 @@ export default function ForumModeratorsPage({ mode = 'list' }) {
       {mods.length === 0 ? (
         <p><small className="fg-muted text-md">There are no entries to display.</small></p>
       ) : (
+        <>
         <table className="table">
           <thead>
             <tr>
@@ -117,6 +120,16 @@ export default function ForumModeratorsPage({ mode = 'list' }) {
             ))}
           </tbody>
         </table>
+        {/* _layouts/table.html.twig footer: `{% if items.hasNextPage is defined %}`
+            includes _includes/pagination.html.twig under the table — the pager
+            Forum::getPaginatedModerators() (Pagerfanta, 25/page) feeds. This
+            include was dropped in the original port, leaving page 2 URL-only. */}
+        <OffsetPagination
+          page={page}
+          pageCount={pageCount}
+          hrefFor={p => (p === 1 ? `/f/${forum.name}/moderators` : `/f/${forum.name}/moderators/${p}`)}
+        />
+        </>
       )}
     </Layout>
   )

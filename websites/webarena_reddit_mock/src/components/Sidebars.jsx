@@ -18,7 +18,11 @@ import { subscriberCountLabel, formatNumber } from '../utils/format.js'
 export function ForumSidebar({ forum }) {
   const { isSubscribed, moderates, subscribe, unsubscribe, hideForum, unhideForum, state } = useApp()
   const subscribed = isSubscribed(forum.name)
-  const isMod = moderates(forum.name)
+  // Admins see the moderation toolbox on every forum, matching Postmill's
+  // `moderator` voter (ROLE_ADMIN passes). Gating on moderates() alone left
+  // site-admin tasks (e.g. deleting a forum the user does not moderate) with
+  // no UI path to /f/<name>/delete.
+  const isMod = moderates(forum.name) || Boolean(state.currentUser?.admin)
   const hidden = state.hiddenForums.includes(forum.name)
 
   return (
