@@ -55,6 +55,8 @@ BACKEND_BASE_PORT=$((10#$BACKEND_BASE_PORT))
 command -v npm >/dev/null 2>&1 || { echo "Error: npm not found. Install Node.js first." >&2; exit 1; }
 command -v nginx >/dev/null 2>&1 || { echo "Error: nginx not found. Run: apt install nginx" >&2; exit 1; }
 command -v tmux >/dev/null 2>&1 || { echo "Error: tmux not found. Run: apt install tmux" >&2; exit 1; }
+NPM_BIN="$(command -v npm)"
+NGINX_BIN="$(command -v nginx)"
 
 shopt -s nullglob
 MOCK_DIRS=("$WEBSITES_DIR"/webarena*_mock)
@@ -142,12 +144,12 @@ nginx_path() {
 
 RUNTIME_ESCAPED="$(nginx_path "$RUNTIME_DIR")"
 cat >"$NGINX_CONFIG" <<EOF
-worker_processes auto;
+worker_processes 4;
 pid "$RUNTIME_ESCAPED/nginx.pid";
 error_log "$RUNTIME_ESCAPED/logs/error.log" warn;
 
 events {
-    worker_connections 2048;
+    worker_connections 512;
 }
 
 http {
@@ -261,19 +263,31 @@ cat >>"$NGINX_CONFIG" <<'EOF'
 }
 EOF
 
-nginx -t -p "$RUNTIME_DIR/" -c "$NGINX_CONFIG"
+"$NGINX_BIN" -t -p "$RUNTIME_DIR/" -c "$NGINX_CONFIG"
 
 if tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
     echo "Stopping existing tmux session: $TMUX_SESSION"
     tmux kill-session -t "$TMUX_SESSION"
+fi
+if [ -s "$RUNTIME_DIR/nginx.pid" ]; then
+    OLD_NGINX_PID="$(<"$RUNTIME_DIR/nginx.pid")"
+    if kill -0 "$OLD_NGINX_PID" 2>/dev/null; then
+        echo "Stopping existing nginx master: $OLD_NGINX_PID"
+        "$NGINX_BIN" -p "$RUNTIME_DIR/" -c "$NGINX_CONFIG" -s quit 2>/dev/null || true
+        for _ in {1..50}; do
+            kill -0 "$OLD_NGINX_PID" 2>/dev/null || break
+            sleep 0.1
+        done
+    fi
+    rm -f "$RUNTIME_DIR/nginx.pid"
 fi
 
 for i in "${!MOCKS[@]}"; do
     MOCK="${MOCKS[$i]}"
     BACKEND_PORT=$((BACKEND_BASE_PORT + i))
     printf -v BACKEND_COMMAND \
-        'cd %q && exec npm run preview -- --host 127.0.0.1 --port %q --strictPort' \
-        "$WEBSITES_DIR/$MOCK" "$BACKEND_PORT"
+        'cd %q && exec %q run preview -- --host 127.0.0.1 --port %q --strictPort' \
+        "$WEBSITES_DIR/$MOCK" "$NPM_BIN" "$BACKEND_PORT"
 
     if [ "$i" -eq 0 ]; then
         tmux new-session -d -s "$TMUX_SESSION" -n "${MOCK}-api" "$BACKEND_COMMAND"
@@ -282,11 +296,10 @@ for i in "${!MOCKS[@]}"; do
     fi
 done
 
-printf -v NGINX_COMMAND 'exec nginx -p %q -c %q -g %q' \
-    "$RUNTIME_DIR/" "$NGINX_CONFIG" "daemon off;"
-rm -f "$RUNTIME_DIR/nginx.pid"
-tmux new-window -t "$TMUX_SESSION:" -n nginx "$NGINX_COMMAND"
-tmux select-window -t "$TMUX_SESSION:nginx"
+# nginx is designed to daemonize and manage its own master/worker lifecycle.
+# Starting it directly also avoids stale tmux PATH and shell-command parsing.
+"$NGINX_BIN" -p "$RUNTIME_DIR/" -c "$NGINX_CONFIG"
+tmux select-window -t "$TMUX_SESSION:0"
 
 NGINX_READY=false
 for _ in {1..50}; do
@@ -321,7 +334,8 @@ echo "Generated config: $NGINX_CONFIG"
 echo
 echo "Manage session:"
 echo "  Attach:   tmux attach -t $TMUX_SESSION"
-echo "  Kill all: tmux kill-session -t $TMUX_SESSION"
+echo "  Stop API: tmux kill-session -t $TMUX_SESSION"
+echo "  Stop web: $NGINX_BIN -p '$RUNTIME_DIR/' -c '$NGINX_CONFIG' -s quit"
 
 if [ "$NO_ATTACH" = false ]; then
     sleep 1
